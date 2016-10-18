@@ -107,11 +107,6 @@
                 <artifactId>log4j</artifactId>
                 <version>1.2.15</version>
             </dependency>
-            <!-- <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency> -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
@@ -266,6 +261,11 @@
                 <groupId>commons-jexl</groupId>
                 <artifactId>commons-jexl</artifactId>
                 <version>1.1</version>
+            </dependency>
+             <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.UserInfoDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.UserInfoVo" >
+    <id column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="email_active_status" property="emailActiveStatus" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="create_ip" property="createIp" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="birth_time" property="birthTime" jdbcType="TIMESTAMP" />
+    <result column="credit" property="credit" jdbcType="DECIMAL" />
+    <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account_id, nick_name, email, email_active_status, mobile, gender, create_ip, create_time, 
+    birth_time, credit, photo_url, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_info
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_user_info
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.UserInfoVo" >
+    insert into tb_user_info (account_id, nick_name, email, 
+      email_active_status, mobile, gender, 
+      create_ip, create_time, birth_time, 
+      credit, photo_url, update_time
+      )
+    values (#{accountId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{emailActiveStatus,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{createIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{birthTime,jdbcType=TIMESTAMP}, 
+      #{credit,jdbcType=DECIMAL}, #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.UserInfoVo" >
+    insert into tb_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="emailActiveStatus != null" >
+        email_active_status,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="createIp != null" >
+        create_ip,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="birthTime != null" >
+        birth_time,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="photoUrl != null" >
+        photo_url,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailActiveStatus != null" >
+        #{emailActiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="createIp != null" >
+        #{createIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthTime != null" >
+        #{birthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=DECIMAL},
+      </if>
+      <if test="photoUrl != null" >
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.UserInfoVo" >
+    update tb_user_info
+    <set >
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailActiveStatus != null" >
+        email_active_status = #{emailActiveStatus,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="createIp != null" >
+        create_ip = #{createIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthTime != null" >
+        birth_time = #{birthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=DECIMAL},
+      </if>
+      <if test="photoUrl != null" >
+        photo_url = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.UserInfoVo" >
+    update tb_user_info
+    set nick_name = #{nickName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      email_active_status = #{emailActiveStatus,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      create_ip = #{createIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      birth_time = #{birthTime,jdbcType=TIMESTAMP},
+      credit = #{credit,jdbcType=DECIMAL},
+      photo_url = #{photoUrl,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where account_id = #{accountId,jdbcType=VARCHAR}
+  </update>
+</mapper>

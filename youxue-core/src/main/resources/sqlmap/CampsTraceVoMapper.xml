@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.CampsTraceDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.CampsTraceVo" >
+    <id column="trace_id" property="traceId" jdbcType="VARCHAR" />
+    <result column="campus_id" property="campusId" jdbcType="VARCHAR" />
+    <result column="trace_name" property="traceName" jdbcType="VARCHAR" />
+    <result column="trace_desc" property="traceDesc" jdbcType="VARCHAR" />
+    <result column="trace_weight" property="traceWeight" jdbcType="INTEGER" />
+    <result column="trace_photos" property="tracePhotos" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    trace_id, campus_id, trace_name, trace_desc, trace_weight, trace_photos
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps_trace
+    where trace_id = #{traceId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_camps_trace
+    where trace_id = #{traceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.CampsTraceVo" >
+    insert into tb_camps_trace (trace_id, campus_id, trace_name, 
+      trace_desc, trace_weight, trace_photos
+      )
+    values (#{traceId,jdbcType=VARCHAR}, #{campusId,jdbcType=VARCHAR}, #{traceName,jdbcType=VARCHAR}, 
+      #{traceDesc,jdbcType=VARCHAR}, #{traceWeight,jdbcType=INTEGER}, #{tracePhotos,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsTraceVo" >
+    insert into tb_camps_trace
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="traceId != null" >
+        trace_id,
+      </if>
+      <if test="campusId != null" >
+        campus_id,
+      </if>
+      <if test="traceName != null" >
+        trace_name,
+      </if>
+      <if test="traceDesc != null" >
+        trace_desc,
+      </if>
+      <if test="traceWeight != null" >
+        trace_weight,
+      </if>
+      <if test="tracePhotos != null" >
+        trace_photos,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="traceId != null" >
+        #{traceId,jdbcType=VARCHAR},
+      </if>
+      <if test="campusId != null" >
+        #{campusId,jdbcType=VARCHAR},
+      </if>
+      <if test="traceName != null" >
+        #{traceName,jdbcType=VARCHAR},
+      </if>
+      <if test="traceDesc != null" >
+        #{traceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="traceWeight != null" >
+        #{traceWeight,jdbcType=INTEGER},
+      </if>
+      <if test="tracePhotos != null" >
+        #{tracePhotos,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.CampsTraceVo" >
+    update tb_camps_trace
+    <set >
+      <if test="campusId != null" >
+        campus_id = #{campusId,jdbcType=VARCHAR},
+      </if>
+      <if test="traceName != null" >
+        trace_name = #{traceName,jdbcType=VARCHAR},
+      </if>
+      <if test="traceDesc != null" >
+        trace_desc = #{traceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="traceWeight != null" >
+        trace_weight = #{traceWeight,jdbcType=INTEGER},
+      </if>
+      <if test="tracePhotos != null" >
+        trace_photos = #{tracePhotos,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where trace_id = #{traceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.CampsTraceVo" >
+    update tb_camps_trace
+    set campus_id = #{campusId,jdbcType=VARCHAR},
+      trace_name = #{traceName,jdbcType=VARCHAR},
+      trace_desc = #{traceDesc,jdbcType=VARCHAR},
+      trace_weight = #{traceWeight,jdbcType=INTEGER},
+      trace_photos = #{tracePhotos,jdbcType=VARCHAR}
+    where trace_id = #{traceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

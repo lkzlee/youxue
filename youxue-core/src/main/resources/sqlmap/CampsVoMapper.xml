@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.CampsDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.CampsVo" >
+    <id column="camps_id" property="campsId" jdbcType="VARCHAR" />
+    <result column="camps_name" property="campsName" jdbcType="VARCHAR" />
+    <result column="camps_title" property="campsTitle" jdbcType="VARCHAR" />
+    <result column="camps_desc" property="campsDesc" jdbcType="VARCHAR" />
+    <result column="camps_images" property="campsImages" jdbcType="VARCHAR" />
+    <result column="camps_locale" property="campsLocale" jdbcType="VARCHAR" />
+    <result column="oriented_people" property="orientedPeople" jdbcType="VARCHAR" />
+    <result column="feature" property="feature" jdbcType="VARCHAR" />
+    <result column="service_support" property="serviceSupport" jdbcType="VARCHAR" />
+    <result column="course_desc" property="courseDesc" jdbcType="VARCHAR" />
+    <result column="activity_desc" property="activityDesc" jdbcType="VARCHAR" />
+    <result column="camps_food_desc" property="campsFoodDesc" jdbcType="VARCHAR" />
+    <result column="camps_foods_photos" property="campsFoodsPhotos" jdbcType="VARCHAR" />
+    <result column="camps_hotel_desc" property="campsHotelDesc" jdbcType="VARCHAR" />
+    <result column="camps_hotel_photos" property="campsHotelPhotos" jdbcType="VARCHAR" />
+    <result column="fee_desc" property="feeDesc" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="done_count" property="doneCount" jdbcType="DECIMAL" />
+    <result column="deadline_date" property="deadlineDate" jdbcType="DATE" />
+    <result column="departure_date" property="departureDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="duration_time" property="durationTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    camps_id, camps_name, camps_title, camps_desc, camps_images, camps_locale, oriented_people, 
+    feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
+    camps_hotel_desc, camps_hotel_photos, fee_desc, status, total_price, done_count, 
+    deadline_date, departure_date, start_date, duration_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+    where camps_id = #{campsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_camps
+    where camps_id = #{campsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.CampsVo" >
+    insert into tb_camps (camps_id, camps_name, camps_title, 
+      camps_desc, camps_images, camps_locale, 
+      oriented_people, feature, service_support, 
+      course_desc, activity_desc, camps_food_desc, 
+      camps_foods_photos, camps_hotel_desc, camps_hotel_photos, 
+      fee_desc, status, total_price, 
+      done_count, deadline_date, departure_date, 
+      start_date, duration_time, create_time, 
+      update_time)
+    values (#{campsId,jdbcType=VARCHAR}, #{campsName,jdbcType=VARCHAR}, #{campsTitle,jdbcType=VARCHAR}, 
+      #{campsDesc,jdbcType=VARCHAR}, #{campsImages,jdbcType=VARCHAR}, #{campsLocale,jdbcType=VARCHAR}, 
+      #{orientedPeople,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{serviceSupport,jdbcType=VARCHAR}, 
+      #{courseDesc,jdbcType=VARCHAR}, #{activityDesc,jdbcType=VARCHAR}, #{campsFoodDesc,jdbcType=VARCHAR}, 
+      #{campsFoodsPhotos,jdbcType=VARCHAR}, #{campsHotelDesc,jdbcType=VARCHAR}, #{campsHotelPhotos,jdbcType=VARCHAR}, 
+      #{feeDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{doneCount,jdbcType=DECIMAL}, #{deadlineDate,jdbcType=DATE}, #{departureDate,jdbcType=DATE}, 
+      #{startDate,jdbcType=DATE}, #{durationTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsVo" >
+    insert into tb_camps
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="campsId != null" >
+        camps_id,
+      </if>
+      <if test="campsName != null" >
+        camps_name,
+      </if>
+      <if test="campsTitle != null" >
+        camps_title,
+      </if>
+      <if test="campsDesc != null" >
+        camps_desc,
+      </if>
+      <if test="campsImages != null" >
+        camps_images,
+      </if>
+      <if test="campsLocale != null" >
+        camps_locale,
+      </if>
+      <if test="orientedPeople != null" >
+        oriented_people,
+      </if>
+      <if test="feature != null" >
+        feature,
+      </if>
+      <if test="serviceSupport != null" >
+        service_support,
+      </if>
+      <if test="courseDesc != null" >
+        course_desc,
+      </if>
+      <if test="activityDesc != null" >
+        activity_desc,
+      </if>
+      <if test="campsFoodDesc != null" >
+        camps_food_desc,
+      </if>
+      <if test="campsFoodsPhotos != null" >
+        camps_foods_photos,
+      </if>
+      <if test="campsHotelDesc != null" >
+        camps_hotel_desc,
+      </if>
+      <if test="campsHotelPhotos != null" >
+        camps_hotel_photos,
+      </if>
+      <if test="feeDesc != null" >
+        fee_desc,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="doneCount != null" >
+        done_count,
+      </if>
+      <if test="deadlineDate != null" >
+        deadline_date,
+      </if>
+      <if test="departureDate != null" >
+        departure_date,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="durationTime != null" >
+        duration_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="campsId != null" >
+        #{campsId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsName != null" >
+        #{campsName,jdbcType=VARCHAR},
+      </if>
+      <if test="campsTitle != null" >
+        #{campsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="campsDesc != null" >
+        #{campsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsImages != null" >
+        #{campsImages,jdbcType=VARCHAR},
+      </if>
+      <if test="campsLocale != null" >
+        #{campsLocale,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedPeople != null" >
+        #{orientedPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="feature != null" >
+        #{feature,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceSupport != null" >
+        #{serviceSupport,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDesc != null" >
+        #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDesc != null" >
+        #{activityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsFoodDesc != null" >
+        #{campsFoodDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsFoodsPhotos != null" >
+        #{campsFoodsPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="campsHotelDesc != null" >
+        #{campsHotelDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsHotelPhotos != null" >
+        #{campsHotelPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="feeDesc != null" >
+        #{feeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doneCount != null" >
+        #{doneCount,jdbcType=DECIMAL},
+      </if>
+      <if test="deadlineDate != null" >
+        #{deadlineDate,jdbcType=DATE},
+      </if>
+      <if test="departureDate != null" >
+        #{departureDate,jdbcType=DATE},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="durationTime != null" >
+        #{durationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.CampsVo" >
+    update tb_camps
+    <set >
+      <if test="campsName != null" >
+        camps_name = #{campsName,jdbcType=VARCHAR},
+      </if>
+      <if test="campsTitle != null" >
+        camps_title = #{campsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="campsDesc != null" >
+        camps_desc = #{campsDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsImages != null" >
+        camps_images = #{campsImages,jdbcType=VARCHAR},
+      </if>
+      <if test="campsLocale != null" >
+        camps_locale = #{campsLocale,jdbcType=VARCHAR},
+      </if>
+      <if test="orientedPeople != null" >
+        oriented_people = #{orientedPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="feature != null" >
+        feature = #{feature,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceSupport != null" >
+        service_support = #{serviceSupport,jdbcType=VARCHAR},
+      </if>
+      <if test="courseDesc != null" >
+        course_desc = #{courseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDesc != null" >
+        activity_desc = #{activityDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsFoodDesc != null" >
+        camps_food_desc = #{campsFoodDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsFoodsPhotos != null" >
+        camps_foods_photos = #{campsFoodsPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="campsHotelDesc != null" >
+        camps_hotel_desc = #{campsHotelDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="campsHotelPhotos != null" >
+        camps_hotel_photos = #{campsHotelPhotos,jdbcType=VARCHAR},
+      </if>
+      <if test="feeDesc != null" >
+        fee_desc = #{feeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doneCount != null" >
+        done_count = #{doneCount,jdbcType=DECIMAL},
+      </if>
+      <if test="deadlineDate != null" >
+        deadline_date = #{deadlineDate,jdbcType=DATE},
+      </if>
+      <if test="departureDate != null" >
+        departure_date = #{departureDate,jdbcType=DATE},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="durationTime != null" >
+        duration_time = #{durationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where camps_id = #{campsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.CampsVo" >
+    update tb_camps
+    set camps_name = #{campsName,jdbcType=VARCHAR},
+      camps_title = #{campsTitle,jdbcType=VARCHAR},
+      camps_desc = #{campsDesc,jdbcType=VARCHAR},
+      camps_images = #{campsImages,jdbcType=VARCHAR},
+      camps_locale = #{campsLocale,jdbcType=VARCHAR},
+      oriented_people = #{orientedPeople,jdbcType=VARCHAR},
+      feature = #{feature,jdbcType=VARCHAR},
+      service_support = #{serviceSupport,jdbcType=VARCHAR},
+      course_desc = #{courseDesc,jdbcType=VARCHAR},
+      activity_desc = #{activityDesc,jdbcType=VARCHAR},
+      camps_food_desc = #{campsFoodDesc,jdbcType=VARCHAR},
+      camps_foods_photos = #{campsFoodsPhotos,jdbcType=VARCHAR},
+      camps_hotel_desc = #{campsHotelDesc,jdbcType=VARCHAR},
+      camps_hotel_photos = #{campsHotelPhotos,jdbcType=VARCHAR},
+      fee_desc = #{feeDesc,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      done_count = #{doneCount,jdbcType=DECIMAL},
+      deadline_date = #{deadlineDate,jdbcType=DATE},
+      departure_date = #{departureDate,jdbcType=DATE},
+      start_date = #{startDate,jdbcType=DATE},
+      duration_time = #{durationTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where camps_id = #{campsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

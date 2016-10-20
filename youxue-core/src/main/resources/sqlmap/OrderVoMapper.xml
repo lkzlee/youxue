@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.OrderDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.OrderVo" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="logic_order_id" property="logicOrderId" jdbcType="VARCHAR" />
+    <result column="code_id" property="codeId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="code_price" property="codePrice" jdbcType="DECIMAL" />
+    <result column="code_status" property="codeStatus" jdbcType="INTEGER" />
+    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_email" property="contactEmail" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, account_id, logic_order_id, code_id, status, creat_time, update_time, camps_id, 
+    total_price, code_price, code_status, pay_price, total_count, contact_name, contact_email, 
+    contact_phone, order_ip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.OrderVo" >
+    insert into tb_order (order_id, account_id, logic_order_id, 
+      code_id, status, creat_time, 
+      update_time, camps_id, total_price, 
+      code_price, code_status, pay_price, 
+      total_count, contact_name, contact_email, 
+      contact_phone, order_ip)
+    values (#{orderId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{logicOrderId,jdbcType=VARCHAR}, 
+      #{codeId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{campsId,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{codePrice,jdbcType=DECIMAL}, #{codeStatus,jdbcType=INTEGER}, #{payPrice,jdbcType=DECIMAL}, 
+      #{totalCount,jdbcType=INTEGER}, #{contactName,jdbcType=VARCHAR}, #{contactEmail,jdbcType=VARCHAR}, 
+      #{contactPhone,jdbcType=VARCHAR}, #{orderIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.OrderVo" >
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="logicOrderId != null" >
+        logic_order_id,
+      </if>
+      <if test="codeId != null" >
+        code_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="creatTime != null" >
+        creat_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="campsId != null" >
+        camps_id,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="codePrice != null" >
+        code_price,
+      </if>
+      <if test="codeStatus != null" >
+        code_status,
+      </if>
+      <if test="payPrice != null" >
+        pay_price,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="contactEmail != null" >
+        contact_email,
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone,
+      </if>
+      <if test="orderIp != null" >
+        order_ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="logicOrderId != null" >
+        #{logicOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="codeId != null" >
+        #{codeId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null" >
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsId != null" >
+        #{campsId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="codePrice != null" >
+        #{codePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="codeStatus != null" >
+        #{codeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactEmail != null" >
+        #{contactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIp != null" >
+        #{orderIp,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.OrderVo" >
+    update tb_order
+    <set >
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="logicOrderId != null" >
+        logic_order_id = #{logicOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="codeId != null" >
+        code_id = #{codeId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsId != null" >
+        camps_id = #{campsId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="codePrice != null" >
+        code_price = #{codePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="codeStatus != null" >
+        code_status = #{codeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payPrice != null" >
+        pay_price = #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactEmail != null" >
+        contact_email = #{contactEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="orderIp != null" >
+        order_ip = #{orderIp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.OrderVo" >
+    update tb_order
+    set account_id = #{accountId,jdbcType=VARCHAR},
+      logic_order_id = #{logicOrderId,jdbcType=VARCHAR},
+      code_id = #{codeId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      camps_id = #{campsId,jdbcType=VARCHAR},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      code_price = #{codePrice,jdbcType=DECIMAL},
+      code_status = #{codeStatus,jdbcType=INTEGER},
+      pay_price = #{payPrice,jdbcType=DECIMAL},
+      total_count = #{totalCount,jdbcType=INTEGER},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_email = #{contactEmail,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      order_ip = #{orderIp,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

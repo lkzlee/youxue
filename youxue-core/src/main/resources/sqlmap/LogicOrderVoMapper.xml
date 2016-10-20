@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.LogicOrderDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.LogicOrderVo" >
+    <id column="logic_order_id" property="logicOrderId" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="platform_order_id" property="platformOrderId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    logic_order_id, account_id, create_time, update_time, order_ip, pay_type, pay_status, 
+    pay_time, platform_order_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_logic_order
+    where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_logic_order
+    where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.LogicOrderVo" >
+    insert into tb_logic_order (logic_order_id, account_id, create_time, 
+      update_time, order_ip, pay_type, 
+      pay_status, pay_time, platform_order_id
+      )
+    values (#{logicOrderId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{orderIp,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
+      #{payStatus,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, #{platformOrderId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.LogicOrderVo" >
+    insert into tb_logic_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="logicOrderId != null" >
+        logic_order_id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="orderIp != null" >
+        order_ip,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="platformOrderId != null" >
+        platform_order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="logicOrderId != null" >
+        #{logicOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderIp != null" >
+        #{orderIp,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformOrderId != null" >
+        #{platformOrderId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.LogicOrderVo" >
+    update tb_logic_order
+    <set >
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderIp != null" >
+        order_ip = #{orderIp,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformOrderId != null" >
+        platform_order_id = #{platformOrderId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.LogicOrderVo" >
+    update tb_logic_order
+    set account_id = #{accountId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      order_ip = #{orderIp,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      platform_order_id = #{platformOrderId,jdbcType=VARCHAR}
+    where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

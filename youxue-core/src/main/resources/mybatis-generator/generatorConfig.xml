@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry
+            location="C:\Users\zhangwei2014\.m2\repository\mysql\mysql-connector-java\5.1.29\mysql-connector-java-5.1.29.jar"/>
+    <context id="my" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://182.92.186.220:3306/qinggu" userId="qinggu"
+                        password="123456"/>
+
+        <javaModelGenerator targetPackage="com.netease.duobao.vo"
+                            targetProject="E:\workspace\HobbyProjects\youxue\youxue-core\src\main\java\">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="sqlmap"
+                         targetProject="E:\workspace\HobbyProjects\youxue\youxue-core\src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="com.netease.duobao.dao"
+                             targetProject="E:\workspace\HobbyProjects\youxue\youxue-core\src\main\java\" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+		<table tableName="TB_camps" domainObjectName="CampsVo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+<!-- 
+        <table tableName="tb_duobao_account_address" domainObjectName="DuoBaoAccountAddress"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_account_coins" domainObjectName="DuoBaoAccountCoins"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_account_info" domainObjectName="DuoBaoAccountInfo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_award_number" domainObjectName="DuoBaoAwardNumber"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_follow_scheme" domainObjectName="DuoBaoFollowScheme"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+        <table tableName="tb_duobao_order" domainObjectName="DuoBaoOrder"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_participate_info" domainObjectName="DuoBaoParticipateInfo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+       
+       
+        <table tableName="tb_duobao_participate_number" domainObjectName="DuoBaoParticipateNumber"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+         <table tableName="tb_duobao_log_product_period" domainObjectName="DuoBaoLogProductPeriod"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_pay_order" domainObjectName="DuoBaoPayOrder"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+        <table tableName="tb_duobao_participate_record" domainObjectName="DuoBaoParticipateRecord"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        -->
+        <!-- 
+        <table tableName="tb_duobao_participate_record" domainObjectName="DuoBaoParticipateRecord"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_prize_user" domainObjectName="DuoBaoPrizeUser"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_product_info" domainObjectName="DuoBaoProductInfo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_product_kinds" domainObjectName="DuoBaoProductKinds"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+        <table tableName="tb_duobao_product_period" domainObjectName="DuoBaoProductPeriod"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_recharge_record" domainObjectName="DuoBaoRechargeRecord"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_refund_records" domainObjectName="DuoBaoRefundRecords"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="tb_duobao_sys_config" domainObjectName="DuoBaoSysConfig"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+-->
+	<!-- 	<table tableName="TB_DUOBAO_GOODS" domainObjectName="DuoBaoGoods"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_SUPPLIER" domainObjectName="DuoBaoSupplier"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_GOODS_INVENTORY" domainObjectName="DuoBaoGoodsInventory"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_SUPPLIER_GOODS" domainObjectName="DuoBaoSupplierGoods"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_PURCHASE" domainObjectName="DuoBaoPurchase"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_PURCHASE_DETAIL" domainObjectName="DuoBaoPurchaseDetail"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_PURCHASE_LOG" domainObjectName="DuoBaoPurchaseLog"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_STORAGE" domainObjectName="DuoBaoStorage"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_STORAGE_LOG" domainObjectName="DuoBaoStorageLog"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+        <table tableName="TB_DUOBAO_OUT_GOODS" domainObjectName="DuoBaoOutGoods"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table> 
+         <table tableName="TB_DUOBAO_CARD_ORDER" domainObjectName="DuoBaoCardOrder"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+       
+         <table tableName="TB_DUOBAO_PRODUCT_CATEGORY" domainObjectName="DuoBaoProductCategory"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+         <table tableName="TB_PRODUCT_CATEGORY_RELATION" domainObjectName="DuoBaoProductCategoryRelation"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+         -->
+    </context>
+</generatorConfiguration>

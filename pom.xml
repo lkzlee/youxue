@@ -7,9 +7,9 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>youxue-core</module>
-		<module>youxue-admin</module>
+		<!-- <module>youxue-admin</module> -->
 		<module>youxue-pc</module>
-		<module>youxue-weixin</module>
+		<!-- <module>youxue-weixin</module> -->
 		<module>youxue-img</module>
 	</modules>
 

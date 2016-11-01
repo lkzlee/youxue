@@ -1,144 +1,51 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.youxue</groupId>
-    <artifactId>youxue</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>youxue-pc</artifactId>
-  <packaging>war</packaging>
-  
-   <dependencies>
-        <!-- common dependency -->
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-        </dependency>
-        <!-- 启用官网的freemarker，改用乐得公用的 <dependency> <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId> </dependency> -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <!--json -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.youxue</groupId>
+		<artifactId>youxue</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>youxue-pc</artifactId>
+	<packaging>war</packaging>
 
-        <!-- spring dependency -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5</version>
-        </dependency>
-        <!-- druid dependency -->
+	<dependencies>
+		<!-- common dependency -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
+			<groupId>com.youxue</groupId>
+			<artifactId>youxue-core</artifactId>
 		</dependency>
-		
-    </dependencies>
-    <profiles>
-        <profile>
-            <id>local</id>
-            <properties>
-                <env>src/main/resources/local</env>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <env>src/main/resources/test</env>
-            </properties>
-             <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>online</id>
-            <properties>
-                <env>src/main/resources/online</env>
-            </properties>
-        </profile>
-    </profiles>
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>local/*</exclude>
-                    <exclude>online/*</exclude>
-                    <exclude>test/*</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>${env}</directory>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <!-- 指定jdk 1.8 -->
-                <configuration>
-                    <encoding>UTF8</encoding>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.9.v20130131</version>
-                <configuration>
-                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                        <resourceBases>
-                            <resourceBase>${project.basedir}/src/main/resources</resourceBase>
-                            <resourceBase>${project.basedir}/src/main/resources/local</resourceBase>
-                        </resourceBases>
-                    </webApp>
-                    <scanIntervalSeconds>3</scanIntervalSeconds>
-                    <classesDirectory>target/classes</classesDirectory>
-                    <requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
-                        <filename>target/access-yyyy_mm_dd.log</filename>
-                        <filenameDateFormat>yyyy_MM_dd</filenameDateFormat>
-                        <logDateFormat>yyyy-MM-dd HH:mm:ss</logDateFormat>
-                        <logTimeZone>GMT+8:00</logTimeZone>
-                        <append>true</append>
-                        <logServer>true</logServer>
-                        <retainDays>120</retainDays>
-                        <logCookies>true</logCookies>
-                    </requestLog>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.9.v20130131</version>
+				<configuration>
+					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+					<webApp>
+						<contextPath>/</contextPath>
+						<resourceBases>
+							<resourceBase>${project.basedir}/src/main/resources</resourceBase>
+							<resourceBase>${project.basedir}/src/main/webapp</resourceBase>
+						</resourceBases>
+					</webApp>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<contextXml>${project.basedir}/src/main/resources/jetty-context.xml</contextXml>
+					<classesDirectory>target/classes</classesDirectory>
+					<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+						<filename>target/access-yyyy_mm_dd.log</filename>
+						<filenameDateFormat>yyyy_MM_dd</filenameDateFormat>
+						<logDateFormat>yyyy-MM-dd HH:mm:ss</logDateFormat>
+						<logTimeZone>GMT+8:00</logTimeZone>
+						<append>true</append>
+						<logServer>true</logServer>
+						<retainDays>120</retainDays>
+						<logCookies>true</logCookies>
+					</requestLog>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

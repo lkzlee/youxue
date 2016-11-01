@@ -13,7 +13,6 @@
 		<dependency>
 			<groupId>com.youxue</groupId>
 			<artifactId>youxue-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- common dependency -->
 		<dependency>

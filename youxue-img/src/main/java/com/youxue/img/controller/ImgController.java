@@ -26,14 +26,6 @@ public class ImgController
 		return "hello world";
 	}
 
-	/**
-	 * @param request
-	 * @param response
-	 * @param imgUrl 文件按功能划分的路径： 如缩略图、商品图等
-	 * @param imgType 文件按后缀类型划分的路径
-	 * @param imgName 文件名
-	 * @throws Exception
-	 */
 	@RequestMapping("/img/{imgUrl}/{imgType}/{imgName}.png")
 	public void getImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("imgUrl") String imgUrl, @PathVariable("imgType") String imgType,

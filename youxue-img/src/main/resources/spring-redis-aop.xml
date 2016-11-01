@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"  
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd 
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<!-- enable aop -->
+	<aop:aspectj-autoproxy/>
+	<context:component-scan base-package="com.netease" />
+	
+	 <!--redis config -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="3030" />
+        <property name="maxIdle" value="30" />
+        <property name="minIdle" value="10" />
+        <property name="maxWaitMillis" value="2000" />
+    </bean>
+    
+    <bean id="baseRedisSentinel" class="com.youxue.core.redis.BaseRedisSentinel" init-method="initPool">
+		<property name="config" ref="jedisPoolConfig" />
+		<property name="password" 		value="${redis.password}" />
+		<property name="database" 		value="${redis.database}" />
+		<property name="masterName"		value="${redis.masterName}" />
+		<property name="sentinels"		value="${redis.sentinels}" />
+		<property name="timeout"		value="${redis.timeout}" />
+	</bean>
+	
+	<bean id="jedisAop" class="com.youxue.core.redis.JedisAop">
+		<property name="baseRedisSentinel" ref="baseRedisSentinel" />
+	</bean>
+	<bean id="jedisProxy" class="com.youxue.core.redis.JedisProxy">
+		<property name="baseRedisSentinel" ref="baseRedisSentinel" />
+	</bean>
+	
+	<!--  
+	<aop:config>
+		<aop:aspect ref="jedisAop">
+      		<aop:after 	pointcut="@annotation(com.netease.lottery.base.common.redis.JedisWay) || @within(com.netease.lottery.base.common.redis.JedisWay)" method="doAfter"/>
+      	</aop:aspect>
+	</aop:config>
+	-->
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+
+	<sqlMap resource="sqlmap/CampsCategoryRelationVoMapper.xml" />
+	<sqlMap resource="sqlmap/CampsTraceVoMapper.xml" />
+	<sqlMap resource="sqlmap/CampsVoMapper.xml" />
+	<sqlMap resource="sqlmap/CatetoryVoMapper.xml" />
+	<sqlMap resource="sqlmap/CouponCodeVoMapper.xml" />
+	<sqlMap resource="sqlmap/LogicOrderVoMapper.xml" />
+	<sqlMap resource="sqlmap/MessageVoMapper.xml" />
+	<sqlMap resource="sqlmap/NewsVoMapper.xml" />
+	<sqlMap resource="sqlmap/OrderPersonVoMapper.xml" />
+	<sqlMap resource="sqlmap/OrderVoMapper.xml" />
+	<sqlMap resource="sqlmap/SurroundProductVoMapper.xml" />
+	<sqlMap resource="sqlmap/UserCountryRelationVoMapper.xml" />
+	<sqlMap resource="sqlmap/UserInfoVoMapper.xml" />
+
+</sqlMapConfig>

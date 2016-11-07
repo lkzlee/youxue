@@ -45,6 +45,19 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.lkzlee.pay</groupId>
+			<artifactId>third-pay</artifactId>
+		</dependency>
+		<!-- mybatis-spring -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.ntes</groupId>
 			<artifactId>Captcha</artifactId>
 			<version>0.9.5</version>

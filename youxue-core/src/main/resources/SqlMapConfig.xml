@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sqlMapConfig      
-    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
-    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
-<sqlMapConfig>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties>
+		<property name="dialect" value="mysql" />
+	</properties>
 
-	<sqlMap resource="sqlmap/CampsCategoryRelationVoMapper.xml" />
-	<sqlMap resource="sqlmap/CampsTraceVoMapper.xml" />
-	<sqlMap resource="sqlmap/CampsVoMapper.xml" />
-	<sqlMap resource="sqlmap/CatetoryVoMapper.xml" />
-	<sqlMap resource="sqlmap/CouponCodeVoMapper.xml" />
-	<sqlMap resource="sqlmap/LogicOrderVoMapper.xml" />
-	<sqlMap resource="sqlmap/MessageVoMapper.xml" />
-	<sqlMap resource="sqlmap/NewsVoMapper.xml" />
-	<sqlMap resource="sqlmap/OrderPersonVoMapper.xml" />
-	<sqlMap resource="sqlmap/OrderVoMapper.xml" />
-	<sqlMap resource="sqlmap/SurroundProductVoMapper.xml" />
-	<sqlMap resource="sqlmap/UserCountryRelationVoMapper.xml" />
-	<sqlMap resource="sqlmap/UserInfoVoMapper.xml" />
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+	</settings>
 
-</sqlMapConfig>
+	<typeAliases>
+		<package name="com.youxue.core.vo" />
+	</typeAliases>
+
+	<typeHandlers>
+
+	</typeHandlers>
+
+	<plugins>
+		<plugin interceptor="com.youxue.core.mybatis.interceptor.PaginationInterceptor"></plugin>
+	</plugins>
+	<mappers>
+		<mapper resource="sqlmap/CampsCategoryRelationVoMapper.xml" />
+		<mapper resource="sqlmap/CampsTraceVoMapper.xml" />
+		<mapper resource="sqlmap/CampsVoMapper.xml" />
+		<mapper resource="sqlmap/CatetoryVoMapper.xml" />
+		<mapper resource="sqlmap/CouponCodeVoMapper.xml" />
+		<mapper resource="sqlmap/LogicOrderVoMapper.xml" />
+		<mapper resource="sqlmap/MessageVoMapper.xml" />
+		<mapper resource="sqlmap/NewsVoMapper.xml" />
+		<mapper resource="sqlmap/OrderPersonVoMapper.xml" />
+		<mapper resource="sqlmap/OrderVoMapper.xml" />
+		<mapper resource="sqlmap/SurroundProductVoMapper.xml" />
+		<mapper resource="sqlmap/UserCountryRelationVoMapper.xml" />
+		<mapper resource="sqlmap/UserInfoVoMapper.xml" />
+	</mappers>
+</configuration>

@@ -16,7 +16,9 @@ import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.EmailActiveStatusConstant;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.UserInfoDao;
+import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.UserInfoVo;
 import com.youxue.pc.uc.dto.EmailActiveDto;
@@ -34,6 +36,8 @@ public class UserCenterController extends BaseController
 	private UserInfoDao userInfoDao;
 	@Resource
 	private EmailVerifyService emailVerifyService;
+	@Resource
+	private JedisProxy jedisProxy;
 	private final static Log LOG = LogFactory.getLog(UserCenterController.class);
 
 	/***
@@ -144,16 +148,21 @@ public class UserCenterController extends BaseController
 		userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
 		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		userInfoDao.updateByPrimaryKeySelective(userInfo);
+		jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 
 	}
 
 	private EmailActiveDto getResultEmailDto(UserInfoVo userInfo)
 	{
+
 		EmailActiveDto emailDto = new EmailActiveDto();
 		emailDto.setResult(100);
 		emailDto.setResultDesc("操作成功");
 		emailDto.setActiveStatus(EmailActiveStatusConstant.INIT);
+		if (userInfo.getEmailActiveStatus() == null)
+			return emailDto;
+		emailDto.setActiveStatus(userInfo.getEmailActiveStatus());
 		if (EmailActiveStatusConstant.INIT == userInfo.getEmailActiveStatus()
 				&& StringUtils.isNotBlank(userInfo.getEmail()))
 		{

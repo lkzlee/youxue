@@ -34,27 +34,24 @@ import com.lkzlee.pay.exceptions.BusinessException;
 public class MailUtil
 {
 	private static Log log = LogFactory.getLog(MailUtil.class);
-
-	private static final String host = "smtp.126.com"; //发件人使用发邮件的电子信箱服务器
-	private static String from = "xxx"; //发邮件的出发地(发件人的信箱)
 	private static Properties props = System.getProperties();
-	private static String password = "xx";
 	private static MailAuthenticator authenticator = new MailAuthenticator();
 	private static Session session = null;
 	private static MimeMessage message;
-
+	private String from = null;
 	private static final String MAIL_LIST_SPLIT_KEY = ",";
 
 	public void init(String mailToSendList, String mailCCSendList)
 	{
 		try
 		{
+			from = PropertyUtils.getProperty("smtp.user", "xxxx@126.com");
 			// Setup mail server
-			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.host", PropertyUtils.getProperty("smtp.host", "smtp.126.com"));
 			// Get session
 			props.put("mail.smtp.auth", "true");//这样才能通过验证
 			authenticator.setStrUser(from);
-			authenticator.setStrPwd(password);
+			authenticator.setStrPwd(PropertyUtils.getProperty("smtp.passwd", "xxx"));
 			session = Session.getDefaultInstance(props, authenticator);
 			session.setDebug(true);//设置为debug
 			message = new MimeMessage(session);

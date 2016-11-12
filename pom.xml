@@ -25,7 +25,6 @@
 		<guava.version>19.0-rc1</guava.version>
 		<zookeeper.version>3.4.5</zookeeper.version>
 		<zkclient.version>0.3</zkclient.version>
-		<lottery-base.version>0.0.21</lottery-base.version>
 		<druid.version>1.0.21</druid.version>
 		<slf4j.version>1.7.21</slf4j.version>
 		<searchanalysis.version>0.0.2</searchanalysis.version>

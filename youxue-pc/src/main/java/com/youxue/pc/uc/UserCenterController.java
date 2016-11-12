@@ -89,9 +89,9 @@ public class UserCenterController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
 
 		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
-		if()
-		userInfo.setAccountId(accountId);
-		userInfo.setPhotoUrl(userPhotoUrl);
+		//		if()
+		//		userInfo.setAccountId(accountId);
+		//		userInfo.setPhotoUrl(userPhotoUrl);
 		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
 		if (success <= 0)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));

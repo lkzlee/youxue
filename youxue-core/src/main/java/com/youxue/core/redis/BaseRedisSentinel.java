@@ -2,8 +2,6 @@ package com.youxue.core.redis;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
@@ -11,8 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.JedisSentinelPool;
 
 public class BaseRedisSentinel
 {
@@ -20,12 +18,31 @@ public class BaseRedisSentinel
 	/**使用threadLocal避免释放的时候传递jedis对象*/
 	private static ThreadLocal<Jedis> jedisLocal = new ThreadLocal<Jedis>();
 
-	private volatile JedisSentinelPool redisSentinelPool;
-	private String sentinels;
-	private String masterName;
+	private volatile JedisPool redisPool;
+	private String server;
+	private String port;
 	private String password;
-	private String database;//连接sentinel的密码
 	private String timeout;//最长有效等待时间
+
+	public String getServer()
+	{
+		return server;
+	}
+
+	public void setServer(String server)
+	{
+		this.server = server;
+	}
+
+	public String getPort()
+	{
+		return port;
+	}
+
+	public void setPort(String port)
+	{
+		this.port = port;
+	}
 
 	private JedisPoolConfig config;//jedis 配置
 
@@ -35,12 +52,11 @@ public class BaseRedisSentinel
 	public void initPool()
 	{
 		/**sentinel服务地址*/
-		if (StringUtils.isBlank(sentinels))
+		if (StringUtils.isBlank(server) || StringUtils.isBlank(port))
 		{
-			log.fatal("sentinels config is blank ,pls check!sentinels:" + sentinels);
+			log.fatal("servers config is blank ,pls check!servers:" + server + ",port:" + port);
 			return;
 		}
-		String[] sentinelArr = sentinels.split("\\,");
 
 		/**初始化jedis配置*/
 		if (config == null)
@@ -51,38 +67,25 @@ public class BaseRedisSentinel
 			config.setMinIdle(10);//// Minimum number of idle connections to Redis - these can be seen as always open and ready to serve
 			config.setMaxWaitMillis(2000);//ms
 		}
-		final Set<String> sentinelsSet = new HashSet<String>();
-		if (null == sentinelArr)
+		if (null == redisPool)
 		{
-			sentinelsSet.add("redis1.youxue.com:26379");
-			sentinelsSet.add("redis2.youxue.com:26379");
-		}
-		else
-		{
-			for (int i = 0; i < sentinelArr.length; i++)
-			{
-				sentinelsSet.add(sentinelArr[i]);
-			}
-		}
-		if (null == redisSentinelPool)
-		{
-			redisSentinelPool = new JedisSentinelPool(masterName, sentinelsSet, config, Integer.valueOf(timeout),
-					password);
+			//			redisSentinelPool = new JedisSentinelPool(masterName, sentinelsSet, config, Integer.valueOf(timeout),
+			//					password);
+			redisPool = new JedisPool(config, server, Integer.valueOf(port), Integer.valueOf(timeout), password);
 		}
 		/**添加日志用于判断*/
 		String curDate = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss").format(new Date());//DateUtil.formatDate(new Date(),"yyyy-MM-ddHH：mm：ss");
-		log.info("Monitoring current master,CurrentTime:" + curDate + "------"
-				+ redisSentinelPool.getCurrentHostMaster());
+		log.info("######## redis pool init finished,CurrentTime:" + curDate);
 	}
 
 	/**destroy后pool将关闭，不能被使用*/
 	public void destroy()
 	{
-		if (null != redisSentinelPool)
+		if (null != redisPool)
 		{
 			try
 			{
-				redisSentinelPool.destroy();
+				redisPool.destroy();
 			}
 			catch (Exception e)
 			{
@@ -117,11 +120,11 @@ public class BaseRedisSentinel
 					releaseBrokenJedis();
 				}
 			}
-			if (null == redisSentinelPool)
+			if (null == redisPool)
 			{
 				this.initPool();
 			}
-			jedis = redisSentinelPool.getResource();
+			jedis = redisPool.getResource();
 			jedisLocal.set(jedis);// 设置本线程中的jedis
 		}
 		catch (Exception e)
@@ -146,11 +149,11 @@ public class BaseRedisSentinel
 		Jedis jedis = null;
 		try
 		{
-			jedis = redisSentinelPool.getResource();
+			jedis = redisPool.getResource();
 		}
 		catch (Exception e)
 		{
-			if (null != jedis && null != redisSentinelPool)
+			if (null != jedis && null != redisPool)
 			{
 				jedis.close();
 			}
@@ -165,7 +168,7 @@ public class BaseRedisSentinel
 	public void releaseJedis()
 	{
 		Jedis jedis = jedisLocal.get();
-		if (null != jedis && null != redisSentinelPool)
+		if (null != jedis && null != redisPool)
 		{
 			if (jedis.isConnected())
 			{
@@ -181,7 +184,7 @@ public class BaseRedisSentinel
 	public void releaseBrokenJedis()
 	{
 		Jedis jedis = jedisLocal.get();
-		if (null != jedis && null != redisSentinelPool)
+		if (null != jedis && null != redisPool)
 		{
 			jedis.close();
 		}
@@ -212,26 +215,6 @@ public class BaseRedisSentinel
 		this.config = config;
 	}
 
-	public String getSentinels()
-	{
-		return sentinels;
-	}
-
-	public void setSentinels(String sentinels)
-	{
-		this.sentinels = sentinels;
-	}
-
-	public String getMasterName()
-	{
-		return masterName;
-	}
-
-	public void setMasterName(String masterName)
-	{
-		this.masterName = masterName;
-	}
-
 	public String getPassword()
 	{
 		return password;
@@ -240,11 +223,6 @@ public class BaseRedisSentinel
 	public JedisPoolConfig getConfig()
 	{
 		return config;
-	}
-
-	public void setDatabase(String database)
-	{
-		this.database = database;
 	}
 
 	public String getTimeout()
@@ -257,34 +235,42 @@ public class BaseRedisSentinel
 		this.timeout = timeout;
 	}
 
-	public String getDatabase()
+	public String getServers()
 	{
-		return database;
+		return server;
+	}
+
+	public void setServers(String servers)
+	{
+		this.server = servers;
 	}
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		final BaseRedisSentinel baseRedis = new BaseRedisSentinel();
-		baseRedis.setSentinels("127.0.0.1:5555,127.0.0.1:6666");
-		baseRedis.setDatabase("0");
-		baseRedis.setTimeout("10000");
-		baseRedis.setMasterName("master");
-		baseRedis.setPassword("1qaz2wsx!~");
-		//		baseRedis.setPassword("123");
+		Jedis jedis = new Jedis("101.200.148.203", 6379);
+		jedis.auth("qinggu");
+		jedis.set("test1", "test");
+		System.out.println(jedis.get("test1"));
 
-		baseRedis.initPool();
+		JedisPoolConfig config = new JedisPoolConfig();
+		config.setMaxTotal(3030);// Maximum active connections to Redis instance
+		config.setMaxIdle(30);// Number of connections to Redis that just sit there and do nothing
+		config.setMinIdle(10);//// Minimum number of idle connections to Redis - these can be seen as always open and ready to serve
+		config.setMaxWaitMillis(2000);//ms
+		JedisPool redisPool = new JedisPool(config, "101.200.148.203", 6379, 20000, "qinggu");
 		for (int i = 0; i < 20; i++)
 		{
-			Jedis jedis = baseRedis.getJedis();
+			jedis = redisPool.getResource();
 			jedis.set(String.valueOf(i), String.valueOf(i));
 			System.out.println("set " + i);
 			TimeUnit.MILLISECONDS.sleep(500);
+			jedis.close();
 		}
 	}
 
 	public void releaseOriginJedis(Jedis jedis)
 	{
-		if (null != jedis && null != redisSentinelPool)
+		if (null != jedis && null != redisPool)
 		{
 			if (jedis.isConnected())
 			{
@@ -298,7 +284,7 @@ public class BaseRedisSentinel
 	 */
 	public void releaseOriginBrokenJedis(Jedis jedis)
 	{
-		if (null != jedis && null != redisSentinelPool)
+		if (null != jedis && null != redisPool)
 		{
 			jedis.close();
 		}

@@ -97,6 +97,7 @@ public class LoginController extends BaseController
 			newUser.setCreateTime(new Date());
 			newUser.setUpdateTime(new Date());
 			newUser.setCreateIp(getCurrentLoginUserIp(request));
+			userInfoDao.insert(newUser);
 			LOG.info("create user:" + mobile);
 		}
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));

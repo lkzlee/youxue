@@ -29,10 +29,9 @@
     
     <bean id="baseRedisSentinel" class="com.youxue.core.redis.BaseRedisSentinel" init-method="initPool">
 		<property name="config" ref="jedisPoolConfig" />
+		<property name="server" 		value="${redis.server}" />
+		<property name="port" 		value="${redis.port}" />
 		<property name="password" 		value="${redis.password}" />
-		<property name="database" 		value="${redis.database}" />
-		<property name="masterName"		value="${redis.masterName}" />
-		<property name="sentinels"		value="${redis.sentinels}" />
 		<property name="timeout"		value="${redis.timeout}" />
 	</bean>
 	

@@ -57,20 +57,21 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.ntes</groupId>
 			<artifactId>Captcha</artifactId>
 			<version>0.9.5</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>19.0-rc1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.caucho/hessian -->
 		<dependency>
-			<groupId>com.caucho</groupId>
-			<artifactId>hessian</artifactId>
-			<version>4.0.37</version>
+		    <groupId>com.caucho</groupId>
+		    <artifactId>hessian</artifactId>
+		    <version>4.0.38</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>

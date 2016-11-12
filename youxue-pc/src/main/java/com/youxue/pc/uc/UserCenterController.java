@@ -30,6 +30,12 @@ public class UserCenterController extends BaseController
 	private UserInfoDao userInfoDao;
 	private final static Log LOG = LogFactory.getLog(UserCenterController.class);
 
+	/***
+	 * 用户信息查询
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(path = "/uc/userinfo.html")
 	@ResponseBody
 	public String userInfo(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +55,13 @@ public class UserCenterController extends BaseController
 
 	}
 
+	/**
+	 * 用户头像修改
+	 * @param request
+	 * @param response
+	 * @param userPhotoUrl
+	 * @return
+	 */
 	@RequestMapping("/uc/updatePhoto.html")
 	@ResponseBody
 	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, String userPhotoUrl)
@@ -59,6 +72,24 @@ public class UserCenterController extends BaseController
 		if (StringUtils.isBlank(userPhotoUrl))
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("userPhotoUrl参数为空非法"));
 		UserInfoVo userInfo = new UserInfoVo();
+		userInfo.setAccountId(accountId);
+		userInfo.setPhotoUrl(userPhotoUrl);
+		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
+		if (success <= 0)
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户头像更新成功"));
+	}
+
+	@RequestMapping("/uc/activeEmail.html")
+	@ResponseBody
+	public String verifyActiveEmail(HttpServletRequest request, HttpServletResponse response, String email)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
+
+		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
+		if()
 		userInfo.setAccountId(accountId);
 		userInfo.setPhotoUrl(userPhotoUrl);
 		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);

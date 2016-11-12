@@ -1,6 +1,5 @@
 package com.youxue.core.login.session;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.youxue.core.redis.JedisProxy;
@@ -26,13 +25,6 @@ public class SessionService
 	public static JedisProxy getSessionJedisClient()
 	{
 		return ((JedisProxy) SpringContextHolder.getBean("jedisProxy"));
-	}
-
-	public Map getSession(String id)
-	{
-		@SuppressWarnings("rawtypes")
-		Map session = new HashMap();
-		return session;
 	}
 
 	public void saveSession(String id, Map session)

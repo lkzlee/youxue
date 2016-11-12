@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +22,12 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.ImgConstant;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.mobileCode.MobileCodeService;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.RandomUuidFactory;
+import com.youxue.core.vo.UserInfoVo;
 
 /**
  * @author Masterwind
@@ -42,6 +44,10 @@ public class LoginController extends BaseController
 	/** SECIMAGE_HEIGHT : 图片验证码高度*/
 	private static final String SECIMAGE_HEIGHT = "50";
 
+	@Autowired
+	MobileCodeService mobileCodeService;
+	@Autowired
+	UserInfoDao userInfoDao;
 	@Autowired
 	JedisProxy jedisProxy;
 
@@ -63,12 +69,10 @@ public class LoginController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数错误！"));
 		}
 		//校验手机验证码
-		String cachedPhoneCode = (String) jedisProxy.get(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
-		if (!phoneCode.equalsIgnoreCase(cachedPhoneCode))
+		if (!mobileCodeService.checkMobileCode(mobile, phoneCode))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("手机验证码错误！"));
 		}
-		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
 
 		//校验图片验证码
 		String imgCodeId = getCodeIdFromCookie(request, ImgConstant.MOBLIE_SECCODE_COOKIE_NAME);
@@ -84,8 +88,18 @@ public class LoginController extends BaseController
 		jedisProxy.del(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
 
 		//校验手机：如果不存在，则生成一条新的数据库记录
-
-		return JsonUtil.serialize(BaseResponseDto.successDto());
+		UserInfoVo user = userInfoDao.selectByPrimaryKey(mobile);
+		if (user == null)
+		{
+			UserInfoVo newUser = new UserInfoVo();
+			newUser.setAccountId(mobile);
+			newUser.setMobile(mobile);
+			newUser.setCreateTime(new Date());
+			newUser.setUpdateTime(new Date());
+			newUser.setCreateIp(getCurrentLoginUserIp(request));
+			LOG.info("create user:" + mobile);
+		}
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));
 	}
 
 	/**
@@ -101,35 +115,7 @@ public class LoginController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请输入合法手机号"));
 		}
-		// 生成随机码
-		String randomCode = generateMobileCode();
-		// 先查询
-		Object oldCode = jedisProxy.get(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
-		if (null == oldCode)
-		{ // 未曾发送过, 直接发送，并保存
-			responseDto = sendCode(phone, randomCode);
-			// 入库
-			code.setCode(randomCode);
-			code.setUpdateTime(new Date());
-			codeDao.insert(code);
-		}
-		else if (new Date().getTime() > INTERVAL * 60 * 1000 + result.getUpdateTime().getTime())
-		{// 发送过，时间间隔也过了，发送,更新
-			// 发送
-			responseDto = sendCode(phone, randomCode);
-			// 更新
-			Code newCode = new Code();
-			newCode.setId(result.getId());
-			newCode.setCode(randomCode);
-			newCode.setUpdateTime(new Date());
-			codeDao.update(newCode);
-		}
-		else
-		{ //发送过，时间间隔还没到, 不可再发送
-			responseDto.setReturnCode(-1);
-			responseDto.setReturnMessage("发送短信太频繁");
-			return responseDto;
-		}
+		return JsonUtil.serialize(mobileCodeService.sendMobileCode(mobile));
 	}
 
 	/**

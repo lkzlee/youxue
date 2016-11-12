@@ -91,9 +91,9 @@ public class LoginController extends BaseController
 	 * 获取手机验证码
 	 */
 	@RequestMapping("/mobileCode.html")
-	public void mobileCode(HttpServletRequest request, HttpServletResponse response)
+	public void mobileCode(HttpServletRequest request, HttpServletResponse response,String mobile)
 	{
-
+		if(StringUtils.)
 	}
 
 	/**

@@ -78,7 +78,6 @@ public class MobileCodeServiceImpl implements MobileCodeService
 		String codeInServer = (String) oldCode;
 		if (codeInServer.equalsIgnoreCase(code))
 		{
-			jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + phone);
 			return true;
 		}
 		else

@@ -43,7 +43,7 @@ public class BaseController
 	 */
 	public String getCurrentLoginUserName(HttpServletRequest request)
 	{
-		return ControllerUtil.getCurrentLoginUserName(request, request.getSession());
+		return ControllerUtil.getCurrentLoginUserName(request);
 	}
 
 	/**

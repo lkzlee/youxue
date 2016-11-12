@@ -8,15 +8,15 @@ public class EmailActiveStatusConstant
 	/***
 	 * 初始状态
 	 */
-	public static final int INIT = 0;
+	public static final Integer INIT = 0;
 	/***
 	 * 已发邮件
 	 */
-	public static final int SENDED_MAIL = 1;
+	public static final Integer SENDED_MAIL = 1;
 	/***
 	 * 已激活
 	 */
-	public static final int ACTIVED = 2;
+	public static final Integer ACTIVED = 2;
 
 	public static final Map<String, String> emailUrl = new HashMap<String, String>();
 	static

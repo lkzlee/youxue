@@ -153,7 +153,7 @@ public class UserCenterController extends BaseController
 		EmailActiveDto emailDto = new EmailActiveDto();
 		emailDto.setResult(100);
 		emailDto.setResultDesc("操作成功");
-		emailDto.setActiveStatus(userInfo.getEmailActiveStatus());
+		emailDto.setActiveStatus(EmailActiveStatusConstant.INIT);
 		if (EmailActiveStatusConstant.INIT == userInfo.getEmailActiveStatus()
 				&& StringUtils.isNotBlank(userInfo.getEmail()))
 		{

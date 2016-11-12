@@ -25,6 +25,7 @@ import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.mobileCode.MobileCodeService;
+import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.RandomUuidFactory;
 import com.youxue.core.vo.UserInfoVo;
@@ -100,6 +101,8 @@ public class LoginController extends BaseController
 			userInfoDao.insert(newUser);
 			LOG.info("create user:" + mobile);
 		}
+		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
+		ControllerUtil.setCurrentLoginUserName(request, mobile);
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));
 	}
 

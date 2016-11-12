@@ -2,6 +2,7 @@ package com.youxue.pc.login;
 
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lkzlee.pay.utils.CommonUtil;
 import com.netease.is.image.CheckCode_a;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
@@ -91,9 +94,42 @@ public class LoginController extends BaseController
 	 * 获取手机验证码
 	 */
 	@RequestMapping("/mobileCode.html")
-	public void mobileCode(HttpServletRequest request, HttpServletResponse response,String mobile)
+	@ResponseBody
+	public String mobileCode(HttpServletRequest request, HttpServletResponse response, String mobile)
 	{
-		if(StringUtils.)
+		if (StringUtils.isBlank(mobile) || !CommonUtil.isValidMobile(mobile))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请输入合法手机号"));
+		}
+		// 生成随机码
+		String randomCode = generateMobileCode();
+		// 先查询
+		Object oldCode = jedisProxy.get(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
+		if (null == oldCode)
+		{ // 未曾发送过, 直接发送，并保存
+			responseDto = sendCode(phone, randomCode);
+			// 入库
+			code.setCode(randomCode);
+			code.setUpdateTime(new Date());
+			codeDao.insert(code);
+		}
+		else if (new Date().getTime() > INTERVAL * 60 * 1000 + result.getUpdateTime().getTime())
+		{// 发送过，时间间隔也过了，发送,更新
+			// 发送
+			responseDto = sendCode(phone, randomCode);
+			// 更新
+			Code newCode = new Code();
+			newCode.setId(result.getId());
+			newCode.setCode(randomCode);
+			newCode.setUpdateTime(new Date());
+			codeDao.update(newCode);
+		}
+		else
+		{ //发送过，时间间隔还没到, 不可再发送
+			responseDto.setReturnCode(-1);
+			responseDto.setReturnMessage("发送短信太频繁");
+			return responseDto;
+		}
 	}
 
 	/**

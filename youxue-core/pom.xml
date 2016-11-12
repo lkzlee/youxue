@@ -57,11 +57,16 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis</artifactId>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.ntes</groupId>
 			<artifactId>Captcha</artifactId>
 			<version>0.9.5</version>
-		</dependency> -->
+		</dependency>
+		<dependency>
+			<groupId>org.sms</groupId>
+			<artifactId>CCP_REST_SMS</artifactId>
+			<version>0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>

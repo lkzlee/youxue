@@ -52,7 +52,7 @@ public class UserCenterController extends BaseController
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
 		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
 		if (userInfo == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
@@ -78,7 +78,7 @@ public class UserCenterController extends BaseController
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
 		if (StringUtils.isBlank(userPhotoUrl))
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("userPhotoUrl参数为空非法"));
 		UserInfoVo userInfo = new UserInfoVo();
@@ -98,7 +98,7 @@ public class UserCenterController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
 		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
 		if (userInfo == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
@@ -121,7 +121,7 @@ public class UserCenterController extends BaseController
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户未登录"));
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
 
 		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
 		if (userInfo == null)

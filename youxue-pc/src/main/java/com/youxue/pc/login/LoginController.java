@@ -67,7 +67,7 @@ public class LoginController extends BaseController
 	{
 		if (StringUtils.isBlank(mobile) || StringUtils.isBlank(phoneCode) || StringUtils.isBlank(imgCode))
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数错误！"));
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数缺失！"));
 		}
 		//校验手机验证码
 		if (!mobileCodeService.checkMobileCode(mobile, phoneCode))

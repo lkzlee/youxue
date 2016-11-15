@@ -1,4 +1,6 @@
-package com.youxue.pc.shopCart;
+package com.youxue.pc.shopCart.controller;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.CampsCategoryRelationDao;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsCategoryRelationVo;
 import com.youxue.core.vo.CampsVo;
+import com.youxue.pc.shopCart.dto.AddShopCartDetailDto;
 
 /**
  * @author Masterwind
@@ -32,7 +37,49 @@ public class ShopCartController extends BaseController
 	@Autowired
 	CampsDao campsDao;
 	@Autowired
+	CampsCategoryRelationDao campsCategoryRelationDao;
+	@Autowired
 	JedisProxy jedisProxy;
+
+	/**
+	 * @param request
+	 * @param response
+	 * 加入购物车页面
+	 */
+	@RequestMapping("/addCartItemDetail.html")
+	@ResponseBody
+	public String addCartItemDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(campusId))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数错误"));
+		}
+		CampsVo camps = campsDao.selectByPrimaryKey(campusId);
+		if (camps == null)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
+		}
+
+		boolean exist = jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId);
+		int currentCount = 1;
+		if (exist)
+		{
+			currentCount = Integer.valueOf(jedisProxy.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId));
+		}
+		else
+		{
+			jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, currentCount);
+		}
+		AddShopCartDetailDto dto = new AddShopCartDetailDto();
+		dto.setCamps(camps);
+		dto.setCount(currentCount);
+
+		List<CampsCategoryRelationVo> relations = campsCategoryRelationDao.selectByType();
+		return JsonUtil.serialize(BaseResponseDto.successDto());
+	}
 
 	/**
 	 * @param request

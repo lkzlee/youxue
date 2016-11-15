@@ -45,19 +45,43 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.lkzlee.pay</groupId>
+			<artifactId>third-pay</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.5.0-b01</version>
+		</dependency>
+		<!-- mybatis-spring -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.ntes</groupId>
 			<artifactId>Captcha</artifactId>
 			<version>0.9.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sms</groupId>
+			<artifactId>CCP_REST_SMS</artifactId>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>19.0-rc1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.caucho/hessian -->
 		<dependency>
 			<groupId>com.caucho</groupId>
 			<artifactId>hessian</artifactId>
-			<version>4.0.37</version>
+			<version>4.0.38</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -200,6 +224,10 @@
 			<groupId>com.ning</groupId>
 			<artifactId>async-http-client</artifactId>
 			<version>1.8.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
 		</dependency>
 	</dependencies>
 </project>

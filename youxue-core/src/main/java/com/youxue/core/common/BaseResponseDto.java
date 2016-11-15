@@ -28,6 +28,14 @@ public class BaseResponseDto implements Serializable
 		return except;
 	}
 
+	public static BaseResponseDto notLoginDto()
+	{
+		BaseResponseDto noLogin = new BaseResponseDto();
+		noLogin.setResult(-2);
+		noLogin.setDesc("用户未登录！");
+		return noLogin;
+	}
+
 	public static BaseResponseDto successDto()
 	{
 		BaseResponseDto success = new BaseResponseDto();

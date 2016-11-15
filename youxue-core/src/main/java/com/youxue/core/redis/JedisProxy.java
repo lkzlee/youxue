@@ -454,6 +454,12 @@ public class JedisProxy
 	}
 
 	@JedisWay
+	public long lpush(final String key, String... values)
+	{
+		return getJedis().lpush(key, values);
+	}
+
+	@JedisWay
 	public Long llen(final String key)
 	{
 		return getJedis().llen(key);

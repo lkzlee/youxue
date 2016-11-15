@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties>
+		<property name="dialect" value="mysql" />
+	</properties>
+
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+	</settings>
+
+	<typeAliases>
+		<package name="com.youxue.core.vo" />
+	</typeAliases>
+
+	<typeHandlers>
+
+	</typeHandlers>
+
+	<plugins>
+		<plugin interceptor="com.youxue.core.mybatis.interceptor.PaginationInterceptor"></plugin>
+	</plugins>
+	<mappers>
+		<mapper resource="sqlmap/CampsCategoryRelationVoMapper.xml" />
+		<mapper resource="sqlmap/CampsTraceVoMapper.xml" />
+		<mapper resource="sqlmap/CampsVoMapper.xml" />
+		<mapper resource="sqlmap/CatetoryVoMapper.xml" />
+		<mapper resource="sqlmap/CouponCodeVoMapper.xml" />
+		<mapper resource="sqlmap/LogicOrderVoMapper.xml" />
+		<mapper resource="sqlmap/MessageVoMapper.xml" />
+		<mapper resource="sqlmap/NewsVoMapper.xml" />
+		<mapper resource="sqlmap/OrderPersonVoMapper.xml" />
+		<mapper resource="sqlmap/OrderVoMapper.xml" />
+		<mapper resource="sqlmap/SurroundProductVoMapper.xml" />
+		<mapper resource="sqlmap/UserCountryRelationVoMapper.xml" />
+		<mapper resource="sqlmap/UserInfoVoMapper.xml" />
+	</mappers>
+</configuration>

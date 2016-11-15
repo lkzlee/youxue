@@ -1,7 +1,6 @@
 package com.youxue.core.util;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,12 +34,17 @@ public class ControllerUtil
 		}
 	}
 
-	public static String getCurrentLoginUserName(HttpServletRequest request, HttpSession session)
+	public static void setCurrentLoginUserName(HttpServletRequest request, String accountId)
+	{
+		request.getSession().setAttribute(SESSION_LOGIN_USER_KEY, accountId);
+	}
+
+	public static String getCurrentLoginUserName(HttpServletRequest request)
 	{
 		String userName = null;
-		if (session.getAttribute(SESSION_LOGIN_USER_KEY) != null)
+		if (request.getSession().getAttribute(SESSION_LOGIN_USER_KEY) != null)
 		{
-			userName = String.valueOf(session.getAttribute(SESSION_LOGIN_USER_KEY));
+			userName = String.valueOf(request.getSession().getAttribute(SESSION_LOGIN_USER_KEY));
 		}
 		else
 		{

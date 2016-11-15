@@ -2,6 +2,7 @@ package com.youxue.pc.login;
 
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,14 +16,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lkzlee.pay.utils.CommonUtil;
 import com.netease.is.image.CheckCode_a;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.ImgConstant;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.mobileCode.MobileCodeService;
+import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.RandomUuidFactory;
+import com.youxue.core.vo.UserInfoVo;
 
 /**
  * @author Masterwind
@@ -39,6 +45,10 @@ public class LoginController extends BaseController
 	/** SECIMAGE_HEIGHT : 图片验证码高度*/
 	private static final String SECIMAGE_HEIGHT = "50";
 
+	@Autowired
+	MobileCodeService mobileCodeService;
+	@Autowired
+	UserInfoDao userInfoDao;
 	@Autowired
 	JedisProxy jedisProxy;
 
@@ -57,15 +67,13 @@ public class LoginController extends BaseController
 	{
 		if (StringUtils.isBlank(mobile) || StringUtils.isBlank(phoneCode) || StringUtils.isBlank(imgCode))
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数错误！"));
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数缺失！"));
 		}
 		//校验手机验证码
-		String cachedPhoneCode = (String) jedisProxy.get(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
-		if (!phoneCode.equalsIgnoreCase(cachedPhoneCode))
+		if (!mobileCodeService.checkMobileCode(mobile, phoneCode))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("手机验证码错误！"));
 		}
-		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
 
 		//校验图片验证码
 		String imgCodeId = getCodeIdFromCookie(request, ImgConstant.MOBLIE_SECCODE_COOKIE_NAME);
@@ -81,8 +89,21 @@ public class LoginController extends BaseController
 		jedisProxy.del(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
 
 		//校验手机：如果不存在，则生成一条新的数据库记录
-
-		return JsonUtil.serialize(BaseResponseDto.successDto());
+		UserInfoVo user = userInfoDao.selectByPrimaryKey(mobile);
+		if (user == null)
+		{
+			UserInfoVo newUser = new UserInfoVo();
+			newUser.setAccountId(mobile);
+			newUser.setMobile(mobile);
+			newUser.setCreateTime(new Date());
+			newUser.setUpdateTime(new Date());
+			newUser.setCreateIp(getCurrentLoginUserIp(request));
+			userInfoDao.insert(newUser);
+			LOG.info("create user:" + mobile);
+		}
+		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
+		ControllerUtil.setCurrentLoginUserName(request, mobile);
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));
 	}
 
 	/**
@@ -91,9 +112,14 @@ public class LoginController extends BaseController
 	 * 获取手机验证码
 	 */
 	@RequestMapping("/mobileCode.html")
-	public void mobileCode(HttpServletRequest request, HttpServletResponse response)
+	@ResponseBody
+	public String mobileCode(HttpServletRequest request, HttpServletResponse response, String mobile)
 	{
-
+		if (StringUtils.isBlank(mobile) || !CommonUtil.isValidMobile(mobile))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请输入合法手机号"));
+		}
+		return JsonUtil.serialize(mobileCodeService.sendMobileCode(mobile));
 	}
 
 	/**

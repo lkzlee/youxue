@@ -61,7 +61,7 @@ public class JedisAop
 		return returnVal;
 	}
 
-	@After("@annotation(com.netease.lottery.base.common.redis.JedisWay) || @within(com.netease.lottery.base.common.redis.JedisWay)")
+	@After("@annotation(com.youxue.core.redis.JedisWay) || @within(com.youxue.core.redis.JedisWay)")
 	public void doAfter(JoinPoint jp)
 	{
 		//logger.info("JedisAop Release Jedis after used!");
@@ -69,7 +69,7 @@ public class JedisAop
 	}
 
 	//Handle broken client after exception by dujiepeng
-	@AfterThrowing("@annotation(com.netease.lottery.base.common.redis.JedisWay) || @within(com.netease.lottery.base.common.redis.JedisWay)")
+	@AfterThrowing("@annotation(com.youxue.core.redis.JedisWay) || @within(com.youxue.core.redis.JedisWay)")
 	public void afterThrowing()
 	{
 		logger.info("Release brokenJedis after Throwing Exception!");

@@ -8,6 +8,8 @@
     <result column="camps_desc" property="campsDesc" jdbcType="VARCHAR" />
     <result column="camps_images" property="campsImages" jdbcType="VARCHAR" />
     <result column="camps_locale" property="campsLocale" jdbcType="VARCHAR" />
+    <result column="camps_locale_id" property="campsLocaleId" jdbcType="VARCHAR" />
+    <result column="camps_subject_id" property="campsSubjectId" jdbcType="VARCHAR" />
     <result column="oriented_people" property="orientedPeople" jdbcType="VARCHAR" />
     <result column="feature" property="feature" jdbcType="VARCHAR" />
     <result column="service_support" property="serviceSupport" jdbcType="VARCHAR" />
@@ -24,7 +26,7 @@
     <result column="deadline_date" property="deadlineDate" jdbcType="DATE" />
     <result column="departure_date" property="departureDate" jdbcType="DATE" />
     <result column="start_date" property="startDate" jdbcType="DATE" />
-    <result column="duration_time" property="durationTime" jdbcType="TIMESTAMP" />
+    <result column="duration_time" property="durationTime" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -32,13 +34,73 @@
     camps_id, camps_name, camps_title, camps_desc, camps_images, camps_locale, oriented_people, 
     feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
     camps_hotel_desc, camps_hotel_photos, fee_desc, status, total_price, done_count, 
-    deadline_date, departure_date, start_date, duration_time, create_time, update_time
+    deadline_date, departure_date, start_date, duration_time, create_time, update_time,camps_locale_id,camps_subject_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from tb_camps
     where camps_id = #{campsId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+   <where>
+     <if test="subjectCategoryId != null" >
+        and camps_subject_id =#{subjectCategoryId}
+      </if>
+     <if test="LocaleCategoryId != null" >
+        and camps_locale_id =#{LocaleCategoryId}
+      </if>
+     <if test="departureMonth != null" >
+        and month(departure_date) = #{departureMonth}
+      </if>
+     <if test="minPrice != null" >
+        and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}
+      </if>
+     <if test="minDays != null" >
+        and duration_time &gt;= #{minDays} and duration_time &lt;=#{maxDays}
+      </if>
+     <if test="searchContent != null" >
+        and (
+        	camps_name LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
+        	camps_title LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
+        	camps_locale LIKE CONCAT('%',CONCAT(#{searchContent},'%'))
+        	)
+      </if>
+    </where>
+  </select>
+  <select id="selectCountByConditions" resultType="Integer" parameterType="java.util.HashMap" >
+    select  count(*)
+    from tb_camps
+   <where>
+     <if test="subjectCategoryId != null" >
+        and camps_subject_id =#{subjectCategoryId}
+      </if>
+     <if test="LocaleCategoryId != null" >
+        and camps_locale_id =#{LocaleCategoryId}
+      </if>
+     <if test="departureMonth != null" >
+        and month(departure_date) = #{departureMonth}
+      </if>
+     <if test="minPrice != null" >
+        and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}
+      </if>
+     <if test="minDays != null" >
+        and duration_time &gt;= #{minDays} and duration_time &lt;=#{maxDays}
+      </if>
+    </where>
+  </select>
+  <select id="selectByCampsIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+    where camps_id in 
+       <foreach item="item" index="index" collection="list" 
+                open="(" separator="," close=")">
+               #{item}
+       </foreach>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_camps
@@ -53,7 +115,7 @@
       fee_desc, status, total_price, 
       done_count, deadline_date, departure_date, 
       start_date, duration_time, create_time, 
-      update_time)
+      update_time,camps_locale_id,camps_subject_id)
     values (#{campsId,jdbcType=VARCHAR}, #{campsName,jdbcType=VARCHAR}, #{campsTitle,jdbcType=VARCHAR}, 
       #{campsDesc,jdbcType=VARCHAR}, #{campsImages,jdbcType=VARCHAR}, #{campsLocale,jdbcType=VARCHAR}, 
       #{orientedPeople,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{serviceSupport,jdbcType=VARCHAR}, 
@@ -61,8 +123,8 @@
       #{campsFoodsPhotos,jdbcType=VARCHAR}, #{campsHotelDesc,jdbcType=VARCHAR}, #{campsHotelPhotos,jdbcType=VARCHAR}, 
       #{feeDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
       #{doneCount,jdbcType=DECIMAL}, #{deadlineDate,jdbcType=DATE}, #{departureDate,jdbcType=DATE}, 
-      #{startDate,jdbcType=DATE}, #{durationTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{startDate,jdbcType=DATE}, #{durationTime,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{campsLocaleId,jdbcType=VARCHAR}, #{campsSubjectId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsVo" >
     insert into tb_camps
@@ -142,6 +204,12 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="campsLocaleId != null" >
+        camps_locale_id,
+      </if>
+      <if test="campsSubjectId != null" >
+        camps_subject_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="campsId != null" >
@@ -211,13 +279,19 @@
         #{startDate,jdbcType=DATE},
       </if>
       <if test="durationTime != null" >
-        #{durationTime,jdbcType=TIMESTAMP},
+        #{durationTime,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsLocaleId != null" >
+        #{campsLocaleId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsSubjectId != null" >
+        #{campsSubjectId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -288,13 +362,19 @@
         start_date = #{startDate,jdbcType=DATE},
       </if>
       <if test="durationTime != null" >
-        duration_time = #{durationTime,jdbcType=TIMESTAMP},
+        duration_time = #{durationTime,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsLocaleId != null" >
+        camps_locale_id = #{campsLocaleId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsSubjectId != null" >
+        camps_subject_id = #{campsSubjectId,jdbcType=VARCHAR},
       </if>
     </set>
     where camps_id = #{campsId,jdbcType=VARCHAR}
@@ -306,6 +386,8 @@
       camps_desc = #{campsDesc,jdbcType=VARCHAR},
       camps_images = #{campsImages,jdbcType=VARCHAR},
       camps_locale = #{campsLocale,jdbcType=VARCHAR},
+      camps_locale_id = #{campsLocaleId,jdbcType=VARCHAR},
+      camps_subject_id = #{campsSubjectId,jdbcType=VARCHAR},
       oriented_people = #{orientedPeople,jdbcType=VARCHAR},
       feature = #{feature,jdbcType=VARCHAR},
       service_support = #{serviceSupport,jdbcType=VARCHAR},
@@ -322,7 +404,7 @@
       deadline_date = #{deadlineDate,jdbcType=DATE},
       departure_date = #{departureDate,jdbcType=DATE},
       start_date = #{startDate,jdbcType=DATE},
-      duration_time = #{durationTime,jdbcType=TIMESTAMP},
+      duration_time = #{durationTime,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where camps_id = #{campsId,jdbcType=VARCHAR}

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.youxue.core.dao.CatetoryDao" >
-  <resultMap id="BaseResultMap" type="com.youxue.core.vo.CatetoryVo" >
+<mapper namespace="com.youxue.core.dao.CategoryDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.CategoryVo" >
     <id column="category_id" property="categoryId" jdbcType="VARCHAR" />
     <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
     <result column="category_url" property="categoryUrl" jdbcType="VARCHAR" />
     <result column="category_type" property="categoryType" jdbcType="INTEGER" />
+    <result column="category_weight" property="categoryWeight" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     category_id, category_name, category_url, category_type
@@ -16,15 +17,31 @@
     from tb_category
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByCategoryType" resultMap="BaseResultMap" parameterType="Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_category
+    where category_type = #{categoryType,jdbcType=INTEGER} order by category_weight desc
+  </select>
+  <select id="getCampsIdByType" resultType="String" parameterType="Integer">
+    select r.camps_id
+    from tb_category c,tb_camps_categroy_relation r
+    where c.category_id = r.category_id and c.category_type=#{categoryType}
+  </select>
+  <select id="getCampsCountByType" resultType="Integer" parameterType="Integer">
+    select count(*)
+    from tb_category c,tb_camps_categroy_relation r
+    where c.category_id = r.category_id and c.category_type=#{categoryType}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_category
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.CatetoryVo" >
     insert into tb_category (category_id, category_name, category_url, 
-      category_type)
+      category_type,category_weight)
     values (#{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryUrl,jdbcType=VARCHAR}, 
-      #{categoryType,jdbcType=INTEGER})
+      #{categoryType,jdbcType=INTEGER}, #{categoryWeight,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CatetoryVo" >
     insert into tb_category
@@ -41,6 +58,9 @@
       <if test="categoryType != null" >
         category_type,
       </if>
+      <if test="categoryWeight != null" >
+        category_weight,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="categoryId != null" >
@@ -54,6 +74,9 @@
       </if>
       <if test="categoryType != null" >
         #{categoryType,jdbcType=INTEGER},
+      </if>
+      <if test="categoryWeight != null" >
+        #{categoryWeight,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -69,6 +92,9 @@
       <if test="categoryType != null" >
         category_type = #{categoryType,jdbcType=INTEGER},
       </if>
+      <if test="categoryWeight != null" >
+        category_weight = #{categoryWeight,jdbcType=INTEGER},
+      </if>
     </set>
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </update>
@@ -77,6 +103,7 @@
     set category_name = #{categoryName,jdbcType=VARCHAR},
       category_url = #{categoryUrl,jdbcType=VARCHAR},
       category_type = #{categoryType,jdbcType=INTEGER}
+      category_weight = #{categoryWeight,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </update>
 </mapper>

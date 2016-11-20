@@ -18,9 +18,10 @@ import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsCategoryRelationDao;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
-import com.youxue.core.vo.CampsCategoryRelationVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.pc.shopCart.dto.AddShopCartDetailDto;
 
@@ -36,6 +37,8 @@ public class ShopCartController extends BaseController
 
 	@Autowired
 	CampsDao campsDao;
+	@Autowired
+	CatetoryDao catetoryDao;
 	@Autowired
 	CampsCategoryRelationDao campsCategoryRelationDao;
 	@Autowired
@@ -77,7 +80,8 @@ public class ShopCartController extends BaseController
 		dto.setCamps(camps);
 		dto.setCount(currentCount);
 
-		List<CampsCategoryRelationVo> relations = campsCategoryRelationDao.selectByType();
+		List<CampsVo> hotCampsList = catetoryDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 3);
+		dto.setHotCamps(hotCampsList);
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 	}
 

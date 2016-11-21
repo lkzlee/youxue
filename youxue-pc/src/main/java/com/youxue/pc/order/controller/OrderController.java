@@ -1,0 +1,73 @@
+package com.youxue.pc.order.controller;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.lkzlee.pay.exceptions.BusinessException;
+import com.lkzlee.pay.service.PayService;
+import com.youxue.core.common.BaseController;
+import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.util.JsonUtil;
+import com.youxue.pc.order.dto.AddTradeOrderDto;
+
+/**
+ * 订单相关处理
+ * @author lkzlee
+ *
+ */
+public class OrderController extends BaseController
+{
+	protected final static Log LOG = LogFactory.getLog(OrderController.class);
+	@Autowired
+	JedisProxy jedisProxy;
+	@Resource(name = "weiXinOrderPayService")
+	private PayService weiXinPayService;
+	@Resource(name = "aliPayOrderPayService")
+	private PayService aliPayService;
+
+	/***
+	 * 下单接口
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(path = "/addTradeOrder.html", method = RequestMethod.POST)
+	@ResponseBody
+	public String addTrade(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody AddTradeOrderDto orderData)
+	{
+		try
+		{
+			checkIfParamValid(orderData);
+
+			return "success";
+		}
+		catch (BusinessException e)
+		{
+			LOG.error("下单参数校验及流程处理，orderData=" + orderData + ",msg:" + e.getMessage());
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc(e.getMessage()));
+		}
+		catch (Exception e)
+		{
+			LOG.error("下单处理流程异常，orderData=" + orderData + ",msg:" + e.getMessage(), e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后！"));
+		}
+	}
+
+	private void checkIfParamValid(AddTradeOrderDto orderData)
+	{
+		if (orderData == null)
+			throw new BusinessException("参数非法");
+
+	}
+}

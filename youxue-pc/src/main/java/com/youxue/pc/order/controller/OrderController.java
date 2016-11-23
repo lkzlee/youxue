@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,12 @@ public class OrderController extends BaseController
 
 	private void checkIfParamValid(AddTradeOrderDto orderData)
 	{
-		if (orderData == null)
+		if (orderData == null || orderData.getPayType() == null)
 			throw new BusinessException("参数非法");
-
+		if (ArrayUtils.isEmpty(orderData.getOrderList()))
+			throw new BusinessException("无任何订单信息");
+		/***
+		 * 还需继续完善
+		 */
 	}
 }

@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.exceptions.BusinessException;
-import com.lkzlee.pay.service.PayService;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.util.NetUtil;
 import com.youxue.pc.order.dto.AddTradeOrderDto;
+import com.youxue.pc.order.service.AddOrderPayService;
 
 /**
  * 订单相关处理
@@ -31,10 +32,8 @@ public class OrderController extends BaseController
 	protected final static Log LOG = LogFactory.getLog(OrderController.class);
 	@Autowired
 	JedisProxy jedisProxy;
-	@Resource(name = "weiXinOrderPayService")
-	private PayService weiXinPayService;
-	@Resource(name = "aliPayOrderPayService")
-	private PayService aliPayService;
+	@Resource
+	private AddOrderPayService addOrderPayService;
 
 	/***
 	 * 下单接口
@@ -51,7 +50,10 @@ public class OrderController extends BaseController
 		{
 			checkIfParamValid(orderData);
 
-			return "success";
+			String ip = NetUtil.getCurrentLoginUserIp(request);
+			String accountId = getCurrentLoginUserName(request);
+			BaseResponseDto responseDto = addOrderPayService.addTradeOrderService(orderData, ip, accountId);
+			return JsonUtil.serialize(responseDto);
 		}
 		catch (BusinessException e)
 		{

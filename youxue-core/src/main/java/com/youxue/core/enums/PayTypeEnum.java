@@ -1,9 +1,13 @@
 package com.youxue.core.enums;
 
-public enum CategoryTypeEnum
+public enum PayTypeEnum
 {
-	HOT(1, "热门分类"), PRICE(2, "特价分类"), LOCALE(3, "目的地国家分类"), TODO(4, "活动类型分类"), SUBJECT(5, "主题分类");
-	private CategoryTypeEnum(int value, String desc)
+	UNKNOW_PAY(0, "未定义"), ALIPAY(1, "支付宝支付"), WEIXIN_APY(2, "微信支付");
+
+	private int value;
+	private String desc;
+
+	private PayTypeEnum(int value, String desc)
 	{
 		this.setValue(value);
 		this.setDesc(desc);
@@ -29,6 +33,4 @@ public enum CategoryTypeEnum
 		this.desc = desc;
 	}
 
-	private int value;
-	private String desc;
 }

@@ -1,6 +1,9 @@
 package com.youxue.core.dao;
 
+import java.util.Map;
+
 import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.Page;
 
 public interface CampsDao
 {
@@ -15,4 +18,6 @@ public interface CampsDao
 	int updateByPrimaryKeySelective(CampsVo record);
 
 	int updateByPrimaryKey(CampsVo record);
+
+	Page<CampsVo> selectByConditions(Map<String, Object> queryConditions, int pageNo, int pageSize);
 }

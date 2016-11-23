@@ -16,7 +16,8 @@ public class CampsVo
 	private String campsImages;
 
 	private String campsLocale;
-
+	private String campsLocaleId;//目的地分类id
+	private String campsSubjectId;//主题类型id
 	private String orientedPeople;
 
 	private String feature;
@@ -49,7 +50,7 @@ public class CampsVo
 
 	private Date startDate;
 
-	private Date durationTime;
+	private Integer durationTime;//持续天数
 
 	private Date createTime;
 
@@ -275,16 +276,6 @@ public class CampsVo
 		this.startDate = startDate;
 	}
 
-	public Date getDurationTime()
-	{
-		return durationTime;
-	}
-
-	public void setDurationTime(Date durationTime)
-	{
-		this.durationTime = durationTime;
-	}
-
 	public Date getCreateTime()
 	{
 		return createTime;
@@ -303,5 +294,35 @@ public class CampsVo
 	public void setUpdateTime(Date updateTime)
 	{
 		this.updateTime = updateTime;
+	}
+
+	public String getCampsLocaleId()
+	{
+		return campsLocaleId;
+	}
+
+	public void setCampsLocaleId(String campsLocaleId)
+	{
+		this.campsLocaleId = campsLocaleId;
+	}
+
+	public String getCampsSubjectId()
+	{
+		return campsSubjectId;
+	}
+
+	public void setCampsSubjectId(String campsSubjectId)
+	{
+		this.campsSubjectId = campsSubjectId;
+	}
+
+	public Integer getDurationTime()
+	{
+		return durationTime;
+	}
+
+	public void setDurationTime(Integer durationTime)
+	{
+		this.durationTime = durationTime;
 	}
 }

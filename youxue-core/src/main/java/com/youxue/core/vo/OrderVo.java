@@ -1,176 +1,217 @@
 package com.youxue.core.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class OrderVo {
-    private String orderId;
+public class OrderVo implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private String accountId;
+	private String orderId;
 
-    private String logicOrderId;
+	private String accountId;
 
-    private String codeId;
+	private String logicOrderId;
 
-    private Integer status;
+	private String codeId;
 
-    private Date creatTime;
+	private Integer status;
 
-    private Date updateTime;
+	private Date creatTime;
 
-    private String campsId;
+	private Date updateTime;
 
-    private BigDecimal totalPrice;
+	private String campsId;
 
-    private BigDecimal codePrice;
+	private BigDecimal totalPrice;
 
-    private Integer codeStatus;
+	private BigDecimal codePrice;
 
-    private BigDecimal payPrice;
+	private Integer codeStatus;
 
-    private Integer totalCount;
+	private BigDecimal payPrice;
 
-    private String contactName;
+	private Integer totalCount;
 
-    private String contactEmail;
+	private String contactName;
 
-    private String contactPhone;
+	private String contactEmail;
 
-    private String orderIp;
+	private String contactPhone;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private String orderIp;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
-    }
+	public String getOrderId()
+	{
+		return orderId;
+	}
 
-    public String getAccountId() {
-        return accountId;
-    }
+	public void setOrderId(String orderId)
+	{
+		this.orderId = orderId == null ? null : orderId.trim();
+	}
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId == null ? null : accountId.trim();
-    }
+	public String getAccountId()
+	{
+		return accountId;
+	}
 
-    public String getLogicOrderId() {
-        return logicOrderId;
-    }
+	public void setAccountId(String accountId)
+	{
+		this.accountId = accountId == null ? null : accountId.trim();
+	}
 
-    public void setLogicOrderId(String logicOrderId) {
-        this.logicOrderId = logicOrderId == null ? null : logicOrderId.trim();
-    }
+	public String getLogicOrderId()
+	{
+		return logicOrderId;
+	}
 
-    public String getCodeId() {
-        return codeId;
-    }
+	public void setLogicOrderId(String logicOrderId)
+	{
+		this.logicOrderId = logicOrderId == null ? null : logicOrderId.trim();
+	}
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId == null ? null : codeId.trim();
-    }
+	public String getCodeId()
+	{
+		return codeId;
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public void setCodeId(String codeId)
+	{
+		this.codeId = codeId == null ? null : codeId.trim();
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public Integer getStatus()
+	{
+		return status;
+	}
 
-    public Date getCreatTime() {
-        return creatTime;
-    }
+	public void setStatus(Integer status)
+	{
+		this.status = status;
+	}
 
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
-    }
+	public Date getCreatTime()
+	{
+		return creatTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreatTime(Date creatTime)
+	{
+		this.creatTime = creatTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public Date getUpdateTime()
+	{
+		return updateTime;
+	}
 
-    public String getCampsId() {
-        return campsId;
-    }
+	public void setUpdateTime(Date updateTime)
+	{
+		this.updateTime = updateTime;
+	}
 
-    public void setCampsId(String campsId) {
-        this.campsId = campsId == null ? null : campsId.trim();
-    }
+	public String getCampsId()
+	{
+		return campsId;
+	}
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
+	public void setCampsId(String campsId)
+	{
+		this.campsId = campsId == null ? null : campsId.trim();
+	}
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+	public BigDecimal getTotalPrice()
+	{
+		return totalPrice;
+	}
 
-    public BigDecimal getCodePrice() {
-        return codePrice;
-    }
+	public void setTotalPrice(BigDecimal totalPrice)
+	{
+		this.totalPrice = totalPrice;
+	}
 
-    public void setCodePrice(BigDecimal codePrice) {
-        this.codePrice = codePrice;
-    }
+	public BigDecimal getCodePrice()
+	{
+		return codePrice;
+	}
 
-    public Integer getCodeStatus() {
-        return codeStatus;
-    }
+	public void setCodePrice(BigDecimal codePrice)
+	{
+		this.codePrice = codePrice;
+	}
 
-    public void setCodeStatus(Integer codeStatus) {
-        this.codeStatus = codeStatus;
-    }
+	public Integer getCodeStatus()
+	{
+		return codeStatus;
+	}
 
-    public BigDecimal getPayPrice() {
-        return payPrice;
-    }
+	public void setCodeStatus(Integer codeStatus)
+	{
+		this.codeStatus = codeStatus;
+	}
 
-    public void setPayPrice(BigDecimal payPrice) {
-        this.payPrice = payPrice;
-    }
+	public BigDecimal getPayPrice()
+	{
+		return payPrice;
+	}
 
-    public Integer getTotalCount() {
-        return totalCount;
-    }
+	public void setPayPrice(BigDecimal payPrice)
+	{
+		this.payPrice = payPrice;
+	}
 
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
-    }
+	public Integer getTotalCount()
+	{
+		return totalCount;
+	}
 
-    public String getContactName() {
-        return contactName;
-    }
+	public void setTotalCount(Integer totalCount)
+	{
+		this.totalCount = totalCount;
+	}
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName == null ? null : contactName.trim();
-    }
+	public String getContactName()
+	{
+		return contactName;
+	}
 
-    public String getContactEmail() {
-        return contactEmail;
-    }
+	public void setContactName(String contactName)
+	{
+		this.contactName = contactName == null ? null : contactName.trim();
+	}
 
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail == null ? null : contactEmail.trim();
-    }
+	public String getContactEmail()
+	{
+		return contactEmail;
+	}
 
-    public String getContactPhone() {
-        return contactPhone;
-    }
+	public void setContactEmail(String contactEmail)
+	{
+		this.contactEmail = contactEmail == null ? null : contactEmail.trim();
+	}
 
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone == null ? null : contactPhone.trim();
-    }
+	public String getContactPhone()
+	{
+		return contactPhone;
+	}
 
-    public String getOrderIp() {
-        return orderIp;
-    }
+	public void setContactPhone(String contactPhone)
+	{
+		this.contactPhone = contactPhone == null ? null : contactPhone.trim();
+	}
 
-    public void setOrderIp(String orderIp) {
-        this.orderIp = orderIp == null ? null : orderIp.trim();
-    }
+	public String getOrderIp()
+	{
+		return orderIp;
+	}
+
+	public void setOrderIp(String orderIp)
+	{
+		this.orderIp = orderIp == null ? null : orderIp.trim();
+	}
 }

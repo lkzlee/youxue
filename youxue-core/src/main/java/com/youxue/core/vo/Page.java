@@ -12,7 +12,6 @@ import java.util.List;
  *
  * 2016年11月7日
  */
-@Deprecated
 public class Page<T> implements Serializable
 {
 	/**

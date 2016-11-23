@@ -1,53 +1,71 @@
 package com.youxue.core.vo;
 
-public class OrderPersonVo {
-    private String orderId;
+import java.io.Serializable;
 
-    private String personName;
+public class OrderPersonVo implements Serializable
+{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private String personPhone;
+	private String orderId;
 
-    private String personIdno;
+	private String personName;
 
-    private String personAddress;
+	private String personPhone;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private String personIdno;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
-    }
+	private String personAddress;
 
-    public String getPersonName() {
-        return personName;
-    }
+	public String getOrderId()
+	{
+		return orderId;
+	}
 
-    public void setPersonName(String personName) {
-        this.personName = personName == null ? null : personName.trim();
-    }
+	public void setOrderId(String orderId)
+	{
+		this.orderId = orderId == null ? null : orderId.trim();
+	}
 
-    public String getPersonPhone() {
-        return personPhone;
-    }
+	public String getPersonName()
+	{
+		return personName;
+	}
 
-    public void setPersonPhone(String personPhone) {
-        this.personPhone = personPhone == null ? null : personPhone.trim();
-    }
+	public void setPersonName(String personName)
+	{
+		this.personName = personName == null ? null : personName.trim();
+	}
 
-    public String getPersonIdno() {
-        return personIdno;
-    }
+	public String getPersonPhone()
+	{
+		return personPhone;
+	}
 
-    public void setPersonIdno(String personIdno) {
-        this.personIdno = personIdno == null ? null : personIdno.trim();
-    }
+	public void setPersonPhone(String personPhone)
+	{
+		this.personPhone = personPhone == null ? null : personPhone.trim();
+	}
 
-    public String getPersonAddress() {
-        return personAddress;
-    }
+	public String getPersonIdno()
+	{
+		return personIdno;
+	}
 
-    public void setPersonAddress(String personAddress) {
-        this.personAddress = personAddress == null ? null : personAddress.trim();
-    }
+	public void setPersonIdno(String personIdno)
+	{
+		this.personIdno = personIdno == null ? null : personIdno.trim();
+	}
+
+	public String getPersonAddress()
+	{
+		return personAddress;
+	}
+
+	public void setPersonAddress(String personAddress)
+	{
+		this.personAddress = personAddress == null ? null : personAddress.trim();
+	}
 }

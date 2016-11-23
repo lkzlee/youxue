@@ -1,17 +1,26 @@
 package com.youxue.core.dao;
 
-import com.youxue.core.vo.CatetoryVo;
+import java.util.List;
 
-public interface CatetoryDao {
-    int deleteByPrimaryKey(String categoryId);
+import com.youxue.core.enums.CategoryTypeEnum;
+import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.CategoryVo;
 
-    int insert(CatetoryVo record);
+public interface CatetoryDao
+{
+	int deleteByPrimaryKey(String categoryId);
 
-    int insertSelective(CatetoryVo record);
+	int insert(CategoryVo record);
 
-    CatetoryVo selectByPrimaryKey(String categoryId);
+	int insertSelective(CategoryVo record);
 
-    int updateByPrimaryKeySelective(CatetoryVo record);
+	CategoryVo selectByPrimaryKey(String categoryId);
 
-    int updateByPrimaryKey(CatetoryVo record);
+	int updateByPrimaryKeySelective(CategoryVo record);
+
+	int updateByPrimaryKey(CategoryVo record);
+
+	List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize);
+
+	List<CategoryVo> selectByCategoryType(Integer categoryType);
 }

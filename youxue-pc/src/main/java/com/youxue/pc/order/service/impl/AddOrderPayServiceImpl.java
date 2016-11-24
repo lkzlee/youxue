@@ -27,12 +27,26 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 	@Resource
 	private OrderDao orderDao;
 
+	/***
+	 * 下单总体流程处理
+	 */
 	@Override
 	public BaseResponseDto addTradeOrderService(AddTradeOrderDto orderData, String ip, String accountId)
 	{
+		/***
+		 * 插入数据库订单数据
+		 */
 		String logicOrderId = orderService.addOrder(orderData, ip, accountId);
+
 		PayService payService = getPayService(orderData.getPayType());
+
+		/**
+		 * 向第三方下单
+		 */
 		//		Object param = payService.addThirdPayOrderService();
+		/***
+		 * 解析构造下单结果，并返回
+		 */
 		return null;
 	}
 

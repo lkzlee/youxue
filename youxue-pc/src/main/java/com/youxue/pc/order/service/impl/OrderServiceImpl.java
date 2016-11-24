@@ -1,5 +1,6 @@
 package com.youxue.pc.order.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,55 +36,72 @@ public class OrderServiceImpl implements OrderService
 	@Resource
 	private CommonDao commonDao;
 
+	/***
+	 * 下单插入出行人，订单，逻辑订单等信息
+	 */
 	@Override
 	@Transactional
 	public String addOrder(AddTradeOrderDto orderData, String ip, String accountId)
 	{
 		LogicOrderVo logicOrderVo = buildLogicOrderInfo(orderData, ip, accountId);
-		List<OrderVo> orderList = buildOrderListInfo(orderData, ip, accountId, logicOrderVo.getLogicOrderId());
-		List<OrderPersonVo> personList = buildOrderPersonListInfo(orderData, orderList);
+		List<OrderVo> orderList = Lists.newArrayList();
+		List<OrderPersonVo> personList = Lists.newArrayList();
+		buildOrderListInfo(orderData, ip, accountId, logicOrderVo.getLogicOrderId(), orderList, personList);
 		logicOrderDao.insertSelective(logicOrderVo);
 		orderDao.batchInsertOrder(orderList);
 		orderPersonDao.batchInsertOrderPerson(personList);
 		return logicOrderVo.getLogicOrderId();
 	}
 
-	private List<OrderPersonVo> buildOrderPersonListInfo(AddTradeOrderDto orderData, List<OrderVo> orderList)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private List<OrderVo> buildOrderListInfo(AddTradeOrderDto orderData, String ip, String accountId,
-			String logicOrderId)
+			String logicOrderId, List<OrderVo> orderList, List<OrderPersonVo> personList)
 	{
 		AddTradeItemDto orders[] = orderData.getOrderList();
 		if (ArrayUtils.isEmpty(orders))
 			throw new BusinessException("订单数据为空，请检查");
-		List<OrderVo> orderList = Lists.newArrayList();
 		for (AddTradeItemDto ot : orders)
 		{
 			OrderVo orderVo = new OrderVo();
-			//			orderVo.setAccountId(accountId);
-			//			orderVo.setCampsId(ot.getCampsId());
-			//			orderVo.setCodeId(codeId);
-			//			orderVo.setCodePrice(codePrice);
-			//			orderVo.setCodeStatus(codeStatus);
-			//			orderVo.setContactEmail(contactEmail);
-			//			orderVo.setContactName(contactName);
-			//			orderVo.setContactPhone(contactPhone);
-			//			orderVo.setCreatTime(DateUtil.getCurrentTimestamp());
-			//			orderVo.setLogicOrderId(logicOrderId);
-			//			String orderId = commonDao.getIdByPrefix(CommonConstant.ORDER_ID_PREFIX);
-			//			orderVo.setOrderId(orderId);
-			//			orderVo.setOrderIp(ip);
-			//			orderVo.setPayPrice(payPrice);
-			//			orderVo.setStatus(OrderVo.UNPAY);
-			//			orderVo.setTotalCount(totalCount);
-			//			orderVo.setTotalPrice(totalPrice);
+			String orderId = setOrderItemInfo(ip, accountId, logicOrderId, ot, orderVo);
+			OrderPersonVo[] outPersonList = ot.getOutPersonList();
+			if (ArrayUtils.isEmpty(outPersonList))
+				throw new BusinessException("订单对应的出行人数据为空，请检查");
+			for (OrderPersonVo po : outPersonList)
+			{
+				OrderPersonVo personVo = new OrderPersonVo();
+				personVo.setOrderId(orderId);
+				personVo.setPersonAddress(po.getPersonAddress());
+				personVo.setPersonIdno(po.getPersonIdno());
+				personVo.setPersonName(po.getPersonName());
+				personVo.setPersonPhone(po.getPersonPhone());
+				personList.add(personVo);
+			}
 			orderList.add(orderVo);
 		}
 		return orderList;
+	}
+
+	private String setOrderItemInfo(String ip, String accountId, String logicOrderId, AddTradeItemDto ot,
+			OrderVo orderVo)
+	{
+		orderVo.setAccountId(accountId);
+		orderVo.setCampsId(ot.getCampsId());
+		orderVo.setCodeId(ot.getCodeId());
+		orderVo.setCodePrice(ot.getCodePrice());
+		orderVo.setCodeStatus(OrderVo.UNPAY);
+		orderVo.setContactEmail(ot.getContactEmail());
+		orderVo.setContactName(ot.getContactName());
+		orderVo.setContactPhone(ot.getContactPhone());
+		orderVo.setCreatTime(DateUtil.getCurrentTimestamp());
+		orderVo.setLogicOrderId(logicOrderId);
+		String orderId = commonDao.getIdByPrefix(CommonConstant.ORDER_ID_PREFIX);
+		orderVo.setOrderId(orderId);
+		orderVo.setOrderIp(ip);
+		orderVo.setPayPrice(ot.getPayPrice());
+		orderVo.setStatus(OrderVo.UNPAY);
+		orderVo.setTotalCount(ot.getTotalCount());
+		orderVo.setTotalPrice(ot.getTotalPrice());
+		return orderId;
 	}
 
 	private LogicOrderVo buildLogicOrderInfo(AddTradeOrderDto orderData, String ip, String accountId)
@@ -96,6 +114,15 @@ public class OrderServiceImpl implements OrderService
 		logicOrderVo.setPayStatus(LogicOrderVo.UNPAY);
 		logicOrderVo.setAccountId(accountId);
 		logicOrderVo.setPayType(orderData.getPayType());
+		BigDecimal totalMoney = BigDecimal.ZERO;
+		BigDecimal totalPayMoney = BigDecimal.ZERO;
+		for (AddTradeItemDto orderItem : orderData.getOrderList())
+		{
+			totalMoney = totalMoney.add(orderItem.getTotalPrice());
+			totalPayMoney = totalPayMoney.add(orderItem.getPayPrice());
+		}
+		logicOrderVo.setTotalMoney(totalMoney);
+		logicOrderVo.setTotalPayMoney(totalPayMoney);
 		return logicOrderVo;
 	}
 }

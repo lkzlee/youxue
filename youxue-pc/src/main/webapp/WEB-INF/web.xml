@@ -55,12 +55,12 @@
 		</jsp-property-group>
 	</jsp-config>
 
-	<!-- Spring 刷新Introspector防止内存泄露 -->
+	<!-- Spring 刷新Introspector防止内存泄露 
 	<listener>
 		<listener-class>
 			org.springframework.web.util.IntrospectorCleanupListener
 		</listener-class>
-	</listener>
+	</listener>-->
 
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>

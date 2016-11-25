@@ -46,7 +46,7 @@ public class ShopCartController extends BaseController
 	 * @param response
 	 * 加入购物车页面
 	 */
-	@RequestMapping("/addCartItemDetail.html")
+	@RequestMapping("/addCartItemDetail.do")
 	@ResponseBody
 	public String addCartItemDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
 	{
@@ -87,7 +87,7 @@ public class ShopCartController extends BaseController
 	 * @param response
 	 * num为1表示添加购物车，num为-1表示减少购物车中个数
 	 */
-	@RequestMapping("/addCartItem.html")
+	@RequestMapping("/addCartItem.do")
 	@ResponseBody
 	public String addCartItem(HttpServletRequest request, HttpServletResponse response, String campusId, Integer num)
 	{
@@ -121,7 +121,7 @@ public class ShopCartController extends BaseController
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 	}
 
-	@RequestMapping("/deleteCartItem.html")
+	@RequestMapping("/deleteCartItem.do")
 	@ResponseBody
 	public String deleteCartItem(HttpServletRequest request, HttpServletResponse response, String campusId)
 	{

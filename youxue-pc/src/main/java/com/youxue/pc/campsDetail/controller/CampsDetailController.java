@@ -44,7 +44,7 @@ public class CampsDetailController extends BaseController
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/campsDetail.html")
+	@RequestMapping("/campsDetail.do")
 	@ResponseBody
 	public String campsDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
 	{

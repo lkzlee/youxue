@@ -46,7 +46,7 @@ public class IndexController extends BaseController
 	 * @param response
 	 * 查询国家列表、要做什么列表
 	 */
-	@RequestMapping("/getCategroyList.html")
+	@RequestMapping("/getCategroyList.do")
 	@ResponseBody
 	public String getCategroyList(HttpServletRequest request, HttpServletResponse response, Integer categoryType)
 	{
@@ -66,7 +66,7 @@ public class IndexController extends BaseController
 	 * @param response
 	 * @return 首页信息列表
 	 */
-	@RequestMapping("/getIndexCampsDetail.html")
+	@RequestMapping("/getIndexCampsDetail.do")
 	@ResponseBody
 	public String getIndexCampsDetail(HttpServletRequest request, HttpServletResponse response)
 	{

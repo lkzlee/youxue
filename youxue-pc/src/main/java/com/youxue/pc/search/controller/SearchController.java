@@ -48,7 +48,7 @@ public class SearchController extends BaseController
 	 * @param response
 	 * 根据查询条件获取对应的营地列表
 	 */
-	@RequestMapping("/getCampsList.html")
+	@RequestMapping("/getCampsList.do")
 	@ResponseBody
 	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String LocaleCategoryId,
 			String subjectCategoryId, String timeDuration, String priceRange, String departureTime, Integer pageNo,

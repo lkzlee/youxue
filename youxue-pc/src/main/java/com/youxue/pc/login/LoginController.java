@@ -60,7 +60,7 @@ public class LoginController extends BaseController
 	 * @param imgCode 图片验证码
 	 * @return 登录接口
 	 */
-	@RequestMapping("/login.html")
+	@RequestMapping("/login.do")
 	@ResponseBody
 	public String login(HttpServletRequest request, HttpServletResponse response, String mobile, String phoneCode,
 			String imgCode)
@@ -111,7 +111,7 @@ public class LoginController extends BaseController
 	 * @param response
 	 * 获取手机验证码
 	 */
-	@RequestMapping("/mobileCode.html")
+	@RequestMapping("/mobileCode.do")
 	@ResponseBody
 	public String mobileCode(HttpServletRequest request, HttpServletResponse response, String mobile)
 	{
@@ -127,7 +127,7 @@ public class LoginController extends BaseController
 	 * @param response
 	 * 获取图片验证码
 	 */
-	@RequestMapping("/verifyCode.html")
+	@RequestMapping("/verifyCode.do")
 	public void verifyCode(HttpServletRequest request, HttpServletResponse response, String width, String height)
 	{
 		System.out.println("get verifyCode request");

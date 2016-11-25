@@ -44,7 +44,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>youxue-web</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 
 

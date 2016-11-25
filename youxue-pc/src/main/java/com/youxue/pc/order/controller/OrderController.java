@@ -41,7 +41,7 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(path = "/addTradeOrder.html", method = RequestMethod.POST)
+	@RequestMapping(path = "/addTradeOrder.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String addTrade(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody AddTradeOrderDto orderData)

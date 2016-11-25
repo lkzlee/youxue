@@ -46,7 +46,7 @@ public class UserCenterController extends BaseController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(path = "/uc/userinfo.html")
+	@RequestMapping(path = "/uc/userinfo.do")
 	@ResponseBody
 	public String userInfo(HttpServletRequest request, HttpServletResponse response)
 	{
@@ -72,7 +72,7 @@ public class UserCenterController extends BaseController
 	 * @param userPhotoUrl
 	 * @return
 	 */
-	@RequestMapping("/uc/updatePhoto.html")
+	@RequestMapping("/uc/updatePhoto.do")
 	@ResponseBody
 	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, String userPhotoUrl)
 	{
@@ -90,7 +90,7 @@ public class UserCenterController extends BaseController
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户头像更新成功"));
 	}
 
-	@RequestMapping("/uc/activeEmail.html")
+	@RequestMapping("/uc/activeEmail.do")
 	@ResponseBody
 	public String verifyActiveEmail(HttpServletRequest request, HttpServletResponse response, String email)
 	{
@@ -115,7 +115,7 @@ public class UserCenterController extends BaseController
 
 	}
 
-	@RequestMapping("/uc/emailInfo.html")
+	@RequestMapping("/uc/emailInfo.do")
 	@ResponseBody
 	public String emailInfo(HttpServletRequest request, HttpServletResponse response)
 	{
@@ -131,7 +131,7 @@ public class UserCenterController extends BaseController
 
 	}
 
-	@RequestMapping("/uc/verifyEmail.html")
+	@RequestMapping("/uc/verifyEmail.do")
 	@ResponseBody
 	public String emailInfo(HttpServletRequest request, HttpServletResponse response, String accountId, String key)
 	{

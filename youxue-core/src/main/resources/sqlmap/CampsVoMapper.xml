@@ -102,6 +102,13 @@
                #{item}
        </foreach>
   </select>
+  <select id="getCampusListByType" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select c.*
+    from tb_camps c, tb_category  t1 ,tb_camps_category_relation t2
+    where t1.category_id = t2.category_id and t1.category_type=#{categoryType,jdbcType=INTEGER} 
+    and c.camps_id = t2.camps_id order by c.camps_id desc
+    limit #{startIndex,jdbcType=INTEGER},#{size,jdbcType=INTEGER} 
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_camps
     where camps_id = #{campsId,jdbcType=VARCHAR}

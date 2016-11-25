@@ -23,15 +23,14 @@
     from tb_category
     where category_type = #{categoryType,jdbcType=INTEGER} order by category_weight desc
   </select>
-  <select id="getCampsIdByType" resultType="String" parameterType="Integer">
-    select r.camps_id
-    from tb_category c,tb_camps_categroy_relation r
-    where c.category_id = r.category_id and c.category_type=#{categoryType}
+  <select id="getCampsIdByType" resultType="String" parameterType="java.util.HashMap">
+    select t2.camps_id  from tb_category  t1 ,tb_camps_category_relation t2
+    where t1.category_id = t2.category_id and t1.category_type=#{categoryType,jdbcType=INTEGER} limit #{startIndex,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
   <select id="getCampsCountByType" resultType="Integer" parameterType="Integer">
     select count(*)
-    from tb_category c,tb_camps_categroy_relation r
-    where c.category_id = r.category_id and c.category_type=#{categoryType}
+    from tb_category  c,tb_camps_category_relation  r
+     where c.category_id = r.category_id and c.category_type=#{categoryType}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_category

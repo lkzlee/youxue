@@ -1,9 +1,9 @@
 package com.youxue.core.dao.impl;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
@@ -11,7 +11,6 @@ import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CategoryVo;
-import com.youxue.core.vo.Page;
 
 @Repository
 public class CatetoryDaoImpl extends BaseDao implements CatetoryDao
@@ -56,15 +55,19 @@ public class CatetoryDaoImpl extends BaseDao implements CatetoryDao
 	@Override
 	public List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize)
 	{
-		Page<String> page = new Page<String>(pageNo, pageSize);
-		Page<String> result = getPageList(page, "com.youxue.core.dao.CategoryDao.getCampsIdByType",
-				"com.youxue.core.dao.CategoryDao.getCampsCountByType", type.getValue(), sqlSessionTemplate);
-		if (CollectionUtils.isEmpty(result.getResult()))
+		int skipResults = (pageNo - 1) * pageSize;
+		if (pageNo < 1)
 		{
-			return Collections.emptyList();
+			skipResults = 0;
 		}
-
-		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectByCampsIds", result.getResult());
+		int maxResults = pageSize;
+		Map<String, Integer> conditions = new HashMap<>();
+		conditions.put("categoryType", type.getValue());
+		conditions.put("startIndex", skipResults);
+		conditions.put("size", maxResults);
+		List<String> result = sqlSessionTemplate.selectList("com.youxue.core.dao.CategoryDao.getCampsIdByType",
+				conditions);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectByCampsIds", result);
 	}
 
 	@Override

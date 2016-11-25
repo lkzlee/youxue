@@ -1,11 +1,14 @@
 package com.youxue.core.dao.impl;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.Page;
 
@@ -57,4 +60,19 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 				"com.youxue.core.dao.CampsDao.selectCountByConditions", queryConditions, sqlSessionTemplate);
 	}
 
+	@Override
+	public List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize)
+	{
+		int skipResults = (pageNo - 1) * pageSize;
+		if (pageNo < 1)
+		{
+			skipResults = 0;
+		}
+		int maxResults = pageSize;
+		Map<String, Integer> conditions = new HashMap<>();
+		conditions.put("categoryType", type.getValue());
+		conditions.put("startIndex", skipResults);
+		conditions.put("size", maxResults);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getCampusListByType", conditions);
+	}
 }

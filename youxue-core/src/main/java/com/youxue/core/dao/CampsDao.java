@@ -1,7 +1,9 @@
 package com.youxue.core.dao;
 
+import java.util.List;
 import java.util.Map;
 
+import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.Page;
 
@@ -20,4 +22,6 @@ public interface CampsDao
 	int updateByPrimaryKey(CampsVo record);
 
 	Page<CampsVo> selectByConditions(Map<String, Object> queryConditions, int pageNo, int pageSize);
+
+	List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize);
 }

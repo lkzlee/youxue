@@ -18,3 +18,4 @@ bin
 *.tar.gz
 */target/
 !.gitignore
+*/log/*

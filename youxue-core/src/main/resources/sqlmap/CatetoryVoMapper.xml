@@ -37,13 +37,13 @@
     delete from tb_category
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.youxue.core.vo.CatetoryVo" >
+  <insert id="insert" parameterType="com.youxue.core.vo.CategoryVo" >
     insert into tb_category (category_id, category_name, category_url, 
       category_type,category_weight)
     values (#{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryUrl,jdbcType=VARCHAR}, 
       #{categoryType,jdbcType=INTEGER}, #{categoryWeight,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.youxue.core.vo.CatetoryVo" >
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.CategoryVo" >
     insert into tb_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="categoryId != null" >
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.CatetoryVo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.CategoryVo" >
     update tb_category
     <set >
       <if test="categoryName != null" >
@@ -98,7 +98,7 @@
     </set>
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.CatetoryVo" >
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.CategoryVo" >
     update tb_category
     set category_name = #{categoryName,jdbcType=VARCHAR},
       category_url = #{categoryUrl,jdbcType=VARCHAR},

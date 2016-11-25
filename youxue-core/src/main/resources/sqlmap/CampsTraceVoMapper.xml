@@ -18,6 +18,12 @@
     from tb_camps_trace
     where trace_id = #{traceId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByCampsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps_trace
+    where campus_id = #{campusId,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_camps_trace
     where trace_id = #{traceId,jdbcType=VARCHAR}

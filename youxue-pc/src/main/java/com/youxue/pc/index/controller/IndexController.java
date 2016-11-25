@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.dao.CampsCategoryRelationDao;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.enums.CategoryTypeEnum;
@@ -38,8 +37,6 @@ public class IndexController extends BaseController
 	CampsDao campsDao;
 	@Autowired
 	CatetoryDao catetoryDao;
-	@Autowired
-	CampsCategoryRelationDao campsCategoryRelationDao;
 	@Autowired
 	JedisProxy jedisProxy;
 

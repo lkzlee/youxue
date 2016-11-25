@@ -26,16 +26,15 @@ public class ImgController
 		return "hello world";
 	}
 
-	@RequestMapping("/img/{imgUrl}/{imgType}/{imgName}.png")
+	@RequestMapping("/img/{imgType}/{imgName}")
 	public void getImage(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("imgUrl") String imgUrl, @PathVariable("imgType") String imgType,
-			@PathVariable("imgName") String imgName) throws Exception
+			@PathVariable("imgType") String imgType, @PathVariable("imgName") String imgName) throws Exception
 	{
-		if (StringUtils.isBlank(imgUrl) || StringUtils.isBlank(imgName) || StringUtils.isBlank(imgType))
+		if (StringUtils.isBlank(imgType) || StringUtils.isBlank(imgName))
 		{
 			return;
 		}
-		String filePath = ImgConstant.getImgUrl(imgUrl, imgType, imgName);
+		String filePath = ImgConstant.getImgFilePath(imgType + File.separator + imgName + ".png");
 		File file = new File(filePath);
 		if (file == null || !file.exists())
 		{
@@ -43,7 +42,7 @@ public class ImgController
 			return;
 		}
 		BufferedImage image = ImageIO.read(file);
-		response.setContentType("image/" + imgType);
+		response.setContentType("image/png");
 		OutputStream os = response.getOutputStream();
 		ImageIO.write(image, "png", os);
 	}

@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.CommonUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.enums.PayTypeEnum;
@@ -41,15 +43,15 @@ import com.youxue.pc.order.service.AddOrderPayService;
 @Controller
 public class OrderController extends BaseController
 {
-	protected final static Log LOG = LogFactory.getLog(OrderController.class);
-	@Autowired
-	JedisProxy jedisProxy;
+	protected final static Log log = LogFactory.getLog(OrderController.class);
 	@Resource
 	private AddOrderPayService addOrderPayService;
 	@Resource
 	private CouponCodeDao couponCodeDao;
 	@Resource
 	private CampsDao campsDao;
+	@Autowired
+	JedisProxy jedisProxy;
 
 	/***
 	 * 下单接口
@@ -57,7 +59,7 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(path = "/addTradeOrder.do", method = RequestMethod.POST)
+	@RequestMapping(path = "/pay/addTradeOrder.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String addTrade(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody AddTradeOrderDto orderData)
@@ -72,14 +74,52 @@ public class OrderController extends BaseController
 		}
 		catch (BusinessException e)
 		{
-			LOG.error("下单参数校验及流程处理，orderData=" + orderData + ",msg:" + e.getMessage());
+			log.error("下单参数校验及流程处理，orderData=" + orderData + ",msg:" + e.getMessage());
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc(e.getMessage()));
 		}
 		catch (Exception e)
 		{
-			LOG.error("下单处理流程异常，orderData=" + orderData + ",msg:" + e.getMessage(), e);
+			log.error("下单处理流程异常，orderData=" + orderData + ",msg:" + e.getMessage(), e);
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后！"));
 		}
+	}
+
+	/***
+	 * 下单接口
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(path = "/pay/wxpay.do", method = RequestMethod.GET)
+	public String wxPayPage(HttpServletRequest request, HttpServletResponse response, String logicOrderId,
+			ModelMap modelMap)
+	{
+		try
+		{
+
+			String accountId = getCurrentLoginUserName(request);
+			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountI=" + accountId);
+			if (StringUtils.isEmpty(accountId))
+			{
+				modelMap.put("result", -2);
+				modelMap.put("resultDesc", "用户未登录，请检查");
+				return "/wx/wxpay.html";
+			}
+			String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
+			if (StringUtils.isEmpty(payUrl))
+			{
+				modelMap.put("result", -3);
+				modelMap.put("resultDesc", "您请求的链接不存在，请检查");
+			}
+			modelMap.put("payUrl", payUrl);
+		}
+		catch (Exception e)
+		{
+			log.error("下单处理流程异常，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage(), e);
+			modelMap.put("result", -1);
+			modelMap.put("resultDesc", "系统繁忙，请稍后！");
+		}
+		return "/wx/wxpay.html";
 	}
 
 	private void checkIfParamValidAndFillBaseInfo(AddTradeOrderDto orderData, String accountId)

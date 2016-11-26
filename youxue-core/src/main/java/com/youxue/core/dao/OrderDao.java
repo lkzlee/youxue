@@ -3,6 +3,7 @@ package com.youxue.core.dao;
 import java.util.List;
 
 import com.youxue.core.vo.OrderVo;
+import com.youxue.core.vo.Page;
 
 public interface OrderDao
 {
@@ -21,4 +22,6 @@ public interface OrderDao
 	void batchInsertOrder(List<OrderVo> orderList);
 
 	List<OrderVo> selectOrderByLogicOrderId(String logicOrderId, boolean lock);
+
+	Page<OrderVo> selectPageOrderListByType(Page<OrderVo> page, int orderType, String accountId);
 }

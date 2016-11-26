@@ -23,9 +23,13 @@ public class OrderVo implements Serializable
 	 */
 	public static final int TO_OUT = 2;
 	/***
+	 * 完成状态
+	 */
+	public static final int DONE = 3;
+	/***
 	 * 取消状态
 	 */
-	public static final int CANCEL = 3;
+	public static final int CANCEL = 4;
 
 	private String orderId;
 

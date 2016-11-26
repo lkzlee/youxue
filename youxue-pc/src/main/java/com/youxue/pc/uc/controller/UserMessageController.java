@@ -13,44 +13,46 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.dao.OrderDao;
+import com.youxue.core.dao.MessageDao;
 import com.youxue.core.util.JsonUtil;
-import com.youxue.core.vo.OrderVo;
+import com.youxue.core.vo.MPage;
+import com.youxue.core.vo.MessageVo;
 import com.youxue.core.vo.Page;
 
 /***
- * 用户个人订单页
+ * 用户站内信
  * @author liyongchao
  *
  */
 @Controller
-public class UserOrderController extends BaseController
+public class UserMessageController extends BaseController
 {
-	private final static Log LOG = LogFactory.getLog(UserOrderController.class);
+	private final static Log LOG = LogFactory.getLog(UserMessageController.class);
 	@Resource
-	private OrderDao orderDao;
+	private MessageDao messageDao;
 
 	/***
-	 *  用户个人订单信息查询
+	 * 用户站内信
 	 * @param request
 	 * @param response
-	 * @param pageNo 页数默认第一页
-	 * @param orderType  订单类型，0 代表代付款订单 1代表待审核 2待出行订单 3已完成订单  4 代表已退款订单
+	 * @param pageNo
+	 * @param startDate yyyyMMdd
 	 * @return
 	 */
-	@RequestMapping(path = "/uc/userorder.do")
+	@RequestMapping(path = "/uc/usermessage.do")
 	@ResponseBody
-	public String userPageOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
-			int orderType)
+	public String userPageMessageInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
+			String startDate)
 	{
 		String accountId = getCurrentLoginUserName(request);
-		LOG.info("查询用户个人订单页，accountId=" + accountId + ",orderType=" + orderType);
+		LOG.info("查询 用户站内信，accountId=" + accountId + ",startDate=" + startDate);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
 		int pNum = Page.getPageNo(pageNo);
-		Page<OrderVo> page = new Page<OrderVo>(pNum, Page.DEFAULT_PAGESIZE);
-		page = orderDao.selectPageOrderListByType(page, orderType, accountId);
+		MPage<MessageVo> page = new MPage<MessageVo>(pNum, Page.DEFAULT_PAGESIZE);
+		page = (MPage<MessageVo>) messageDao.selectPageMessageByType(page, accountId, startDate);
+		int unReadCount = messageDao.selectUnReadCount(accountId, startDate);
+		page.setUnReadCount(unReadCount);
 		return JsonUtil.serialize(page);
-
 	}
 }

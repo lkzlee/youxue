@@ -50,7 +50,7 @@
     where account_id = #{accountId,jdbcType=VARCHAR} and status=#{status,jdbcType=INTEGER}
     order by order_id desc
   </select>
-  <select id="selectCountPageOrderListByType" resultType="java.lang.Long" parameterType="java.util.Map" >
+  <select id="selectCountPageOrderListByType" resultType="java.lang.Integer" parameterType="java.util.Map" >
     select 
  	count(*)
     from tb_order

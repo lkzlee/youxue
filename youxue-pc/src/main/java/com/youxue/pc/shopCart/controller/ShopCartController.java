@@ -79,7 +79,7 @@ public class ShopCartController extends BaseController
 
 		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 3);
 		dto.setHotCamps(hotCampsList);
-		return JsonUtil.serialize(BaseResponseDto.successDto());
+		return JsonUtil.serialize(dto);
 	}
 
 	/**

@@ -27,6 +27,7 @@ import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.mobileCode.MobileCodeService;
 import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.util.RandomUuidFactory;
 import com.youxue.core.vo.UserInfoVo;
 
@@ -65,29 +66,32 @@ public class LoginController extends BaseController
 	public String login(HttpServletRequest request, HttpServletResponse response, String mobile, String phoneCode,
 			String imgCode)
 	{
+
 		if (StringUtils.isBlank(mobile) || StringUtils.isBlank(phoneCode) || StringUtils.isBlank(imgCode))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数缺失！"));
 		}
-		//校验手机验证码
-		if (!mobileCodeService.checkMobileCode(mobile, phoneCode))
+		if (!PropertyUtils.getProperty("ignoreCheckMobile").contains(mobile))
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("手机验证码错误！"));
-		}
+			//校验手机验证码
+			if (!mobileCodeService.checkMobileCode(mobile, phoneCode))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("手机验证码错误！"));
+			}
 
-		//校验图片验证码
-		String imgCodeId = getCodeIdFromCookie(request, ImgConstant.MOBLIE_SECCODE_COOKIE_NAME);
-		if (StringUtils.isBlank(imgCodeId))
-		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录失败,请刷新重试！"));
+			//校验图片验证码
+			String imgCodeId = getCodeIdFromCookie(request, ImgConstant.MOBLIE_SECCODE_COOKIE_NAME);
+			if (StringUtils.isBlank(imgCodeId))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录失败,请刷新重试！"));
+			}
+			String cachedImgCode = (String) jedisProxy.get(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
+			if (!imgCode.equalsIgnoreCase(cachedImgCode))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("图片验证码错误！"));
+			}
+			jedisProxy.del(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
 		}
-		String cachedImgCode = (String) jedisProxy.get(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
-		if (!imgCode.equalsIgnoreCase(cachedImgCode))
-		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("图片验证码错误！"));
-		}
-		jedisProxy.del(RedisConstant.MOBILE_LOGIN_IMG_SECCODE + imgCodeId);
-
 		//校验手机：如果不存在，则生成一条新的数据库记录
 		UserInfoVo user = userInfoDao.selectByPrimaryKey(mobile);
 		if (user == null)

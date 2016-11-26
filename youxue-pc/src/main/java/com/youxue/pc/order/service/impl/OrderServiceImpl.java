@@ -206,4 +206,20 @@ public class OrderServiceImpl implements OrderService
 		refund.setCreateTime(DateUtil.getCurrentTimestamp());
 		refundDao.insertSelective(refund);
 	}
+
+	@Override
+	@Transactional
+	public void doRefundNotify(String orderId)
+	{
+		RefundVo refund = refundDao.selectByPrimaryKey(orderId);
+		if (refund == null)
+		{
+			log.fatal("该退款记录不存在，不能退款，orderId=" + orderId);
+			throw new BusinessException("该订单不存在，不能退款，orderId=" + orderId);
+		}
+		refund.setStatus(RefundVo.REFUND);
+		refund.setUpdateTime(DateUtil.getCurrentTimestamp());
+		refundDao.updateByPrimaryKeySelective(refund);
+
+	}
 }

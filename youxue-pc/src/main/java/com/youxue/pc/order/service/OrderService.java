@@ -16,4 +16,6 @@ public interface OrderService
 	void doPayNotify(String logicOrderId, String platformTradeId, Date notifyTime, Date payTime);
 
 	void refundOrder(String orderId);
+
+	void doRefundNotify(String orderId);
 }

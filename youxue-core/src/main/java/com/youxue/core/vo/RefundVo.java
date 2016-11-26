@@ -13,6 +13,8 @@ public class RefundVo implements Serializable
 
 	public static final int INIT = 0;
 
+	public static final int REFUND = 1;
+
 	private String orderId;
 
 	private String logicOrderId;

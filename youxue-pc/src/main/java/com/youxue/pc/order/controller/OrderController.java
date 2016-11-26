@@ -147,11 +147,6 @@ public class OrderController extends BaseController
 				throw new BusinessException("对应的订单没有出现人信息，请检查");
 			if (totalPerson != personList.length)
 				throw new BusinessException("对应订单提交的人数和出行人数不符");
-			CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
-			if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
-			{
-				throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
-			}
 
 			if (CommonUtil.isValidEmail(ote.getContactPhone()))
 			{
@@ -162,12 +157,22 @@ public class OrderController extends BaseController
 			{
 				throw new BusinessException("下单有误，对应的营地不存在或者营地未开放");
 			}
-			if (!coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
-			{
-				throw new BusinessException("下单有误，改优惠券不适用于该营地，请检查");
-			}
-			BigDecimal couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+
+			BigDecimal couponPrice = BigDecimal.ZERO;
 			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
+			if (!StringUtils.isEmpty(ote.getCodeId()))
+			{
+				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
+				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+				{
+					throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+				}
+				if (!coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
+				{
+					throw new BusinessException("下单有误，改优惠券不适用于该营地，请检查");
+				}
+				couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+			}
 			BigDecimal totalPayPrice = totalPrice.subtract(couponPrice);
 			if (BigDecimal.ZERO.compareTo(totalPayPrice) > 0)
 				throw new BusinessException("提交的订单优惠券大于支付金额，有误，请检查");

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -160,15 +161,18 @@ public class OrderServiceImpl implements OrderService
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
 		for (OrderVo order : orderList)
 		{
-			CouponCodeVo coupon = couponCodeDao.selectCouponByCode(order.getCodeId(), true);
-			if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+			if (!StringUtils.isEmpty(order.getCodeId()))
 			{
-				log.fatal("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",order=" + order);
-				throw new BusinessException("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",orderId="
-						+ order.getOrderId());
+				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(order.getCodeId(), true);
+				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+				{
+					log.fatal("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",order=" + order);
+					throw new BusinessException("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",orderId="
+							+ order.getOrderId());
+				}
+				coupon.setUseCount(coupon.getUseCount() + order.getTotalCount());
+				couponCodeDao.updateByPrimaryKeySelective(coupon);
 			}
-			coupon.setUseCount(coupon.getUseCount() + order.getTotalCount());
-			couponCodeDao.updateByPrimaryKeySelective(coupon);
 			order.setCodeStatus(OrderVo.PAY);
 			order.setUpdateTime(DateUtil.getCurrentTimestamp());
 			order.setStatus(OrderVo.PAY);

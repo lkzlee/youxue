@@ -1,6 +1,7 @@
 package com.youxue.core.service.order.dto;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
@@ -27,6 +28,12 @@ public class AddTradeItemDto extends OrderVo implements Serializable
 	public void setOutPersonList(OrderPersonVo[] outPersonList)
 	{
 		this.outPersonList = outPersonList;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "AddTradeItemDto [outPersonList=" + Arrays.toString(outPersonList) + "]";
 	}
 
 }

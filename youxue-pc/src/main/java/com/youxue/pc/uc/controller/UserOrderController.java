@@ -41,15 +41,27 @@ public class UserOrderController extends BaseController
 	@RequestMapping(path = "/uc/userorder.do")
 	@ResponseBody
 	public String userPageOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
-			int orderType)
+			String orderType)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		LOG.info("查询用户个人订单页，accountId=" + accountId + ",orderType=" + orderType);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		int status = 0;
+		try
+		{
+			if (StringUtils.isNotBlank(orderType))
+			{
+				status = Integer.parseInt(orderType);
+			}
+		}
+		catch (Exception e)
+		{
+		}
 		int pNum = Page.getPageNo(pageNo);
 		Page<OrderVo> page = new Page<OrderVo>(pNum, Page.DEFAULT_PAGESIZE);
-		page = orderDao.selectPageOrderListByType(page, orderType, accountId);
+
+		page = orderDao.selectPageOrderListByType(page, status, accountId);
 		return JsonUtil.serialize(page);
 
 	}

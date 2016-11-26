@@ -1,11 +1,14 @@
 package com.youxue.pc.order.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,7 @@ public class OrderServiceImpl implements OrderService
 	private OrderPersonDao orderPersonDao;
 	@Resource
 	private CommonDao commonDao;
+	private final static Log log = LogFactory.getLog(OrderServiceImpl.class);
 
 	/***
 	 * 下单插入出行人，订单，逻辑订单等信息
@@ -124,5 +128,33 @@ public class OrderServiceImpl implements OrderService
 		logicOrderVo.setTotalMoney(totalMoney);
 		logicOrderVo.setTotalPayMoney(totalPayMoney);
 		return logicOrderVo;
+	}
+
+	@Transactional
+	@Override
+	public void doPayNotify(String logicOrderId, String platformTradeId, Date notifyTime, Date payTime)
+	{
+		LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, true);
+		if (logicOrderVo == null)
+			throw new BusinessException("订单号不存在，请检查，logicOrderId=" + logicOrderId + ",platformTradeId="
+					+ platformTradeId + ",notifyTime=" + notifyTime + ",payTime=" + payTime);
+		if (LogicOrderVo.PAY == logicOrderVo.PAY)
+		{
+			log.info("订单已处理，重复通知无需再次处理，logicOrderId=" + logicOrderId + ",platformTradeId=" + platformTradeId
+					+ ",notifyTime=" + notifyTime + ",payTime=" + payTime);
+			return;
+		}
+		logicOrderVo.setPayTime(payTime);
+		logicOrderVo.setNotifyTime(notifyTime);
+		logicOrderVo.setPayStatus(LogicOrderVo.PAY);
+		logicOrderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		logicOrderDao.updateByPrimaryKeySelective(logicOrderVo);
+		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
+		for (OrderVo order : orderList)
+		{
+			order.setUpdateTime(DateUtil.getCurrentTimestamp());
+			order.setStatus(OrderVo.PAY);
+			orderDao.updateByPrimaryKeySelective(order);
+		}
 	}
 }

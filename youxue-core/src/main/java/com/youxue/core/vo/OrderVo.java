@@ -10,8 +10,22 @@ public class OrderVo implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	/***
+	 * 未支付
+	 */
 	public static final int UNPAY = 0;
+	/***
+	 * 支付成功，待审核
+	 */
+	public static final int PAY = 1;
+	/***
+	 * 审核成功，待出行
+	 */
+	public static final int TO_OUT = 2;
+	/***
+	 * 取消状态
+	 */
+	public static final int CANCEL = 3;
 
 	private String orderId;
 

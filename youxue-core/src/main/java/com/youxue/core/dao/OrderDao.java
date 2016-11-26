@@ -19,4 +19,6 @@ public interface OrderDao
 	int updateByPrimaryKey(OrderVo record);
 
 	void batchInsertOrder(List<OrderVo> orderList);
+
+	List<OrderVo> selectOrderByLogicOrderId(String logicOrderId, boolean lock);
 }

@@ -15,22 +15,19 @@ public class OrderPersonDaoImpl extends BaseDao implements OrderPersonDao
 	@Override
 	public int insert(OrderPersonVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.insert("com.youxue.core.dao.OrderPersonDao.insert", record);
 	}
 
 	@Override
 	public int insertSelective(OrderPersonVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.insert("com.youxue.core.dao.OrderPersonDao.insertSelective", record);
 	}
 
 	@Override
 	public void batchInsertOrderPerson(List<OrderPersonVo> personList)
 	{
-		// TODO Auto-generated method stub
-
+		sqlSessionTemplate.insert("com.youxue.core.dao.OrderPersonDao.batchInsertOrderPerson", personList);
 	}
 
 }

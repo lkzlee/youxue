@@ -230,4 +230,16 @@ public class OrderVo implements Serializable
 	{
 		this.orderIp = orderIp == null ? null : orderIp.trim();
 	}
+
+	@Override
+	public String toString()
+	{
+		return "OrderVo [orderId=" + orderId + ", accountId=" + accountId + ", logicOrderId=" + logicOrderId
+				+ ", codeId=" + codeId + ", status=" + status + ", creatTime=" + creatTime + ", updateTime="
+				+ updateTime + ", campsId=" + campsId + ", totalPrice=" + totalPrice + ", codePrice=" + codePrice
+				+ ", codeStatus=" + codeStatus + ", payPrice=" + payPrice + ", totalCount=" + totalCount
+				+ ", contactName=" + contactName + ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone
+				+ ", orderIp=" + orderIp + "]";
+	}
+
 }

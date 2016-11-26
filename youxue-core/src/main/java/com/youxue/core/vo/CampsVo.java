@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class CampsVo
 {
+	public final static int NORMAL = 0;
+
 	private String campsId;
 
 	private String campsName;

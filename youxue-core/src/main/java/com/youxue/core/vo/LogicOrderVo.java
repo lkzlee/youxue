@@ -24,9 +24,9 @@ public class LogicOrderVo
 
 	private String platformOrderId;
 
-	private BigDecimal totalMoney;
+	private BigDecimal totalPrice;
 
-	private BigDecimal totalPayMoney;
+	private BigDecimal totalPayPrice;
 
 	public final static int UNPAY = 0;
 	public final static int PAY = 1;
@@ -122,26 +122,6 @@ public class LogicOrderVo
 		this.platformOrderId = platformOrderId == null ? null : platformOrderId.trim();
 	}
 
-	public BigDecimal getTotalMoney()
-	{
-		return totalMoney;
-	}
-
-	public void setTotalMoney(BigDecimal totalMoney)
-	{
-		this.totalMoney = totalMoney;
-	}
-
-	public BigDecimal getTotalPayMoney()
-	{
-		return totalPayMoney;
-	}
-
-	public void setTotalPayMoney(BigDecimal totalPayMoney)
-	{
-		this.totalPayMoney = totalPayMoney;
-	}
-
 	public Date getNotifyTime()
 	{
 		return notifyTime;
@@ -152,12 +132,32 @@ public class LogicOrderVo
 		this.notifyTime = notifyTime;
 	}
 
+	public BigDecimal getTotalPrice()
+	{
+		return totalPrice;
+	}
+
+	public void setTotalPrice(BigDecimal totalPrice)
+	{
+		this.totalPrice = totalPrice;
+	}
+
+	public BigDecimal getTotalPayPrice()
+	{
+		return totalPayPrice;
+	}
+
+	public void setTotalPayPrice(BigDecimal totalPayPrice)
+	{
+		this.totalPayPrice = totalPayPrice;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "LogicOrderVo [logicOrderId=" + logicOrderId + ", accountId=" + accountId + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", orderIp=" + orderIp + ", payType=" + payType + ", payStatus="
 				+ payStatus + ", payTime=" + payTime + ", notifyTime=" + notifyTime + ", platformOrderId="
-				+ platformOrderId + ", totalMoney=" + totalMoney + ", totalPayMoney=" + totalPayMoney + "]";
+				+ platformOrderId + ", totalPrice=" + totalPrice + ", totalPayPrice=" + totalPayPrice + "]";
 	}
 }

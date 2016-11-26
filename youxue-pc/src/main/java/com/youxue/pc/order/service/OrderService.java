@@ -14,4 +14,6 @@ public interface OrderService
 	String addOrder(AddTradeOrderDto orderData, String ip, String accountId);
 
 	void doPayNotify(String logicOrderId, String platformTradeId, Date notifyTime, Date payTime);
+
+	String refundOrder(String orderId);
 }

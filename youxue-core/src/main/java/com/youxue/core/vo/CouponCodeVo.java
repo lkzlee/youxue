@@ -3,94 +3,115 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CouponCodeVo {
-    private String codeId;
+public class CouponCodeVo
+{
+	public static final int NORMAL = 1;
 
-    private String codeValue;
+	private String codeId;
 
-    private BigDecimal codeAmount;
+	private String codeValue;
 
-    private Date createTime;
+	private BigDecimal codeAmount;
 
-    private Date startTime;
+	private Date createTime;
 
-    private Date endTime;
+	private Date startTime;
 
-    private Integer status;
+	private Date endTime;
 
-    private Integer useCount;
+	private Integer status;
 
-    private String categoryIds;
+	private Integer useCount;
 
-    public String getCodeId() {
-        return codeId;
-    }
+	private String categoryIds;
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId == null ? null : codeId.trim();
-    }
+	public String getCodeId()
+	{
+		return codeId;
+	}
 
-    public String getCodeValue() {
-        return codeValue;
-    }
+	public void setCodeId(String codeId)
+	{
+		this.codeId = codeId == null ? null : codeId.trim();
+	}
 
-    public void setCodeValue(String codeValue) {
-        this.codeValue = codeValue == null ? null : codeValue.trim();
-    }
+	public String getCodeValue()
+	{
+		return codeValue;
+	}
 
-    public BigDecimal getCodeAmount() {
-        return codeAmount;
-    }
+	public void setCodeValue(String codeValue)
+	{
+		this.codeValue = codeValue == null ? null : codeValue.trim();
+	}
 
-    public void setCodeAmount(BigDecimal codeAmount) {
-        this.codeAmount = codeAmount;
-    }
+	public BigDecimal getCodeAmount()
+	{
+		return codeAmount;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setCodeAmount(BigDecimal codeAmount)
+	{
+		this.codeAmount = codeAmount;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Date getCreateTime()
+	{
+		return createTime;
+	}
 
-    public Date getStartTime() {
-        return startTime;
-    }
+	public void setCreateTime(Date createTime)
+	{
+		this.createTime = createTime;
+	}
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+	public Date getStartTime()
+	{
+		return startTime;
+	}
 
-    public Date getEndTime() {
-        return endTime;
-    }
+	public void setStartTime(Date startTime)
+	{
+		this.startTime = startTime;
+	}
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+	public Date getEndTime()
+	{
+		return endTime;
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public void setEndTime(Date endTime)
+	{
+		this.endTime = endTime;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public Integer getStatus()
+	{
+		return status;
+	}
 
-    public Integer getUseCount() {
-        return useCount;
-    }
+	public void setStatus(Integer status)
+	{
+		this.status = status;
+	}
 
-    public void setUseCount(Integer useCount) {
-        this.useCount = useCount;
-    }
+	public Integer getUseCount()
+	{
+		return useCount;
+	}
 
-    public String getCategoryIds() {
-        return categoryIds;
-    }
+	public void setUseCount(Integer useCount)
+	{
+		this.useCount = useCount;
+	}
 
-    public void setCategoryIds(String categoryIds) {
-        this.categoryIds = categoryIds == null ? null : categoryIds.trim();
-    }
+	public String getCategoryIds()
+	{
+		return categoryIds;
+	}
+
+	public void setCategoryIds(String categoryIds)
+	{
+		this.categoryIds = categoryIds == null ? null : categoryIds.trim();
+	}
 }

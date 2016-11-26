@@ -161,7 +161,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		Date expireTime = DateUtil.getIntervalSeconds(logicOrderVo.getCreateTime(), 7200);
 		payResultDto.setTime_start(DateUtil.formatDate(logicOrderVo.getCreateTime(), "yyyyMMddHHmmss"));
 		payResultDto.setTime_expire(DateUtil.formatDate(expireTime, "yyyyMMddHHmmss"));
-		int tradeAmount = logicOrderVo.getTotalPayMoney().multiply(new BigDecimal(100)).intValue();
+		int tradeAmount = logicOrderVo.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();
 		payResultDto.setTotal_fee(tradeAmount);
 		payResultDto.setTrade_type("NATIVE");
 		String subOrderId = "";
@@ -183,7 +183,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		String returnUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_RETURN_URL);
 		payResultDto.setReturn_url(returnUrl);
 		payResultDto.setSubject("游学营地活动");
-		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayMoney()));
+		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayPrice()));
 		//		payResultDto.setBody();
 		return payResultDto;
 	}

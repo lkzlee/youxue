@@ -17,9 +17,11 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CommonDao;
+import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
+import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
@@ -36,6 +38,8 @@ public class OrderServiceImpl implements OrderService
 	private LogicOrderDao logicOrderDao;
 	@Resource
 	private OrderPersonDao orderPersonDao;
+	@Resource
+	private CouponCodeDao couponCodeDao;
 	@Resource
 	private CommonDao commonDao;
 	private final static Log log = LogFactory.getLog(OrderServiceImpl.class);
@@ -125,8 +129,8 @@ public class OrderServiceImpl implements OrderService
 			totalMoney = totalMoney.add(orderItem.getTotalPrice());
 			totalPayMoney = totalPayMoney.add(orderItem.getPayPrice());
 		}
-		logicOrderVo.setTotalMoney(totalMoney);
-		logicOrderVo.setTotalPayMoney(totalPayMoney);
+		logicOrderVo.setTotalPrice(totalMoney);
+		logicOrderVo.setTotalPayPrice(totalPayMoney);
 		return logicOrderVo;
 	}
 
@@ -152,9 +156,26 @@ public class OrderServiceImpl implements OrderService
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
 		for (OrderVo order : orderList)
 		{
+			CouponCodeVo coupon = couponCodeDao.selectCouponByCode(order.getCodeId(), true);
+			if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+			{
+				log.fatal("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",order=" + order);
+				throw new BusinessException("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",orderId="
+						+ order.getOrderId());
+			}
+			coupon.setUseCount(coupon.getUseCount() + order.getTotalCount());
+			couponCodeDao.updateByPrimaryKeySelective(coupon);
+			order.setCodeStatus(OrderVo.PAY);
 			order.setUpdateTime(DateUtil.getCurrentTimestamp());
 			order.setStatus(OrderVo.PAY);
 			orderDao.updateByPrimaryKeySelective(order);
 		}
+	}
+
+	@Override
+	public String refundOrder(String orderId)
+	{
+
+		return null;
 	}
 }

@@ -1,5 +1,7 @@
 package com.youxue.pc.order.service;
 
+import java.util.Date;
+
 import com.youxue.pc.order.dto.AddTradeOrderDto;
 
 /***
@@ -10,4 +12,6 @@ import com.youxue.pc.order.dto.AddTradeOrderDto;
 public interface OrderService
 {
 	String addOrder(AddTradeOrderDto orderData, String ip, String accountId);
+
+	void doPayNotify(String logicOrderId, String platformTradeId, Date notifyTime, Date payTime);
 }

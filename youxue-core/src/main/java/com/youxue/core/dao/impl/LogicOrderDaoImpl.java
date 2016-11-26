@@ -1,5 +1,8 @@
 package com.youxue.core.dao.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
@@ -13,43 +16,40 @@ public class LogicOrderDaoImpl extends BaseDao implements LogicOrderDao
 	@Override
 	public int deleteByPrimaryKey(String logicOrderId)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.delete("com.youxue.core.dao.LogicOrderDao.deleteByPrimaryKey", logicOrderId);
 	}
 
 	@Override
 	public int insert(LogicOrderVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.insert("com.youxue.core.dao.LogicOrderDao.insert", record);
 	}
 
 	@Override
 	public int insertSelective(LogicOrderVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.insert("com.youxue.core.dao.LogicOrderDao.insertSelective", record);
 	}
 
 	@Override
-	public LogicOrderVo selectByPrimaryKey(String logicOrderId)
+	public LogicOrderVo selectByPrimaryKey(String logicOrderId, boolean lock)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("lock", lock);
+		param.put("logicOrderId", logicOrderId);
+		return sqlSessionTemplate.selectOne("com.youxue.core.dao.LogicOrderDao.selectByPrimaryKey", param);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(LogicOrderVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.update("com.youxue.core.dao.LogicOrderDao.updateByPrimaryKeySelective", record);
 	}
 
 	@Override
 	public int updateByPrimaryKey(LogicOrderVo record)
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSessionTemplate.update("com.youxue.core.dao.LogicOrderDao.updateByPrimaryKey", record);
 	}
 
 }

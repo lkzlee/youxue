@@ -6,4 +6,10 @@ public class CommonConstant
 
 	public static final String ORDER_ID_PREFIX = "OD";
 	public static final String LOGIC_ORDER_ID_PREFIX = "LD";
+
+	public static final String ALIPAY_NOTIFY_URL = "aliPayNotfiyUrl";
+
+	public static final String WEIXIN_PAY_NOTIFY_URL = "weiXinPayNotifyUrl";
+
+	public static final String ALIPAY_RETURN_URL = "aliPayReturnUrl";
 }

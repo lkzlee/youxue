@@ -31,10 +31,36 @@
     from tb_order
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
+  <select id="selectOrderByLogicOrderId" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+    <if test="lock == true">
+    	for update
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_order
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
+  <insert id="batchInsertOrder" parameterType="java.util.List" >
+    insert into tb_order (order_id, account_id, logic_order_id, 
+      code_id, status, creat_time, 
+       camps_id, total_price, 
+      code_price, code_status, pay_price, 
+      total_count, contact_name, contact_email, 
+      contact_phone, order_ip)
+    values 
+    <foreach collection="list" item="ite" separator="," open="(" close=")">
+    #{ite.orderId,jdbcType=VARCHAR}, #{ite.accountId,jdbcType=VARCHAR}, #{ite.logicOrderId,jdbcType=VARCHAR}, 
+      #{ite.codeId,jdbcType=VARCHAR}, #{ite.status,jdbcType=INTEGER}, #{ite.creatTime,jdbcType=TIMESTAMP}, 
+     #{ite.campsId,jdbcType=VARCHAR}, #{ite.totalPrice,jdbcType=DECIMAL}, 
+      #{ite.codePrice,jdbcType=DECIMAL}, #{ite.codeStatus,jdbcType=INTEGER}, #{ite.payPrice,jdbcType=DECIMAL}, 
+      #{ite.totalCount,jdbcType=INTEGER}, #{ite.contactName,jdbcType=VARCHAR}, #{ite.contactEmail,jdbcType=VARCHAR}, 
+      #{ite.contactPhone,jdbcType=VARCHAR}, #{ite.orderIp,jdbcType=VARCHAR}
+    </foreach>
+  </insert>
   <insert id="insert" parameterType="com.youxue.core.vo.OrderVo" >
     insert into tb_order (order_id, account_id, logic_order_id, 
       code_id, status, creat_time, 

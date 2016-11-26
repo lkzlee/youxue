@@ -20,6 +20,7 @@ public class LogicOrderVo
 	private Integer payStatus;
 
 	private Date payTime;
+	private Date notifyTime;
 
 	private String platformOrderId;
 
@@ -141,12 +142,22 @@ public class LogicOrderVo
 		this.totalPayMoney = totalPayMoney;
 	}
 
+	public Date getNotifyTime()
+	{
+		return notifyTime;
+	}
+
+	public void setNotifyTime(Date notifyTime)
+	{
+		this.notifyTime = notifyTime;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "LogicOrderVo [logicOrderId=" + logicOrderId + ", accountId=" + accountId + ", createTime=" + createTime
 				+ ", updateTime=" + updateTime + ", orderIp=" + orderIp + ", payType=" + payType + ", payStatus="
-				+ payStatus + ", payTime=" + payTime + ", platformOrderId=" + platformOrderId + ", totalMoney="
-				+ totalMoney + ", totalPayMoney=" + totalPayMoney + "]";
+				+ payStatus + ", payTime=" + payTime + ", notifyTime=" + notifyTime + ", platformOrderId="
+				+ platformOrderId + ", totalMoney=" + totalMoney + ", totalPayMoney=" + totalPayMoney + "]";
 	}
 }

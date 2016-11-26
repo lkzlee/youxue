@@ -10,7 +10,7 @@ public interface LogicOrderDao
 
 	int insertSelective(LogicOrderVo record);
 
-	LogicOrderVo selectByPrimaryKey(String logicOrderId);
+	LogicOrderVo selectByPrimaryKey(String logicOrderId, boolean lock);
 
 	int updateByPrimaryKeySelective(LogicOrderVo record);
 

@@ -33,4 +33,16 @@ public enum PayTypeEnum
 		this.desc = desc;
 	}
 
+	public static PayTypeEnum getByValue(Integer payType)
+	{
+		if (payType == null)
+			return PayTypeEnum.UNKNOW_PAY;
+		for (PayTypeEnum py : PayTypeEnum.values())
+		{
+			if (payType == py.getValue())
+				return py;
+		}
+		return null;
+	}
+
 }

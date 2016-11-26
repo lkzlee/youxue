@@ -74,7 +74,7 @@ public class OrderController extends BaseController
 		if (ArrayUtils.isEmpty(orderData.getOrderList()))
 			throw new BusinessException("无任何订单信息");
 		/***
-		 * 还需继续完善
+		 * 校验下单的人数和 出行人人数，校验下单金额，校验手机号、email合法性，校验支付方式，校验优惠券合法性
 		 */
 	}
 }

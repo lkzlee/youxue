@@ -10,17 +10,21 @@
     <result column="pay_type" property="payType" jdbcType="INTEGER" />
     <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP" />
     <result column="platform_order_id" property="platformOrderId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     logic_order_id, account_id, create_time, update_time, order_ip, pay_type, pay_status, 
-    pay_time, platform_order_id
+    pay_time,notify_time, platform_order_id
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
     from tb_logic_order
     where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
+    <if test="lock == true">
+    	for update
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_logic_order
@@ -121,6 +125,9 @@
       <if test="payTime != null" >
         pay_time = #{payTime,jdbcType=TIMESTAMP},
       </if>
+       <if test="notifyTime != null" >
+        notify_time = #{notifyTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="platformOrderId != null" >
         platform_order_id = #{platformOrderId,jdbcType=VARCHAR},
       </if>
@@ -136,6 +143,7 @@
       pay_type = #{payType,jdbcType=INTEGER},
       pay_status = #{payStatus,jdbcType=INTEGER},
       pay_time = #{payTime,jdbcType=TIMESTAMP},
+      notify_time = #{notifyTime,jdbcType=TIMESTAMP},
       platform_order_id = #{platformOrderId,jdbcType=VARCHAR}
     where logic_order_id = #{logicOrderId,jdbcType=VARCHAR}
   </update>

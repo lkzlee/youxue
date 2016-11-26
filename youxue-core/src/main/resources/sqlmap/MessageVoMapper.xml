@@ -23,7 +23,7 @@
 		from tb_message
 		where message_id = #{messageId,jdbcType=VARCHAR}
 	</select>
-	<select id="selectPageMessageByType" resultType="BaseResultMap"
+	<select id="selectPageMessageByType" resultMap="BaseResultMap"
 		parameterType="java.util.Map">
 		select
 		<include refid="Base_Column_List" />

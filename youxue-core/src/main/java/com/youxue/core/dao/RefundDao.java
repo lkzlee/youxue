@@ -1,17 +1,22 @@
 package com.youxue.core.dao;
 
+import java.util.List;
+
 import com.youxue.core.vo.RefundVo;
 
-public interface RefundDao {
-    int deleteByPrimaryKey(String orderId);
+public interface RefundDao
+{
+	int deleteByPrimaryKey(String orderId);
 
-    int insert(RefundVo record);
+	int insert(RefundVo record);
 
-    int insertSelective(RefundVo record);
+	int insertSelective(RefundVo record);
 
-    RefundVo selectByPrimaryKey(String orderId);
+	RefundVo selectByPrimaryKey(String orderId);
 
-    int updateByPrimaryKeySelective(RefundVo record);
+	int updateByPrimaryKeySelective(RefundVo record);
 
-    int updateByPrimaryKey(RefundVo record);
+	int updateByPrimaryKey(RefundVo record);
+
+	List<RefundVo> selectInitRefundByPay(int value);
 }

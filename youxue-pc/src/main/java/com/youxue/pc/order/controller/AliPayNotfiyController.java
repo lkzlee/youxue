@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.lkzlee.pay.third.alipay.dto.response.AliPayOrderNotifyDto;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
 import com.lkzlee.pay.utils.DateUtil;
-import com.youxue.pc.order.service.OrderService;
+import com.youxue.core.service.order.OrderService;
 
 @Controller
 public class AliPayNotfiyController extends com.lkzlee.pay.notify.controller.AliPayNotfiyController

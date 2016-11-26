@@ -27,12 +27,12 @@ import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.order.dto.AddTradeItemDto;
+import com.youxue.core.service.order.dto.AddTradeOrderDto;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.OrderPersonVo;
-import com.youxue.pc.order.dto.AddTradeItemDto;
-import com.youxue.pc.order.dto.AddTradeOrderDto;
 import com.youxue.pc.order.service.AddOrderPayService;
 
 /**

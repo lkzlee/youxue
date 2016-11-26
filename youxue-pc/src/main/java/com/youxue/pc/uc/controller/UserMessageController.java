@@ -21,7 +21,7 @@ import com.youxue.core.vo.Page;
 
 /***
  * 用户站内信
- * @author liyongchao
+ * @author lkzlee
  *
  */
 @Controller

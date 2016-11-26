@@ -1,4 +1,4 @@
-package com.youxue.pc.order.dto;
+package com.youxue.core.service.order.dto;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.youxue.pc.order.service.impl;
+package com.youxue.core.service.order.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,14 +22,14 @@ import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.RefundDao;
+import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.dto.AddTradeItemDto;
+import com.youxue.core.service.order.dto.AddTradeOrderDto;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.RefundVo;
-import com.youxue.pc.order.dto.AddTradeItemDto;
-import com.youxue.pc.order.dto.AddTradeOrderDto;
-import com.youxue.pc.order.service.OrderService;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService
@@ -178,9 +178,16 @@ public class OrderServiceImpl implements OrderService
 
 	@Override
 	@Transactional
-	public void refundOrder(String orderId)
+	public LogicOrderVo refundOrder(String orderId)
 	{
 		OrderVo orderVo = orderDao.selectByPrimaryKey(orderId, true);
+		RefundVo rf = refundDao.selectByPrimaryKey(orderId);
+		LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(orderVo.getLogicOrderId(), false);
+		if (rf != null)
+		{
+			log.fatal("该退款记录已经插入，无需再次插入，直接返回，orderId=" + orderId);
+			return logicOrderVo;
+		}
 		if (orderVo == null)
 		{
 			log.fatal("该订单不存在，不能退款，orderId=" + orderId);
@@ -204,7 +211,9 @@ public class OrderServiceImpl implements OrderService
 		refund.setRefundAmount(orderVo.getPayPrice());
 		refund.setStatus(RefundVo.INIT);
 		refund.setCreateTime(DateUtil.getCurrentTimestamp());
+		refund.setPayType(logicOrderVo.getPayType());
 		refundDao.insertSelective(refund);
+		return logicOrderVo;
 	}
 
 	@Override

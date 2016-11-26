@@ -16,4 +16,6 @@ public class CommonConstant
 	public static final String WEI_XIN_ORDER_URL = "weiXinPageUrl";
 
 	public static final String SYSTEM_SECRET = "systemSecret";
+
+	public static final String ALIPAY_REFUND_URL = "aliPayRefundNotifyUrl";
 }

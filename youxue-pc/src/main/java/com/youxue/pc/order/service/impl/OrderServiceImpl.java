@@ -21,10 +21,12 @@ import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
+import com.youxue.core.dao.RefundDao;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
+import com.youxue.core.vo.RefundVo;
 import com.youxue.pc.order.dto.AddTradeItemDto;
 import com.youxue.pc.order.dto.AddTradeOrderDto;
 import com.youxue.pc.order.service.OrderService;
@@ -40,6 +42,8 @@ public class OrderServiceImpl implements OrderService
 	private OrderPersonDao orderPersonDao;
 	@Resource
 	private CouponCodeDao couponCodeDao;
+	@Resource
+	private RefundDao refundDao;
 	@Resource
 	private CommonDao commonDao;
 	private final static Log log = LogFactory.getLog(OrderServiceImpl.class);
@@ -194,5 +198,12 @@ public class OrderServiceImpl implements OrderService
 		/***
 		 * 插入退款记录，进行退款
 		 */
+		RefundVo refund = new RefundVo();
+		refund.setOrderId(orderVo.getOrderId());
+		refund.setLogicOrderId(orderVo.getLogicOrderId());
+		refund.setRefundAmount(orderVo.getPayPrice());
+		refund.setStatus(RefundVo.INIT);
+		refund.setCreateTime(DateUtil.getCurrentTimestamp());
+		refundDao.insertSelective(refund);
 	}
 }

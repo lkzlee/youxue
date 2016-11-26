@@ -173,9 +173,26 @@ public class OrderServiceImpl implements OrderService
 	}
 
 	@Override
-	public String refundOrder(String orderId)
+	@Transactional
+	public void refundOrder(String orderId)
 	{
-
-		return null;
+		OrderVo orderVo = orderDao.selectByPrimaryKey(orderId, true);
+		if (orderVo == null)
+		{
+			log.fatal("该订单不存在，不能退款，orderId=" + orderId);
+			throw new BusinessException("该订单不存在，不能退款，orderId=" + orderId);
+		}
+		if (orderVo.getStatus() == OrderVo.CANCEL || orderVo.getStatus() == OrderVo.UNPAY
+				|| orderVo.getStatus() == OrderVo.DONE)
+		{
+			log.fatal("该订单状态不正确不能退款，orderVo=" + orderVo);
+			throw new BusinessException("该订单状态不正确不能退款，orderId=" + orderId + ",status=" + orderVo.getStatus());
+		}
+		orderVo.setStatus(OrderVo.CANCEL);
+		orderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		orderDao.updateByPrimaryKeySelective(orderVo);
+		/***
+		 * 插入退款记录，进行退款
+		 */
 	}
 }

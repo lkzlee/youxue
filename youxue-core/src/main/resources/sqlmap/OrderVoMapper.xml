@@ -25,11 +25,14 @@
     total_price, code_price, code_status, pay_price, total_count, contact_name, contact_email, 
     contact_phone, order_ip
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
     <include refid="Base_Column_List" />
     from tb_order
     where order_id = #{orderId,jdbcType=VARCHAR}
+    <if test="lock == true">
+    	for update
+    </if>
   </select>
   <select id="selectOrderByLogicOrderId" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 

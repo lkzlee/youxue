@@ -34,9 +34,12 @@ public class OrderDaoImpl extends BaseDao implements OrderDao
 	}
 
 	@Override
-	public OrderVo selectByPrimaryKey(String orderId)
+	public OrderVo selectByPrimaryKey(String orderId, boolean lock)
 	{
-		return sqlSessionTemplate.selectOne("com.youxue.core.dao.OrderDao.selectByPrimaryKey", orderId);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("lock", lock);
+		param.put("orderId", orderId);
+		return sqlSessionTemplate.selectOne("com.youxue.core.dao.OrderDao.selectByPrimaryKey", param);
 	}
 
 	@Override

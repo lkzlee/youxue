@@ -13,7 +13,7 @@ public interface OrderDao
 
 	int insertSelective(OrderVo record);
 
-	OrderVo selectByPrimaryKey(String orderId);
+	OrderVo selectByPrimaryKey(String orderId, boolean lock);
 
 	int updateByPrimaryKeySelective(OrderVo record);
 

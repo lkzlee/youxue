@@ -46,13 +46,14 @@ public class SearchController extends BaseController
 	/**
 	 * @param request
 	 * @param response
+	 * departureTime:出行时间，格式为20161126
 	 * 根据查询条件获取对应的营地列表
 	 */
 	@RequestMapping("/getCampsList.do")
 	@ResponseBody
 	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String LocaleCategoryId,
-			String subjectCategoryId, String timeDuration, String priceRange, String departureTime, Integer pageNo,
-			String searchContent)
+			String subjectCategoryId, String timeDuration, String priceRange, String departureMonth,
+			String departureTime, Integer pageNo, String searchContent)
 	{
 		try
 		{
@@ -81,9 +82,13 @@ public class SearchController extends BaseController
 				queryConditions.put("minPrice", minPrice);
 				queryConditions.put("maxPrice", maxPrice);
 			}
-			if (StringUtils.isNotBlank(departureTime))
+			if (StringUtils.isNotBlank(departureMonth))
 			{
-				queryConditions.put("departureMonth", Integer.valueOf(departureTime));
+				queryConditions.put("departureMonth", Integer.valueOf(departureMonth));
+			}
+			if (StringUtils.isNotBlank(departureTime) && departureTime.length() == 8)
+			{
+				queryConditions.put("departureTime", departureTime);
 			}
 			if (StringUtils.isNotBlank(LocaleCategoryId))
 			{

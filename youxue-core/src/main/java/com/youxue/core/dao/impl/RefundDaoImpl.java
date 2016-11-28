@@ -1,5 +1,7 @@
 package com.youxue.core.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
@@ -44,6 +46,12 @@ public class RefundDaoImpl extends BaseDao implements RefundDao
 	public int updateByPrimaryKey(RefundVo record)
 	{
 		return sqlSessionTemplate.update("com.youxue.core.dao.RefundDao.updateByPrimaryKey", record);
+	}
+
+	@Override
+	public List<RefundVo> selectInitRefundByPay(int payType)
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.RefundDao.selectInitRefundByPay", payType);
 	}
 
 }

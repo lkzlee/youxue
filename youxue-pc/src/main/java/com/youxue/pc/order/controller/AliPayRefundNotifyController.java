@@ -14,7 +14,7 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.notify.controller.AliPayRefundNotfiyController;
 import com.lkzlee.pay.third.alipay.dto.response.AliPayRefundNotifyDto;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
-import com.youxue.pc.order.service.OrderService;
+import com.youxue.core.service.order.OrderService;
 
 @Controller
 public class AliPayRefundNotifyController extends AliPayRefundNotfiyController

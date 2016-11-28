@@ -19,7 +19,7 @@ import com.lkzlee.pay.third.weixin.dto.response.WeiXinPayNotifyResultDto;
 import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.utils.IOStreamTools;
 import com.lkzlee.pay.utils.XstreamUtil;
-import com.youxue.pc.order.service.OrderService;
+import com.youxue.core.service.order.OrderService;
 
 @Controller
 public class WeiXinPayNotifyController extends WeiXinPayNotfiyController

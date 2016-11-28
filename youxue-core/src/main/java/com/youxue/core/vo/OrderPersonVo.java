@@ -68,4 +68,11 @@ public class OrderPersonVo implements Serializable
 	{
 		this.personAddress = personAddress == null ? null : personAddress.trim();
 	}
+
+	@Override
+	public String toString()
+	{
+		return "OrderPersonVo [orderId=" + orderId + ", personName=" + personName + ", personPhone=" + personPhone
+				+ ", personIdno=" + personIdno + ", personAddress=" + personAddress + "]";
+	}
 }

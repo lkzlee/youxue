@@ -26,6 +26,7 @@ public class RefundVo implements Serializable
 	private Date createTime;
 
 	private Date updateTime;
+	private Integer payType;
 
 	public String getOrderId()
 	{
@@ -87,10 +88,22 @@ public class RefundVo implements Serializable
 		this.updateTime = updateTime;
 	}
 
+	public Integer getPayType()
+	{
+		return payType;
+	}
+
+	public void setPayType(Integer payType)
+	{
+		this.payType = payType;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "RefundVo [orderId=" + orderId + ", logicOrderId=" + logicOrderId + ", refundAmount=" + refundAmount
-				+ ", status=" + status + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+				+ ", status=" + status + ", createTime=" + createTime + ", updateTime=" + updateTime + ", payType="
+				+ payType + "]";
 	}
+
 }

@@ -18,9 +18,9 @@
     insert into tb_order_person (order_id, person_name, person_phone, 
       person_idno, person_address)
     values 
-    <foreach collection="list" close=")" item="ite" open="(" separator=",">
-    #{ite.orderId,jdbcType=VARCHAR}, #{ite.personName,jdbcType=VARCHAR}, #{ite.personPhone,jdbcType=VARCHAR}, 
-      #{ite.personIdno,jdbcType=VARCHAR}, #{ite.personAddress,jdbcType=VARCHAR}
+    <foreach collection="list" item="ite" separator=",">
+    (#{ite.orderId,jdbcType=VARCHAR}, #{ite.personName,jdbcType=VARCHAR}, #{ite.personPhone,jdbcType=VARCHAR}, 
+      #{ite.personIdno,jdbcType=VARCHAR}, #{ite.personAddress,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.OrderPersonVo" >

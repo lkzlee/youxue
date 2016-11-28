@@ -30,13 +30,13 @@ import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.dto.AddTradeOrderDto;
+import com.youxue.core.service.order.dto.AddTradeResonseDto;
 import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderVo;
-import com.youxue.pc.order.dto.AddTradeOrderDto;
-import com.youxue.pc.order.dto.AddTradeResonseDto;
 import com.youxue.pc.order.service.AddOrderPayService;
-import com.youxue.pc.order.service.OrderService;
 
 @Service("addOrderPayService")
 public class AddOrderPayServiceImpl implements AddOrderPayService

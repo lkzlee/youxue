@@ -12,10 +12,12 @@
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
     <result column="notify_time" property="notifyTime" jdbcType="TIMESTAMP" />
     <result column="platform_order_id" property="platformOrderId" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="total_pay_price" property="totalPayPrice" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
     logic_order_id, account_id, create_time, update_time, order_ip, pay_type, pay_status, 
-    pay_time,notify_time, platform_order_id
+    pay_time,notify_time, platform_order_id,total_price,total_pay_price
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
@@ -33,11 +35,12 @@
   <insert id="insert" parameterType="com.youxue.core.vo.LogicOrderVo" >
     insert into tb_logic_order (logic_order_id, account_id, create_time, 
       update_time, order_ip, pay_type, 
-      pay_status, pay_time, platform_order_id
+      pay_status, pay_time, platform_order_id,total_price,total_pay_price
       )
     values (#{logicOrderId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{orderIp,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, 
-      #{payStatus,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, #{platformOrderId,jdbcType=VARCHAR}
+      #{payStatus,jdbcType=INTEGER}, #{payTime,jdbcType=TIMESTAMP}, #{platformOrderId,jdbcType=VARCHAR},
+      #{totalPrice,jdbcType=DECIMAL},#{totalPayPrice,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.LogicOrderVo" >
@@ -70,6 +73,12 @@
       <if test="platformOrderId != null" >
         platform_order_id,
       </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+       <if test="totalPayPrice != null" >
+        total_pay_price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="logicOrderId != null" >
@@ -98,6 +107,12 @@
       </if>
       <if test="platformOrderId != null" >
         #{platformOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPayPrice != null" >
+       #{totalPayPrice,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>

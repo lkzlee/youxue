@@ -1,10 +1,10 @@
-package com.youxue.pc.order.dto;
+package com.youxue.core.service.order.dto;
 
 import com.youxue.core.common.BaseResponseDto;
 
 /***
  * 下单返回参数
- * @author liyongchao
+ * @author lkzlee
  *
  */
 public class AddTradeResonseDto extends BaseResponseDto

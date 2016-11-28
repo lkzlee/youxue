@@ -2,16 +2,19 @@ package com.youxue.core.dao;
 
 import com.youxue.core.vo.CouponCodeVo;
 
-public interface CouponCodeDao {
-    int deleteByPrimaryKey(String codeId);
+public interface CouponCodeDao
+{
+	int deleteByPrimaryKey(String codeId);
 
-    int insert(CouponCodeVo record);
+	int insert(CouponCodeVo record);
 
-    int insertSelective(CouponCodeVo record);
+	int insertSelective(CouponCodeVo record);
 
-    CouponCodeVo selectByPrimaryKey(String codeId);
+	CouponCodeVo selectByPrimaryKey(String codeId);
 
-    int updateByPrimaryKeySelective(CouponCodeVo record);
+	int updateByPrimaryKeySelective(CouponCodeVo record);
 
-    int updateByPrimaryKey(CouponCodeVo record);
+	int updateByPrimaryKey(CouponCodeVo record);
+
+	CouponCodeVo selectCouponByCode(String codeId, boolean lock);
 }

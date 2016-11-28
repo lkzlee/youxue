@@ -1,4 +1,4 @@
-package com.youxue.pc.order.service.impl;
+package com.youxue.core.service.order.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,19 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CommonDao;
+import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
+import com.youxue.core.dao.RefundDao;
+import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.dto.AddTradeItemDto;
+import com.youxue.core.service.order.dto.AddTradeOrderDto;
+import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
-import com.youxue.pc.order.dto.AddTradeItemDto;
-import com.youxue.pc.order.dto.AddTradeOrderDto;
-import com.youxue.pc.order.service.OrderService;
+import com.youxue.core.vo.RefundVo;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService
@@ -36,6 +41,10 @@ public class OrderServiceImpl implements OrderService
 	private LogicOrderDao logicOrderDao;
 	@Resource
 	private OrderPersonDao orderPersonDao;
+	@Resource
+	private CouponCodeDao couponCodeDao;
+	@Resource
+	private RefundDao refundDao;
 	@Resource
 	private CommonDao commonDao;
 	private final static Log log = LogFactory.getLog(OrderServiceImpl.class);
@@ -125,8 +134,8 @@ public class OrderServiceImpl implements OrderService
 			totalMoney = totalMoney.add(orderItem.getTotalPrice());
 			totalPayMoney = totalPayMoney.add(orderItem.getPayPrice());
 		}
-		logicOrderVo.setTotalMoney(totalMoney);
-		logicOrderVo.setTotalPayMoney(totalPayMoney);
+		logicOrderVo.setTotalPrice(totalMoney);
+		logicOrderVo.setTotalPayPrice(totalPayMoney);
 		return logicOrderVo;
 	}
 
@@ -152,9 +161,78 @@ public class OrderServiceImpl implements OrderService
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
 		for (OrderVo order : orderList)
 		{
+			if (!StringUtils.isEmpty(order.getCodeId()))
+			{
+				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(order.getCodeId(), true);
+				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+				{
+					log.fatal("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",order=" + order);
+					throw new BusinessException("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",orderId="
+							+ order.getOrderId());
+				}
+				coupon.setUseCount(coupon.getUseCount() + order.getTotalCount());
+				couponCodeDao.updateByPrimaryKeySelective(coupon);
+			}
+			order.setCodeStatus(OrderVo.PAY);
 			order.setUpdateTime(DateUtil.getCurrentTimestamp());
 			order.setStatus(OrderVo.PAY);
 			orderDao.updateByPrimaryKeySelective(order);
 		}
+	}
+
+	@Override
+	@Transactional
+	public LogicOrderVo refundOrder(String orderId)
+	{
+		OrderVo orderVo = orderDao.selectByPrimaryKey(orderId, true);
+		RefundVo rf = refundDao.selectByPrimaryKey(orderId);
+		LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(orderVo.getLogicOrderId(), false);
+		if (rf != null)
+		{
+			log.fatal("该退款记录已经插入，无需再次插入，直接返回，orderId=" + orderId);
+			return logicOrderVo;
+		}
+		if (orderVo == null)
+		{
+			log.fatal("该订单不存在，不能退款，orderId=" + orderId);
+			throw new BusinessException("该订单不存在，不能退款，orderId=" + orderId);
+		}
+		if (orderVo.getStatus() == OrderVo.CANCEL || orderVo.getStatus() == OrderVo.UNPAY
+				|| orderVo.getStatus() == OrderVo.DONE)
+		{
+			log.fatal("该订单状态不正确不能退款，orderVo=" + orderVo);
+			throw new BusinessException("该订单状态不正确不能退款，orderId=" + orderId + ",status=" + orderVo.getStatus());
+		}
+		orderVo.setStatus(OrderVo.CANCEL);
+		orderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		orderDao.updateByPrimaryKeySelective(orderVo);
+		/***
+		 * 插入退款记录，进行退款
+		 */
+		RefundVo refund = new RefundVo();
+		refund.setOrderId(orderVo.getOrderId());
+		refund.setLogicOrderId(orderVo.getLogicOrderId());
+		refund.setRefundAmount(orderVo.getPayPrice());
+		refund.setStatus(RefundVo.INIT);
+		refund.setCreateTime(DateUtil.getCurrentTimestamp());
+		refund.setPayType(logicOrderVo.getPayType());
+		refundDao.insertSelective(refund);
+		return logicOrderVo;
+	}
+
+	@Override
+	@Transactional
+	public void doRefundNotify(String orderId)
+	{
+		RefundVo refund = refundDao.selectByPrimaryKey(orderId);
+		if (refund == null)
+		{
+			log.fatal("该退款记录不存在，不能退款，orderId=" + orderId);
+			throw new BusinessException("该订单不存在，不能退款，orderId=" + orderId);
+		}
+		refund.setStatus(RefundVo.REFUND);
+		refund.setUpdateTime(DateUtil.getCurrentTimestamp());
+		refundDao.updateByPrimaryKeySelective(refund);
+
 	}
 }

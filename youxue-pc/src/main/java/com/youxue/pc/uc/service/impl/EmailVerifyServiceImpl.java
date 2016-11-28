@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.utils.MD5Utils;
+import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.constant.UrlConstant;
 import com.youxue.core.redis.JedisProxy;
@@ -56,7 +57,8 @@ public class EmailVerifyServiceImpl implements EmailVerifyService
 	private static String calcKeyByUserInfoSalt(String accountId, String nonceStr)
 	{
 		StringBuffer source = new StringBuffer(accountId);
-		source.append(PropertyUtils.getProperty("SystemSecretKey", "DA#%DAD#3665@!DV^#@*$%^#$653CS$%&*@XCVD"));
+		source.append(PropertyUtils
+				.getProperty(CommonConstant.SYSTEM_SECRET, "DA#%DAD#3665@!DV^#@*$%^#$653CS$%&*@XCVD"));
 		source.append(nonceStr);
 		return MD5Utils.getMD5(source.toString());
 	}

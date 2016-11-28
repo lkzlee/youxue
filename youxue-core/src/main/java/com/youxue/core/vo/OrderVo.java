@@ -23,9 +23,13 @@ public class OrderVo implements Serializable
 	 */
 	public static final int TO_OUT = 2;
 	/***
+	 * 完成状态
+	 */
+	public static final int DONE = 3;
+	/***
 	 * 取消状态
 	 */
-	public static final int CANCEL = 3;
+	public static final int CANCEL = 4;
 
 	private String orderId;
 
@@ -230,4 +234,16 @@ public class OrderVo implements Serializable
 	{
 		this.orderIp = orderIp == null ? null : orderIp.trim();
 	}
+
+	@Override
+	public String toString()
+	{
+		return "OrderVo [orderId=" + orderId + ", accountId=" + accountId + ", logicOrderId=" + logicOrderId
+				+ ", codeId=" + codeId + ", status=" + status + ", creatTime=" + creatTime + ", updateTime="
+				+ updateTime + ", campsId=" + campsId + ", totalPrice=" + totalPrice + ", codePrice=" + codePrice
+				+ ", codeStatus=" + codeStatus + ", payPrice=" + payPrice + ", totalCount=" + totalCount
+				+ ", contactName=" + contactName + ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone
+				+ ", orderIp=" + orderIp + "]";
+	}
+
 }

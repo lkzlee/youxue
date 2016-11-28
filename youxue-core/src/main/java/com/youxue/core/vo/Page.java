@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 /***
  * 
  * @author lkzlee
@@ -121,6 +123,22 @@ public class Page<T> implements Serializable
 		page.setPageSize(pageSize);
 		page.setPageNo(pageNo);
 		return page;
+	}
+
+	public static int getPageNo(String pageNo)
+	{
+		int pNum = 1;
+		if (StringUtils.isBlank(pageNo))
+			return pNum;
+		try
+		{
+			pNum = Integer.parseInt(pageNo);
+		}
+		catch (Exception e)
+		{
+			pNum = 1;
+		}
+		return pNum;
 	}
 
 }

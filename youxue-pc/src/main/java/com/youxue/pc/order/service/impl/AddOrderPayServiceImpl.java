@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
@@ -23,16 +24,19 @@ import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.CommonConstant;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.dto.AddTradeOrderDto;
+import com.youxue.core.service.order.dto.AddTradeResonseDto;
+import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderVo;
-import com.youxue.pc.order.dto.AddTradeOrderDto;
-import com.youxue.pc.order.dto.AddTradeResonseDto;
 import com.youxue.pc.order.service.AddOrderPayService;
-import com.youxue.pc.order.service.OrderService;
 
 @Service("addOrderPayService")
 public class AddOrderPayServiceImpl implements AddOrderPayService
@@ -50,6 +54,8 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 	private LogicOrderDao logicOrderDao;
 	@Resource
 	private CampsDao campsDao;
+	@Autowired
+	JedisProxy jedisProxy;
 
 	/***
 	 * 下单总体流程处理
@@ -77,7 +83,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			/***
 			 * 解析构造下单结果，并返回
 			 */
-			BaseResponseDto responseDto = parseOrderParam(param);
+			BaseResponseDto responseDto = parseOrderParam(param, accountId, logicOrderId);
 			LOG.info("@@下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
 			return responseDto;
 		}
@@ -88,7 +94,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		}
 	}
 
-	private BaseResponseDto parseOrderParam(Object param)
+	private BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId)
 	{
 		if (param == null)
 			throw new BusinessException("param为空，下单错误");
@@ -96,12 +102,18 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		if (param instanceof String)
 		{
 			String payUrl = (String) param;
-			responseDto.setPayUrl(payUrl);
+			responseDto.setPayUrl(payUrl);//支付宝直接跳转该连接进行支付
 		}
 		else if (param instanceof WeiXinOrderResultDto)
 		{
 			WeiXinOrderResultDto resultDto = (WeiXinOrderResultDto) param;
-			responseDto.setPayUrl(resultDto.getCode_url());
+			/**
+			 * 微信需要自己构造支付页面因此保存支付链接
+			 */
+			jedisProxy.setex(RedisConstant.getAddUserOrderKey(accountId, logicOrderId), resultDto.getCode_url(), 7200);
+			String wxOrderUrl = PropertyUtils.getProperty(CommonConstant.WEI_XIN_ORDER_URL,
+					"http://127.0.0.1/pay/wxpay.do");
+			responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
 		}
 		else
 		{
@@ -161,7 +173,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		Date expireTime = DateUtil.getIntervalSeconds(logicOrderVo.getCreateTime(), 7200);
 		payResultDto.setTime_start(DateUtil.formatDate(logicOrderVo.getCreateTime(), "yyyyMMddHHmmss"));
 		payResultDto.setTime_expire(DateUtil.formatDate(expireTime, "yyyyMMddHHmmss"));
-		int tradeAmount = logicOrderVo.getTotalPayMoney().multiply(new BigDecimal(100)).intValue();
+		int tradeAmount = logicOrderVo.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();
 		payResultDto.setTotal_fee(tradeAmount);
 		payResultDto.setTrade_type("NATIVE");
 		String subOrderId = "";
@@ -183,7 +195,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		String returnUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_RETURN_URL);
 		payResultDto.setReturn_url(returnUrl);
 		payResultDto.setSubject("游学营地活动");
-		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayMoney()));
+		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayPrice()));
 		//		payResultDto.setBody();
 		return payResultDto;
 	}

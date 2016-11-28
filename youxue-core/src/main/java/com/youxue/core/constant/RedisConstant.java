@@ -10,9 +10,16 @@ public class RedisConstant
 
 	/**购物车*/
 	public static final String SHOP_CART_KEY = "S_CART_";
+	/**购物车*/
+	public static final String ADD_USER_ORDER_KEY = "add_user_order_key_";
 
 	public static String getEmailVerifyKey(String accountId)
 	{
 		return EMAIL_VERIFY_KEY + accountId;
+	}
+
+	public static String getAddUserOrderKey(String accountId, String logicOrderId)
+	{
+		return ADD_USER_ORDER_KEY + accountId + "_" + logicOrderId;
 	}
 }

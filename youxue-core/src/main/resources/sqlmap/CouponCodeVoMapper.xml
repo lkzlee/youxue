@@ -139,4 +139,13 @@
       category_ids = #{categoryIds,jdbcType=VARCHAR}
     where code_id = #{codeId,jdbcType=VARCHAR}
   </update>
+  <select id="selectCouponByCode" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_coupon_code
+    where code_value = #{codeValue,jdbcType=VARCHAR}
+    <if test="lock == true">
+     for update
+    </if>
+  </select>
 </mapper>

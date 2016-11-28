@@ -35,5 +35,7 @@
 		<mapper resource="sqlmap/SurroundProductVoMapper.xml" />
 		<mapper resource="sqlmap/UserCountryRelationVoMapper.xml" />
 		<mapper resource="sqlmap/UserInfoVoMapper.xml" />
+		<mapper resource="sqlmap/RefundVoMapper.xml" />
+		<mapper resource="sqlmap/WordCountVoMapper.xml" />
 	</mappers>
 </configuration>

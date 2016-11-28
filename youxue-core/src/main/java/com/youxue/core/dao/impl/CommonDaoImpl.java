@@ -13,8 +13,8 @@ public class CommonDaoImpl implements CommonDao
 	@Override
 	public String getIdByPrefix(String prefix)
 	{
-		String id = DateUtil.formatDate(DateUtil.getCurrentTimestamp(), DateUtil.DATE_FORMAT_YYYYMMDDHH);
-		id = id + prefix + RandomUuidFactory.getInstance().createUUID(12);
+		String id = DateUtil.formatDate(DateUtil.getCurrentTimestamp(), DateUtil.DATE_FORMAT_YYYYMMDDHHMMSS);
+		id = id + prefix + RandomUuidFactory.getInstance().createUUID(8);
 		return id;
 	}
 }

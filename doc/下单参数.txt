@@ -1,0 +1,51 @@
+登录：
+http://127.0.0.1:8080/verifyCode.do
+http://127.0.0.1:8080/login.do?mobile=18810497384&phoneCode=111&imgCode=fvsk
+
+站内信：
+http://127.0.0.1:8080//uc/usermessage.do
+
+个人订单接口：
+http://127.0.0.1:8080/uc/userorder.do?orderType=0
+
+下单接口：
+http://127.0.0.1:8080/pay/addTradeOrder.do
+
+下单参数：
+{
+    "payType":1,
+    "orderList":[
+        {
+            "campsId":"1",
+	    "codeId":"10002",
+            "totalCount":1,
+            "contactName":"李永超",
+            "contactEmail":"lkzlee@163.com",
+            "contactPhone":"18810593012",
+            "outPersonList":[
+                {
+                    "personName":"赵日天",
+                    "personPhone":"18810593012",
+                    "personIdno":"61032212123412",
+                    "personAddress":"北京中研院"
+                }
+            ]
+        },
+        {
+            "campsId":"2",
+	    "codeId":"10002",
+            "totalCount":1,
+            "contactName":"李永超",
+            "contactEmail":"lkzlee@163.com",
+            "contactPhone":"18810593012",
+            "outPersonList":[
+                {
+                    "personName":"赵日天",
+                    "personPhone":"18810593012",
+                    "personIdno":"61032212123412",
+                    "personAddress":"北京中研院"
+                }
+            ]
+        }
+    ]
+}

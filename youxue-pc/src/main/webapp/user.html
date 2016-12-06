@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-基础资料_Camplink</title>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="js/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/trip-calendar.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+<section class="header">
+    <section class="head1 clear">
+        <div class="left">
+            <a href="#"> </a>
+        </div>
+        <div class="right">
+            <div class="search">
+                <input type="text"><div class="inco"><a href="search.html"></a></div>
+            </div>
+            <div class="car_inco"><a href="user_shoppingCar.html"></a></div>
+            <div class="tel">
+                <div class="inco"><a></a></div>
+                <span>400-126-456</span>
+            </div>
+        </div>
+    </section>
+    <section class="head_nav">
+        <div class="width_content">
+            <nav>
+                <div class="index_icon">
+                    <a href="index.html"><i></i>首页</a>
+                </div>
+                <div class="about_icon ">
+                    <a href="about.html"><i></i>关于我们</a>
+                </div>
+                <div class="news_icon ">
+                    <a href="news.html"><i></i><span>Camplink</span>资讯</a>
+                </div>
+                <div class="private_icon ">
+                    <a href="customized.html"><i></i>私人定制</a>
+                </div>
+                <div class="personal_icon" id="user_active">
+                    <a href="login.html"><i></i>个人中心</a>
+                </div>
+            </nav>
+        </div>
+    </section>
+</section>
+<section class="user_default width_content clear">
+    <ul class="left" id="userList">
+        <li class="liActive"><a href="javascript:void(0)" class="a_userList">个人资料<span></span><i></i></a><!--∨∧-->
+            <ul class="bounceInDown animated">
+                <li><a href="user.html" class="li_a_liActive">基础信息</a></li>
+                <li><a href="user_email_set.html">邮箱验证</a></li>
+                <li><a href="user_message.html">我的消息</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0)" class="a_userList">我的订单<span></span><i></i></a>
+            <ul>
+                <li><a href="user_payment.html">待付款</a></li>
+                <li><a href="user_audit.html">待审核</a></li>
+                <li><a href="user_travel.html">待出行</a></li>
+                <li><a href="user_finish.html">已完成</a></li>
+                <li><a href="user_cancel.html">已取消</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0)" class="a_userList">我的购物车<span></span><i></i></a>
+            <ul>
+                <li><a href="user_shoppingCar.html">购物车</a></li><li><a href="user_product.html">周边产品</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="right_default">
+        <div class="right1">
+            <div class="bghui"></div>
+            <div class="imgMessage">
+                <div class="img">
+                    <img src="uploads/images/photo.jpg" alt="">
+                </div>
+                <a class="message" href="#">
+                    <i></i>
+                    <span>6</span>
+                </a>
+            </div>
+            <div class="hiDiv">
+                <h2>Hi,Cindy!</h2>
+                <span>你的积分，200</span>
+            </div>
+        </div>
+        <div class="right2">
+            <div class="bghui clear">
+                <span>基础信息</span>
+                <a href="#" id="default_edit">编辑</a>
+            </div>
+            <ul class="ul_r2" id="ul_edit">
+                <li id="phone">
+                    <b>手机</b>
+                    <span>15812345678</span>
+                    <input type="text">
+                    <i></i>
+                </li>
+                <li id="email">
+                    <b>邮箱</b>
+                    <span>you@163.com</span>
+                    <input type="text">
+                    <i></i>
+                </li>
+                <li id="nickname">
+                    <b>昵称</b>
+                    <span>Cindy</span>
+                    <input type="text">
+                    <i></i>
+                </li>
+                <li id="sex">
+                    <b>性别</b>
+                    <span>男</span>
+                    <label for="man"><input id="man" type="radio" name="sex" value="男"><em>男</em></label>
+                    <label for="woman"><input id="woman" type="radio" name="sex" value="女"><em>女</em></label>
+                </li>
+                <li id="birthday">
+                    <b>生日</b>
+                    <span>1990-06-29</span>
+                    <input type="text" class="startTime">
+                    <i></i>
+                </li>
+                <li id="loveCity">
+                    <b>喜爱城市</b>
+                    <span>美国；法国</span>
+                    <input type="text">
+                    <i></i>
+                </li>
+            </ul>
+        </div>
+        <div class="right2">
+            <div class="bghui clear">
+                <span>头像信息</span>
+                <a href="javascript:void(0)" id="edit_photo">编辑</a>
+            </div>
+            <div class="photoDiv">
+                <div class="photo1">
+                    <span>头像</span>
+                    <a href="#" id="btn_upload">上传图片</a>
+                    <input type="file" id="file_photo" style="display:none;">
+                    <p>仅支持jpg,png,gif格式文件，大小在2M以内</p>
+                </div>
+                <div class="photo2 clear">
+                    <div class="div1" id="bigPhoto">
+                        <span></span>
+                        <i></i>
+                        <img src="" alt="">
+                    </div>
+                    <div class="div2">
+                        <div class="div200 div201" id="photo_108">
+                            <div><i></i><b></b><img src="" alt=""></div>
+                            <span>108*108px</span>
+                        </div>
+                        <div class="div200 div202" id="photo_100">
+                            <div><i></i><b></b><img src="" alt=""></div>
+                            <span>100*100px</span>
+                        </div>
+                        <div class="div200 div203" id="photo_50">
+                            <div><i></i><b></b><img src="" alt=""></div>
+                            <span>50*50px</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="saveButton">保存</a>
+            </div>
+        </div>
+        <div class="alertMessage">
+            <i class="close">×</i>
+            <h2>Hi,Cindy</h2>
+            <div>
+                <span>你的当前积分：200分</span>
+                <span>积分规则：每消费100元积1分</span>
+                <span>积分越多，优惠越多哦~</span>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="footer">
+    <div class="div1_foot">
+        <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
+        <span class="span2">加入我们：hr@123123123.com</span>
+        <span class="span1">客服电话：400-755-2255</span>
+        <span class="span2">公司邮箱：gongsi@123123123.com</span>
+    </div>
+    <div class="div2_foot">
+        <p class="p1_foot">青古留学 版权所有</p>
+        <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
+    </div>
+</section>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/jquery.easing.min.js"></script>
+<script src="js/ajaxfileupload.js"></script>
+<script src="js/yui-min.js"></script>
+<script src="js/public.js"></script>
+<script src="js/user.js"></script>
+<script>
+    YUI({
+        modules: {
+            'trip-calendar': {
+                fullpath: 'js/trip-calendar.js',
+                type    : 'js',
+                requires: ['css/trip-calendar-css']
+            },
+            'trip-calendar-css': {
+                fullpath: 'css/trip-calendar.css',
+                type    : 'css'
+            }
+        }
+    }).use('trip-calendar', function(Y) {
+        var oCal = new Y.TripCalendar({
+            triggerNode: '.startTime'
+        });
+        //日期点击事件
+        oCal.on('dateclick', function() {
+            var selectedDate = this.get('selectedDate');
+            // alert(selectedDate + '\u3010' + this.getDateInfo(selectedDate) + '\u3011');
+            var birthday=$('#birthday');
+            var binput=birthday.children("input");
+            var i=birthday.find('i');
+            if(dateReg.test(selectedDate)){
+                i.html('正在提交…');
+                //把value通过ajax给后端
+            }else{
+                binput.focus();
+                i.html('请输入正确的生日');
+            }
+        });
+        oCal.set('isHoliday', true)//隐藏节假日
+                .set('count', 1)
+                .set('isSelect', true)
+                .render();
+    });
+    $(function(){
+        //头像编辑
+        var edit_photo=$('#edit_photo');
+        var photoDiv=$('.photoDiv');
+        var file_photo=$('#file_photo');
+        var btn_upload=$('#btn_upload');
+        edit_photo.click(function(){
+            if($(this).html()=="保存"){
+                $(this).html("编辑");
+                photoDiv.fadeOut(300);
+            }else{
+                $(this).html("保存");
+                photoDiv.fadeIn(300);
+                btn_upload.click(function(){
+                    file_photo.click();
+                })
+                file_photo.on('change',function(){
+                    uploadImage($(this).get(0))
+                })
+                function uploadImage(obj) {
+                    var tmpFilePath=obj.value;
+                    if(validateImage(obj)) {
+                        $.ajaxFileUpload({
+                            url:"###",             //需要链接到服务器地址
+                            secureuri:false,
+                            fileElementId:'photo',                         //文件选择框的id属性
+                            dataType: 'json',                                     //服务器返回的格式，可以是json
+                            success: function (data, status)             //相当于java中try语句块的用法
+                            {
+                                alert('上传图片成功')
+                                var bigPhoto=$('#bigPhoto');
+                                changeEl(bigPhoto,data.big1.src);
+                                var photo_108=$('#photo_108');
+                                changeEl(photo_108,data.big2.src);
+                                var photo_100=$('#photo_100');
+                                changeEl(photo_100,data.big3.src);
+                                var photo_50=$('#photo_50');
+                                changeEl(photo_50,data.big4.src);
+
+                                function changeEl(element,src){
+                                    var bi=$('i',element).hide();
+                                    $('img',element).attr({'src':src,'display':'inline-block'});
+                                }
+                            },
+                            error: function (data, status, e)
+                            {
+                                alert('上传图片失败');
+                            }
+                        });
+                    }
+                }
+            }
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

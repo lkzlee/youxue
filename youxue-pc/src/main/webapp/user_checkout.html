@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心-结算订单_Camplink</title>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="js/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/trip-calendar.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+<section class="header">
+    <section class="head1 clear">
+        <div class="left">
+            <a href="#"> </a>
+        </div>
+        <div class="right">
+            <div class="search">
+                <input type="text"><div class="inco"><a href="search.html"></a></div>
+            </div>
+            <div class="car_inco"><a href="user_shoppingCar.html"></a></div>
+            <div class="tel">
+                <div class="inco"><a></a></div>
+                <span>400-126-456</span>
+            </div>
+        </div>
+    </section>
+    <section class="head_nav">
+        <div class="width_content">
+            <nav>
+                <div class="index_icon">
+                    <a href="index.html"><i></i>首页</a>
+                </div>
+                <div class="about_icon ">
+                    <a href="about.html"><i></i>关于我们</a>
+                </div>
+                <div class="news_icon ">
+                    <a href="news.html"><i></i><span>Camplink</span>资讯</a>
+                </div>
+                <div class="private_icon ">
+                    <a href="customized.html"><i></i>私人定制</a>
+                </div>
+                <div class="personal_icon" id="user_active">
+                    <a href="login.html"><i></i>个人中心</a>
+                </div>
+            </nav>
+        </div>
+    </section>
+</section>
+<section class="user_checkout clear">
+    <div class="order_info">
+        <div class="head_width">
+            <div class="width_content">
+                <div class="head">订单信息</div>
+            </div>
+        </div>
+        <div class="width_content cont_order">
+            <div class="div_order clear">
+                <span class="span1">营地名称</span>
+                <span class="span2">单价（元）</span>
+                <span class="span3">数量</span>
+                <span class="span4">合计（元）</span>
+            </div>
+            <div class="div_cont_order">
+                <a href="#" class="a1_order">
+                    <img src="uploads/images/index0_03.jpg" alt="">
+                    <span class="span3">英国亲自营地，5天3地，学习英语文化氛围</span>
+                </a>
+                <span class="span4">5000</span>
+                <span class="span5">1</span>
+                <span class="span6">5000</span>
+            </div>
+        </div>
+        <div class="width_content prople_info">
+            <div class="head">出行人信息</div>
+            <ul class="cont">
+                <li>
+                    <span><i>*</i>出行人信息：</span>
+                    <input type="text" class="input1">
+                </li>
+                <li>
+                    <span><i>*</i>出行人性别：</span>
+                    <label><input type="radio" name="sex" value="0" checked><span>女</span></label>
+                    <label><input type="radio" name="sex" value="1"><span>男</span></label>
+                    <span class="span3"><i>*</i>年龄：</span>
+                    <input type="text" class="input3">
+                </li>
+                <li>
+                    <span><i>*</i>联系电话：</span>
+                    <input type="text" class="input4">
+                </li>
+                <li>
+                    <span><i>*</i>身份证号码：</span>
+                    <input type="text" class="input4">
+                </li>
+                <li>
+                    <span><i>*</i>联系地址：</span>
+                    <div data-toggle="distpicker" class="div_address">
+                        <div class="form-group">
+                            <select class="form-control" id="province1"></select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="city1"></select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="district1"></select>
+                        </div>
+                    </div>
+                    <input type="text" class="input4">
+                </li>
+            </ul>
+        </div>
+        <div class="width_content prople_info contacts">
+            <div class="head">联系人信息</div>
+            <ul class="cont">
+                <li>
+                    <span><i>*</i>联系人姓名：</span>
+                    <input type="text" class="input1">
+                </li>
+                <li>
+                    <span><i>*</i>联系人电话：</span>
+                    <input type="text" class="input4">
+                </li>
+                <li>
+                    <span><i>*</i>电子邮箱：</span>
+                    <input type="text" class="input4">
+                </li>
+            </ul>
+        </div>
+        <div class="width_content prople_info contacts">
+            <div class="head">支付方式</div>
+            <div class="cont_pay">
+                <label>
+                    <input type="radio" name="pay" checked><span>支付宝</span>
+                    <img src="img/alpay.jpg" alt="">
+                </label>
+                <label>
+                    <input type="radio" name="pay"><span>微信支付</span>
+                    <img src="img/weixin.jpg" alt="">
+                </label>
+            </div>
+            <div class="right_cont_pay">
+                <div class="div1">
+                    <label>
+                        <input type="radio">
+                        <span>使用优惠码：</span>
+                    </label>
+                    <input type="text">
+                </div>
+                <div class="div2">
+                    实付款：<i>¥5000</i>元
+                </div>
+                <label class="div3">
+                    <input type="checkbox">
+                    <span>同意<a href="#" id="viewProtocol">用户购买协议</a>，勾选后可提交订单</span>
+                </label>
+                <div class="div4">
+                    <a href="user_shoppingCar.html"> <<返回购物车 </a>
+                    <input type="submit" value="提交订单">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+    <div></div>
+    <div></div>
+</section>
+<div id="showImg">
+    <i></i>
+    <div>
+        <h2>这里是协议的标题</h2>
+        <p>这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容。这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容。<br/><br/><br/><br/>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容。<br/><br/><br/><br/>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容，这里是协议的内容<br>
+            这里是协议的内容。
+        </p>
+    </div>
+</div>
+<section class="footer">
+    <div class="div1_foot">
+        <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
+        <span class="span2">加入我们：hr@123123123.com</span>
+        <span class="span1">客服电话：400-755-2255</span>
+        <span class="span2">公司邮箱：gongsi@123123123.com</span>
+    </div>
+    <div class="div2_foot">
+        <p class="p1_foot">青古留学 版权所有</p>
+        <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
+    </div>
+</section>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/distpicker.data.js"></script>
+<script src="js/distpicker.js"></script>
+<script src="js/public.js"></script>
+<script src="js/user_pay.js"></script>
+</body>
+</html>

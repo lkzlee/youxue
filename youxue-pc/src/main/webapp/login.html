@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Camplink-登录</title>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+    <script src="js/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user.css">
+</head>
+<body>
+<section class="header">
+    <section class="head1 clear">
+        <div class="left">
+            <a href="#"> </a>
+        </div>
+        <div class="right">
+            <div class="search">
+                <input type="text"><div class="inco"><a href="search.html"></a></div>
+            </div>
+            <div class="car_inco"><a href="user_shoppingCar.html"></a></div>
+            <div class="tel">
+                <div class="inco"><a></a></div>
+                <span>400-126-456</span>
+            </div>
+        </div>
+    </section>
+</section>
+<section class="login">
+    <div class="width_content">
+        <div class="login_div">
+            <form action="user.html" method="post" id="form">
+                <h2>会员登录</h2>
+                <div class="textStyle phoneDiv">
+                    <input type="text" placeholder="请输入手机号码" class="phone_input">
+                    <label></label>
+                </div>
+                <div class="textStyle codeDiv">
+                    <input type="password" placeholder="请输入动态密码" class="pwd_input"><a href="javascript:void(0)" class="aCode">获取验证码</a>
+                    <label></label>
+                </div>
+                <div class="textStyle">
+                    <input type="text" placeholder="请输入验证码" class="code_input"><a href="#" class="imgCode"><img src="uploads/images/code.jpg" alt=""></a>
+                    <label></label>
+                </div>
+                <div class="autoLogin">
+                    <label><input type="checkbox" class="autoLog">自动登录</label>
+                </div>
+                <div class="loginButton">
+                    <input type="submit" value="登录">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<section class="footer2">
+    <div class="div2_foot">
+        <p class="p1_foot">青古留学 版权所有</p>
+        <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
+    </div>
+</section>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/public.js"></script>
+<script>
+var phoneReg=/^1[3|4|5|8][0-9]\d{4,8}$/;
+var pwdReg=/^\d{4,6}$/;
+var codeReg=/^[a-z0-9]{0,4}$/;
+$(function(){
+    var form=$('#form');
+    var btnCode=$('.aCode');
+    var address='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method="post";
+    var pwd_input=$('.pwd_input');
+    var pwd_message=pwd_input.siblings('label');
+    var code_input=$('.code_input');
+    var code_message=code_input.siblings('label');
+    var time=120,time_i=0;
+    btnCode.click(function(){
+        var pwd_value=pwd_input.val();
+        var data={
+            phone:pwd_value
+        };
+        var This=$(this);
+        var timer=setInterval(function(){
+            time_i++;
+            var i=time-time_i;
+            This.html(i+'秒后重新获取');
+            if(i==0){
+                clearInterval(timer);
+            }
+        },1000);
+        login_post(address,ObjTrans(data),method,successFn,errorFn);
+        function successFn(){
+            pwd_message.show().html('验证码已成功发送');
+        }
+        function errorFn(){
+            pwd_message.show().html('验证码发送失败');
+        }
+    });
+    form.submit(function(){
+        phone_input=$('.phone_input');
+        var phone_value=phone_input.val();
+        var phone_message=phone_input.siblings('label');
+        if(phone_value.length==11 && phoneReg.test(phone_value)){//验证没有问题
+            phone_message.hide().html('');
+        }else{
+            phone_input.focus();
+            phone_message.show().html('请输入正确的手机');
+            return false;
+        }
+        var pwd_value=pwd_input.val();
+        if(pwd_value.length>3 && pwd_value.length<7 && pwdReg.test(pwd_value)){//验证没有问题
+            pwd_message.hide().html('');
+        }else{
+            pwd_input.focus();
+            pwd_message.show().html('请输入正确的动态密码');
+            return false;
+        }
+        var code_value=code_input.val();
+        if(code_value.length==4 && codeReg.test(code_value)){//验证没有问题
+            code_message.hide().html('');
+        }else{
+            code_input.focus();
+            code_message.show().html('请输入正确的验证码');
+            return false;
+        }
+    })
+})
+</script>
+</body>
+</html>

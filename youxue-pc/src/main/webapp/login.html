@@ -31,18 +31,18 @@
 <section class="login">
     <div class="width_content">
         <div class="login_div">
-            <form action="user.html" method="post" id="form">
+            <form action="/login.do" method="post" id="form">
                 <h2>会员登录</h2>
                 <div class="textStyle phoneDiv">
-                    <input type="text" placeholder="请输入手机号码" class="phone_input">
+                    <input type="text" placeholder="请输入手机号码" class="phone_input" name="mobile">
                     <label></label>
                 </div>
                 <div class="textStyle codeDiv">
-                    <input type="password" placeholder="请输入动态密码" class="pwd_input"><a href="javascript:void(0)" class="aCode">获取验证码</a>
+                    <input type="password" placeholder="请输入动态密码" class="pwd_input" name="phoneCode"><a href="javascript:void(0)" class="aCode">获取验证码</a>
                     <label></label>
                 </div>
                 <div class="textStyle">
-                    <input type="text" placeholder="请输入验证码" class="code_input"><a href="#" onclick="refreshImgCode();return false;"  class="imgCode"><img src="/verifyCode.do" alt="" id="imgCode"></a>
+                    <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode"><a href="#" onclick="refreshImgCode();return false;"  class="imgCode"><img src="/verifyCode.do" alt="" id="imgCode"></a>
                     <label></label>
                 </div>
                 <div class="autoLogin">
@@ -75,16 +75,17 @@ var codeReg=/^[a-z0-9]{0,4}$/;
 $(function(){
     var form=$('#form');
     var btnCode=$('.aCode');
-    var address='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method="post";
+    var address='/mobileCode.do',method="post";
     var pwd_input=$('.pwd_input');
     var pwd_message=pwd_input.siblings('label');
     var code_input=$('.code_input');
     var code_message=code_input.siblings('label');
     var time=120,time_i=0;
     btnCode.click(function(){
-        var pwd_value=pwd_input.val();
+    	var phone_input=$('.phone_input');
+        var phone=phone_input.val();
         var data={
-            phone:pwd_value
+            phone:phone
         };
         var This=$(this);
         var timer=setInterval(function(){

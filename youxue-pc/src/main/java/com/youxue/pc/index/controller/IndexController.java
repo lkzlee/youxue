@@ -41,6 +41,12 @@ public class IndexController extends BaseController
 	@Autowired
 	JedisProxy jedisProxy;
 
+	@RequestMapping("/index.do")
+	public String index(HttpServletRequest request, HttpServletResponse response)
+	{
+		return "index";
+	}
+
 	/**
 	 * @param request
 	 * @param response

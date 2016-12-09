@@ -117,13 +117,13 @@ public class LoginController extends BaseController
 	 */
 	@RequestMapping("/mobileCode.do")
 	@ResponseBody
-	public String mobileCode(HttpServletRequest request, HttpServletResponse response, String mobile)
+	public String mobileCode(HttpServletRequest request, HttpServletResponse response, String phone)
 	{
-		if (StringUtils.isBlank(mobile) || !CommonUtil.isValidMobile(mobile))
+		if (StringUtils.isBlank(phone) || !CommonUtil.isValidMobile(phone))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请输入合法手机号"));
 		}
-		return JsonUtil.serialize(mobileCodeService.sendMobileCode(mobile));
+		return JsonUtil.serialize(mobileCodeService.sendMobileCode(phone));
 	}
 
 	/**

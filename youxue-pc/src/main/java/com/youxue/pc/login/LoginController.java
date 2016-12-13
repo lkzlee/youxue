@@ -20,6 +20,7 @@ import com.lkzlee.pay.utils.CommonUtil;
 import com.netease.is.image.CheckCode_a;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.ImgConstant;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.UserInfoDao;
@@ -64,12 +65,15 @@ public class LoginController extends BaseController
 	@RequestMapping("/login.do")
 	@ResponseBody
 	public String login(HttpServletRequest request, HttpServletResponse response, String mobile, String phoneCode,
-			String imgCode)
+			String imgCode, Integer autoLog)
 	{
-
 		if (StringUtils.isBlank(mobile) || StringUtils.isBlank(phoneCode) || StringUtils.isBlank(imgCode))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("登录参数缺失！"));
+		}
+		if (autoLog == null || autoLog < 0 || autoLog > 1)
+		{
+			autoLog = 0;
 		}
 		if (!PropertyUtils.getProperty("ignoreCheckMobile").contains(mobile))
 		{
@@ -107,6 +111,13 @@ public class LoginController extends BaseController
 		}
 		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
 		ControllerUtil.setCurrentLoginUserName(request, mobile);
+		if (autoLog == 1)
+		{
+			Cookie cookie = new Cookie(CommonConstant.AUTO_LOGIN_COOKIE, request.getSession().getId());
+			cookie.setMaxAge(7 * 24 * 3600);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+		}
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));
 	}
 

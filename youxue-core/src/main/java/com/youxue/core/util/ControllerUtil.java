@@ -1,9 +1,16 @@
 package com.youxue.core.util;
 
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.youxue.core.constant.CommonConstant;
+import com.youxue.core.redis.JedisProxy;
 
 public class ControllerUtil
 {
@@ -42,14 +49,30 @@ public class ControllerUtil
 	public static String getCurrentLoginUserName(HttpServletRequest request)
 	{
 		String userName = null;
+
 		if (request.getSession().getAttribute(SESSION_LOGIN_USER_KEY) != null)
 		{
 			userName = String.valueOf(request.getSession().getAttribute(SESSION_LOGIN_USER_KEY));
 		}
 		else
 		{
-			//			String[] cookSSn = CookieUtil.getSsnFromCookie(request);
-			//			userName = cookSSn[1];
+			Cookie[] cookies = request.getCookies();
+			for (Cookie cookie : cookies)
+			{
+				if (cookie.getName().equals(CommonConstant.AUTO_LOGIN_COOKIE))
+				{
+					if (StringUtils.isBlank(cookie.getValue()))
+					{
+						return "";
+					}
+					Map map = (Map) ((JedisProxy) SpringContextHolder.getBean("jedisProxy")).hessianGet(cookie
+							.getValue());
+					if (map == null)
+						return null;
+					return (String) map.get(SESSION_LOGIN_USER_KEY);
+
+				}
+			}
 		}
 
 		if (userName != null)
@@ -61,5 +84,4 @@ public class ControllerUtil
 			return userName;
 		}
 	}
-
 }

@@ -11,7 +11,7 @@ public class SessionService
 
 	private static volatile SessionService instance = null;
 
-	public static Integer SESSION_TIMEOUT = 2400; //session超时时间,40分钟
+	public static Integer SESSION_TIMEOUT = 7 * 24 * 3600; //7天
 
 	public static SessionService getInstance()
 	{

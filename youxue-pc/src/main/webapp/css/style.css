@@ -121,8 +121,8 @@ a:active{}
     -moz-osx-font-smoothing: grayscale;
 }
 /*分页*/
-.page{padding-top:34px;text-align:center;}
-.page span,.page a{display:inline-block;width:30px;height:30px;line-height:30px;vertical-align:middle;}
+.page{padding-top:34px;text-align:center;font-size:0;}
+.page span,.page a{margin-right:3px;display:inline-block;width:30px;height:30px;line-height:30px;font-size:14px;vertical-align:middle;}
 .page a{border:solid 1px #5c5c5c;background:#eee;color:#5c5c5c;transition:.5s;}
 .page a:hover,.page a.firstPage:hover,.page a.endPage:hover{border-color:#eee;background:#29abe2;color:#fff;}
 .page a.firstPage,.page a.endPage{font-size:24px;font-weight:700;background:#666;color:#fff;border:none;font-family: "simsun";}

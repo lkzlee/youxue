@@ -14,9 +14,12 @@ i{font-family: "simsun";}
 .login_div .textStyle input{padding:0 5px;width:102px;margin-right:4px;height:25px;border:solid 1px #fff;border-radius:2px;vertical-align:middle;}
 .login_div .textStyle label{display:block;color:red;}
 .login_div .textStyle a{vertical-align:middle;}
-.login_div .textStyle a.aCode{display:inline-block;padding: 5px 2px;width:108px;height:16px;line-height:16px;border:solid 1px #fff;color:#fff;border-radius:5px;font-size:12px;text-align:center;}
-.login_div .textStyle a.aCode:hover{background:#29abe2;border-color:#29abe2;}
+.login_div .textStyle input.aCode{padding:0;margin:0;width:112px;height:26px;border:solid 1px #fff;color:#fff;border-radius:5px;font-size:12px;text-align:center;background:none;}
+.login_div .textStyle input.aCode:hover{background:#29abe2;border-color:#29abe2;}
+.login_div .textStyle input.disable,.login_div .textStyle input.disable:hover{background: #eee;color: #828282;border-color: #eee;}
+.login_div .loginButton input.disable,.login_div .loginButton input.disable:hover{background: #eee;color: #828282;border-color: #eee;box-shadow: inset 0 -6px 31px -14px #221d1d;}
 .login_div .textStyle a.imgCode{display:inline-block;width:70px;text-align:right;}
+.login_div .textStyle a.imgCode img{width:61px;height:27px;}
 .login_div .phoneDiv{padding-top:37px;}
 .login_div .phoneDiv input{margin-right:0;width:218px;color:#666;}
 .login_div .autoLogin{padding-top:17px;line-height:12px;color:#fff;}

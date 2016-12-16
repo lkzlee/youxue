@@ -66,6 +66,40 @@ public class UserCenterController extends BaseController
 	}
 
 	/**
+	 * 用户信息修改
+	 * @param request
+	 * @param response
+	 * @param userPhotoUrl
+	 * @return
+	 */
+	@RequestMapping("/uc/updateUserInfo.do")
+	@ResponseBody
+	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, UserInfoVo userInfo)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		/***
+		 * 这几个值不能进行设置
+		 */
+
+		userInfo.setCreateIp(null);
+		userInfo.setCredit(null);
+		userInfo.setEmail(null);
+		userInfo.setEmailActiveStatus(null);
+		userInfo.setPhotoUrl(null);
+		/**
+		 * 设置附加属性
+		 */
+		userInfo.setAccountId(accountId);
+		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
+		if (success <= 0)
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户头像更新成功"));
+	}
+
+	/**
 	 * 用户头像修改
 	 * @param request
 	 * @param response
@@ -84,6 +118,7 @@ public class UserCenterController extends BaseController
 		UserInfoVo userInfo = new UserInfoVo();
 		userInfo.setAccountId(accountId);
 		userInfo.setPhotoUrl(userPhotoUrl);
+		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
 		if (success <= 0)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));

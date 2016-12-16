@@ -1,7 +1,5 @@
 package com.youxue.core.constant;
 
-import java.io.File;
-
 import org.apache.commons.lang.StringUtils;
 
 import com.youxue.core.util.PropertyUtils;
@@ -21,26 +19,39 @@ public class ImgConstant
 	 */
 	public static String getImgFilePath(String imgPath)
 	{
-		String filePath = "D:/img/" + imgPath;
+		String filePath = PropertyUtils.getProperty("img.root.dir", "/home/qinggu/img/") + imgPath;
 		return filePath;
 	}
 
+	public static String getHttpImgUrls(String imgPaths)
+	{
+		if (StringUtils.isBlank(imgPaths))
+			return "";
+		String[] imgs = imgPaths.split(",");
+		String httpPaths = "";
+		for (String img : imgs)
+		{
+			httpPaths = httpPaths + getHttpImgUrl(img) + ",";
+		}
+		httpPaths = httpPaths.substring(0, httpPaths.length() - 1);
+		return httpPaths;
+	}
+
 	/**
-	 * @param imgUrl 图片类型,如camps
-	 * @param imgFileName 文件名，临时生成如campsId
 	 * @return 根据数据库中图片路径获取图片的http路径
 	 */
-	public static String getHttpImgUrl(String imgType, String imgFileName)
+	private static String getHttpImgUrl(String imgPath)
 	{
-		if (StringUtils.isBlank(imgType) || StringUtils.isBlank(imgFileName))
+		if (StringUtils.isBlank(imgPath))
 			return "";
-		String httpUrl = PropertyUtils.getProperty("ImgDomain", "http://localhost:8080/img/") + imgType
-				+ File.separator + imgFileName;
+		//		String httpUrl = "http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/" + imgPath;
+		String httpUrl = PropertyUtils.getProperty("ImgDomain",
+				"http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/") + imgPath;
 		return httpUrl;
 	}
 
 	public static void main(String[] args)
 	{
-		System.out.println(PropertyUtils.getProperty("ImgDomain", "http://localhost:8080/img/") + "aaa/test.png");
+		System.out.println(getHttpImgUrls("png/2,jpg/3"));
 	}
 }

@@ -3,6 +3,8 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.youxue.core.constant.ImgConstant;
+
 public class CampsVo
 {
 	public final static int NORMAL = 0;
@@ -16,6 +18,7 @@ public class CampsVo
 	private String campsDesc;
 
 	private String campsImages;
+	private String realCampsImages;
 
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
@@ -327,4 +330,15 @@ public class CampsVo
 	{
 		this.durationTime = durationTime;
 	}
+
+	public String getRealCampsImages()
+	{
+		return ImgConstant.getHttpImgUrls(campsImages);
+	}
+
+	public void setRealCampsImages(String realCampsImages)
+	{
+		this.realCampsImages = realCampsImages;
+	}
+
 }

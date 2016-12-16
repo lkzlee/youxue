@@ -1,4 +1,4 @@
-package com.youxue.pc.index.dto;
+package com.youxue.pc.campsDetail.dto;
 
 import java.util.List;
 

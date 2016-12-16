@@ -42,7 +42,7 @@
                     <label></label>
                 </div>
                 <div class="textStyle">
-                    <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode"><a href="javascript:void(0)" class="imgCode"><img src="/verifyCode.do" alt="" id="imgCode"></a>
+                    <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode"><a href="javascript:void(0)" class="imgCode"><img src="verifyCode.do" alt="" id="imgCode"></a>
                     <label></label>
                 </div>
                 <div class="autoLogin">
@@ -72,11 +72,11 @@ $(function(){
     imgCode.click(function(){
         var img = $("#imgCode");
         img.removeAttr('src');
-        img.attr('src',"/verifyCode.do");
+        img.attr('src',"verifyCode.do");
     })
     var form=$('#form');
     var btnCode=$('.aCode');
-    var address='/mobileCode.do',method="post";
+    var address='mobileCode.do',method="post";
     var phone_input=$('.phone_input');
     var pwd_input=$('.pwd_input');
     var pwd_message=pwd_input.siblings('label');
@@ -147,7 +147,7 @@ $(function(){
             'imgCode':code_value,
             'autoLog':autoLog.is(':checked')
         };
-        login_post('/login.do',data,method,successFn,errorFn);
+        login_post('login.do',data,method,successFn,errorFn);
         function successFn(json_data){
             var data=JSON.parse(json_data);
             if(data.result==100){

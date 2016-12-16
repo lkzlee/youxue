@@ -1,5 +1,7 @@
 package com.youxue.core.vo;
 
+import com.youxue.core.constant.ImgConstant;
+
 public class CategoryVo
 {
 	private String categoryId;
@@ -7,6 +9,7 @@ public class CategoryVo
 	private String categoryName;
 
 	private String categoryUrl;
+	private String realCategoryUrl;
 
 	private Integer categoryType;
 	private Integer categoryWeight;
@@ -60,4 +63,10 @@ public class CategoryVo
 	{
 		this.categoryWeight = categoryWeight;
 	}
+
+	public String getRealCategoryUrl()
+	{
+		return ImgConstant.getHttpImgUrls(categoryUrl);
+	}
+
 }

@@ -34,7 +34,11 @@ public class ImgController
 		{
 			return;
 		}
-		String filePath = ImgConstant.getImgFilePath(imgType + File.separator + imgName + ".png");
+		if (!"png".equals(imgType) && !"jpg".equals(imgType))
+		{
+			return;
+		}
+		String filePath = ImgConstant.getImgFilePath(imgType + File.separator + imgName + "." + imgType);
 		File file = new File(filePath);
 		if (file == null || !file.exists())
 		{
@@ -42,8 +46,8 @@ public class ImgController
 			return;
 		}
 		BufferedImage image = ImageIO.read(file);
-		response.setContentType("image/png");
+		response.setContentType("image/" + imgType);
 		OutputStream os = response.getOutputStream();
-		ImageIO.write(image, "png", os);
+		ImageIO.write(image, imgType, os);
 	}
 }

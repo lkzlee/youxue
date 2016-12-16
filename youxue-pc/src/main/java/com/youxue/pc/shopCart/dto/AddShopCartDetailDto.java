@@ -3,9 +3,10 @@ package com.youxue.pc.shopCart.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.vo.CampsVo;
 
-public class AddShopCartDetailDto implements Serializable
+public class AddShopCartDetailDto extends BaseResponseDto implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private int count;//该营地在收藏车中的数量

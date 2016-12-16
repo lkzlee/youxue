@@ -96,6 +96,13 @@
      <if test="minDays != null" >
         and duration_time &gt;= #{minDays} and duration_time &lt;=#{maxDays}
       </if>
+      <if test="searchContent != null" >
+        and (
+        	camps_name LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
+        	camps_title LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
+        	camps_locale LIKE CONCAT('%',CONCAT(#{searchContent},'%'))
+        	)
+      </if>
     </where>
   </select>
   <select id="selectByCampsIds" resultMap="BaseResultMap" parameterType="java.util.List" >

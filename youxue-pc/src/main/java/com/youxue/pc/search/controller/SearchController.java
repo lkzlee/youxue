@@ -101,6 +101,7 @@ public class SearchController extends BaseController
 			if (StringUtils.isNotBlank(searchContent))
 			{
 				queryConditions.put("searchContent", searchContent);
+				LOG.info("searchContent:" + searchContent);
 				jedisProxy.hincrBy(RedisConstant.SEARCH_MAP_KEY, searchContent, 1);
 			}
 			SearchResultDto dto = new SearchResultDto();

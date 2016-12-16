@@ -16,12 +16,14 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CampsTraceDao;
+import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.ReflectUtil;
 import com.youxue.core.vo.CampsTraceVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.pc.campsDetail.dto.CampsDetailDto;
+import com.youxue.pc.shopCart.dto.CampsListDto;
 
 /**
  * @author Masterwind
@@ -64,6 +66,28 @@ public class CampsDetailController extends BaseController
 			LOG.error("error during campsDetail,campsId:" + campusId);
 		}
 		campsDto.setTraces(traces);
+		campsDto.setResult(100);
 		return JsonUtil.serialize(campsDto);
+	}
+
+	@RequestMapping("/getCampsListByCategory.do")
+	@ResponseBody
+	public String getCampsListByCategory(HttpServletRequest request, HttpServletResponse response,
+			Integer categoryType, Integer count, Integer pageNo)
+	{
+		if (categoryType == null || CategoryTypeEnum.getByValue(categoryType) == null)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数不合法"));
+		}
+		if (count == null || count <= 0 || count > 50)
+			count = 10;
+		if (pageNo == null || pageNo <= 0)
+			pageNo = 1;
+		CampsListDto campsListDto = new CampsListDto();
+		List<CampsVo> campsList = campsDao
+				.getCampusListByType(CategoryTypeEnum.getByValue(categoryType), pageNo, count);
+		campsListDto.setCampsList(campsList);
+		campsListDto.setResult(100);
+		return JsonUtil.serialize(campsListDto);
 	}
 }

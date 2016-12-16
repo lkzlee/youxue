@@ -44,11 +44,11 @@ public class ShopCartController extends BaseController
 	/**
 	 * @param request
 	 * @param response
-	 * 加入购物车页面
+	 * 加入购物车详情页面
 	 */
-	@RequestMapping("/addCartItemDetail.do")
+	@RequestMapping("/shopCartDetail.do")
 	@ResponseBody
-	public String addCartItemDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
+	public String shopCartDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
@@ -74,10 +74,11 @@ public class ShopCartController extends BaseController
 			jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, currentCount);
 		}
 		AddShopCartDetailDto dto = new AddShopCartDetailDto();
+		dto.setResult(100);
 		dto.setCamps(camps);
 		dto.setCount(currentCount);
 
-		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 3);
+		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 10);
 		dto.setHotCamps(hotCampsList);
 		return JsonUtil.serialize(dto);
 	}

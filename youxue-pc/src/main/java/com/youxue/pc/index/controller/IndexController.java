@@ -21,7 +21,7 @@ import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CategoryVo;
-import com.youxue.pc.index.dto.CategoryListDto;
+import com.youxue.pc.campsDetail.dto.CategoryListDto;
 import com.youxue.pc.index.dto.IndexCampsDetailsDto;
 
 /**
@@ -50,16 +50,15 @@ public class IndexController extends BaseController
 	/**
 	 * @param request
 	 * @param response
-	 * 查询国家列表、要做什么列表
+	 * 获取类别列表:如查询国家列表、要做什么列表
 	 */
 	@RequestMapping("/getCategroyList.do")
 	@ResponseBody
 	public String getCategroyList(HttpServletRequest request, HttpServletResponse response, Integer categoryType)
 	{
-		if (categoryType == null
-				|| (categoryType != CategoryTypeEnum.LOCALE.getValue() && categoryType != CategoryTypeEnum.TODO
-						.getValue()))
+		if (categoryType == null || CategoryTypeEnum.getByValue(categoryType) == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数不合法"));
+		LOG.info("getCategroyList,categoryType:" + categoryType);
 		CategoryListDto dto = new CategoryListDto();
 		dto.setResult(100);
 		List<CategoryVo> categoryList = catetoryDao.selectByCategoryType(categoryType);

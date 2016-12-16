@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
@@ -28,6 +28,10 @@
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
@@ -55,12 +59,8 @@
 		</jsp-property-group>
 	</jsp-config>
 
-	<!-- Spring 刷新Introspector防止内存泄露 
-	<listener>
-		<listener-class>
-			org.springframework.web.util.IntrospectorCleanupListener
-		</listener-class>
-	</listener>-->
+	<!-- Spring 刷新Introspector防止内存泄露 <listener> <listener-class> org.springframework.web.util.IntrospectorCleanupListener 
+		</listener-class> </listener> -->
 
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>

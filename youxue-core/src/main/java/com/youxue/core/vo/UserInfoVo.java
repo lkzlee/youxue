@@ -3,8 +3,15 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class UserInfoVo
+import com.youxue.core.common.BaseResponseDto;
+
+public class UserInfoVo extends BaseResponseDto
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String accountId;
 
 	private String nickName;

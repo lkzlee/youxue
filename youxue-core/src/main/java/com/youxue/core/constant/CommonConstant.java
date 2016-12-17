@@ -13,4 +13,6 @@ public class CommonConstant
 
 	public static final String AUTO_LOGIN_COOKIE = "autoLoginId";
 
+	public static final String UPLOAD_FILE_BASE_PATH = "uploadFileBasePath";
+
 }

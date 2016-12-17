@@ -70,13 +70,14 @@ public class ImgController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("上传文件不存在"));
 		try
 		{
-			String path = request.getSession().getServletContext().getRealPath("upload");
 			String fileName = uploadFile.getOriginalFilename();
 			String prefix = DateUtil.formatNowTime(DateUtil.FMT_DATE_YYYYMMDDHHMMSS);
-			fileName = fileName.substring(0, fileName.indexOf(".")) + "_" + prefix
-					+ fileName.substring(fileName.indexOf("."));
-			log.info("文件路径:" + path + ",文件名：fileName=" + fileName);
-			File targetFile = new File(path, fileName);
+			String headName = fileName.substring(0, fileName.indexOf("."));
+			String suffix = fileName.substring(fileName.indexOf(".") + 1);
+			String realdFileName = headName + "_" + prefix + "." + suffix;
+			String filePath = ImgConstant.getImgFilePath(suffix + File.separator + realdFileName);
+			log.info("文件路径:" + filePath + ",文件名：fileName=" + fileName);
+			File targetFile = new File(filePath);
 			if (!targetFile.exists())
 			{
 				targetFile.mkdirs();
@@ -84,7 +85,7 @@ public class ImgController
 			uploadFile.transferTo(targetFile);
 			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 					+ request.getContextPath();
-			String httpFileUrl = basePath + "/upload/" + fileName;
+			String httpFileUrl = basePath + "/img/" + suffix + "/" + realdFileName;
 			ImageResultDto resultDto = new ImageResultDto();
 			resultDto.setImageUlr(httpFileUrl);
 			resultDto.setResult(100);

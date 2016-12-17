@@ -220,6 +220,7 @@ public class UserCenterController extends BaseController
 		{
 			String suffixEmail = userInfo.getEmail().split("@")[1];
 			String emailUrl = EmailActiveStatusConstant.emailUrl.get(suffixEmail);
+			emailDto.setActiveEmail(userInfo.getEmail());
 			emailDto.setActiveEmailUrl(emailUrl);
 		}
 		else

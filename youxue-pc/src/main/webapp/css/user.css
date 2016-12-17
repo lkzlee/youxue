@@ -136,6 +136,10 @@ i{font-family: "simsun";}
     background: -moz-linear-gradient(top,  #6bdc7f,  #3ca33c);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6bdc7f', endColorstr='#3ca33c');
 }
+.setEmail_right .email_div2 div b i.error{
+    border-color:red;
+    background: red;
+}
 .setEmail_right .email_div2 .next_div{padding-top:89px;padding-left:156px;line-height:48px;text-align:center;}
 .setEmail_right .email_div2 .next_div input{width:240px;height:48px;font-size:16px;border-radius:2px;border-color:#8b8b8b;background:#fff;color:#8b8b8b;cursor:pointer;}
 .setEmail_right .activation_div2{padding-top:58px;margin:0 auto;width:522px;height:96px;line-height:48px;text-align:center;font-size:18px;color:#666;}

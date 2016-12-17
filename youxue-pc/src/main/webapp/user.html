@@ -235,10 +235,7 @@
                 .render();
     });
     $(function(){
-        //获取渲染基础信息
         render_userinfo();
-        //首页基础信息编辑
-        user_edit();
         //个人首页，点击编辑，显示文本框，并自动保存提交
         user_edit_photo('/uc/updatePhoto.do',sucessFn);
         function sucessFn(data){
@@ -262,14 +259,16 @@
             }
         }
     })
+    //获取渲染基础信息
     function render_userinfo(){
         login_post('/uc/userinfo.do','','',function(data){
             data=JSON.parse(data);
+//            console.log(data);
             //虚拟的数据
-            data.ifPop=false;//是否弹窗
+//            data.ifPop=false;//是否弹窗
             data.result=100;
-            data.gender=1;
-            data.birthTime='2015-10-23';
+//            data.gender=1;
+//            data.birthTime='2015-10-23';
             user_success(data,function(){
                 var users=data;
                 render_alert(users);
@@ -310,6 +309,8 @@
         var loveCity=$('#loveCity');
         var span=loveCity.children('span');
         span.text(users.loveCity);
+        //首页基础信息编辑
+        user_edit();
     }
 </script>
 </body>

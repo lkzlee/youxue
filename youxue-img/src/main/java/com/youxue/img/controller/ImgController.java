@@ -82,7 +82,9 @@ public class ImgController
 				targetFile.mkdirs();
 			}
 			uploadFile.transferTo(targetFile);
-			String httpFileUrl = request.getContextPath() + "/upload/" + fileName;
+			String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+					+ request.getContextPath();
+			String httpFileUrl = basePath + "/upload/" + fileName;
 			ImageResultDto resultDto = new ImageResultDto();
 			resultDto.setImageUlr(httpFileUrl);
 			resultDto.setResult(100);

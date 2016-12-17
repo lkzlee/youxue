@@ -95,8 +95,8 @@ public class UserCenterController extends BaseController
 		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
 		if (success <= 0)
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));
-		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户头像更新成功"));
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，修改信息失败"));
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户信息修改成功"));
 	}
 
 	/**

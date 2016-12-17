@@ -1,5 +1,7 @@
 package com.youxue.core.dao;
 
+import java.util.List;
+
 import com.youxue.core.vo.MessageVo;
 import com.youxue.core.vo.Page;
 
@@ -20,4 +22,6 @@ public interface MessageDao
 	Page<MessageVo> selectPageMessageByType(Page<MessageVo> page, String accountId, String startDate);
 
 	int selectUnReadCount(String accountId, String startDate);
+
+	int markMessageReadDone(String accountId, List<String> msgIdList);
 }

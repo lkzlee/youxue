@@ -1,6 +1,7 @@
 package com.youxue.core.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -74,5 +75,14 @@ public class MessageDaoImpl extends BaseDao implements MessageDao
 		}
 		param.put("accountId", accountId);
 		return sqlSessionTemplate.selectOne("com.youxue.core.dao.MessageDao.selectUnReadCount", param);
+	}
+
+	@Override
+	public int markMessageReadDone(String accountId, List<String> msgIdList)
+	{
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("msgIdList", msgIdList);
+		param.put("accountId", accountId);
+		return sqlSessionTemplate.update("com.youxue.core.dao.MessageDao.markMessageReadDone", param);
 	}
 }

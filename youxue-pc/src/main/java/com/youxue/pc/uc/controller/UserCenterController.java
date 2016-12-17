@@ -158,7 +158,7 @@ public class UserCenterController extends BaseController
 
 	@RequestMapping("/uc/emailInfo.do")
 	@ResponseBody
-	public String emailInfo(HttpServletRequest request, HttpServletResponse response)
+	public String emailInfo(HttpServletRequest request, HttpServletResponse response, String ifModify)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
@@ -168,6 +168,10 @@ public class UserCenterController extends BaseController
 		if (userInfo == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
 		EmailActiveDto emailDto = getResultEmailDto(userInfo);
+		if (StringUtils.isNotBlank(ifModify) && "1".equals(ifModify))
+		{
+			emailDto.setActiveStatus(EmailActiveStatusConstant.INIT);
+		}
 		return JsonUtil.serialize(emailDto);
 
 	}

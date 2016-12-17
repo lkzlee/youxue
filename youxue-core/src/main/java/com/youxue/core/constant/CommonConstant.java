@@ -12,5 +12,4 @@ public class CommonConstant
 	public static final String SYSTEM_SECRET = "systemSecret";
 
 	public static final String AUTO_LOGIN_COOKIE = "autoLoginId";
-
 }

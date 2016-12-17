@@ -66,6 +66,8 @@ public class UserCenterController extends BaseController
 			jedisProxy.setex(RedisConstant.getUserOrderIfPopCreditKey(accountId), "1", 24 * 60 * 60);
 		}
 		userInfo.setIfPop(ifPop ? false : true);
+		userInfo.setResult(100);
+		userInfo.setResultDesc("查询成功");
 		LOG.info("查询用户信息为：userInfo=" + userInfo);
 		return JsonUtil.serialize(userInfo);
 
@@ -218,6 +220,7 @@ public class UserCenterController extends BaseController
 		{
 			String suffixEmail = userInfo.getEmail().split("@")[1];
 			String emailUrl = EmailActiveStatusConstant.emailUrl.get(suffixEmail);
+			emailDto.setActiveEmail(userInfo.getEmail());
 			emailDto.setActiveEmailUrl(emailUrl);
 		}
 		else

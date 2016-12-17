@@ -50,6 +50,8 @@ public class MailUtil
 			props.put("mail.smtp.host", PropertyUtils.getProperty("smtp.host", "smtp.126.com"));
 			// Get session
 			props.put("mail.smtp.auth", "true");//这样才能通过验证
+			log.info("@@-----发邮件相关配置mail smtp.user=" + from + ",smtp.passwd="
+					+ PropertyUtils.getProperty("smtp.passwd", "xxx"));
 			authenticator.setStrUser(from);
 			authenticator.setStrPwd(PropertyUtils.getProperty("smtp.passwd", "xxx"));
 			session = Session.getDefaultInstance(props, authenticator);

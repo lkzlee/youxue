@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * properties帮助类
@@ -16,7 +17,7 @@ import org.apache.log4j.Logger;
 public class PropertyUtils
 {
 
-	private static Logger logger = Logger.getLogger(PropertyUtils.class);
+	private static Log logger = LogFactory.getLog(PropertyUtils.class);
 
 	private static final String config = "config.properties";
 
@@ -81,6 +82,7 @@ public class PropertyUtils
 				for (Map.Entry e : p.entrySet())
 				{
 					config_map.put((String) e.getKey(), (String) e.getValue());
+					logger.info("---load配置 props key=" + e.getKey() + ",value=" + e.getValue());
 				}
 			}
 

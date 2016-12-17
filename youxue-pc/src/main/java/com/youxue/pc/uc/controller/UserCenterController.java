@@ -22,6 +22,7 @@ import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.UserInfoVo;
 import com.youxue.pc.uc.dto.EmailActiveDto;
+import com.youxue.pc.uc.dto.EmailUsableDto;
 import com.youxue.pc.uc.dto.UserInfoDto;
 import com.youxue.pc.uc.service.EmailVerifyService;
 
@@ -159,6 +160,23 @@ public class UserCenterController extends BaseController
 		EmailActiveDto emailDto = getResultEmailDto(userInfo);
 		return JsonUtil.serialize(emailDto.setDesc("激活邮件已发送至您邮箱，点击激活"));
 
+	}
+
+	@RequestMapping("/uc/isUsable.do")
+	@ResponseBody
+	public String isUsableEmail(HttpServletRequest request, HttpServletResponse response, String email)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(email) || !CommonUtil.isValidEmail(email))
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("email为空或者格式有误"));
+		UserInfoVo userInfo = userInfoDao.selectByEmail(email);
+		EmailUsableDto resultDto = new EmailUsableDto();
+		resultDto.setResult(100);
+		resultDto.setResultDesc("操作成功");
+		resultDto.setIsUsed(userInfo == null ? false : true);
+		return JsonUtil.serialize(resultDto);
 	}
 
 	@RequestMapping("/uc/emailInfo.do")

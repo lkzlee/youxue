@@ -46,4 +46,10 @@ public class UserInfoDaoImpl extends BaseDao implements UserInfoDao
 		return sqlSessionTemplate.update("com.youxue.core.dao.UserInfoDao.updateByPrimaryKey", record);
 	}
 
+	@Override
+	public UserInfoVo selectByEmail(String email)
+	{
+		return sqlSessionTemplate.selectOne("com.youxue.core.dao.UserInfoDao.selectByEmail", email);
+	}
+
 }

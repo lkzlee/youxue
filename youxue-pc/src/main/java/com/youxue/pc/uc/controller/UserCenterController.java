@@ -59,7 +59,13 @@ public class UserCenterController extends BaseController
 		if (StringUtils.isNotBlank(userInfo.getMobile()))
 			userInfo.setMobile(CommonUtil.getSecretNumberWithStart(userInfo.getMobile(), 3, 4, 4));
 		if (StringUtils.isNotBlank(userInfo.getEmail()))
-			userInfo.setEmail(CommonUtil.getEncryptAccountId(userInfo.getEmail(), 1));
+			userInfo.setEmail(userInfo.getEmail());
+		boolean ifPop = jedisProxy.exists(RedisConstant.getUserOrderIfPopCreditKey(accountId));
+		if (!ifPop)
+		{
+			jedisProxy.setex(RedisConstant.getUserOrderIfPopCreditKey(accountId), "1", 24 * 60 * 60);
+		}
+		userInfo.setIfPop(ifPop ? false : true);
 		LOG.info("查询用户信息为：userInfo=" + userInfo);
 		return JsonUtil.serialize(userInfo);
 

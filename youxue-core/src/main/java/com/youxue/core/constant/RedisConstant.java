@@ -13,6 +13,8 @@ public class RedisConstant
 	/**购物车*/
 	public static final String ADD_USER_ORDER_KEY = "add_user_order_key_";
 
+	public static final String USER_IF_POP_CREDIT_TIP_KEY = "user_if_pop_credit_tips_";
+
 	public static String getEmailVerifyKey(String accountId)
 	{
 		return EMAIL_VERIFY_KEY + accountId;
@@ -21,5 +23,10 @@ public class RedisConstant
 	public static String getAddUserOrderKey(String accountId, String logicOrderId)
 	{
 		return ADD_USER_ORDER_KEY + accountId + "_" + logicOrderId;
+	}
+
+	public static String getUserOrderIfPopCreditKey(String accountId)
+	{
+		return USER_IF_POP_CREDIT_TIP_KEY + accountId;
 	}
 }

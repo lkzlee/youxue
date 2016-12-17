@@ -29,6 +29,10 @@ public class UserInfoVo
 
 	private Date updateTime;
 
+	private boolean ifPop;
+
+	private String loveCity;
+
 	public String getAccountId()
 	{
 		return accountId;
@@ -149,12 +153,34 @@ public class UserInfoVo
 		this.updateTime = updateTime;
 	}
 
+	public boolean isIfPop()
+	{
+		return ifPop;
+	}
+
+	public void setIfPop(boolean ifPop)
+	{
+		this.ifPop = ifPop;
+	}
+
+	public String getLoveCity()
+	{
+		return loveCity;
+	}
+
+	public void setLoveCity(String loveCity)
+	{
+		this.loveCity = loveCity;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "UserInfoVo [accountId=" + accountId + ", nickName=" + nickName + ", email=" + email
 				+ ", emailActiveStatus=" + emailActiveStatus + ", mobile=" + mobile + ", gender=" + gender
 				+ ", createIp=" + createIp + ", createTime=" + createTime + ", birthTime=" + birthTime + ", credit="
-				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + "]";
+				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + ", ifPop=" + ifPop + ", loveCity="
+				+ loveCity + "]";
 	}
+
 }

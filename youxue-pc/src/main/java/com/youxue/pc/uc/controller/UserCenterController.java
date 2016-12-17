@@ -22,6 +22,7 @@ import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.UserInfoVo;
 import com.youxue.pc.uc.dto.EmailActiveDto;
+import com.youxue.pc.uc.dto.UserInfoDto;
 import com.youxue.pc.uc.service.EmailVerifyService;
 
 /***
@@ -82,26 +83,28 @@ public class UserCenterController extends BaseController
 	 */
 	@RequestMapping("/uc/updateUserInfo.do")
 	@ResponseBody
-	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, UserInfoVo userInfo)
+	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, UserInfoDto userInfo)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		/***
-		 * 这几个值不能进行设置
-		 */
-
-		userInfo.setCreateIp(null);
-		userInfo.setCredit(null);
-		userInfo.setEmail(null);
-		userInfo.setEmailActiveStatus(null);
-		userInfo.setPhotoUrl(null);
+		if (userInfo == null)
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户修改信息失败"));
 		/**
 		 * 设置附加属性
 		 */
-		userInfo.setAccountId(accountId);
-		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
-		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
+		UserInfoVo dbUserInfo = new UserInfoVo();
+		dbUserInfo.setAccountId(accountId);
+		if (StringUtils.isNotBlank(userInfo.getBirthTime()))
+			dbUserInfo.setBirthTime(DateUtil.formatToDate(userInfo.getBirthTime(), DateUtil.DEFAULT_DATE_FORMAT));
+		if (StringUtils.isNotBlank(userInfo.getNickName()))
+			dbUserInfo.setNickName(userInfo.getNickName());
+		if (null != userInfo.getGender())
+			dbUserInfo.setGender(userInfo.getGender());
+		if (StringUtils.isNotBlank(userInfo.getLoveCity()))
+			dbUserInfo.setLoveCity(userInfo.getLoveCity());
+		dbUserInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		int success = userInfoDao.updateByPrimaryKeySelective(dbUserInfo);
 		if (success <= 0)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，修改信息失败"));
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户信息修改成功"));

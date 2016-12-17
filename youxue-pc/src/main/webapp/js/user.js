@@ -82,13 +82,13 @@ function user_edit(){
                 var lvalue=linput.val();
                 var svalue=sex.find('input:checked').val();
                 var data={
-                    'birthTime':bvalue,
+                    // 'birthTime':bvalue,
                     'gender':svalue,
                     'nickName':nvalue,
                     'loveCity':lvalue
                 }
                 login_post('/uc/updateUserInfo.do',data,'',function (data) {
-                    user_success(data,function(){
+                    user_success(JSON.parse(data),function(){
                         nspan.text(nvalue).show();
                         ninput.hide();
                         bspan.text(bvalue).show();

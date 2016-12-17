@@ -1,5 +1,7 @@
 package com.youxue.pc.uc.controller;
 
+import java.net.URLEncoder;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -200,25 +202,38 @@ public class UserCenterController extends BaseController
 	}
 
 	@RequestMapping("/uc/verifyEmail.do")
-	@ResponseBody
-	public String emailInfo(HttpServletRequest request, HttpServletResponse response, String accountId, String key)
+	public void emailInfo(HttpServletRequest request, HttpServletResponse response, String accountId, String key)
 	{
-		if (StringUtils.isBlank(accountId) || StringUtils.isBlank(key))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("链接非法"));
-		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
-		if (userInfo == null)
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
-		boolean isValid = emailVerifyService.isValidActiveAccountUrl(accountId, key);
-		if (!isValid)
+		try
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("链接过期失效，请重新激活"));
+			LOG.info("--参数：accountId=" + accountId + ",key=" + key);
+			if (StringUtils.isBlank(accountId) || StringUtils.isBlank(key))
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接非法", "utf-8"));
+				return;
+			}
+			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
+			if (userInfo == null)
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("用户不存在", "utf-8"));
+				return;
+			}
+			boolean isValid = emailVerifyService.isValidActiveAccountUrl(accountId, key);
+			if (!isValid)
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接过期失效，请重新激活", "utf-8"));
+				return;
+			}
+			userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
+			userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
+			userInfoDao.updateByPrimaryKeySelective(userInfo);
+			jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
+			response.sendRedirect("/index.html");
 		}
-		userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
-		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
-		userInfoDao.updateByPrimaryKeySelective(userInfo);
-		jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
-		return JsonUtil.serialize(BaseResponseDto.successDto());
-
+		catch (Exception e)
+		{
+			LOG.fatal("业务异常，msg:" + e.getMessage(), e);
+		}
 	}
 
 	private EmailActiveDto getResultEmailDto(UserInfoVo userInfo)

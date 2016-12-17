@@ -54,7 +54,7 @@ public class MailUtil
 					+ PropertyUtils.getProperty("smtp.passwd", "xxx"));
 			authenticator.setStrUser(from);
 			authenticator.setStrPwd(PropertyUtils.getProperty("smtp.passwd", "xxx"));
-			session = Session.getDefaultInstance(props, authenticator);
+			session = Session.getInstance(props, authenticator);
 			session.setDebug(true);//设置为debug
 			message = new MimeMessage(session);
 			message.addRecipients(Message.RecipientType.TO, pakckgeEmail(mailToSendList));

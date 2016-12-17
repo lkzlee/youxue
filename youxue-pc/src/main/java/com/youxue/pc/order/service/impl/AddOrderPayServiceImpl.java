@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
 import com.lkzlee.pay.bean.WeiXinConfigBean;
+import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.service.PayService;
 import com.lkzlee.pay.third.alipay.dto.request.AliPayOrderDto;
@@ -163,7 +164,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		payResultDto.setFee_type("CNY");
 		//		payResultDto.setGoods_tag(goods_tag);
 		//		payResultDto.setLimit_pay(limit_pay);
-		String notfiyUrl = WeiXinConfigBean.getPayConfigValue(CommonConstant.WEIXIN_PAY_NOTIFY_URL);
+		String notfiyUrl = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_PAY_NOTIFY_URL);
 		payResultDto.setNotify_url(notfiyUrl);
 		//		payResultDto.setOpenid(openid);
 		payResultDto.setOut_trade_no(logicOrderVo.getLogicOrderId());
@@ -190,13 +191,13 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		AliPayOrderDto payResultDto = new AliPayOrderDto();
 		payResultDto.setExter_invoke_ip(logicOrderVo.getOrderIp());
 		payResultDto.setOut_trade_no(logicOrderVo.getLogicOrderId());
-		String notfiyUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_NOTIFY_URL);
+		String notfiyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_NOTIFY_URL);
 		payResultDto.setNotify_url(notfiyUrl);
-		String returnUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_RETURN_URL);
+		String returnUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_RETURN_URL);
 		payResultDto.setReturn_url(returnUrl);
 		payResultDto.setSubject("游学营地活动");
 		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayPrice()));
-		//		payResultDto.setBody();
+		payResultDto.setBody("订单支付");
 		return payResultDto;
 	}
 

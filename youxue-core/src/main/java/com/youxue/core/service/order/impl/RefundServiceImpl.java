@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
+import com.lkzlee.pay.bean.AlipayConfigBean;
 import com.lkzlee.pay.bean.WeiXinConfigBean;
 import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.exceptions.BusinessException;
@@ -16,12 +17,10 @@ import com.lkzlee.pay.third.alipay.dto.request.AliPayRefundOrderDto;
 import com.lkzlee.pay.third.weixin.dto.request.WeiXinRefundOrderDto;
 import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
-import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.RefundDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.RefundService;
-import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.util.ThreadPoolUtil;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.RefundVo;
@@ -97,7 +96,7 @@ public class RefundServiceImpl implements RefundService
 			refundDto.setBatch_num(1 + "");
 			refundDto.setDetail_data(refund.getLogicOrderId() + "^"
 					+ CommonUtil.formatBigDecimal(refund.getRefundAmount()) + "^用户取消订单");
-			String notifyUrl = PropertyUtils.getProperty(CommonConstant.ALIPAY_REFUND_URL,
+			String notifyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_REFUND_URL,
 					"http://127.0.0.1:8080/notify/refund.do");
 			refundDto.setNotify_url(notifyUrl);
 			String refundDate = DateUtil.formatDate(DateUtil.getCurrentTimestamp(),

@@ -9,51 +9,44 @@ $(function(){
     },function(){
         $(this).removeClass('active');
     })
-    $('#place').focus(function(){
-        // $(document).unbind('click');
-        var con=['美国','英国','澳大利亚','韩国','澳大利亚','韩国','日本','瑞士'];
-        setElement($(this),con);
-    })
-    $('#wantDo').focus(function(){
-        // $(document).unbind('click');
-        var con=['语言学习','传统营地','全真插班','体育项目','艺术形式','科技探索','野生保护','志愿者项目','英国学年项目','日营'];
-        setElement($(this),con);
-    });
-    //创建一个div,并定位
-    function setElement(element,con){
-        var pos_obj=element.offset();//left和top
-        var width=element.width();
-        var height=element.height();
-        pos_obj.top+=height;
-        pos_obj.width=width;
 
-        var li='';
-        for(var i=0,len=con.length;i<len;i++){
-            li+='<li>'+con[i]+'</li>';
-        }
-        var nDiv=$("<ul class='posElement' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
-        $(document.body).append(nDiv);
-
-        //当失去焦点，首先判断是不是点击了列表，然后判断是不是点击文档其他空白处
-        element.blur(function(){
-            var element_this=$(this);
-            var posElement=$('.posElement');
-            var li=$('li',posElement);
-            li.click(function(ev){
-                var value=$(this).html();
-                element_this.val(value);
-                posElement.hide();
-                ev.stopPropagation();
-            })
-            $(document).click(function(ev){
-                // console.log(1);
-                posElement.hide();
-                ev.stopPropagation();
-                $(document).unbind('click');
-            })
-        })
-    }
 });
+//搜索
+
+//创建一个div,并定位
+function index_select(element,con){
+    var pos_obj=element.offset();//left和top
+    var width=element.width();
+    var height=element.height();
+    pos_obj.top+=height;
+    pos_obj.width=width;
+
+    var li='';
+    for(var i=0,len=con.length;i<len;i++){
+        li+='<li data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+    }
+    var nDiv=$("<ul class='posElement' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
+    $(document.body).append(nDiv);
+
+    //当失去焦点，首先判断是不是点击了列表，然后判断是不是点击文档其他空白处
+    element.blur(function(){
+        var element_this=$(this);
+        var posElement=$('.posElement');
+        var li=$('li',posElement);
+        li.click(function(ev){
+            var value=$(this).html();
+            element_this.val(value);
+            posElement.hide();
+            ev.stopPropagation();
+        })
+        $(document).click(function(ev){
+            // console.log(1);
+            posElement.hide();
+            ev.stopPropagation();
+            $(document).unbind('click');
+        })
+    })
+}
 //背景层显示隐藏
 function bg_showORhide(){
     //body背景色变透明黑
@@ -77,11 +70,13 @@ function bg_showORhide(){
 function login_post(address,data,method,successFn,errorFn){
     $.ajax({
         url:address,
-        type:method,
+        type:method || 'post',
         data:data,
         dataType:"json",
         success:successFn,
-        error:errorFn
+        error:errorFn ||function(){
+            alert('系统获取异常');
+        }
     })
 }
 //对象转换字符串

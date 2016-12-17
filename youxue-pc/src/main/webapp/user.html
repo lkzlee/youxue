@@ -99,37 +99,37 @@
             <ul class="ul_r2" id="ul_edit">
                 <li id="phone">
                     <b>手机</b>
-                    <span>15812345678</span>
+                    <span></span>
                     <input type="text">
                     <i></i>
                 </li>
                 <li id="email">
                     <b>邮箱</b>
-                    <span>you@163.com</span>
+                    <span></span>
                     <input type="text">
                     <i></i>
                 </li>
                 <li id="nickname">
                     <b>昵称</b>
-                    <span>Cindy</span>
+                    <span></span>
                     <input type="text">
                     <i></i>
                 </li>
                 <li id="sex">
                     <b>性别</b>
-                    <span>男</span>
-                    <label for="man"><input id="man" type="radio" name="sex" value="男"><em>男</em></label>
-                    <label for="woman"><input id="woman" type="radio" name="sex" value="女"><em>女</em></label>
+                    <span></span>
+                    <label for="man"><input id="man" type="radio" name="sex" value="0"><em>男</em></label>
+                    <label for="woman"><input id="woman" type="radio" name="sex" value="1"><em>女</em></label>
                 </li>
                 <li id="birthday">
                     <b>生日</b>
-                    <span>1990-06-29</span>
+                    <span></span>
                     <input type="text" class="startTime">
                     <i></i>
                 </li>
                 <li id="loveCity">
                     <b>喜爱城市</b>
-                    <span>美国；法国</span>
+                    <span></span>
                     <input type="text">
                     <i></i>
                 </li>
@@ -171,13 +171,11 @@
                 <a href="#" class="saveButton">保存</a>
             </div>
         </div>
-        <div class="alertMessage">
+        <div class="alertMessage" style="display:none;">
             <i class="close">×</i>
-            <h2>Hi,Cindy</h2>
+            <h2></h2>
             <div>
-                <span>你的当前积分：200分</span>
-                <span>积分规则：每消费100元积1分</span>
-                <span>积分越多，优惠越多哦~</span>
+
             </div>
         </div>
     </div>
@@ -225,8 +223,7 @@
             var binput=birthday.children("input");
             var i=birthday.find('i');
             if(dateReg.test(selectedDate)){
-                i.html('正在提交…');
-                //把value通过ajax给后端
+                i.html('');
             }else{
                 binput.focus();
                 i.html('请输入正确的生日');
@@ -238,60 +235,82 @@
                 .render();
     });
     $(function(){
-        //头像编辑
-        var edit_photo=$('#edit_photo');
-        var photoDiv=$('.photoDiv');
-        var file_photo=$('#file_photo');
-        var btn_upload=$('#btn_upload');
-        edit_photo.click(function(){
-            if($(this).html()=="保存"){
-                $(this).html("编辑");
-                photoDiv.fadeOut(300);
-            }else{
-                $(this).html("保存");
-                photoDiv.fadeIn(300);
-                btn_upload.click(function(){
-                    file_photo.click();
-                })
-                file_photo.on('change',function(){
-                    uploadImage($(this).get(0))
-                })
-                function uploadImage(obj) {
-                    var tmpFilePath=obj.value;
-                    if(validateImage(obj)) {
-                        $.ajaxFileUpload({
-                            url:"###",             //需要链接到服务器地址
-                            secureuri:false,
-                            fileElementId:'photo',                         //文件选择框的id属性
-                            dataType: 'json',                                     //服务器返回的格式，可以是json
-                            success: function (data, status)             //相当于java中try语句块的用法
-                            {
-                                alert('上传图片成功')
-                                var bigPhoto=$('#bigPhoto');
-                                changeEl(bigPhoto,data.big1.src);
-                                var photo_108=$('#photo_108');
-                                changeEl(photo_108,data.big2.src);
-                                var photo_100=$('#photo_100');
-                                changeEl(photo_100,data.big3.src);
-                                var photo_50=$('#photo_50');
-                                changeEl(photo_50,data.big4.src);
+        //获取渲染基础信息
+        render_userinfo();
+        //首页基础信息编辑
+        user_edit();
+        //个人首页，点击编辑，显示文本框，并自动保存提交
+        user_edit_photo('/uc/updatePhoto.do',sucessFn);
+        function sucessFn(data){
+            data=JSON.parse(data);
+            if(data.result==100){
+                var bigPhoto=$('#bigPhoto');
+                changeEl(bigPhoto,data.big1.src);
+                var photo_108=$('#photo_108');
+                changeEl(photo_108,data.big2.src);
+                var photo_100=$('#photo_100');
+                changeEl(photo_100,data.big3.src);
+                var photo_50=$('#photo_50');
+                changeEl(photo_50,data.big4.src);
 
-                                function changeEl(element,src){
-                                    var bi=$('i',element).hide();
-                                    $('img',element).attr({'src':src,'display':'inline-block'});
-                                }
-                            },
-                            error: function (data, status, e)
-                            {
-                                alert('上传图片失败');
-                            }
-                        });
-                    }
+                function changeEl(element,src){
+                    var bi=$('i',element).hide();
+                    $('img',element).attr({'src':src,'display':'inline-block'});
                 }
+            }else{
+                alert(data.resultDesc);
             }
-            return false;
-        });
+        }
     })
+    function render_userinfo(){
+        login_post('/uc/userinfo.do','','',function(data){
+            data=JSON.parse(data);
+            //虚拟的数据
+            data.ifPop=false;//是否弹窗
+            data.result=100;
+            data.gender=1;
+            data.birthTime='2015-10-23';
+            user_success(data,function(){
+                var users=data;
+                render_alert(users);
+                render_default(users);
+            });
+        })
+    }
+    //渲染弹出框
+    function render_alert(users){
+        var alertMessage=$('.alertMessage');
+        users.ifPop && alertMessage.show();
+        var h2=alertMessage.children('h2');
+        var cont=alertMessage.children('div');
+        h2.text('Hi,'+users.nickName);
+        cont.html('<span>你的当前积分：'+users.credit+'分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>');
+        var close=$('.close',alertMessage);
+        close.click(function(){
+            alertMessage.hide(300);
+        })
+    }
+    //渲染基础信息
+    function render_default(users){
+        var phone=$('#phone');
+        var span=phone.children('span');
+        span.text(users.mobile);
+        var email=$('#email');
+        var span=email.children('span');
+        span.text(users.email);
+        var nickname=$('#nickname');
+        var span=nickname.children('span');
+        span.text(users.nickName);
+        var sex=$('#sex');
+        var span=sex.children('span');
+        span.text(users.gender==0?'男':'女');
+        var birthday=$('#birthday');
+        var span=birthday.children('span');
+        span.text(users.birthTime);
+        var loveCity=$('#loveCity');
+        var span=loveCity.children('span');
+        span.text(users.loveCity);
+    }
 </script>
 </body>
 </html>

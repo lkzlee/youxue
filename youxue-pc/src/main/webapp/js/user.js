@@ -7,165 +7,201 @@ var strReg=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im;//验证特殊字符
 var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 $(function(){
     //弹出框
-    var alertMessage=$('.alertMessage');
-    var close=$('.close',alertMessage);
-    close.click(function(){
-        alertMessage.hide(300);
-    })
+    // alert_element();
     //个人首页的左侧导航列表
     userIndexList();
-    function userIndexList(){
-        var userList=$('#userList');
-        var a_userList=$('.a_userList');
-        var userUl=userList.find('ul');
-        a_userList.click(function(){
-            var This=$(this);
-            var index=a_userList.index(this);
-            var ulIndex=userUl.eq(index);
-            var liList=$('li',ulIndex);
-            var liLength=liList.length;
-            var ulHeight=ulIndex.height()>0?0:(47*liLength);
-            if(ulHeight==0){
-                This.addClass('li_aActive');
-            }else{
-                This.removeClass('li_aActive');
+    //首页基础信息编辑
+    // user_edit();
+    //我的消息_单选多选
+    // message();
+    //购物车
+    // car();
+});
+//个人首页的左侧导航列表
+function userIndexList(){
+    var userList=$('#userList');
+    var a_userList=$('.a_userList');
+    var userUl=userList.find('ul');
+    a_userList.click(function(){
+        var This=$(this);
+        var index=a_userList.index(this);
+        var ulIndex=userUl.eq(index);
+        var liList=$('li',ulIndex);
+        var liLength=liList.length;
+        var ulHeight=ulIndex.height()>0?0:(47*liLength);
+        if(ulHeight==0){
+            This.addClass('li_aActive');
+        }else{
+            This.removeClass('li_aActive');
+        }
+        ulIndex.animate({
+            height:ulHeight},{
+            easing: 'easeOutBounce',
+            duration: 500,
+            complete:function(){
+
             }
-            ulIndex.animate({
-                height:ulHeight},{
-                easing: 'easeOutBounce',
-                duration: 500,
-                complete:function(){
-
-                }
-            });
-            return false;
-        })
-    }
-    //个人首页，点击编辑，显示文本框，并自动保存提交
+        });
+        return false;
+    })
+}
+//首页基础信息编辑
+function user_edit(){
     var default_edit=$('#default_edit');
+    var nickname=$('#nickname');
+    var nspan=nickname.children('span');
+    var ninput=nickname.children('input');
+
+    var birthday=$('#birthday');
+    var bspan=birthday.children('span');
+    var binput=birthday.find("input");
+
+    var loveCity=$('#loveCity');
+    var lspan=loveCity.children('span');
+    var linput=loveCity.children('input');
+
+    var sex=$('#sex');
+    var sspan=sex.children('span');
     default_edit.click(function(){
-        var this_value=$(this).html()=="编辑"?"保存":"编辑";
         if($(this).html()=="编辑"){
-            var phone=$('#phone');
-            var span=phone.find('span');
-            span.hide();
-            var pinput=phone.children('input');
-            pinput.attr("value",span.html()).show();
-            var pvalue=pinput.val();
-            pinput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(pvalue==value){
-                    i.html('');
-                }else if(value.length==11 && phoneReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的手机');
-                }
-            })
-
-            var email=$('#email');
-            var span=email.children('span');
-            span.hide();
-            var einput=email.children('input');
-            einput.attr("value",span.html()).show();
-            var evalue=einput.val();
-            einput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(evalue==value){
-                    i.html('');
-                }else if(value!="" && emailReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的邮箱');
-                }
-            })
-
-            var nickname=$('#nickname');
-            var span=nickname.children('span');
-            span.hide();
-            var ninput=nickname.children('input');
-            ninput.attr("value",span.html()).show();
-            var nvalue=ninput.val();
-            ninput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(nvalue==value){
-                    i.html('');
-                }else if(value.length>2 && !(strReg.test(value))){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的昵称');
-                }
-            })
-
-            var sex=$('#sex');
-            var span=sex.children('span');
-            span.hide();
-            var num=span.html()=="女"?1:0;
+            this_value="保存";
+            nspan.hide();
+            ninput.attr("value",nspan.text()).show();
+            bspan.hide();
+            birthday.children('.calendar-input-wrap').css('display','inline-block').children("input").attr("value",bspan.text());
+            lspan.hide();
+            linput.attr("value",lspan.text()).show();
+            sspan.hide();
+            var num=sspan.text()=="女"?1:0;
             sex.children('label').css('display','inline-block').children('input:eq('+num+')').attr('checked','checked');
-            sex.children('label').click(function(){
-                var value=$(this).children('input:checked').val();
-                if(value){
-                    //把value通过ajax给后端
-                    console.log(value);
-                }
-            })
-
-            var birthday=$('#birthday');
-            var span=birthday.children('span');
-            span.hide();
-            var binput=birthday.children('.calendar-input-wrap').css('display','inline-block').children("input");
-            binput.attr("value",span.html());
-            var bvalue=binput.val();
-            binput.blur(function(){
-                var value=$(this).val();
-                var i=birthday.find('i');
-                if(bvalue==value){
-                    i.html('');
-                }else if(value!="" && dateReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的生日');
-                }
-            })
-
-            var loveCity=$('#loveCity');
-            var span=loveCity.children('span');
-            span.hide();
-            var linput=loveCity.children('input');
-            linput.attr("value",span.html()).show();
-            var lvalue=linput.val();
-            linput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(lvalue==value){
-                    i.html('');
-                }else if(value!=""){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入内容');
-                }
-            })
         }
         else{
-            //此处提交表单
-            console.log("保存");
+            if(check_nickname(ninput) && check_birthday(binput,birthday) && check_loveCity(linput)){
+                var nvalue=ninput.val();
+                var bvalue=binput.val();
+                var lvalue=linput.val();
+                var svalue=sex.find('input:checked').val();
+                var data={
+                    'birthTime':bvalue,
+                    'gender':svalue,
+                    'nickName':nvalue,
+                    'loveCity':lvalue
+                }
+                login_post('/uc/updateUserInfo.do',data,'',function (data) {
+                    user_success(data,function(){
+                        nspan.text(nvalue).show();
+                        ninput.hide();
+                        bspan.text(bvalue).show();
+                        birthday.children('.calendar-input-wrap').css('display','none');
+                        lspan.text(lvalue).show();
+                        linput.hide();
+                        sspan.text(svalue==0?'男':'女').show();
+                        sex.children('label').css('display','none');
+                    })
+                });
+                this_value="编辑";
+            }
         }
         $(this).html(this_value);
     })
-    //我的消息_单选多选
+    ninput.blur(function(){
+        check_nickname($(this));
+    })
+    binput.blur(function(){
+        check_birthday($(this),birthday);
+    })
+    linput.blur(function(){
+        check_loveCity($(this))
+    })
+}
+function user_success(data,callback){
+    if(data.result==100){
+        callback();
+    }else if(data.result==-2){
+        alert(data.resultDesc);
+        window.location.href='/login.html';
+    }else{
+        alert(data.resultDesc);
+    }
+}
+function check_nickname(This){
+    var value=This.val();
+    var message=This.siblings('i');
+    if(value.length>1 && !(strReg.test(value))){
+        message.html('');
+    }else{
+        // This.focus();
+        message.html('请输入正确的昵称');
+        return false;
+    }
+    return true;
+}
+function check_birthday(This,birthday){
+    var value=This.val();
+    var i=birthday.find('i');
+    if(value!="" && dateReg.test(value)){
+        i.html('');
+    }else{
+        // This.focus();
+        i.html('请输入正确的生日');
+        return false;
+    }
+    return true;
+}
+function check_loveCity(This){
+    var value=This.val();
+    var i=This.siblings('i');
+    if(value!=""){
+        i.html('');
+    }else{
+        // This.focus();
+        i.html('请输入内容');
+        return false;
+    }
+    return true;
+}
+//首页基础信息编辑
+function user_edit_photo(url,successFn,errorFn){
+    var edit_photo=$('#edit_photo');
+    var photoDiv=$('.photoDiv');
+    var file_photo=$('#file_photo');
+    var btn_upload=$('#btn_upload');
+    edit_photo.click(function(){
+        if($(this).html()=="保存"){
+            $(this).html("编辑");
+            photoDiv.fadeOut(300);
+        }else{
+            $(this).html("保存");
+            photoDiv.fadeIn(300);
+            btn_upload.click(function(){
+                file_photo.click();
+            })
+            file_photo.on('change',function(){
+                uploadImage($(this).get(0))
+            })
+            function uploadImage(obj) {
+                var tmpFilePath=obj.value;
+                if(validateImage(obj)) {
+                    var data={
+                        'userPhotoUrl':tmpFilePath
+                    }
+                    // login_post(url,data,'',successFn,errorFn);
+                    $.ajaxFileUpload({
+                        url:url,             //需要链接到服务器地址
+                        // data:data,
+                        secureuri:false,
+                        fileElementId:'file_photo',                         //文件选择框的id属性
+                        dataType: 'json',                                     //服务器返回的格式，可以是json
+                        success: successFn,
+                        error: errorFn
+                    });
+                }
+            }
+        }
+        return false;
+    });
+}
+function message(){
     var all_checked=$('.all_checked');
     var cont_border=$('.cont_border');
     var radio_label=cont_border.children('label');
@@ -208,7 +244,8 @@ $(function(){
         input_all.prop('checked',check_bool);
         return false;
     })
-    //购物车
+}
+function car(){
     var car_ul=$('#car_ul');
     var li=$('li',car_ul);
     var all_car_check=$('.input_all_car');
@@ -276,7 +313,7 @@ $(function(){
         money_car.html('¥'+moneyTotal);
         number_car.html('¥'+numTotal);
     }
-});
+}
 //校验图片格式及大小 Add Date 2012-6-14 LIUYI
 function validateImage(obj) {
     var file = obj;

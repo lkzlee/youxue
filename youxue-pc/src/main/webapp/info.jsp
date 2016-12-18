@@ -3,7 +3,7 @@
 <% 
 String path = request.getContextPath(); 
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
-String campusId = request.getParameter("campusId");//用request得到 
+//String campusId = request.getParameter("campusId");//用request得到 
 %> 
 <!DOCTYPE html>
 <html lang="en">

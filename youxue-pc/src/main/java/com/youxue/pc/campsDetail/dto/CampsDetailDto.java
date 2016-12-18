@@ -319,10 +319,12 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	private String campsFoodDesc;
 
 	private String campsFoodsPhotos;
+	private String realCampsFoodsPhotos;
 
 	private String campsHotelDesc;
 
 	private String campsHotelPhotos;
+	private String realCampsHotelPhotos;
 
 	private String feeDesc;
 
@@ -352,6 +354,26 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setTraces(List<CampsTraceVo> traces)
 	{
 		this.traces = traces;
+	}
+
+	public String getRealCampsHotelPhotos()
+	{
+		return realCampsHotelPhotos;
+	}
+
+	public void setRealCampsHotelPhotos(String realCampsHotelPhotos)
+	{
+		this.realCampsHotelPhotos = realCampsHotelPhotos;
+	}
+
+	public String getRealCampsFoodsPhotos()
+	{
+		return realCampsFoodsPhotos;
+	}
+
+	public void setRealCampsFoodsPhotos(String realCampsFoodsPhotos)
+	{
+		this.realCampsFoodsPhotos = realCampsFoodsPhotos;
 	}
 
 }

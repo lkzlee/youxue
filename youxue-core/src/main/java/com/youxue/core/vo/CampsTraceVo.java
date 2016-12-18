@@ -1,63 +1,89 @@
 package com.youxue.core.vo;
 
-public class CampsTraceVo {
-    private String traceId;
+import com.youxue.core.constant.ImgConstant;
 
-    private String campusId;
+public class CampsTraceVo
+{
+	private String traceId;
 
-    private String traceName;
+	private String campusId;
 
-    private String traceDesc;
+	private String traceName;
 
-    private Integer traceWeight;
+	private String traceDesc;
 
-    private String tracePhotos;
+	private Integer traceWeight;
 
-    public String getTraceId() {
-        return traceId;
-    }
+	private String tracePhotos;
+	private String realTracePhotos;
 
-    public void setTraceId(String traceId) {
-        this.traceId = traceId == null ? null : traceId.trim();
-    }
+	public String getTraceId()
+	{
+		return traceId;
+	}
 
-    public String getCampusId() {
-        return campusId;
-    }
+	public void setTraceId(String traceId)
+	{
+		this.traceId = traceId == null ? null : traceId.trim();
+	}
 
-    public void setCampusId(String campusId) {
-        this.campusId = campusId == null ? null : campusId.trim();
-    }
+	public String getCampusId()
+	{
+		return campusId;
+	}
 
-    public String getTraceName() {
-        return traceName;
-    }
+	public void setCampusId(String campusId)
+	{
+		this.campusId = campusId == null ? null : campusId.trim();
+	}
 
-    public void setTraceName(String traceName) {
-        this.traceName = traceName == null ? null : traceName.trim();
-    }
+	public String getTraceName()
+	{
+		return traceName;
+	}
 
-    public String getTraceDesc() {
-        return traceDesc;
-    }
+	public void setTraceName(String traceName)
+	{
+		this.traceName = traceName == null ? null : traceName.trim();
+	}
 
-    public void setTraceDesc(String traceDesc) {
-        this.traceDesc = traceDesc == null ? null : traceDesc.trim();
-    }
+	public String getTraceDesc()
+	{
+		return traceDesc;
+	}
 
-    public Integer getTraceWeight() {
-        return traceWeight;
-    }
+	public void setTraceDesc(String traceDesc)
+	{
+		this.traceDesc = traceDesc == null ? null : traceDesc.trim();
+	}
 
-    public void setTraceWeight(Integer traceWeight) {
-        this.traceWeight = traceWeight;
-    }
+	public Integer getTraceWeight()
+	{
+		return traceWeight;
+	}
 
-    public String getTracePhotos() {
-        return tracePhotos;
-    }
+	public void setTraceWeight(Integer traceWeight)
+	{
+		this.traceWeight = traceWeight;
+	}
 
-    public void setTracePhotos(String tracePhotos) {
-        this.tracePhotos = tracePhotos == null ? null : tracePhotos.trim();
-    }
+	public String getTracePhotos()
+	{
+		return tracePhotos;
+	}
+
+	public void setTracePhotos(String tracePhotos)
+	{
+		this.tracePhotos = tracePhotos == null ? null : tracePhotos.trim();
+	}
+
+	public String getRealTracePhotos()
+	{
+		return ImgConstant.getHttpImgUrls(tracePhotos);
+	}
+
+	public void setRealTracePhotos(String realTracePhotos)
+	{
+		this.realTracePhotos = realTracePhotos;
+	}
 }

@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<% 
+String path = request.getContextPath(); 
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
+String campusId = request.getParameter("campusId");//用request得到 
+%> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -321,6 +328,7 @@ $(function(){
      * 函数successFn_car，是ajax提交成功后执行的
      * 函数errorFn_car，是ajax提交失败后执行的
      */
+    var campusId= <%=request.getParameter("campusId")%>; 
     var shoppingCar=$('#shoppingCar'),buyImmediately=$('#buyImmediately'),isDianji=true,isLogin=true;
     var address='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method="post";
     var add_Car='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method_car='post';

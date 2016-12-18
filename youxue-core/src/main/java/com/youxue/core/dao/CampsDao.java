@@ -24,4 +24,6 @@ public interface CampsDao
 	Page<CampsVo> selectByConditions(Map<String, Object> queryConditions, int pageNo, int pageSize);
 
 	List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize);
+
+	List<CampsVo> selectCampsListByIds(List<String> keySet);
 }

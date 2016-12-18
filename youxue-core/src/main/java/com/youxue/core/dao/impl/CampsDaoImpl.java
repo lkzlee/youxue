@@ -75,4 +75,10 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 		conditions.put("size", maxResults);
 		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getCampusListByType", conditions);
 	}
+
+	@Override
+	public List<CampsVo> selectCampsListByIds(List<String> campsId)
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectCampsListByIds", campsId);
+	}
 }

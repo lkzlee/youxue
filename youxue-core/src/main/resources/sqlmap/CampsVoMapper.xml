@@ -42,6 +42,15 @@
     from tb_camps
     where camps_id = #{campsId,jdbcType=VARCHAR}
   </select>
+  <select id="selectCampsListByIds" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+    where camps_id in
+    <foreach collection="list" item="ite" open="(" close=")" separator=",">
+    #{ite,jdbcType=VARCHAR}
+    </foreach>
+  </select>
   <select id="selectByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select 
     <include refid="Base_Column_List" />

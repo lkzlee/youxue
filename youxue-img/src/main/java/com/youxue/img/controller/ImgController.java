@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +37,6 @@ public class ImgController
 	}
 
 	@RequestMapping("/img/{imgType}/{imgName}")
-	@CrossOrigin(origins = "*")
 	public void getImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("imgType") String imgType, @PathVariable("imgName") String imgName) throws Exception
 	{
@@ -63,7 +61,6 @@ public class ImgController
 		ImageIO.write(image, imgType, os);
 	}
 
-	@CrossOrigin(origins = "*")
 	@RequestMapping("/img/uploadImg.html")
 	@ResponseBody
 	public String uploadImage(HttpServletRequest request, HttpServletResponse response,

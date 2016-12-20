@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-基础资料_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -87,8 +88,8 @@
                 </a>
             </div>
             <div class="hiDiv">
-                <h2>Hi,Cindy!</h2>
-                <span>你的积分，200</span>
+                <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+                <span>你的积分，<label class="integral_lbl">0</label></span>
             </div>
         </div>
         <div class="right2">
@@ -143,9 +144,11 @@
             <div class="photoDiv">
                 <div class="photo1">
                     <span>头像</span>
-                    <a href="#" id="btn_upload">上传图片</a>
-                    <input type="file" id="file_photo" style="display:none;">
-                    <p>仅支持jpg,png,gif格式文件，大小在2M以内</p>
+                    <form id="frm_pic" method="post" enctype="multipart/form-data" style="display:inline;">
+                        <a href="javascript:void(0)" id="btn_upload">上传图片</a>
+                        <input type="file" id="uploadFile" name="uploadFile" style="display:none;">
+                        <p>仅支持jpg,png,gif格式文件，大小在2M以内</p>
+                    </form>
                 </div>
                 <div class="photo2 clear">
                     <div class="div1" id="bigPhoto">
@@ -173,9 +176,9 @@
         </div>
         <div class="alertMessage" style="display:none;">
             <i class="close">×</i>
-            <h2></h2>
+            <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
             <div>
-
+                <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
             </div>
         </div>
     </div>
@@ -237,10 +240,11 @@
     $(function(){
         render_userinfo();
         //个人首页，点击编辑，显示文本框，并自动保存提交
-        user_edit_photo('/uc/updatePhoto.do',sucessFn);
-        function sucessFn(data){
-            data=JSON.parse(data);
-            if(data.result==100){
+//        user_edit_photo('/uc/updatePhoto.do',sucessFn);
+        user_edit_photo('http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT//img/uploadImg.html',sucessFn);
+        function sucessFn(){
+//            data=JSON.parse(data);
+            user_success(data,function(){
                 var bigPhoto=$('#bigPhoto');
                 changeEl(bigPhoto,data.big1.src);
                 var photo_108=$('#photo_108');
@@ -254,9 +258,7 @@
                     var bi=$('i',element).hide();
                     $('img',element).attr({'src':src,'display':'inline-block'});
                 }
-            }else{
-                alert(data.resultDesc);
-            }
+            });
         }
     })
     //获取渲染基础信息
@@ -266,9 +268,6 @@
 //            console.log(data);
             //虚拟的数据
 //            data.ifPop=false;//是否弹窗
-            data.result=100;
-//            data.gender=1;
-//            data.birthTime='2015-10-23';
             user_success(data,function(){
                 var users=data;
                 render_alert(users);
@@ -276,14 +275,12 @@
             });
         })
     }
-    //渲染弹出框
+    //渲染弹出框和页面上展示的用户信息
     function render_alert(users){
         var alertMessage=$('.alertMessage');
         users.ifPop && alertMessage.show();
-        var h2=alertMessage.children('h2');
-        var cont=alertMessage.children('div');
-        h2.text('Hi,'+users.nickName);
-        cont.html('<span>你的当前积分：'+users.credit+'分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>');
+        $('.nicknNme_lbl').text(users.nickName);
+        $('.integral_lbl').text(users.credit);
         var close=$('.close',alertMessage);
         close.click(function(){
             alertMessage.hide(300);
@@ -305,7 +302,8 @@
         span.text(users.gender==0?'男':'女');
         var birthday=$('#birthday');
         var span=birthday.children('span');
-        span.text(users.birthTime);
+//        console.log(users.birthTime);
+        span.text(formatDate(new Date(users.birthTime),0));
         var loveCity=$('#loveCity');
         var span=loveCity.children('span');
         span.text(users.loveCity);

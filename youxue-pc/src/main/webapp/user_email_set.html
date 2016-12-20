@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-设置邮箱_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -153,18 +154,33 @@
                 })
                 $('#submit_email').click(function(){
                     var value=email_input.val();
-                    if(check_email(value)){
+                    check_email(value,function(){
                         update_email(value);
-                    }
+                    });
                 })
-                function check_email(value){
+                function check_email(value,callback){
+                    var email=$('#submit_email');
                     var message=$('.email_message');
                     if(value!="" && emailReg.test(value)){
                         //这里检测邮箱是否占用,占用的话,return false，不要在执行了
-
-                        message.html('');
-                        return true;
+                        login_post('/uc/isUsable.do','email='+value,'',function(data){
+                            var data=JSON.parse(data);
+                            console.log(data);
+                            user_success(data,function(){
+                                if(data.isUsed){//true为已使用
+                                    email.attr('disabled','disabled').addClass('disabled');
+                                    message.html('<i class="error">×</i>&nbsp;<span>邮箱地址被占用</span>');
+                                    return false;
+                                }else{
+                                    email.removeAttr('disabled').removeClass('disabled');
+                                    message.html('<i>√</i>&nbsp;<span>邮箱地址未使用</span>');
+                                    callback && callback();
+                                    return true;
+                                }
+                            })
+                        });
                     }else{
+                        email.attr('disabled','disabled').addClass('disabled');
                         message.html('<i class="error">×</i>&nbsp;<span>邮箱地址不正确</span>');
                         return false;
                     }

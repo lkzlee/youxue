@@ -30,7 +30,7 @@
 		from tb_message
 		where account_id = #{accountId,jdbcType=VARCHAR}
 		<if test="startDate!=null">
-			and message_id>=#{startDate,jdbcType=VARCHAR}
+			and message_id &lt;=#{startDate,jdbcType=VARCHAR}
 		</if>
 		order by message_id desc
 	</select>
@@ -41,7 +41,7 @@
 		from tb_message
 		where account_id = #{accountId,jdbcType=VARCHAR}
 		<if test="startDate!=null">
-			and message_id>=#{startDate,jdbcType=VARCHAR}
+			and message_id &lt;=#{startDate,jdbcType=VARCHAR}
 		</if>
 	</select>
 	<select id="selectUnReadCount" resultType="java.lang.Integer"

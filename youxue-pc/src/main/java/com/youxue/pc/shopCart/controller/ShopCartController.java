@@ -130,20 +130,16 @@ public class ShopCartController extends BaseController
 
 	@RequestMapping("/deleteCartItem.do")
 	@ResponseBody
-	public String deleteCartItem(HttpServletRequest request, HttpServletResponse response, String campusId)
+	public String deleteCartItem(HttpServletRequest request, HttpServletResponse response, String[] campusId)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		if (StringUtils.isBlank(campusId))
+		if (campusId == null || campusId.length == 0)
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数错误"));
 		}
-		boolean exist = jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId);
-		if (exist)
-		{
-			jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, campusId);
-		}
+		jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, campusId);
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 	}
 

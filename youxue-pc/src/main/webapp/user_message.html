@@ -194,7 +194,8 @@
             console.log(data);
             user_success(data,function(){
                 render_list(data['resultList']);
-                pageSet($('.page'),data);
+//                pageSet($('.page'),data);
+                $('.page').append(pageSet(data).join(''));
             })
         })
     }

@@ -1,17 +1,9 @@
 /**
  * Created by Administrator on 2016/11/9.
  */
-var phoneReg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
-var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-var strReg=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im;//验证特殊字符
-var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 $(function(){
-    //弹出框
-    // alert_element();
     //个人首页的左侧导航列表
     userIndexList();
-    //首页基础信息编辑
-    // user_edit();
 });
 //个人首页的左侧导航列表
 function userIndexList(){
@@ -222,12 +214,7 @@ function car(){
             numTotal-=numCar;
             $(this).parents('li').removeClass('active');
         }
-        if(checkedCount_car==len){
-            all_car_check.prop('checked',true);
-        }else{
-            all_car_check.prop('checked',false);
-        }
-        change_total();
+        isAll()
     })
     //点击全选改变样式
     all_car_check.click(function(){
@@ -235,18 +222,51 @@ function car(){
         checked_change_li(isChecked);
     });
     $('.a_del').click(function(){
-        var isChecked=all_car_check.is(':checked');
-        if(isChecked){
-            var childCheck=$('input[name="campsId"]:checkbox').serialize();
-            console.log(childCheck);
-            car_ul.html('');
+        var check=$('#car_ul input:checked');
+        if(check.length>0){
+            var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
+            console.log(str)
+            login_post('/deleteCartItem.do',str,'',function(data){
+                user_success(JSON.parse(data),function(){
+                    check.each(function(){
+                        var childCheck=$(this);
+                        del_change($(this),childCheck)
+                    })
+                })
+            })
         }
     })
     $('.child_del').click(function(){
+        var This=$(this);
         var childCheck=$(this).siblings('input[name="campsId"]');
-        var value=childCheck.prop('value');//要删除的ID
-        $(this).parent('li').html('');
+        var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
+        login_post('/deleteCartItem.do','campusId='+value,'',function(data){
+            user_success(JSON.parse(data),function(){
+                del_change(This,childCheck);
+            })
+        })
     })
+    //删除购物车的列表后，改变元素
+    function del_change(That,childCheck){
+        var money=Number(That.siblings('.money_span_car').html());
+        var numCar=Number(That.siblings('.num_span_car').html());
+        if(childCheck.prop('checked')){
+            checkedCount_car--;
+            moneyTotal-=money;
+            numTotal-=numCar;
+            That.parents('li').removeClass('active');
+        }
+        isAll();
+        That.parent('li').remove();
+    }
+    function isAll(){
+        if(checkedCount_car==len){
+            all_car_check.prop('checked',true);
+        }else{
+            all_car_check.prop('checked',false);
+        }
+        change_total();
+    }
     function checked_change_li(isChecked){
         if(isChecked){
             checkedCount_car=len;
@@ -277,7 +297,7 @@ function car(){
     }
     function change_total(){
         money_car.html('¥'+moneyTotal);
-        number_car.html('¥'+numTotal);
+        number_car.html(numTotal);
     }
 }
 //校验图片格式及大小 Add Date 2012-6-14 LIUYI

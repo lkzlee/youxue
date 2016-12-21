@@ -164,20 +164,21 @@ function CampsDetail(){
             }
             if(data.subjectList){//主题分类
                 var obj=data.subjectList;
+    console.log(obj)
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){
                     if(i==5){
-                        li.push('<li class="li6"><a href="'+obj[i]['categoryId']+'"><img src="'+obj[i]['categoryUrl']+'" alt=""><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
+                        li.push('<li class="li6"><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
                     }else{
-                        li.push('<li><a href="'+obj[i]['categoryId']+'"><img src="'+obj[i]['categoryUrl']+'" alt=""><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
+                        li.push('<li><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }
                 }
                 subject_list.append(li.join(''));
             }
             function str(val){
                 var li=[];
-                li.push('<li><a href="">');
-                li.push('<img src="'+val['campsImages']+'" alt=""><div class="clear">');
+                li.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
+                li.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
                 li.push('<span>'+val['campsTitle']+'</span><i>¥'+val['totalPrice']+'</i></div>');
                 li.push('<p>'+val['campsDesc']+'</p></a></li>');
                 hot_list.append(li.join(''));

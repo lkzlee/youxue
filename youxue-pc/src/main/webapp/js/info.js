@@ -9,11 +9,10 @@ $(function(){
     },function(){
         $(this).removeClass('li2_hover');
     })
-    //内容横向导航
+    //内容横向导航,当鼠标滚动，给内容的横向导航添加定位样式
     var YDnav=$('#YDnav');
     var YDheight=YDnav.height();
     var pos_obj=YDnav.offset();//left和top
-    //当鼠标滚动，给内容的横向导航添加定位样式
     $(window).scroll(function(){
         var scrollTop=$(window).scrollTop();
         if(pos_obj.top <= scrollTop){//开始添加样式
@@ -35,14 +34,14 @@ $(function(){
         },500);
         return false;
     })
+})
+function yingdi_pic(){
     //营地图片
     var yingdi_list=$('#yingdi_list');
     var yingdi_li=$('li',yingdi_list);
     var yingdi_a=$('a',yingdi_list);
     var yingdi_len=yingdi_li.length;
     var index=0,pageNo=0,pageCount=5,disk=1,isClick=true;
-//        var iWidth=document.documentElement.clientWidth;
-//        var iHeight=document.documentElement.clientHeight;
     if(yingdi_len>5){
         var jt_left=$('#jt_left');
         var jt_right=$('#jt_right');
@@ -152,7 +151,7 @@ $(function(){
             clearTimeout(timer);
         },500);
     }
-})
+}
 //隐藏弹出层
 function hideAlert(div,time,otherHide){
     div.hide(time||500);
@@ -170,8 +169,16 @@ function backTop(){
 }
 //在线咨询-需要先申请qq在线客服：http://shang.qq.com/v3/widget.html
 function onlineQQ(){
-    var qq='757927051';
+    var qq='1252610341';
     var link = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes';
     window.open(link,'_blank');
     return false;
+}
+//切换头部的三张图
+function tab_pic(){
+    $('.img_list').on('click','img',function(){
+        var src=$(this).attr('src');
+        $('.img_info').attr('src',src);
+        return false;
+    })
 }

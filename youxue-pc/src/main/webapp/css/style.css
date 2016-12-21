@@ -28,10 +28,10 @@ a:active{}
 #notLogin div span i{position:absolute;top:6px;right:0;width: 11px;height: 22px;border-radius: 13px 0 0 13px;background: #eaedf0;}
 #notLogin div label{display:none;float:left;width:100%;color:red;}
 #notLogin div input{float:left;padding-left:5px;width:182px;height:33px;border:solid 1px #29abe2;border-left:none;}
-#notLogin .password input,#notLogin .code input{width:93px;}
-#notLogin .password a{float:left;margin-left: 4px;margin-top: 6px;padding: 2px 6px;border: solid 1px #999;border-radius: 3px;color:#999;}
-#notLogin .code a{float:left;margin-left:4px;height:35px;}
-#notLogin .code a img{height:100%;}
+#notLogin .password input[type="password"],#notLogin .code input{width:93px;}
+#notLogin .password input[type="button"]{float:left;margin-left: 4px;margin-top: 6px;width:86px;height:22px;border: solid 1px #999;border-radius: 3px;color:#999;cursor:pointer;}
+#notLogin .code a{float:left;margin-left:4px;width:86px;height:35px;}
+#notLogin .code a img{width:100%;height:100%;}
 #notLogin .bth_log{padding-top:35px;width:210px;margin:0 auto;}
 #notLogin .bth_log input{float:none;display:block;    margin: 0 auto;width:112px;color:#999;border:solid 1px #999;border-radius:3px;font-size:14px;letter-spacing:2px;background:#fff;cursor:pointer;}
 #close_car{display:block;position:absolute;top:8px;right:8px;width:18px;height:18px;background: url(../img/user.png) -38px 0 no-repeat;opacity:.6;cursor:pointer;
@@ -72,7 +72,7 @@ a:active{}
 #showImg_left i{background-position:0 -52px;}
 #showImg_right{right:10px;}
 #showImg_right i{background-position:-33px -52px;}
-#right_float{position:fixed;right:20px;top:50%;margin-top:-249.5px;width:124px;background:#666;display:none;z-index:9999999;}
+#right_float{position:fixed;right:20px;top:50%;margin-top:-249.5px;width:124px;background:#666;display:none;z-index:990;}
 #right_float a{position:relative;display:block;height:125px;border-bottom:solid 1px #999;transition:.6s;}
 #right_float a:hover{background:#29abe2;border-color:#fff;}
 #right_float a i{position:absolute;left:22px;top:23px;width:60px;height:40px;background:url("../img/index.png") -3px -84px no-repeat;}

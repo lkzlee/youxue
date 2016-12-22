@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
 
@@ -70,12 +71,12 @@ public class OrderDaoImpl extends BaseDao implements OrderDao
 	}
 
 	@Override
-	public Page<OrderVo> selectPageOrderListByType(Page<OrderVo> page, int orderType, String accountId)
+	public Page<OrderDetailVo> selectPageOrderListByType(Page<OrderDetailVo> page, int orderType, String accountId)
 	{
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("status", orderType);
 		param.put("accountId", accountId);
 		return getPageList(page, "com.youxue.core.dao.OrderDao.selectPageOrderListByType",
-				"selectCountPageOrderListByType", param);
+				"com.youxue.core.dao.OrderDao.selectCountPageOrderListByType", param);
 	}
 }

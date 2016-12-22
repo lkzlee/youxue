@@ -20,6 +20,35 @@
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
     <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
   </resultMap>
+   <resultMap id="orderDetailVoMap" type="com.youxue.core.vo.OrderDetailVo" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="logic_order_id" property="logicOrderId" jdbcType="VARCHAR" />
+    <result column="code_id" property="codeId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="code_price" property="codePrice" jdbcType="DECIMAL" />
+    <result column="code_status" property="codeStatus" jdbcType="INTEGER" />
+    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_email" property="contactEmail" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
+    <!-- logicOrder -->
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+     <!-- campus -->
+    <result column="camps_name" property="campsName" jdbcType="VARCHAR" />
+    <result column="camps_title" property="campsTitle" jdbcType="VARCHAR" />
+    <result column="camps_images" property="campsImages" jdbcType="VARCHAR" />
+    <result column="deadline_date" property="deadlineDate" jdbcType="DATE" />
+    <result column="departure_date" property="departureDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="duration_time" property="durationTime" jdbcType="INTEGER" />
+  </resultMap>
   <sql id="Base_Column_List" >
     order_id, account_id, logic_order_id, code_id, status, creat_time, update_time, camps_id, 
     total_price, code_price, code_status, pay_price, total_count, contact_name, contact_email, 
@@ -43,12 +72,17 @@
     	for update
     </if>
   </select>
-  <select id="selectPageOrderListByType" resultMap="BaseResultMap" parameterType="java.util.Map" >
+  <select id="selectPageOrderListByType" resultMap="orderDetailVoMap" parameterType="java.util.Map" >
     select 
-    <include refid="Base_Column_List" />
-    from tb_order
-    where account_id = #{accountId,jdbcType=VARCHAR} and status=#{status,jdbcType=INTEGER}
-    order by order_id desc
+	   t.*,tg.pay_status,c.camps_name,c.camps_title,c.camps_images,
+	   c.deadline_date,c.departure_date,c.start_date,c.duration_time
+    from tb_order t,tb_logic_order tg,tb_camps c
+    where 
+	    t.logic_order_id=tg.logic_order_id 
+	    and c.camps_id=t.camps_id
+	    and t.account_id = #{accountId,jdbcType=VARCHAR} 
+	    and t.status=#{status,jdbcType=INTEGER}
+	    order by t.order_id desc
   </select>
   <select id="selectCountPageOrderListByType" resultType="java.lang.Integer" parameterType="java.util.Map" >
     select 

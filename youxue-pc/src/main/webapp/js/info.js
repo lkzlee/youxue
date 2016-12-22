@@ -1,7 +1,8 @@
 /**
  * Created by Administrator on 2016/11/16.
  */
-$(function(){
+//页面加载后执行
+function info_loding(){
     //列表-鼠标经过改变颜色
     var li2=$('.li2');
     li2.hover(function(){
@@ -9,11 +10,10 @@ $(function(){
     },function(){
         $(this).removeClass('li2_hover');
     })
-    //内容横向导航
+    //内容横向导航,当鼠标滚动，给内容的横向导航添加定位样式
     var YDnav=$('#YDnav');
     var YDheight=YDnav.height();
     var pos_obj=YDnav.offset();//left和top
-    //当鼠标滚动，给内容的横向导航添加定位样式
     $(window).scroll(function(){
         var scrollTop=$(window).scrollTop();
         if(pos_obj.top <= scrollTop){//开始添加样式
@@ -35,14 +35,82 @@ $(function(){
         },500);
         return false;
     })
+}
+function load_render(data){
+    login_post('/campsDetail.do',data,'',function(data){
+        data=JSON.parse(data);
+        data.realCampsImages='a,b,c,d';
+        console.log(data);
+        success(data,function(){
+            $('.title').text(data.campsName);
+            $('.orientedPeople').text(data.orientedPeople);
+            $('.durationTime').text(data.durationTime);
+            $('.deadlineDate').text(data.deadlineDate);
+            $('.totalPrice').text(data.totalPrice);
+            $('.feature').text(data.feature);
+            $('.doneCount').val(data.doneCount || 1);
+            if(data.serviceSupport){
+                var arr=handle_pic(data.serviceSupport);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<span><i></i>'+arr[i]+'</span>';
+                }
+                $('.serviceSupport').html(str);
+            }
+            if(data.realCampsImages){
+                var arr=handle_pic(data.realCampsImages);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<li><a href="javascript:void(0)"><img src="'+arr[i]+'" data-src="'+arr[i]+'"></a></li>';
+                }
+                $('.img_info').attr('src',arr[0]);
+                $('.img_list').html(str);
+                $('#yingdi_list').html(str);
+            }
+            $('.campsLocale').val(data.campsLocale);
+            $('.campsDesc').val(data.campsDesc);
+            $('.courseDesc').val(data.courseDesc);
+            $('.activityDesc').val(data.activityDesc);
+            $('.campsFoodDesc').val(data.campsFoodDesc);
+            if(data.campsFoodsPhotos){
+                var arr=handle_pic(data.campsFoodsPhotos);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<img src="'+arr[i]+'">';
+                }
+                $('.campsFoodsPhotos').html(str);
+            }
+            $('.campsHotelDesc').val(data.campsHotelDesc);
+            if(data.campsHotelPhotos){
+                var arr=handle_pic(data.campsHotelPhotos);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<img src="'+arr[i]+'">';
+                }
+                $('.campsHotelPhotos').html(str);
+            }
+            var traces=data.traces;
+            if(traces.length>0){
+                var arr=[];
+                for(i=0,len=traces.length;i<len;i++){
+                    arr.push('<li class="clear"><div class="li_left"><img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""></div>');
+                    arr.push('<div class="li_right"><span class="color_blur">'+traces[i]['traceName']+'</span><p class="p1_li_right">'+traces[i]['traceDesc']+'</p></div></li>');
+                }
+                $('.traces').html(arr.join(''));
+            }
+            $('.feeDesc').val(data.feeDesc);
+            yingdi_pic();
+            tab_pic();
+        })
+    })
+}
+function yingdi_pic(){
     //营地图片
     var yingdi_list=$('#yingdi_list');
     var yingdi_li=$('li',yingdi_list);
     var yingdi_a=$('a',yingdi_list);
     var yingdi_len=yingdi_li.length;
     var index=0,pageNo=0,pageCount=5,disk=1,isClick=true;
-//        var iWidth=document.documentElement.clientWidth;
-//        var iHeight=document.documentElement.clientHeight;
     if(yingdi_len>5){
         var jt_left=$('#jt_left');
         var jt_right=$('#jt_right');
@@ -152,7 +220,7 @@ $(function(){
             clearTimeout(timer);
         },500);
     }
-})
+}
 //隐藏弹出层
 function hideAlert(div,time,otherHide){
     div.hide(time||500);
@@ -170,8 +238,16 @@ function backTop(){
 }
 //在线咨询-需要先申请qq在线客服：http://shang.qq.com/v3/widget.html
 function onlineQQ(){
-    var qq='757927051';
+    var qq='1252610341';
     var link = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes';
     window.open(link,'_blank');
     return false;
+}
+//切换头部的三张图
+function tab_pic(){
+    $('.img_list').on('click','img',function(){
+        var src=$(this).attr('src');
+        $('.img_info').attr('src',src);
+        return false;
+    })
 }

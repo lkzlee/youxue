@@ -19,6 +19,7 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.EmailActiveStatusConstant;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.MessageDao;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
@@ -38,6 +39,8 @@ public class UserCenterController extends BaseController
 {
 	@Resource
 	private UserInfoDao userInfoDao;
+	@Resource
+	private MessageDao messageDao;
 	@Resource
 	private EmailVerifyService emailVerifyService;
 	@Resource
@@ -71,6 +74,7 @@ public class UserCenterController extends BaseController
 		}
 		userInfo.setIfPop(ifPop ? false : true);
 		userInfo.setResult(100);
+		userInfo.setUnReads(messageDao.selectUnReadCount(accountId, null));
 		userInfo.setResultDesc("查询成功");
 		LOG.info("查询用户信息为：userInfo=" + userInfo);
 		return JsonUtil.serialize(userInfo);

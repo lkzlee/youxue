@@ -55,10 +55,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </section>
 </section>
 <section class="search_head">
-    <div class="width_content">
-        <a href="index.html">首页<i>></i></a>
-        <a href="#">美国<i>></i></a>
-        <a href="#">所有产品</a>
+    <div class="width_content" id="position">
+        <a href="index.html">首页</a>
+        <%--<a href="#"><i>></i>美国</a>--%>
+        <%--<a href="#"><i>></i>所有产品</a>--%>
     </div>
 </section>
 <section class="search_content width_content">
@@ -66,9 +66,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
             <div class="left">目&nbsp;&nbsp;的&nbsp;&nbsp;地<i></i></div>
             <div class="right">
-                <a href="#">不限<i></i></a>
-                <a href="#">美国<i></i></a>
-                <a href="#">韩国<i></i></a>
+                <a href="?campusId=1">不限<i></i></a>
+                <a href="?campusId=2">美国<i></i></a>
+                <a href="?campusId=3">韩国<i></i></a>
                 <a href="#">澳大利亚<i></i></a>
                 <a href="#">英国<i></i></a>
                 <a href="#">瑞士<i></i></a>
@@ -127,10 +127,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </li>
     </ul>
     <div class="selected_sc">
-        <span>您已选择</span>
-        <a href="#">美国<i>×</i></a>
-        <a href="#">21-30天<i>×</i></a>
-        <span class="right">共有0个符合选项</span>
+        <span class="is_select">您已选择</span>
+        <%--<a href="#">美国<i>×</i></a>--%>
+        <%--<a href="#">21-30天<i>×</i></a>--%>
+        <span class="right">共有<label class="source_count">0</label>个符合选项</span>
     </div>
     <ul class="content_sc">
 
@@ -156,41 +156,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 
     $(function(){
-        search();
+        var data={};
+        var searchContent= <%=request.getParameter("searchContent")%>;
+        var campusId=<%=request.getParameter("campusId")%>;
+        if(searchContent){
+            <%--alert('searchContent='+searchContent);--%>
+            data['searchContent']=searchContent;
+        }
+        if(campusId){
+            <%--alert('campusId='+campusId);--%>
+            data['campusId']=campusId;
+        }
+        param_handle(data);
+        search_sourch(data);
     })
-    function search(){
-        var search=$('.search');
-        var input=search.children('input');
-        search.find('a').click(function(){
-            var val=input.val();
-            if(!val){
-                alert('请重新输入');
-            }
-            var content_sc=$('.content_sc');
-            login_post('/getCampsList.do','searchContent='+val,'',function(data){
-                var li=[];
-                if(data.result==100){
-                    var obj=data.result;
-                    for(var i=0,len=obj.length;i<len;i++){
-                        li.push('<li><div class="left_sc"><a href="'+obj['campsId']+'"><img src="uploads/images/search_03.jpg" alt=""></a></div>')
-                        li.push('<div class="center_sc"><h2> <a href="info.html">去美国，学正宗美国文化体验美洲文化</a></h2>>')
-                        li.push('<div><a href="#">产品分类<i>></i></a><a href="#">语言学习<i>></i></a><a href="#">10月</a></div>')
-                        li.push('<p>北京出发 | 7天5晚 | 行程包含部分五大公园，黄石深度，六大赠送，羚羊深穴，马蹄湾，拉斯大道酒店 | 飞机往返 中转（含税）| 豪华型住宿 | 7月特价超值</p></div>')
-                        li.push('<div class="right_sc"><span>¥24999</span><a href="info.html">点击查看</a></div></li>')
-                    }
-                    var page=$('.page');
-                    var pageArr=['<span class="firstPage current" class="current"><</span><span class="current">1</span><a href="#">2</a><a class="endPage" href="#">></a>'];
-                    content_sc.append(pageArr.join(''));
-                }else{
-                    li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="search.html">随便逛逛</a></div>');
+    function param_handle(data){
+        var position=$('#position');
+        position.append('<a href="javascript:void(0)"><i>></i>'+data['searchContent']+'</a>');
+    }
+    function search_sourch(obj){
+        var content_sc=$('.content_sc');
+        login_post('/getCampsList.do',obj,'',function(data){
+            data=JSON.parse(data);
+            <%--data.campsList.totalPage=10;--%>
+            <%--data.campsList.totalCount=10;--%>
+            <%--data.campsList.resultList.campsImages='1,1,2';--%>
+            <%--console.log(data);--%>
+            var li=[];
+            var obj=data.campsList.resultList;
+            var len=data.campsList.totalCount;
+            if(data.result==100 && len>0){
+                $('.source_count').text(len);
+                $('.is_select').after('<a href="#">'+data.campsList.campsId+'<i>×</i></a>');
+                for(var i=0;i<len;i++){
+                    li.push('<li><div class="left_sc"><a href="'+obj['campsId']+'"><img src="'+handle_pic(obj['campsImages'])[0]+'" alt=""></a></div>')
+                    li.push('<div class="center_sc"><h2> <a href="info.html">'+obj['campsTitle']+'</a></h2>>')
+                    li.push('<div><a href="#">产品分类<i>></i></a><a href="#">语言学习<i>></i></a><a href="#">10月</a></div>')
+                    li.push('<p>'+obj['campsDesc']+'</p></div>')
+                    li.push('<div class="right_sc"><span>¥'+obj['totalPrice']+'</span><a href="info.html">点击查看</a></div></li>')
                 }
-                content_sc.append(li.join(''));
-            },function(){
-                var li=['<div class="no_result"><span>抱歉没有搜索结果</span><a href="search.html">随便逛逛</a></div>'];
-                content_sc.append(li.join(''));
-            });
-            return false;
-        })
+
+                $('.page').append(pageSet(data.campsList).join(''));
+            }else{
+                li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="search.html">随便逛逛</a></div>');
+            }
+            content_sc.append(li.join(''));
+        });
     }
 </script>
 </body>

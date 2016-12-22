@@ -2,7 +2,7 @@ i{font-family: "simsun";}
 .search_head{height:36px;line-height:36px;background:#eaeff5;}
 .search_head .width_content{padding-left:9px;}
 .search_head a{padding-right:2px;font-size:16px;vertical-align:top;color:#262626;}
-.search_head i{padding-left:4px;display:inline-block;width:12px;height:22px;font-size:22px;}
+.search_head i{padding-right:4px;display:inline-block;width:12px;height:22px;font-size:22px;}
 .search_content{padding-top:15px;}
 /*.select_sc{height:252px;}*/
 .select_sc li{padding-bottom:18px;/*height:36px;*/line-height:36px;font-size:16px;}

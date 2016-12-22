@@ -59,40 +59,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <section class="content width_content">
     <div class="con1 clear">
         <div class="left con1_left">
-            <img class="img_info" src="uploads/images/img370210.png" alt="">
+            <img class="img_info" src="" alt="">
             <ul class="img_list">
-               <li><a href="#"><img src="uploads/images/img370210.png" alt=""></a></li>
-               <li><a href="#"><img src="uploads/images/img370210.png" alt=""></a></li>
-               <li><a href="#"><img src="uploads/images/img370210.png" alt=""></a></li>
             </ul>
         </div>
         <div class="left con1_right">
-            <h1>英国亲子营地，5天3地，学习英国文化氛围</h1>
+            <h1 class="title">英国亲子营地，5天3地，学习英国文化氛围</h1>
             <div class="con1_info">
                 <div class="con1_info_d1">
-                    <p class="p1">面向对象：3--5岁儿童及父母</p>
-                    <p class="p1">行程时间：5天</p>
-                    <p class="p2">报名截止时间：2016-6-1</p>
+                    <p class="p1">面向对象：<label class="orientedPeople"></label></p>
+                    <p class="p1">行程时间：<labe class="durationTime"></labe>天</p>
+                    <p class="p2">报名截止时间：<label class="deadlineDate"></label></p>
                 </div>
                 <div class="con1_info_d2 clear">
-                    <div class="left">已有<span>69</span>人报名</div>
+                    <div class="left">已有<span class="doneCount"></span>人报名</div>
                     <div class="right">
                         <i></i>
                         <div>
-                            产品金额：8000元
+                            产品金额：<label class="totalPrice"></label>元
                         </div>
                     </div>
                 </div>
-                <p class="con1_info_p3">产品特色：亲自同行，当地营地</p>
-                <p class="con1_info_p4">服务保障：<span><i></i>免费司机</span><span><i></i>营地零花销</span><span><i></i>英文交流</span></p>
-                <p class="cont_info_p5">报名人数：<input type="number" value="1" class="signUp_number"></p>
+                <p class="con1_info_p3">产品特色：<label class="feature"></label></p>
+                <p class="con1_info_p4">服务保障：<label class="serviceSupport"></label></p>
+                <p class="cont_info_p5">报名人数：<input type="number" value="1" class="signUp_number doneCount"></p>
                 <div class="con1_info_d3">
                     <div class="left">
-                        <a href="#" class="leftA1" id="shoppingCar">加入购物车</a>
-                        <a href="#">免费咨询</a>
+                        <input type="button" class="leftA1 shoppingCar" value="加入购物车"/>
+                        <input type="button" class="" value="免费咨询" onclick="onlineQQ()"/>
                     </div>
                     <div class="right">
-                        <a href="#" id="buyImmediately">立即购买</a>
+                        <a href="javascript:void(0)" class="buyImmediately">立即购买</a>
                     </div>
                 </div>
             </div>
@@ -115,17 +112,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="right">
                     <ul id="yingdi_list">
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list1_b.jpg"><img src="uploads/images/item_list1_s.jpg" data-src="uploads/images/item_list1_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list1_b.jpg"><img src="uploads/images/item_list1_s.jpg" data-src="uploads/images/item_list1_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list_b.jpg"><img src="uploads/images/item_list_s.jpg" data-src="uploads/images/item_list_b.jpg" alt=""></a></li>
-                        <li><a href="uploads/images/item_list1_b.jpg"><img src="uploads/images/item_list1_s.jpg" data-src="uploads/images/item_list1_b.jpg" alt=""></a></li>
                     </ul>
                     <a href="javascript:void(0)" class="jiantou_left" id="jt_left">
                         <i></i>
@@ -141,12 +127,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="right">
                     <dl>
-                        <dt>查尔顿奈姆营地</dt>
-                        <dd>时间：2016-05-20</dd>
-                        <dd>地点：美国</dd>
-                        <dd>周期：5天</dd>
-                        <dd><span>简介：</span><span class="span1">查尔顿纳姆作为一个温泉疗养小镇，它的历史可以追溯到1716年。附近有历史悠久的小镇--格鲁斯特镇。有关这个小镇的历史可以回溯到罗马时代。1216年理查德三世在格鲁斯特登基。
-                            当然，最近发生在各路斯特德事情可能让你感兴趣：在电影《哈利波特与魔法石》、《哈利波特和密室》中，Hogwarts魔法学校的拍摄地就在格鲁斯特大教堂内。</span></dd>
+                        <dt class="campsName"></dt>
+                        <dd>时间：<label class="departureDate"></label></dd>
+                        <dd>地点：<label class="campsLocale"></label></dd>
+                        <dd>周期：<label class="durationTime"></label>天</dd>
+                        <dd><span>简介：</span><span class="span1 campsDesc"></span></dd>
                     </dl>
                 </div>
             </div>
@@ -157,9 +142,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="right">
                     <dl>
                         <dt>课程内容</dt>
-                        <dd><span>概&nbsp;&nbsp;&nbsp;&nbsp;述：</span><span class="span1">英语课程重点提高口语交流，同时注重提高整体英语技能和英国文化知识。除了老师的正式课堂教学之外，还会安排问答，角色练习和交流性较强的互动和讨论。</span></dd>
+                        <dd><span>概&nbsp;&nbsp;&nbsp;&nbsp;述：</span><span class="span1 courseDesc"></span></dd>
                         <dt class="dt1">活动内容</dt>
-                        <dd><span>概&nbsp;&nbsp;&nbsp;&nbsp;述:</span><span class="span1">老师的正式课堂教学之外，还会安排问答，角色练习和交流性较强的活动和讨论。校园活动，或者可选的全天游玩伦敦，参观杜莎夫人蜡像馆</span></dd>
+                        <dd><span>概&nbsp;&nbsp;&nbsp;&nbsp;述:</span><span class="span1 activityDesc"></span></dd>
                     </dl>
                 </div>
             </div>
@@ -170,22 +155,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="right">
                     <dl>
                         <dt>营地伙食</dt>
-                        <dd>每顿饭十菜一汤，选用最新鲜优质的食材，手艺最好的厨师，烹饪出最美味的佳肴，不限量供应。</dd>
-                        <dd class="dd_img">
-                            <img src="uploads/images/item0_03.jpg" alt="">
-                            <img src="uploads/images/item0_04.jpg" alt="">
-                            <img src="uploads/images/item0_05.jpg" alt="">
-                            <img src="uploads/images/item0_06.jpg" alt="">
-                            <img src="uploads/images/item0_07.jpg" alt="">
+                        <dd class="campsFoodDesc"></dd>
+                        <dd class="dd_img campsFoodsPhotos">
                         </dd>
                         <dt>营地住宿</dt>
-                        <dd>现代化的学生公寓：学生们住在新近修建的学生公寓内，公寓内有公用厨房、带电视机的公共休息厅。卧室大部分为单人间。公寓楼内浴室、淋浴间、卫生间设施齐备，每周六、日有洗衣服务，费用已包含在项目费用中。</dd>
-                        <dd class="dd_img">
-                            <img src="uploads/images/item0_10.jpg" alt="">
-                            <img src="uploads/images/item0_11.jpg" alt="">
-                            <img src="uploads/images/item0_12.jpg" alt="">
-                            <img src="uploads/images/item0_13.jpg" alt="">
-                            <img src="uploads/images/item0_14.jpg" alt="">
+                        <dd class="campsHotelDesc"></dd>
+                        <dd class="dd_img campsHotelPhotos">
                         </dd>
                     </dl>
                 </div>
@@ -195,37 +170,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <h3>营地行程</h3>
                 </div>
                 <div class="right">
-                    <ul>
-                        <li class="clear">
-                            <div class="li_left">
-                                <img src="uploads/images/item0_17.jpg" alt="">
-                            </div>
-                            <div class="li_right">
-                                <span class="color_blur">DAY1</span>
-                                <p class="p1_li_right">浦发机场出发，抵达伦敦；介绍学习中心，准备欢迎晚会</p>
-                                <p>英语课程重点提高口语交流，同时注重提高整体英语技能和英国文化知识。</p>
-                                <p>除了老师的正式课堂教学之外，还安排问答，角色练习和交流性较强的活动和讨论。</p>
-                            </div>
-                        </li>
-                        <li class="clear">
-                            <div class="li_left">
-                                <img src="uploads/images/item0_20.jpg" alt="">
-                            </div>
-                            <div class="li_right">
-                                <span class="color_blur">DAY2</span>
-                                <p class="p1_li_right">全天游玩巴斯和罗马浴场博物馆</p>
-                                <p>1.交通：往返软对/散客机票含税费（团队机票讲统一出票，散客机票因实时计价预定后即可出票），当地旅游巴士</p>
-                            </div>
-                        </li>
-                        <li class="clear">
-                            <div class="li_left">
-                                <img src="uploads/images/item0_22.jpg" alt="">
-                            </div>
-                            <div class="li_right">
-                                <span class="color_blur">DAY3</span>
-                                <p class="p1_li_right">板球比赛或者才艺表演准备</p>
-                            </div>
-                        </li>
+                    <ul class="traces">
+
                     </ul>
                     <p class="color_blur p1_right">注：以上行程均为参考，具体行程根据航班实际情况有所调整，免费咨询电话：400-123-567</p>
                 </div>
@@ -234,10 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="left">
                     <h3>费用详情</h3>
                 </div>
-                <div class="right">
-                    <p>1.交通：往返软对/散客机票含税费（团队机票讲统一出票，散客机票因实时计价预定后即可出票），当地旅游巴士</p>
-                    <p>2.住宿：酒店标准2人间。</p>
-                    <p>3.用餐：行程中团队标准用餐（中式餐或自助餐或特色餐，含飞机上用餐，自由活动期间用餐请自理；如因自身原因放弃用餐，则餐费不退）。</p>
+                <div class="right feeDesc">
                 </div>
             </div>
             <div class="div_con2_cont wenti_div">
@@ -279,25 +222,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <form action="" method="post" id="frm_logo" style="display:none;">
         <div class="phone clear">
             <span>手机号<i></i></span>
-            <input type="text" class="phone_input">
-            <label>请输入正确的手机号</label>
+            <input type="text" placeholder="请输入手机号码" class="phone_input" name="mobile">
+            <label></label>
         </div>
         <div class="password clear">
             <span>密码<i></i></span>
-            <input type="password" class="pwd_input">
-            <a href="#" class="aCode">获取动态密码</a>
-            <label>请输入正确的手机号</label>
+            <input type="password" placeholder="请输入动态密码" class="pwd_input" name="phoneCode">
+            <input type="button" class="aCode" value="获取动态密码">
+            <label></label>
         </div>
         <div class="code clear">
             <span>验证码<i></i></span>
-            <input type="text" class="code_input">
-            <a href="#">
-                <img src="uploads/images/code.jpg" alt="">
+            <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode">
+            <a href="javascript:void(0)" class="imgCode">
+                <img src="verifyCode.do" alt="" id="imgCode">
             </a>
-            <label>请输入正确的手机号</label>
+            <label></label>
         </div>
         <div class="bth_log clear">
-            <input type="submit" value="登录">
+            <input type="button" value="登录" id="submit_login">
             <label></label>
         </div>
     </form>
@@ -307,171 +250,100 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a href="user_shoppingCar.html" class="right">去购物车结算</a>
     </div>
 </div>
+<div id="right_float" style="display:none;">
+    <a href="javascript:void(0)" class="join_Car shoppingCar"><i></i><span>加入购物车</span></a>
+    <a href="javascript:void(0)" class="now_bug buyImmediately"><i></i><span>立即购买</span></a>
+    <a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a>
+    <a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a>
+</div>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/info.js"></script>
 <script>
 $(function(){
-    //加入购物车，如果没有登录。弹出登录框
-    /**1.ajax登录
-     * 变量isLogin：为ture代表用户登录，则弹出登录框；flase代表用户未登录，则弹出已购买信息
-     *变量address: 是在用户未登录的情况下，点击购买后弹出登录框，ajax提交地址
-     * 变量method：为ajax提交方式，post or get
-     * 变量input_data，是传给服务器的参数
-     * 函数successFn，是ajax提交成功后执行的
-     * 函数errorFn，是ajax提交失败后执行的
-     *
-     * 2.ajax提交购物车
-     * 变量add_Car: 是在用户提交购物车，ajax提交地址
-     * 变量method_car：为ajax提交方式，post or get
-     * 对象data_car，是传给服务器的参数
-     * 函数successFn_car，是ajax提交成功后执行的
-     * 函数errorFn_car，是ajax提交失败后执行的
-     */
-    var campusId= <%=request.getParameter("campusId")%>; 
-    var shoppingCar=$('#shoppingCar'),buyImmediately=$('#buyImmediately'),isDianji=true,isLogin=true;
-    var address='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method="post";
-    var add_Car='http://localhost:63342/%E5%B7%A5%E4%BD%9C/frontEnd/pc/info.html?_ijt=q6kp5n5155uefsibrbejdl5tpo#',method_car='post';
+    info_loding();
     var frm_logo=$('#frm_logo');//表单
-    var otherHide=[frm_logo];
-    var car_message=$('#car_message');
     var notLogin=$('#notLogin');
-    var phoneReg=/^1[3|4|5|8][0-9]\d{4,8}$/;
-    var pwdReg=/^\d{4,6}$/;
-    var codeReg=/^[a-z0-9]{0,4}$/;
-    shoppingCar.click(function(ev){
+    //isLogin：为ture代表用户登录；flase代表用户未登录
+    var campusId= '<%=request.getParameter("campusId")%>';
+    var shoppingCar=$('.shoppingCar'),buyImmediately=$('.buyImmediately'),isLogin=false;
+    var add_Car='/addCartItem.do',data_car={'campusId':campusId};
+    var car_message=$('#car_message');
+    load_render(data_car);
+    is_login(function(data){
+        if(data.result==100){
+            isLogin=true;
+        }else{
+            isLogin=false;
+        }
+    })
+    //登录-如果未登录，点击按钮会触发
+    logo_user(function(){
+        isLogin=true;
+        frm_logo.hide();
         notLog_alert();
+    });
+    shoppingCar.click(function(ev){
+        notLog_alert($(this));
         ev.stopPropagation();
     })
     buyImmediately.click(function(ev){
-        notLog_alert();
+        notLog_alert($(this),true);
         ev.stopPropagation();
     });
+    $('#gobank').click(function (ev) {
+        hideAlert(notLogin);
+        ev.stopPropagation();
+    })
+    $('#close_car').click(function(ev){
+        hideAlert(notLogin);
+        ev.stopPropagation();
+    })
+    notLogin.click(function(ev){
+     ev.stopPropagation();
+    })
+    $(document).click(function(ev){
+        hideAlert(notLogin);
+        ev.stopPropagation();
+    })
     //当鼠标滚动，超过一屏，显示右侧浮动框
     var client_height=$(window).height();
     $(window).scroll(function(){
         var scrollTop=$(window).scrollTop();
         if(client_height/2 <= scrollTop){//开始添加样式
-            creant_element('right_float');
+            $('#right_float').fadeIn(500);
         }else{
             $('#right_float').hide();
         }
     })
-    //当鼠标滚动，超过一屏，显示右侧浮动框
-    function creant_element(element){
-        if(!document.getElementById(element)){
-            var str='<a href="javascript:void(0)" class="join_Car"><i></i><span>加入购物车</span></a><a href="javascript:void(0)" class="now_bug"><i></i><span>立即购买</span></a><a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a><a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a>';
-            var div=$('<div id="'+element+'">'+str+'</div>');
-            $('body').append(div);
-            $('#'+element).fadeIn(500);
-        }else{
-            $('#'+element).fadeIn(500);
-        }
-        $('.join_Car').bind('click',function(ev){
-            notLog_alert();
-            ev.stopPropagation();
-        })
-        $('.now_bug').bind('click',function(ev){
-            notLog_alert();
-            ev.stopPropagation();
-        })
-    }
-    function successFn(){
-        $('.bth_log label').show().html('登录成功，正在为您跳转…');
-        setTimeout(function(){
-            isLogin=true;
-            isDianji=true;
-            frm_logo.hide();
-            notLog_alert();
-        },2000)
-    }
-    function errorFn(){
-        $('.bth_log label').show().html('登录失败，请重新尝试或联系管理员');
-    }
-    function notLog_alert(){
-        //首先判断是否登录，默认未登录
-        if(!isLogin){//如果没有登录，那么弹出框显示的是未登录信息
+    function notLog_alert(element,location){
+        if(!isLogin){
             frm_logo.show();
+            notLogin.fadeIn(300);
+            bg_showORhide();
         }else{//登录，那么显示加入购物车消息
-            var gobank=$('#gobank');
-            if(isDianji) {
-                gobank.click(function (ev) {
-                    hideAlert(notLogin);
-                    ev.stopPropagation();
-                })
-            }
-            var signUp_number=$('.signUp_number').val();
-            var data_car={
-                id:1,
-                num:signUp_number
-            };
+            element && element.attr('disabled','disabled').addClass('disabled');
+            data_car['num']=$('.signUp_number').val();
             var message=car_message.find('.message');
             var i=$('i',message);
             var b=$('b',message);
-            function successFn_car(){
-                i.attr('class','i1');
-                b.html('商品已成功加入购物车');
-                car_message.show();
-            }
-            function errorFn_car(){
-                i.attr('class','i2');
-                b.html('操作失败，请重新尝试');
-                car_message.show();
-            }
-            login_post(add_Car,ObjTrans(data_car),method_car,successFn_car,errorFn_car);
-            car_message.show();
-        }
-        notLogin.fadeIn(300);
-        bg_showORhide();
-        if(isDianji){
-            isDianji=false;
-            var close=$('#close_car');
-            close.click(function(ev){
-                hideAlert(notLogin);
-                ev.stopPropagation();
-            })
-            frm_logo.submit(function(){
-                var phone_input=$('.phone_input');
-                var phone_value=phone_input.val();
-                var phone_message=phone_input.siblings('label');
-                if(phone_value.length==11 && phoneReg.test(phone_value)){//验证没有问题
-                    phone_message.hide().html('');
-                }else{
-                    phone_input.focus();
-                    phone_message.show().html('请输入正确的手机');
-                    return false;
-                }
-                var pwd_input=$('.pwd_input');
-                var pwd_value=pwd_input.val();
-                var pwd_message=pwd_input.siblings('label');
-                if(pwd_value.length>3 && pwd_value.length<7 && pwdReg.test(pwd_value)){//验证没有问题
-                    pwd_message.hide().html('');
-                }else{
-                    pwd_input.focus();
-                    pwd_message.show().html('请输入正确的密码');
-                    return false;
-                }
-                var code_input=$('.code_input');
-                var code_value=code_input.val();
-                var code_message=code_input.siblings('label');
-                if(code_value.length==4 && codeReg.test(code_value)){//验证没有问题
-                    code_message.hide().html('');
-                }else{
-                    code_input.focus();
-                    code_message.show().html('请输入正确的验证码');
-                    return false;
-                }
-                var input_data="phone="+phone_value+"&pwd="+pwd_value+"&code="+code_value;
-                login_post(address,input_data,method,successFn,errorFn);
-                return false;//阻止from表单提交
-            })
-            notLogin.click(function(ev){
-                ev.stopPropagation();
-            })
-            $(document).click(function(ev){
-                hideAlert(notLogin);
-                ev.stopPropagation();
-            })
+            login_post(add_Car,data_car,'',function(data){
+                data=JSON.parse(data);
+                success(data,function(){
+                    if(location){
+                        window.location.href='/user_shoppingCar.html';
+                    }else{
+                        i.attr('class','i1');
+                        b.html('商品已成功加入购物车');
+                        car_message.show();
+                        notLogin.fadeIn(300);
+                        bg_showORhide();
+                        element && element.removeAttr('disabled').removeClass('disabled');
+                    }
+                },function(){
+                        element && element.removeAttr('disabled').removeClass('disabled');
+                })
+            });
         }
     }
 })

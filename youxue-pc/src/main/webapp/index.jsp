@@ -59,7 +59,7 @@
         <div class="div_input"><input type="text" id="place" placeholder="想去哪里"></div>
         <div class="div_input"><input type="text" id="wantDo" placeholder="想做什么"></div>
         <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间"></div>
-        <a href="search.html"><i></i></a>
+        <a href="javascript:void(0)" id="search"><i></i></a>
     </div>
 </section>
 <!--关于Camplink-->
@@ -118,33 +118,38 @@ $(function(){
     //选择我的营地
     select_yingdi();
     //特价&热门分类营地列表、主题分类列表
-    CampsDetail()
+    CampsDetail();
+    $('#search').click(function(){
+        var place=$('#place').val();
+        var wantDo=$('#wantDo').val();
+        var startTime=$('.startTime').val();
+        var obj={
+            'place':place,
+            'wantDo':wantDo,
+            'startTime':startTime
+        };
+        auto_submit(obj)
+    })
 })
 function select_yingdi(){
     var con1=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
-    data=JSON.parse(data);
-    if(data.result==100){
-    con1=data.categoryList;
-    }
-    },function(){
+        data=JSON.parse(data);
+        if(data.result==100){
+        con1=data.categoryList;
+        }
     });
     var con2=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
-    data=JSON.parse(data);
-    if(data.result==100){
-    con2=data.categoryList;
-    }
-    },function(){
+        data=JSON.parse(data);
+        if(data.result==100){
+        con2=data.categoryList;
+        }
     });
     $('#place').focus(function(){
-    // $(document).unbind('click');
-    <%--var con=['美国','英国','澳大利亚','韩国','澳大利亚','韩国','日本','瑞士'];--%>
     index_select($(this),con1);
     })
     $('#wantDo').focus(function(){
-    // $(document).unbind('click');
-    <%--var con=['语言学习','传统营地','全真插班','体育项目','艺术形式','科技探索','野生保护','志愿者项目','英国学年项目','日营'];--%>
     index_select($(this),con2);
     });
 }
@@ -164,20 +169,21 @@ function CampsDetail(){
             }
             if(data.subjectList){//主题分类
                 var obj=data.subjectList;
+    console.log(obj)
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){
                     if(i==5){
-                        li.push('<li class="li6"><a href="'+obj[i]['categoryId']+'"><img src="'+obj[i]['categoryUrl']+'" alt=""><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
+                        li.push('<li class="li6"><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
                     }else{
-                        li.push('<li><a href="'+obj[i]['categoryId']+'"><img src="'+obj[i]['categoryUrl']+'" alt=""><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
+                        li.push('<li><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }
                 }
                 subject_list.append(li.join(''));
             }
             function str(val){
                 var li=[];
-                li.push('<li><a href="">');
-                li.push('<img src="'+val['campsImages']+'" alt=""><div class="clear">');
+                li.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
+                li.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
                 li.push('<span>'+val['campsTitle']+'</span><i>¥'+val['totalPrice']+'</i></div>');
                 li.push('<p>'+val['campsDesc']+'</p></a></li>');
                 hot_list.append(li.join(''));
@@ -185,7 +191,6 @@ function CampsDetail(){
         }else{
             alert(data.resultDesc);
         }
-    },function(){
     });
 }
 </script>

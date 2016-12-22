@@ -1,6 +1,12 @@
 /**
  * Created by Administrator on 2016/11/1.
  */
+var phoneReg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
+var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+var strReg=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im;//验证特殊字符
+var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
+var pwdReg=/^\d{4,6}$/;
+var codeReg=/^[a-z0-9]{0,4}$/;
 $(function(){
     //鼠标经过导航，改变样式
     var nav_div=$("div",$("nav"));
@@ -9,10 +15,37 @@ $(function(){
     },function(){
         $(this).removeClass('active');
     })
-
+    new search();
 });
+//判断用户是否登录
+function is_login(callback){
+    login_post('/uc/userinfo.do','','',function(data){
+        data=JSON.parse(data);
+        callback(data);
+    })
+}
 //搜索
-
+function search(){
+    var search=$('.search');
+    var This=this;
+    this.input=search.children('input');
+    this.btn=search.find('a');
+    this.btn.click(function(){
+        var obj={
+            'searchContent':This.input.prop('value')
+        };
+        auto_submit(obj);
+        return false;
+    })
+}
+function auto_submit(obj){
+    var frm=$('<form action="/search.jsp" method="post">');
+    for(var key in obj){
+        frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
+    }
+    $('body').append(frm);
+    frm.submit();
+}
 //创建一个div,并定位
 function index_select(element,con){
     var pos_obj=element.offset();//left和top
@@ -78,6 +111,110 @@ function login_post(address,data,method,successFn,errorFn){
         }
     })
 }
+function success(data,callback,errback){
+    if(data.result==100){
+        callback();
+    }else{
+        errback && errback();
+        alert(data.resultDesc);
+        return false;
+    }
+}
+//登录
+function logo_user(callback){
+    var phone_input=$('.phone_input');
+    var pwd_input=$('.pwd_input');
+    var pwd_message=pwd_input.siblings('label');
+    var code_input=$('.code_input');
+    var code_message=code_input.siblings('label');
+    $('.imgCode').click(function(){
+        $("#imgCode").attr('src',"/verifyCode.do?"+(Math.random()*100));
+    })
+    $('.aCode').click(function(){
+        var cur_time=120;
+        var phone_value=phone_input.val();
+        if(!veriPhone()){
+            return false;
+        }
+        var data={
+            phone:phone_value
+        };
+        var This=$(this);
+        $(this).attr('disabled','disabled').addClass('disable');
+        var timer=setInterval(function(){
+            cur_time--;
+            if(cur_time>0){
+                This.val(cur_time+'秒后重新获取');
+            }else{
+                clearInterval(timer);
+                This.removeAttr('disabled').val('获取验证码').removeClass('disable');
+            }
+        },1000);
+        login_post('mobileCode.do',data,'',successFn);
+        function successFn(json_data){
+            var data=JSON.parse(json_data);
+            if(data.result==100){
+                pwd_message.show().html('验证码已成功发送');
+            }else{
+                pwd_message.show().html(data.resultDesc);
+                clearInterval(timer);
+                This.removeAttr('disabled').val('获取验证码').removeClass('disable');
+            }
+        }
+    });
+    $('#submit_login').click(function(){
+        if(!veriPhone()){
+            return false;
+        }
+        var pwd_value=pwd_input.val();
+        if(pwd_value.length>3 && pwd_value.length<7 && pwdReg.test(pwd_value)){//验证没有问题
+            pwd_message.hide().html('');
+        }else{
+            pwd_input.focus();
+            pwd_message.show().html('请输入正确的动态密码');
+            return false;
+        }
+        var code_value=code_input.val();
+        if(code_value.length==4 && codeReg.test(code_value)){//验证没有问题
+            code_message.hide().html('');
+        }else{
+            code_input.focus();
+            code_message.show().html('请输入正确的验证码');
+            return false;
+        }
+        var This=$(this);
+        This.attr('disabled','disabled').addClass('disable');
+        var phone_value=phone_input.val();
+        var data={
+            'mobile':phone_value,
+            'phoneCode':pwd_value,
+            'imgCode':code_value,
+            'autoLog':$('.autoLog').is(':checked')
+        };
+        login_post('login.do',data,'',successFn);
+        function successFn(json_data){
+            var data=JSON.parse(json_data);
+            if(data.result==100){
+                callback && callback();
+            }else{
+                This.removeAttr('disabled','disabled').removeClass('disable');
+                alert(data.resultDesc);
+            }
+        }
+    })
+    function veriPhone(){
+        var phone_value=phone_input.val();
+        var phone_message=phone_input.siblings('label');
+        if(phone_value.length==11 && phoneReg.test(phone_value)){//验证没有问题
+            phone_message.hide().html('');
+        }else{
+            phone_input.focus();
+            phone_message.show().html('请输入正确的手机');
+            return false;
+        }
+        return true;
+    }
+}
 //提交图片
 function file_post(address,data,method,successFn,errorFn){
     $.ajax({
@@ -97,8 +234,11 @@ function file_post(address,data,method,successFn,errorFn){
  * @returns {pic} 给定数组
  */
 function handle_pic(pic){
-    picArr=pic.split(',');
-    return picArr;
+    if(pic && pic.indexOf(',')!=-1){
+        picArr=pic.split(',');
+        return picArr;
+    }
+    return [];
 }
 /**
  * 获取给定日期的周一到周日某一天的时间戳
@@ -149,8 +289,7 @@ function ObjTrans(obj){
  * @param element 元素
  * @returns {object}
  */
-function pageSet(element,data){
-    element.html('');
+function pageSet(data){
     var pageNo=data.pageNo;
     var totalPage=data.totalPage;
     if(totalPage==0 && data.totalCount==0){
@@ -174,7 +313,7 @@ function pageSet(element,data){
     }else{
         arr.push('<a class="endPage" href="">></a>');
     }
-    element.html(arr.join(''))
+    return arr;
 }
 /**
  * 时间数组转换成正常时间格式

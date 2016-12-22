@@ -55,7 +55,7 @@ i{font-family: "simsun";}
 .right_default .right1{height:172px;}
 .right_default .bghui{height:47px;background:#f0edec;}
 .right_default .imgMessage{float:left;position:relative;margin-left:58px;margin-top:-33px;width:145px;height:145px;}
-.right_default .imgMessage .img{border:solid 10px #fff;width:125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;}
+.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;}
 .right_default .imgMessage .img img{width:100%;}
 .right_default .imgMessage .message{position:absolute;top:113px;left:92px;width:44px;height:32px;}
 .right_default .imgMessage .message i{display:block;margin-top:7px;width:36px;height:25px;background:url("../img/user.png") -95px 0 no-repeat;z-index:999;}
@@ -298,4 +298,4 @@ i{font-family: "simsun";}
 .Visa_service .p_visa{line-height:30px;}
 .Visa_service .table{width:100%;border:solid 1px #000;border-collapse: collapse;text-align:center;}
 .Visa_service .table th,.Visa_service .table td{border:solid 1px #000;height:30px;}
-li.noMessage_border{padding:65px 0;text-align:center;}
+.right_payment li.noMessage_border,li.noMessage_border{padding:65px 0;text-align:center;}

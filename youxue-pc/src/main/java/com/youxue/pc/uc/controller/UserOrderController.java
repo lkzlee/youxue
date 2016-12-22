@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.OrderDetailVo;
+import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
 import com.youxue.pc.uc.dto.OrderItemDto;
 
@@ -76,6 +78,33 @@ public class UserOrderController extends BaseController
 		resultPage.setResultList(resultList);
 		resultPage.setResultDesc("查询成功");
 		return JsonUtil.serialize(resultPage);
+
+	}
+
+	@RequestMapping(path = "/uc/deleteorder.do")
+	@ResponseBody
+	public String deleteOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
+			String orderId)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		LOG.info("删除订单，accountId=" + accountId + ",orderId=" + orderId);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(orderId))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+		}
+		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+		if (order == null || !accountId.equals(order.getAccountId()))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+		}
+		order.setStatus(OrderVo.DELETED);
+		order.setUpdateTime(DateUtil.getCurrentTimestamp());
+		int success = orderDao.updateByPrimaryKeySelective(order);
+		if (success == 1)
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除成功"));
+		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除失败"));
 
 	}
 

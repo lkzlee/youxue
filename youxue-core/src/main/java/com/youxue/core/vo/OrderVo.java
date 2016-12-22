@@ -30,6 +30,10 @@ public class OrderVo implements Serializable
 	 * 取消状态
 	 */
 	public static final int CANCEL = 4;
+	/***
+	 * 已删除状态
+	 */
+	public static final int DELETED = 5;
 
 	private String orderId;
 

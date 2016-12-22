@@ -90,6 +90,37 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
+	@RequestMapping(path = "/pay/addTradeOrderById.do")
+	@ResponseBody
+	public String addTrade(HttpServletRequest request, HttpServletResponse response, String logicOrderId)
+	{
+		try
+		{
+			String ip = getCurrentLoginUserIp(request);
+			String accountId = getCurrentLoginUserName(request);
+			if (StringUtils.isEmpty(accountId))
+				throw new BusinessException("用户未登录，请检查");
+			BaseResponseDto responseDto = addOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId);
+			return JsonUtil.serialize(responseDto);
+		}
+		catch (BusinessException e)
+		{
+			log.error("下单参数校验及流程处理，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage());
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc(e.getMessage()));
+		}
+		catch (Exception e)
+		{
+			log.error("下单处理流程异常，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage(), e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后！"));
+		}
+	}
+
+	/***
+	 * 下单接口
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(path = "/pay/wxpay.do", method = RequestMethod.GET)
 	public String wxPayPage(HttpServletRequest request, HttpServletResponse response, String logicOrderId,
 			ModelMap modelMap)

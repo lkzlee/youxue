@@ -95,6 +95,35 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		}
 	}
 
+	@Override
+	public BaseResponseDto addTradeOrderServiceById(String logicOrderId, String ip, String accountId)
+	{
+		try
+		{
+			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
+			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
+			PayService payService = getPayService(logicOrderVo.getPayType());
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
+			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
+
+			/**
+			 * 向第三方下单
+			 */
+			Object param = payService.addThirdPayOrderService(thirdPayDto);
+			/***
+			 * 解析构造下单结果，并返回
+			 */
+			BaseResponseDto responseDto = parseOrderParam(param, accountId, logicOrderId);
+			LOG.info("@@支付购买，下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
+			return responseDto;
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("系统异常，请检查，msg：" + e.getMessage(), e);
+			return BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后");
+		}
+	}
+
 	private BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId)
 	{
 		if (param == null)
@@ -207,5 +236,4 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			return aliPayService;
 		return weiXinPayService;
 	}
-
 }

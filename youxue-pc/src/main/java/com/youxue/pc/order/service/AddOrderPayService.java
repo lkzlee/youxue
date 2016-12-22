@@ -8,4 +8,6 @@ public interface AddOrderPayService
 
 	BaseResponseDto addTradeOrderService(AddTradeOrderDto orderData, String ip, String accountId);
 
+	BaseResponseDto addTradeOrderServiceById(String logicOrderId, String ip, String accountId);
+
 }

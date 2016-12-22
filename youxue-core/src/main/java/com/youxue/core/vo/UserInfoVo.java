@@ -40,6 +40,8 @@ public class UserInfoVo extends BaseResponseDto
 
 	private String loveCity;
 
+	private int unReads;
+
 	public String getAccountId()
 	{
 		return accountId;
@@ -180,6 +182,16 @@ public class UserInfoVo extends BaseResponseDto
 		this.loveCity = loveCity;
 	}
 
+	public int getUnReads()
+	{
+		return unReads;
+	}
+
+	public void setUnReads(int unReads)
+	{
+		this.unReads = unReads;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -187,7 +199,6 @@ public class UserInfoVo extends BaseResponseDto
 				+ ", emailActiveStatus=" + emailActiveStatus + ", mobile=" + mobile + ", gender=" + gender
 				+ ", createIp=" + createIp + ", createTime=" + createTime + ", birthTime=" + birthTime + ", credit="
 				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + ", ifPop=" + ifPop + ", loveCity="
-				+ loveCity + "]";
+				+ loveCity + ", unReads=" + unReads + "]";
 	}
-
 }

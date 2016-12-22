@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CampsTraceDao;
 import com.youxue.core.enums.CategoryTypeEnum;
@@ -67,6 +69,17 @@ public class CampsDetailController extends BaseController
 		}
 		campsDto.setTraces(traces);
 		campsDto.setResult(100);
+		/**设置当前商品在购物车中数量*/
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isNotBlank(accountId) && jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId))
+		{
+			campsDto.setShopCartCount(Integer.valueOf(jedisProxy
+					.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId)));
+		}
+		else
+		{
+			campsDto.setShopCartCount(1);
+		}
 		return JsonUtil.serialize(campsDto);
 	}
 

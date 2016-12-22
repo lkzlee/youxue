@@ -10,6 +10,8 @@ import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
+	private int shopCartCount;
+
 	public String getCampsId()
 	{
 		return campsId;
@@ -374,6 +376,16 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setRealCampsFoodsPhotos(String realCampsFoodsPhotos)
 	{
 		this.realCampsFoodsPhotos = realCampsFoodsPhotos;
+	}
+
+	public int getShopCartCount()
+	{
+		return shopCartCount;
+	}
+
+	public void setShopCartCount(int shopCartCount)
+	{
+		this.shopCartCount = shopCartCount;
 	}
 
 }

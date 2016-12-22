@@ -12,10 +12,6 @@ $(function(){
     userIndexList();
     //首页基础信息编辑
     // user_edit();
-    //我的消息_单选多选
-    // message();
-    //购物车
-    // car();
 });
 //个人首页的左侧导航列表
 function userIndexList(){
@@ -82,7 +78,7 @@ function user_edit(){
                 var lvalue=linput.val();
                 var svalue=sex.find('input:checked').val();
                 var data={
-                    // 'birthTime':bvalue,
+                    'birthTime':bvalue,
                     'gender':svalue,
                     'nickName':nvalue,
                     'loveCity':lvalue
@@ -164,7 +160,7 @@ function check_loveCity(This){
 function user_edit_photo(url,successFn,errorFn){
     var edit_photo=$('#edit_photo');
     var photoDiv=$('.photoDiv');
-    var file_photo=$('#file_photo');
+    var uploadFile=$('#uploadFile');
     var btn_upload=$('#btn_upload');
     edit_photo.click(function(){
         if($(this).html()=="保存"){
@@ -174,76 +170,33 @@ function user_edit_photo(url,successFn,errorFn){
             $(this).html("保存");
             photoDiv.fadeIn(300);
             btn_upload.click(function(){
-                file_photo.click();
+                uploadFile.click();
             })
-            file_photo.on('change',function(){
-                uploadImage($(this).get(0))
+            uploadFile.on('change',function(){
+                uploadImage($(this)[0])
             })
             function uploadImage(obj) {
-                var tmpFilePath=obj.value;
                 if(validateImage(obj)) {
-                    var data={
-                        'userPhotoUrl':tmpFilePath
-                    }
-                    // login_post(url,data,'',successFn,errorFn);
-                    $.ajaxFileUpload({
-                        url:url,             //需要链接到服务器地址
-                        // data:data,
-                        secureuri:false,
-                        fileElementId:'file_photo',                         //文件选择框的id属性
-                        dataType: 'json',                                     //服务器返回的格式，可以是json
-                        success: successFn,
-                        error: errorFn
+                    // var frm_pic=$('#frm_pic');
+                    // frm_pic.attr('action',url);
+                    // var frm=$('<iframe id="frm" name="frm">a</iframe>');
+                    // $(frm_pic).parents('.photo1').append(frm);
+                    // frm.append(frm_pic);
+                    // // frm[0].contentWindow.document.write(frm_pic);
+                    // frm_pic.attr('target','frm');
+                    // frm_pic.submit();
+
+
+                    var data = new FormData();
+                    data.append('uploadFile', obj.files[0]);
+                    file_post(url,data,'',function(data){
+                        console.log(data);
                     });
                 }
             }
         }
         return false;
     });
-}
-function message(){
-    var all_checked=$('.all_checked');
-    var cont_border=$('.cont_border');
-    var radio_label=cont_border.children('label');
-    var input=radio_label.children('input');
-    var input_all=all_checked.children('input');
-    var length=input.length;
-    var count=0,checkedCount=0;
-    var del=$('#delete');
-    var signRead=$('#signRead');
-    all_checked.click(function(){
-        var isChecked=!input.prop('checked');
-        //如果全部选中，那么值为length，else就是0--在单选时，也会改变此值
-        if(isChecked){
-            checkedCount=length;
-            del.css('display','inline-block');
-            signRead.css('display','inline-block');
-        }else{
-            checkedCount=0;
-            del.css('display','none');
-            signRead.css('display','none');
-        }
-        input.prop('checked',isChecked);
-        input_all.prop('checked',isChecked);
-        return false;
-    })
-    radio_label.click(function(){
-        var this_input=$(this).children('input');
-        var isChecked=this_input.prop('checked');
-        this_input.prop('checked',!isChecked);
-        checkedCount=isChecked?(checkedCount-1):(checkedCount+1);//如果当前没有选中，那么+1，下面就会选中了
-        if(checkedCount==length){
-            check_bool=true;
-            del.css('display','inline-block');
-            signRead.css('display','inline-block');
-        }else{
-            check_bool=false;
-            del.css('display','none');
-            signRead.css('display','none');
-        }
-        input_all.prop('checked',check_bool);
-        return false;
-    })
 }
 function car(){
     var car_ul=$('#car_ul');
@@ -254,7 +207,7 @@ function car(){
     var number_car=$('.number_car'),numTotal=0;
     var checkedCount_car=0,len=li_car_check.length;
     //点击li下的input改变li样式
-    li_car_check.click(function(){
+    car_ul.on('click','input',function(){
         var money=Number($(this).siblings('.money_span_car').html());
         var numCar=Number($(this).siblings('.num_span_car').html());
         var isChecked=$(this).prop('checked');
@@ -281,6 +234,19 @@ function car(){
         var isChecked=$(this).prop('checked');
         checked_change_li(isChecked);
     });
+    $('.a_del').click(function(){
+        var isChecked=all_car_check.is(':checked');
+        if(isChecked){
+            var childCheck=$('input[name="campsId"]:checkbox').serialize();
+            console.log(childCheck);
+            car_ul.html('');
+        }
+    })
+    $('.child_del').click(function(){
+        var childCheck=$(this).siblings('input[name="campsId"]');
+        var value=childCheck.prop('value');//要删除的ID
+        $(this).parent('li').html('');
+    })
     function checked_change_li(isChecked){
         if(isChecked){
             checkedCount_car=len;

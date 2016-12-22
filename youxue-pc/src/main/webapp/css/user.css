@@ -142,6 +142,7 @@ i{font-family: "simsun";}
 }
 .setEmail_right .email_div2 .next_div{padding-top:89px;padding-left:156px;line-height:48px;text-align:center;}
 .setEmail_right .email_div2 .next_div input{width:240px;height:48px;font-size:16px;border-radius:2px;border-color:#8b8b8b;background:#fff;color:#8b8b8b;cursor:pointer;}
+.setEmail_right .email_div2 .next_div input.disabled{background:#dcdcdc;cursor: not-allowed;}
 .setEmail_right .activation_div2{padding-top:58px;margin:0 auto;width:522px;height:96px;line-height:48px;text-align:center;font-size:18px;color:#666;}
 .setEmail_right .activation_div2 a{display:inline-block;margin-top:55px;padding:0px 30px;border:solid 1px #666;border-radius:3px;color:#666;}
 .setEmail_right .success_div2{padding-top:58px;margin:0 auto;width:522px;height:96px;line-height:48px;text-align:center;font-size:18px;color:#666;}
@@ -155,15 +156,16 @@ i{font-family: "simsun";}
 .right_message .right2 p{height:46px;line-height:44px;font-size:16px;color:#000;}
 .right_message .right2 p span{font-size:14px;color:#666;}
 .right_message  .li_border{height:39px;line-height:39px;font-size:14px;background: #f0edec;color:#656565;}
-.right_message  .li_border label{padding-left:14px;margin-left:5px;width:105px;cursor:pointer;}
+.right_message  .li_border label{padding-left:14px;margin-left:5px;width:105px;vertical-align: middle;}
 .right_message  .li_border label,.right_message  .li_border span{position:relative;display:inline-block;}
-.right_message  .li_border input{position:absolute;top:14px;left:0;}
-.right_message  .li_border .cont_span{width:621px;text-align:center;}
+.right_message  .li_border input{position:absolute;top:14px;left:0;vertical-align: middle;}
+.right_message  .li_border .cont_span{width:621px;text-align:center; vertical-align: middle;line-height: 22px;}
 .right_message  .li_border .time_span{width:139px;text-align:center;}
-.right_message  .cont_border{height:46px;line-height:46px;background: #fff;color:#797979;border-bottom:solid 1px #b3b3b3;}
+.right_message  .cont_border{height:auto;line-height:46px;background: #fff;color:#797979;border-bottom:solid 1px #b3b3b3;}
 .right_message  a{color:#656565;}
 .right_message  .cont_border input{top:17px;}
-.right_message  .noMessage_border{padding:65px 0;text-align:center;}
+.right_message  .cont_border.weidu label{cursor:pointer;}
+.right_message  .cont_border.weidu{color:#000;}
 .right_message  .foot_boder{margin-top:78px;}
 .right_message  .foot_boder label{width:53px;}
 .right_message  .foot_boder a{margin-left:6px;display:inline-block;width:124px;height:30px;line-height:30px;border:solid 1px #919191;border-radius:6px;text-align:center;background:#fff;}
@@ -296,3 +298,4 @@ i{font-family: "simsun";}
 .Visa_service .p_visa{line-height:30px;}
 .Visa_service .table{width:100%;border:solid 1px #000;border-collapse: collapse;text-align:center;}
 .Visa_service .table th,.Visa_service .table td{border:solid 1px #000;height:30px;}
+li.noMessage_border{padding:65px 0;text-align:center;}

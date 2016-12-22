@@ -2,7 +2,6 @@
 <% 
 String path = request.getContextPath(); 
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
-//String campusId = request.getParameter("campusId");//用request得到 
 %> 
 <!DOCTYPE html>
 <html lang="en">
@@ -155,6 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
 <script>
+
     $(function(){
         search();
     })

@@ -92,7 +92,7 @@ public class ShopCartController extends BaseController
 	/**
 	 * @param request
 	 * @param response
-	 * num为1表示添加购物车，num为-1表示减少购物车中个数
+	 * num为添加购物车数量
 	 */
 	@RequestMapping("/addCartItem.do")
 	@ResponseBody
@@ -101,7 +101,7 @@ public class ShopCartController extends BaseController
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		if (StringUtils.isBlank(campusId) || num == null)
+		if (StringUtils.isBlank(campusId) || num == null || num <= 0)
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数错误"));
 		}
@@ -111,20 +111,21 @@ public class ShopCartController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
 		}
 
-		boolean exist = jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId);
-		if (exist)
-		{
-			int currentNum = Integer.valueOf(jedisProxy.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId));
-			if (currentNum + num > 0)
-				jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, currentNum + num);
-			else
-				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, campusId);
-		}
-		else
-		{
-			if (num > 0)
-				jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, num);
-		}
+		jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, num);
+		//		boolean exist = jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId);
+		//		if (exist)
+		//		{
+		//			int currentNum = Integer.valueOf(jedisProxy.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId));
+		//			if (currentNum + num > 0)
+		//				jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, currentNum + num);
+		//			else
+		//				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, campusId);
+		//		}
+		//		else
+		//		{
+		//			if (num > 0)
+		//				jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, num);
+		//		}
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 	}
 

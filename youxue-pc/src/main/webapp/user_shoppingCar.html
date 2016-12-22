@@ -137,15 +137,6 @@
             user_success(data,function(){
                 var cont_right_car=$('.cont_right_car');
                 var arr=[];
-//                data.shopCartList.push({
-//                    "campsId": "2",
-//                    "campsImages": "png/2,png/1",
-//                    "campsName": "营地2",
-//                    "campsTitle": "营地2",
-//                    "cartBuyCount": 1,
-//                    "realCampsImages": "http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/png/2,http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/png/1",
-//                    "totalPrice": 10
-//                })
                 var source=data.shopCartList;
                 var len=source.length;
                 if(len<=0){
@@ -153,8 +144,8 @@
                     cont_right_car.html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
                 }else{
                     for(var i=0;i<len;i++){
-                        arr.push('<li><input type="checkbox" id="checked'+(i)+'" name="campsId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+i+'"><div></div></label>');
-                        arr.push('<a href="#"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsName+'</span></a>');
+                        arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');
+                        arr.push('<a href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsName+'</span></a>');
                         arr.push('<span class="span4">'+source[i].totalPrice+'</span><span class="span5 num_span_car">'+source[i].cartBuyCount+'</span><span class="span6 money_span_car">'+(source[i].totalPrice*source[i].cartBuyCount)+'</span><a href="javascript:void(0)" class="span7 child_del">删除</a></li>');
                     }
                     $('#car_ul').html(arr.join(''));

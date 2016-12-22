@@ -240,7 +240,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <label></label>
         </div>
         <div class="bth_log clear">
-            <input type="submit" value="登录">
+            <input type="button" value="登录" id="submit_login">
             <label></label>
         </div>
     </form>
@@ -261,6 +261,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/info.js"></script>
 <script>
 $(function(){
+    info_loding();
     var frm_logo=$('#frm_logo');//表单
     var notLogin=$('#notLogin');
     //isLogin：为ture代表用户登录；flase代表用户未登录
@@ -269,7 +270,6 @@ $(function(){
     var add_Car='/addCartItem.do',data_car={'campusId':campusId};
     var car_message=$('#car_message');
     load_render(data_car);
-    tab_pic();
     is_login(function(data){
         if(data.result==100){
             isLogin=true;
@@ -331,7 +331,7 @@ $(function(){
                 data=JSON.parse(data);
                 success(data,function(){
                     if(location){
-                        window.location.href='/user_checkout.html';
+                        window.location.href='/user_shoppingCar.html';
                     }else{
                         i.attr('class','i1');
                         b.html('商品已成功加入购物车');
@@ -347,74 +347,6 @@ $(function(){
         }
     }
 })
-function load_render(data){
-    login_post('/campsDetail.do',data,'',function(data){
-        data=JSON.parse(data);
-        <%--data.serviceSupport='a,b,c';--%>
-        data.realCampsImages='a,b,c,d';
-        console.log(data);
-        success(data,function(){
-            $('.title').text(data.campsName);
-            $('.orientedPeople').text(data.orientedPeople);
-            $('.durationTime').text(data.durationTime);
-            $('.deadlineDate').text(data.deadlineDate);
-            $('.totalPrice').text(data.totalPrice);
-            $('.feature').text(data.feature);
-            $('.doneCount').val(data.doneCount || 1);
-            if(data.serviceSupport){
-                var arr=handle_pic(data.serviceSupport);
-                var str='';
-                for(var i=0;i<arr.length;i++){
-                    str+='<span><i></i>'+arr[i]+'</span>';
-                }
-                $('.serviceSupport').html(str);
-            }
-            if(data.realCampsImages){
-                var arr=handle_pic(data.realCampsImages);
-                var str='';
-                for(var i=0;i<arr.length;i++){
-                    str+='<li><a href="javascript:void(0)"><img src="'+arr[i]+'" data-src="'+arr[i]+'"></a></li>';
-                }
-                $('.img_info').attr('src',arr[0]);
-                $('.img_list').html(str);
-                $('#yingdi_list').html(str);
-            }
-            $('.campsLocale').val(data.campsLocale);
-            $('.campsDesc').val(data.campsDesc);
-            $('.courseDesc').val(data.courseDesc);
-            $('.activityDesc').val(data.activityDesc);
-            $('.campsFoodDesc').val(data.campsFoodDesc);
-            if(data.campsFoodsPhotos){
-                var arr=handle_pic(data.campsFoodsPhotos);
-                var str='';
-                for(var i=0;i<arr.length;i++){
-                    str+='<img src="'+arr[i]+'">';
-                }
-                $('.campsFoodsPhotos').html(str);
-            }
-            $('.campsHotelDesc').val(data.campsHotelDesc);
-            if(data.campsHotelPhotos){
-                var arr=handle_pic(data.campsHotelPhotos);
-                var str='';
-                for(var i=0;i<arr.length;i++){
-                str+='<img src="'+arr[i]+'">';
-                }
-                $('.campsHotelPhotos').html(str);
-            }
-            var traces=data.traces;
-            if(traces.length>0){
-                var arr=[];
-                for(i=0,len=traces.length;i<len;i++){
-                    arr.push('<li class="clear"><div class="li_left"><img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""></div>');
-                    arr.push('<div class="li_right"><span class="color_blur">'+traces[i]['traceName']+'</span><p class="p1_li_right">'+traces[i]['traceDesc']+'</p></div></li>');
-                }
-                $('.traces').html(arr.join(''));
-            }
-            $('.feeDesc').val(data.feeDesc);
-            yingdi_pic();
-        })
-    })
-}
 </script>
 </body>
 </html>

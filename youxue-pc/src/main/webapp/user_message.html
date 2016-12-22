@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="right2">
-            <p>所有消息<span>(共2条，未读消息0条)</span></p>
+            <p>所有消息<span id="message_num"></span></p>
             <ul class="border_div">
                 <li class="head_boder li_border">
                     <label class="all_checked"><input type="checkbox" class="checkAll">全选</label>
@@ -164,8 +164,8 @@
             checkArr=[];
             var childCheck=$('#message_ul input[type="checkbox"]');
             var isCheck=$(this).is(':checked');
-            childCheck.prop('checked',isCheck);
             $('.checkAll').prop('checked',isCheck);
+            childCheck.prop('checked',isCheck);
             changeElement($('.checkShow'),isCheck);
             if(isCheck){
                 childCheck.each(function(){
@@ -174,7 +174,8 @@
             }
         })
         $('#delete').click(function(){
-
+            var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
+            console.log(childCheck);
         })
         $('#signRead').click(function(){
             var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
@@ -183,7 +184,7 @@
                 data=JSON.parse(data);
                 user_success(data,function(){
                     $('.checkAll').prop('checked',false);
-                    $('#message_ul input:checked').prop({'checked':false,'disabled':'disabled'}).parents('.cont_border').removeClass('weidu').addClass('yidu');
+                    $('#message_ul input:checked').prop({'checked':false}).parents('.cont_border').removeClass('weidu').addClass('yidu');
                 })
             })
         })
@@ -191,31 +192,31 @@
     function dyna_list(dataObj){
         login_post('/uc/usermessage.do',dataObj || '','',function(data){
             data=JSON.parse(data);
-            console.log(data);
             user_success(data,function(){
-                render_list(data['resultList']);
+                render_list(data);
 //                pageSet($('.page'),data);
                 $('.page').append(pageSet(data).join(''));
             })
         })
     }
     //渲染消息列表
-    function render_list(resultList){
+    function render_list(data){
+        $('#message_num').text('(共'+data['totalCount']+'条，未读消息'+data['unReadCount']+'条)');
+        var resultList=data['resultList'];
         var message_ele=$('#message_ul');
         var arr=[];
         var len=resultList.length;
-        var cName='',disb='';
+        var cName='';
         if(resultList.readStatus==0){
             cName='weidu';
         }else{
             cName='yidu';
-            disb='disabled="disabled"';
         }
         if(len<=0){
             arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
         }else{
             for(var i=0;i<len;i++){
-                arr.push('<li class="cont_border li_border '+cName+'"><label><input '+disb+' name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['createTime']+'</span></li>');
+                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['createTime']+'</span></li>');
             }
         }
         message_ele.html(arr.join(''));

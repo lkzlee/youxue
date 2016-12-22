@@ -157,12 +157,14 @@ String campusId = request.getParameter("campusId");//用request得到
 <script>
     $(function(){
         var data={};
-        var searchContent= '<%=request.getParameter("searchContent")%>';
-        var campusId='<%=request.getParameter("campusId")%>';
+        var searchContent= <%=request.getParameter("searchContent")%>;
+        var campusId=<%=request.getParameter("campusId")%>;
         if(searchContent){
+            <%--alert('searchContent='+searchContent);--%>
             data['searchContent']=searchContent;
         }
         if(campusId){
+            <%--alert('campusId='+campusId);--%>
             data['campusId']=campusId;
         }
         param_handle(data);

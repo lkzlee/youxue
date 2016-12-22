@@ -59,7 +59,7 @@
         <div class="div_input"><input type="text" id="place" placeholder="想去哪里"></div>
         <div class="div_input"><input type="text" id="wantDo" placeholder="想做什么"></div>
         <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间"></div>
-        <a href="search.html"><i></i></a>
+        <a href="javascript:void(0)" id="search"><i></i></a>
     </div>
 </section>
 <!--关于Camplink-->
@@ -118,33 +118,38 @@ $(function(){
     //选择我的营地
     select_yingdi();
     //特价&热门分类营地列表、主题分类列表
-    CampsDetail()
+    CampsDetail();
+    $('#search').click(function(){
+        var place=$('#place').val();
+        var wantDo=$('#wantDo').val();
+        var startTime=$('.startTime').val();
+        var obj={
+            'place':place,
+            'wantDo':wantDo,
+            'startTime':startTime
+        };
+        auto_submit(obj)
+    })
 })
 function select_yingdi(){
     var con1=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
-    data=JSON.parse(data);
-    if(data.result==100){
-    con1=data.categoryList;
-    }
-    },function(){
+        data=JSON.parse(data);
+        if(data.result==100){
+        con1=data.categoryList;
+        }
     });
     var con2=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
-    data=JSON.parse(data);
-    if(data.result==100){
-    con2=data.categoryList;
-    }
-    },function(){
+        data=JSON.parse(data);
+        if(data.result==100){
+        con2=data.categoryList;
+        }
     });
     $('#place').focus(function(){
-    // $(document).unbind('click');
-    <%--var con=['美国','英国','澳大利亚','韩国','澳大利亚','韩国','日本','瑞士'];--%>
     index_select($(this),con1);
     })
     $('#wantDo').focus(function(){
-    // $(document).unbind('click');
-    <%--var con=['语言学习','传统营地','全真插班','体育项目','艺术形式','科技探索','野生保护','志愿者项目','英国学年项目','日营'];--%>
     index_select($(this),con2);
     });
 }
@@ -186,7 +191,6 @@ function CampsDetail(){
         }else{
             alert(data.resultDesc);
         }
-    },function(){
     });
 }
 </script>

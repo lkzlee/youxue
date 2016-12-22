@@ -31,12 +31,20 @@ function search(){
     this.input=search.children('input');
     this.btn=search.find('a');
     this.btn.click(function(){
-        var frm=$('<form action="/search.jsp" method="post">');
-        frm.append('<input type="text" name="searchContent" value="'+This.input.prop('value')+'">');
-        $('body').append(frm);
-        frm.submit();
+        var obj={
+            'searchContent':This.input.prop('value')
+        };
+        auto_submit(obj);
         return false;
     })
+}
+function auto_submit(obj){
+    var frm=$('<form action="/search.jsp" method="post">');
+    for(var key in obj){
+        frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
+    }
+    $('body').append(frm);
+    frm.submit();
 }
 //创建一个div,并定位
 function index_select(element,con){
@@ -114,8 +122,6 @@ function success(data,callback,errback){
 }
 //登录
 function logo_user(callback){
-    var form=$('#frm_logo');
-    var address='mobileCode.do',method="post";
     var phone_input=$('.phone_input');
     var pwd_input=$('.pwd_input');
     var pwd_message=pwd_input.siblings('label');
@@ -144,7 +150,7 @@ function logo_user(callback){
                 This.removeAttr('disabled').val('获取验证码').removeClass('disable');
             }
         },1000);
-        login_post(address,data,method,successFn);
+        login_post('mobileCode.do',data,'',successFn);
         function successFn(json_data){
             var data=JSON.parse(json_data);
             if(data.result==100){
@@ -156,8 +162,10 @@ function logo_user(callback){
             }
         }
     });
-    form.submit(function(){
-        veriPhone();
+    $('#submit_login').click(function(){
+        if(!veriPhone()){
+            return false;
+        }
         var pwd_value=pwd_input.val();
         if(pwd_value.length>3 && pwd_value.length<7 && pwdReg.test(pwd_value)){//验证没有问题
             pwd_message.hide().html('');
@@ -174,7 +182,7 @@ function logo_user(callback){
             code_message.show().html('请输入正确的验证码');
             return false;
         }
-        var This=$('input[type=submit]');
+        var This=$(this);
         This.attr('disabled','disabled').addClass('disable');
         var phone_value=phone_input.val();
         var data={
@@ -183,7 +191,7 @@ function logo_user(callback){
             'imgCode':code_value,
             'autoLog':$('.autoLog').is(':checked')
         };
-        login_post('login.do',data,method,successFn);
+        login_post('login.do',data,'',successFn);
         function successFn(json_data){
             var data=JSON.parse(json_data);
             if(data.result==100){
@@ -193,7 +201,6 @@ function logo_user(callback){
                 alert(data.resultDesc);
             }
         }
-        return false;
     })
     function veriPhone(){
         var phone_value=phone_input.val();
@@ -227,8 +234,11 @@ function file_post(address,data,method,successFn,errorFn){
  * @returns {pic} 给定数组
  */
 function handle_pic(pic){
-    picArr=pic.split(',');
-    return picArr;
+    if(pic && pic.indexOf(',')!=-1){
+        picArr=pic.split(',');
+        return picArr;
+    }
+    return [];
 }
 /**
  * 获取给定日期的周一到周日某一天的时间戳

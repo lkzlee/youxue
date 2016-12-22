@@ -1,7 +1,8 @@
 /**
  * Created by Administrator on 2016/11/16.
  */
-$(function(){
+//页面加载后执行
+function info_loding(){
     //列表-鼠标经过改变颜色
     var li2=$('.li2');
     li2.hover(function(){
@@ -34,7 +35,75 @@ $(function(){
         },500);
         return false;
     })
-})
+}
+function load_render(data){
+    login_post('/campsDetail.do',data,'',function(data){
+        data=JSON.parse(data);
+        data.realCampsImages='a,b,c,d';
+        console.log(data);
+        success(data,function(){
+            $('.title').text(data.campsName);
+            $('.orientedPeople').text(data.orientedPeople);
+            $('.durationTime').text(data.durationTime);
+            $('.deadlineDate').text(data.deadlineDate);
+            $('.totalPrice').text(data.totalPrice);
+            $('.feature').text(data.feature);
+            $('.doneCount').val(data.doneCount || 1);
+            if(data.serviceSupport){
+                var arr=handle_pic(data.serviceSupport);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<span><i></i>'+arr[i]+'</span>';
+                }
+                $('.serviceSupport').html(str);
+            }
+            if(data.realCampsImages){
+                var arr=handle_pic(data.realCampsImages);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<li><a href="javascript:void(0)"><img src="'+arr[i]+'" data-src="'+arr[i]+'"></a></li>';
+                }
+                $('.img_info').attr('src',arr[0]);
+                $('.img_list').html(str);
+                $('#yingdi_list').html(str);
+            }
+            $('.campsLocale').val(data.campsLocale);
+            $('.campsDesc').val(data.campsDesc);
+            $('.courseDesc').val(data.courseDesc);
+            $('.activityDesc').val(data.activityDesc);
+            $('.campsFoodDesc').val(data.campsFoodDesc);
+            if(data.campsFoodsPhotos){
+                var arr=handle_pic(data.campsFoodsPhotos);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<img src="'+arr[i]+'">';
+                }
+                $('.campsFoodsPhotos').html(str);
+            }
+            $('.campsHotelDesc').val(data.campsHotelDesc);
+            if(data.campsHotelPhotos){
+                var arr=handle_pic(data.campsHotelPhotos);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<img src="'+arr[i]+'">';
+                }
+                $('.campsHotelPhotos').html(str);
+            }
+            var traces=data.traces;
+            if(traces.length>0){
+                var arr=[];
+                for(i=0,len=traces.length;i<len;i++){
+                    arr.push('<li class="clear"><div class="li_left"><img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""></div>');
+                    arr.push('<div class="li_right"><span class="color_blur">'+traces[i]['traceName']+'</span><p class="p1_li_right">'+traces[i]['traceDesc']+'</p></div></li>');
+                }
+                $('.traces').html(arr.join(''));
+            }
+            $('.feeDesc').val(data.feeDesc);
+            yingdi_pic();
+            tab_pic();
+        })
+    })
+}
 function yingdi_pic(){
     //营地图片
     var yingdi_list=$('#yingdi_list');

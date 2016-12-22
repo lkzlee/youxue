@@ -228,6 +228,7 @@ function car(){
             console.log(str)
             login_post('/deleteCartItem.do',str,'',function(data){
                 user_success(JSON.parse(data),function(){
+                    console.log(JSON.parse(data));
                     check.each(function(){
                         var childCheck=$(this);
                         del_change($(this),childCheck)
@@ -238,7 +239,7 @@ function car(){
     })
     $('.child_del').click(function(){
         var This=$(this);
-        var childCheck=$(this).siblings('input[name="campsId"]');
+        var childCheck=$(this).siblings('input[name="campusId"]');
         var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
         login_post('/deleteCartItem.do','campusId='+value,'',function(data){
             user_success(JSON.parse(data),function(){

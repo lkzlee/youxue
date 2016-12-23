@@ -135,13 +135,12 @@
         login_post('/shopCartDetailList.do','','',function(data){
             data=JSON.parse(data);
             user_success(data,function(){
-                var cont_right_car=$('.cont_right_car');
                 var arr=[];
                 var source=data.shopCartList;
                 var len=source.length;
                 if(len<=0){
                     arr.push('');
-                    cont_right_car.html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
+                    $('.cont_right_car').html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
                 }else{
                     for(var i=0;i<len;i++){
                         arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');

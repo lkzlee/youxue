@@ -259,6 +259,9 @@ function car(){
         }
         isAll();
         That.parent('li').remove();
+        if($('.child_del').parent('li').length==0){
+            $('.cont_right_car').html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
+        }
     }
     function isAll(){
         if(checkedCount_car==len){

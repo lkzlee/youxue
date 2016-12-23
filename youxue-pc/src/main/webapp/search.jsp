@@ -154,53 +154,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
 <script>
-
+    var public_obj={};
     $(function(){
-        var data={};
-        var searchContent= <%=request.getParameter("searchContent")%>;
-        var campusId=<%=request.getParameter("campusId")%>;
+        var searchContent= '<%=request.getParameter("searchContent")==null?"":request.getParameter("searchContent")%>';
+        var campusId='<%=request.getParameter("campusId")==null?"":request.getParameter("campusId")%>';
         if(searchContent){
             <%--alert('searchContent='+searchContent);--%>
-            data['searchContent']=searchContent;
+            public_obj['searchContent']=searchContent;
         }
         if(campusId){
             <%--alert('campusId='+campusId);--%>
-            data['campusId']=campusId;
+            public_obj['campusId']=campusId;
         }
-        param_handle(data);
-        search_sourch(data);
+        $('.selected_sc').on('click','.selected_campusId',function(){
+            var id=$(this).attr('data-id');
+            $(this).hide()
+            delete public_obj['campusId'];
+            search_sourch(public_obj);
+        })
+        change_page('.page',public_obj,function(data){
+            public_obj['pageNo']=data.pageNo;
+            public_obj['totalPage']=data.totalPage;
+            public_obj['totalCount']=data.totalCount;
+            search_sourch(public_obj);
+        });
+        search_sourch(public_obj);
     })
-    function param_handle(data){
-        var position=$('#position');
-        position.append('<a href="javascript:void(0)"><i>></i>'+data['searchContent']+'</a>');
-    }
-    function search_sourch(obj){
-        var content_sc=$('.content_sc');
-        login_post('/getCampsList.do',obj,'',function(data){
+    function search_sourch(){
+        public_obj['campusId'] && $('.is_select').after('<a href="javascript:void(0)" data-id="'+public_obj['campusId']+'" class="selected_campusId">'+public_obj['campusId']+'<i>×</i></a>');
+        public_obj['searchContent'] && $('#position').append('<a href="javascript:void(0)"><i>></i>'+public_obj['searchContent']+'</a>');
+        login_post('/getCampsList.do',public_obj,'',function(data){
             data=JSON.parse(data);
+            <%--data.campsList.pageNo=5;--%>
             <%--data.campsList.totalPage=10;--%>
-            <%--data.campsList.totalCount=10;--%>
+            <%--data.campsList.totalCount=100;--%>
+            public_obj['pageNo']=data.campsList.pageNo;
+            public_obj['totalPage']=data.campsList.totalPage;
+            public_obj['totalCount']=data.campsList.totalCount;
             <%--data.campsList.resultList.campsImages='1,1,2';--%>
-            <%--console.log(data);--%>
+            console.log(data);
             var li=[];
             var obj=data.campsList.resultList;
-            var len=data.campsList.totalCount;
-            if(data.result==100 && len>0){
-                $('.source_count').text(len);
-                $('.is_select').after('<a href="#">'+data.campsList.campsId+'<i>×</i></a>');
-                for(var i=0;i<len;i++){
-                    li.push('<li><div class="left_sc"><a href="'+obj['campsId']+'"><img src="'+handle_pic(obj['campsImages'])[0]+'" alt=""></a></div>')
-                    li.push('<div class="center_sc"><h2> <a href="info.html">'+obj['campsTitle']+'</a></h2>>')
-                    li.push('<div><a href="#">产品分类<i>></i></a><a href="#">语言学习<i>></i></a><a href="#">10月</a></div>')
-                    li.push('<p>'+obj['campsDesc']+'</p></div>')
-                    li.push('<div class="right_sc"><span>¥'+obj['totalPrice']+'</span><a href="info.html">点击查看</a></div></li>')
+            var len=obj.length;
+            success(data,function(){
+                if(len>0){
+                    $('.source_count').text(len);
+                    for(var i=0;i<len;i++){
+                        li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
+                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'">'+obj[i]['campsTitle']+'</a></h2>')
+                        li.push('<div><a href="#">产品分类<i>></i></a><a href="#">语言学习<i>></i></a><a href="#">10月</a></div>')
+                        li.push('<p>'+obj[i]['campsDesc']+'</p></div>')
+                        li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'">点击查看</a></div></li>')
+                    }
+                }else{
+                    li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="search.html">随便逛逛</a></div>');
                 }
-
-                $('.page').append(pageSet(data.campsList).join(''));
-            }else{
-                li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="search.html">随便逛逛</a></div>');
-            }
-            content_sc.append(li.join(''));
+                $('.page').html(pageSet(public_obj).join(''));
+                $('.content_sc').html(li.join(''));
+            });
         });
     }
 </script>

@@ -55,9 +55,9 @@ i{font-family: "simsun";}
 .right_default .right1{height:172px;}
 .right_default .bghui{height:47px;background:#f0edec;}
 .right_default .imgMessage{float:left;position:relative;margin-left:58px;margin-top:-33px;width:145px;height:145px;}
-.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;}
+.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;background-image:url('../img/user_pic.jpg');background-size:100%;}
 .right_default .imgMessage .img img{width:100%;}
-.right_default .imgMessage .message{position:absolute;top:113px;left:92px;width:44px;height:32px;}
+.right_default .imgMessage .message{position:absolute;top:113px;left:92px;width:44px;height:32px;display:none;}
 .right_default .imgMessage .message i{display:block;margin-top:7px;width:36px;height:25px;background:url("../img/user.png") -95px 0 no-repeat;z-index:999;}
 .right_default .imgMessage .message span{position:absolute;top:0;left:25px;width:19px;height:19px;line-height:19px;border-radius:5px;text-align:center;background:#ff0000;color:#fff;}
 .right_default .hiDiv{float:left;padding:41px 0 0 25px;}
@@ -125,8 +125,8 @@ i{font-family: "simsun";}
 .setEmail_right .email_div1 .email_active i{padding:0;border:solid 7px #28abe2;}
 .setEmail_right .email_div1 .email_active i b{border:none;}
 .setEmail_right .email_div1 .email_active span{color:#28abe2;}
-.setEmail_right .email_div2{padding-top:80px;font-size:14px;color:#626262;}
-.setEmail_right .email_div2 div{margin-bottom:25px;padding-left:5px;height:37px;line-height:37px;}
+.setEmail_right .email_div2{padding-top:80px;width:650px;font-size:14px;color:#626262;}
+.setEmail_right .email_div2 div{margin-bottom:25px;width:100%;height:37px;}
 .setEmail_right .email_div2 div span{letter-spacing:2px;}
 .setEmail_right .email_div2 div input{padding:0 10px;width:407px;height:35px;border:solid 1px #626262;}
 .setEmail_right .email_div2 div b{display:inline-block;padding-left:21px;}
@@ -136,17 +136,14 @@ i{font-family: "simsun";}
     background: -moz-linear-gradient(top,  #6bdc7f,  #3ca33c);
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#6bdc7f', endColorstr='#3ca33c');
 }
-.setEmail_right .email_div2 div b i.error{
-    border-color:red;
-    background: red;
-}
-.setEmail_right .email_div2 .next_div{padding-top:89px;padding-left:156px;line-height:48px;text-align:center;}
+.setEmail_right .email_div2 div b i.error{border-color:red;background: red;}
+.setEmail_right .email_div2 .next_div{padding-top:89px;width: 100%;height:auto;text-align:center;}
 .setEmail_right .email_div2 .next_div input{width:240px;height:48px;font-size:16px;border-radius:2px;border-color:#8b8b8b;background:#fff;color:#8b8b8b;cursor:pointer;}
 .setEmail_right .email_div2 .next_div input.disabled{background:#dcdcdc;cursor: not-allowed;}
 .setEmail_right .activation_div2{padding-top:58px;margin:0 auto;width:522px;height:96px;line-height:48px;text-align:center;font-size:18px;color:#666;}
-.setEmail_right .activation_div2 a{display:inline-block;margin-top:55px;padding:0px 30px;border:solid 1px #666;border-radius:3px;color:#666;}
+.setEmail_right .activation_div2 #email_url{display:inline-block;margin-top:55px;padding:0px 30px;border:solid 1px #666;border-radius:3px;color:#666;}
 .setEmail_right .success_div2{padding-top:58px;margin:0 auto;width:522px;height:96px;line-height:48px;text-align:center;font-size:18px;color:#666;}
-.setEmail_right .success_div2 a{float:right;font-size:16px;color:#28abe2;}
+.setEmail_right a.update_email{float:right;font-size:16px;color:#28abe2;}
 .setEmail_right .success_div2 i{font-weight:700;}
 /*我的消息*/
 .right_message{float:left;width:945px;}
@@ -298,4 +295,13 @@ i{font-family: "simsun";}
 .Visa_service .p_visa{line-height:30px;}
 .Visa_service .table{width:100%;border:solid 1px #000;border-collapse: collapse;text-align:center;}
 .Visa_service .table th,.Visa_service .table td{border:solid 1px #000;height:30px;}
-.right_payment li.noMessage_border,li.noMessage_border{padding:65px 0;text-align:center;}
+li.noMessage_border{height: auto!important;padding:65px 0!important;text-align:center;}
+/*微信支付*/
+.weixin_head{height:83px;background:#fff;}
+.weixin_head .logo{margin:0 auto;width:1180px;}
+.weixin_cont{margin:78px auto 30px;padding-top:87px;padding-bottom:35px;width:1180px;border-top:solid 7px #999999;border-bottom:solid 7px #999999;text-align:center;background: #fff;}
+.weixin_cont .p2{padding-top:26px;}
+.weixin_cont .p3{margin:23px auto 0;width:365px;border-top:solid 1px #8d8d8d;border-bottom:solid 1px #8d8d8d;line-height:86px;font-size:3.8333em;color:#35b0e3;}
+.weixin_cont .p4{padding-top:25px;line-height:26px;font-size:2.166em;}
+.weixin_cont .p5{margin:0 auto;padding-top:10px;width:213px;line-height:1em;font-size:2em;text-align: left;letter-spacing: 2px;}
+.weixin_cont .p5 i{float:left;width:27px;height:24px;background:url("../img/index.png") -119px -3px no-repeat;}

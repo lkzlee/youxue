@@ -80,7 +80,7 @@
             <div class="bghui"></div>
             <div class="imgMessage">
                 <div class="img">
-                    <img src="uploads/images/photo.jpg" alt="" id="photo_img">
+                    <img src="" alt="" id="photo_img" style="display:none;">
                 </div>
                 <a class="message" href="/user_message.html">
                     <i></i>
@@ -243,7 +243,7 @@
 //        user_edit_photo('/uc/updatePhoto.do',sucessFn);
         user_edit_photo('http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT//img/uploadImg.html',sucessFn);
         function sucessFn(){
-//            data=JSON.parse(data);
+            data=JSON.parse(data);
             user_success(data,function(){
                 var bigPhoto=$('#bigPhoto');
                 changeEl(bigPhoto,data.big1.src);
@@ -269,9 +269,8 @@
             //虚拟的数据
 //            data.ifPop=false;//是否弹窗
             user_success(data,function(){
-                var users=data;
-                render_alert(users);
-                render_default(users);
+                render_alert(data);
+                render_default(data);
             });
         })
     }
@@ -288,28 +287,18 @@
     }
     //渲染基础信息
     function render_default(users){
-        console.log(users);
-        var photo_img=$('#photo_img');
-        photo_img.attr('src',users.photoUrl);
-        var phone=$('#phone');
-        var span=phone.children('span');
-        span.text(users.mobile);
-        var email=$('#email');
-        var span=email.children('span');
-        span.text(users.email);
-        var nickname=$('#nickname');
-        var span=nickname.children('span');
-        span.text(users.nickName);
-        var sex=$('#sex');
-        var span=sex.children('span');
-        span.text(users.gender==0?'男':'女');
-        var birthday=$('#birthday');
-        var span=birthday.children('span');
-//        console.log(users.birthTime);
-        span.text(formatDate(new Date(users.birthTime),0));
-        var loveCity=$('#loveCity');
-        var span=loveCity.children('span');
-        span.text(users.loveCity);
+        if(Number(users.unReads)>0){
+            $('.message').show().children('span').text(users.unReads);
+        }
+        if(users.photoUrl){
+            $('#photo_img').attr('src',users.photoUrl).show();
+        }
+        $('#phone').children('span').text(users.mobile);
+        $('#email').children('span').text(users.email);
+        $('#nickname').children('span').text(users.nickName);
+        $('#sex').children('span').text(users.gender==0?'男':'女');
+        $('#birthday').children('span').text(formatDate(new Date(users.birthTime),0));
+        $('#loveCity').children('span').text(users.loveCity);
         //首页基础信息编辑
         user_edit();
     }

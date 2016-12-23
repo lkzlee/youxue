@@ -79,22 +79,22 @@
             <div class="bghui"></div>
             <div class="imgMessage">
                 <div class="img">
-                    <img src="uploads/images/photo.jpg" alt="">
+                    <img src="" alt="" id="photo_img" style="display:none;">
                 </div>
-                <a class="message" href="#">
+                <a class="message" href="/user_message.html">
                     <i></i>
                     <span>6</span>
                 </a>
             </div>
             <div class="hiDiv">
-                <h2>Hi,Cindy!</h2>
-                <span>你的积分，200</span>
+                <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+                <span>你的积分，<label class="integral_lbl">0</label></span>
             </div>
         </div>
         <div class="div_rigPay">
             <div class="bghui">
                 <span>待付款</span>
-                <a href="#">收起<img src="img/payment1.jpg"/></a>
+                <!--<a href="#">收起<img src="img/payment1.jpg"/></a>-->
             </div>
             <ul class="ul_payment clear">
             </ul>
@@ -120,34 +120,48 @@
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script>
+    var public_obj={ 'orderType':0};
     $(function(){
-        var data={
-            'orderType':0
-        }
-        login_post('/uc/userorder.do',data,'',successFn);
-        function successFn(data){
-            var data=JSON.parse(data);
+        change_page('.page',public_obj,function(data){
+            public_obj['pageNo']=data.pageNo;
+            public_obj['totalPage']=data.totalPage;
+            public_obj['totalCount']=data.totalCount;
+            load();
+        });
+        load();
+    })
+    function load(){
+        login_post('/uc/userinfo.do','','',function(data){
+            data=JSON.parse(data);
+            user_success(data,function(){
+                $('.nicknNme_lbl').text(data.nickName);
+                $('.integral_lbl').text(data.credit);
+                if(Number(data.unReads)>0){
+                    $('.message').show().children('span').text(data.unReads);
+                }
+                if(data.photoUrl){
+                    $('#photo_img').attr('src',data.photoUrl).show();
+                }
+            });
+        })
+        login_post('/uc/userorder.do',public_obj,'',function(data){
+            data=JSON.parse(data);
             user_success(data,function(){
                 render_list(data);
-//                var contArr=[];
-//                console.log(data);
-//                var result=data.resultList;
-//                for(var i=0;i<data.pageSize;i++){
-//                    contArr.push('<li><a href="?orderId='+result[i]['orderId']+'"><img src="uploads/images/index0_03.jpg" alt="">');
-//                    contArr.push('<dl><dt>'+result[i]['contactName']+'</dt>');
-//                    contArr.push('<dd>订单号：'+result[i]['orderId']+'</dd><dd>出发日期：2016-07-30</dd><dd>预定日期：2016-04-01</dd></dl></a><div>');
-//                    contArr.push('<span>费用：<b>¥5000</b></span><a href="#">删除记录</a><a href="#" class="a2_payment">立即购买</a></div></li>');
-//                }
-//                $('.ul_payment').html(contArr.join(''));
             })
-        }
-    })
+        });
+    }
     //渲染消息列表
     function render_list(data){
+//        data.pageNo=5;
+//        data.totalPage=10;
+//        data.totalCount=100;
+        public_obj['pageNo']=data.pageNo;
+        public_obj['totalPage']=data.totalPage;
+        public_obj['totalCount']=data.totalCount;
         var arr=[];
         var result=data['resultList'];
         var len=result.length;
-        console.log(len)
         if(len<=0){
             arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
         }else{
@@ -157,9 +171,9 @@
                 arr.push('<dd>订单号：'+result[i]['orderId']+'</dd><dd>出发日期：2016-07-30</dd><dd>预定日期：2016-04-01</dd></dl></a><div>');
                 arr.push('<span>费用：<b>¥5000</b></span><a href="#">删除记录</a><a href="#" class="a2_payment">立即购买</a></div></li>');
             }
-            $('.page').append(pageSet(data).join(''));
         }
         $('.ul_payment').html(arr.join(''));
+        $('.page').html(pageSet(public_obj).join(''));
     }
 </script>
 </body>

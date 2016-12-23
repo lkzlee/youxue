@@ -3,7 +3,7 @@
  */
 var phoneReg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
 var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-var strReg=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im;//验证特殊字符
+var strReg=/[`~!@#$%^&*()_+=<>?:"{},.\/;'[\]]/im;//验证特殊字符
 var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 var pwdReg=/^\d{4,6}$/;
 var codeReg=/^[a-z0-9]{0,4}$/;
@@ -31,20 +31,26 @@ function search(){
     this.input=search.children('input');
     this.btn=search.find('a');
     this.btn.click(function(){
+        var val=This.input.prop('value');
+        if(!val || strReg.test(val)){
+            alert('请输入正确的内容');
+            return false;
+        }
         var obj={
-            'searchContent':This.input.prop('value')
+            'searchContent':val
         };
         auto_submit(obj);
         return false;
     })
 }
 function auto_submit(obj){
-    var frm=$('<form action="/search.jsp" method="post">');
-    for(var key in obj){
-        frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
-    }
-    $('body').append(frm);
-    frm.submit();
+    window.location.href='/search.jsp?'+$.param(obj);
+    // var frm=$('<form action="/search.jsp" method="post">');
+    // for(var key in obj){
+    //     frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
+    // }
+    // $('body').append(frm);
+    // frm.submit();
 }
 //创建一个div,并定位
 function index_select(element,con){
@@ -56,27 +62,32 @@ function index_select(element,con){
 
     var li='';
     for(var i=0,len=con.length;i<len;i++){
-        li+='<li data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+        if(!con[i]['categoryId']){
+            li+='<li class="disabled" data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+        }else{
+            li+='<li data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+        }
     }
-    var nDiv=$("<ul class='posElement' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
-    $(document.body).append(nDiv);
-
-    //当失去焦点，首先判断是不是点击了列表，然后判断是不是点击文档其他空白处
-    element.blur(function(){
-        var element_this=$(this);
-        var posElement=$('.posElement');
-        var li=$('li',posElement);
-        li.click(function(ev){
-            var value=$(this).html();
-            element_this.val(value);
-            posElement.hide();
-            ev.stopPropagation();
-        })
-        $(document).click(function(ev){
-            posElement.hide();
-            ev.stopPropagation();
-            $(document).unbind('click');
-        })
+    var cName=element.attr('class');
+    if(!document.getElementById(cName)){
+        var nDiv=$("<ul class='posElement' id='"+cName+"' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
+        $(document.body).append(nDiv);
+    }else{
+        $("#"+cName).css({
+            top:pos_obj.top,
+            left:pos_obj.left,
+            width:pos_obj.width
+        }).html(li).fadeIn(300);
+    }
+}
+function index_blur(element){
+    var cName=element.attr('class');
+    var posElement=$("#"+cName);
+    posElement.fadeOut(300);
+    $('li',posElement).click(function(){
+        if($(this).attr('data-value')){
+            element.val($(this).html());
+        }
     })
 }
 //背景层显示隐藏
@@ -106,8 +117,10 @@ function login_post(address,data,method,successFn,errorFn){
         data:data,
         dataType:"json",
         success:successFn,
-        error:errorFn ||function(){
+        error:errorFn ||function(data,error){
             alert('系统获取异常');
+            console.log(data);
+            console.log(error);
         }
     })
 }
@@ -293,7 +306,7 @@ function pageSet(data){
     var pageNo=data.pageNo;
     var totalPage=data.totalPage;
     if(totalPage==0 && data.totalCount==0){
-        return false;
+        return [];
     }
     var arr=[];
     if(pageNo==1){
@@ -314,6 +327,22 @@ function pageSet(data){
         arr.push('<a class="endPage" href="">></a>');
     }
     return arr;
+}
+/*
+* 分页点击触发，改变数据
+* */
+function change_page(element,data,callback){
+    $(element).on('click','a',function(){
+        if($(this).is('.firstPage')){
+            data['pageNo']=1;
+        }else if($(this).is('.endPage')){
+            data['pageNo']=data['totalPage'];
+        }else{
+            data['pageNo']=Number($(this).text());
+        }
+        callback && callback(data);
+        return false;
+    })
 }
 /**
  * 时间数组转换成正常时间格式

@@ -39,8 +39,8 @@ function info_loding(){
 function load_render(data){
     login_post('/campsDetail.do',data,'',function(data){
         data=JSON.parse(data);
-        data.realCampsImages='a,b,c,d';
-        console.log(data);
+        // data.realCampsImages='a,b,c,d';
+        // console.log(data);
         success(data,function(){
             $('.title').text(data.campsName);
             $('.orientedPeople').text(data.orientedPeople);
@@ -48,7 +48,8 @@ function load_render(data){
             $('.deadlineDate').text(data.deadlineDate);
             $('.totalPrice').text(data.totalPrice);
             $('.feature').text(data.feature);
-            $('.doneCount').val(data.doneCount || 1);
+            $('.shopCartCount').val(data.shopCartCount || 1);
+            $('.doneCount').text(data.doneCount);
             if(data.serviceSupport){
                 var arr=handle_pic(data.serviceSupport);
                 var str='';

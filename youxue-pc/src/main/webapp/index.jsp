@@ -56,9 +56,9 @@
 <section class="select_camp">
     <div class="width_content">
         <p class="p1">选择我的营地</p>
-        <div class="div_input"><input type="text" id="place" placeholder="想去哪里"></div>
-        <div class="div_input"><input type="text" id="wantDo" placeholder="想做什么"></div>
-        <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间"></div>
+        <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="on"></div>
+        <div class="div_input"><input type="text" id="wantDo" class="posElement2" placeholder="想做什么" autocomplete="on"></div>
+        <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间" autocomplete="on"></div>
         <a href="javascript:void(0)" id="search"><i></i></a>
     </div>
 </section>
@@ -136,21 +136,27 @@ function select_yingdi(){
     login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
         data=JSON.parse(data);
         if(data.result==100){
-        con1=data.categoryList;
+            con1=data.categoryList;
         }
     });
     var con2=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
         data=JSON.parse(data);
         if(data.result==100){
-        con2=data.categoryList;
+            con2=data.categoryList;
         }
     });
-    $('#place').focus(function(){
-    index_select($(this),con1);
+    $('#place').focus(function(ev){
+        index_select($(this),con1);
     })
-    $('#wantDo').focus(function(){
-    index_select($(this),con2);
+    $('#place').blur(function(ev){
+        index_blur($(this));
+    })
+    $('#wantDo').focus(function(ev){
+        index_select($(this),con2);
+    });
+    $('#wantDo').blur(function(ev){
+        index_blur($(this));
     });
 }
 function CampsDetail(){

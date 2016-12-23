@@ -130,20 +130,9 @@
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script>
+    var public_obj={};
     $(function(){
         var checkArr=[];
-        dyna_list();//加载消息列表及分页
-        $('#date_select').change(function(){//下拉根据日期-加载消息列表及分页
-            var vals=$(this).val();
-            var dataObj={};
-            if(vals){
-                dataObj={
-                    'startDate':vals==0?getWeek():getMonth(vals)
-                }
-            }
-            console.log(dataObj);
-            dyna_list(dataObj);
-        })
 
         $('#message_ul').on('change','input[type="checkbox"]',function(){
             var len=$('#message_ul li').length;
@@ -188,38 +177,56 @@
                 })
             })
         })
+        $('#date_select').change(function(){//下拉根据日期-加载消息列表及分页
+            var vals=$(this).val();
+//            var dataObj={};
+            if(vals){
+                public_obj={
+                    'startDate':vals==0?getWeek():getMonth(vals)
+                }
+            }
+//            console.log(public_obj);
+            dyna_list();
+        })
+        change_page('.page',public_obj,function(data){
+            public_obj['pageNo']=data.pageNo;
+            public_obj['totalPage']=data.totalPage;
+            public_obj['totalCount']=data.totalCount;
+            console.log(data);
+            dyna_list();
+        });
+        dyna_list();//加载消息列表及分页
     })
-    function dyna_list(dataObj){
-        login_post('/uc/usermessage.do',dataObj || '','',function(data){
+    function dyna_list(){
+        login_post('/uc/usermessage.do',public_obj || '','',function(data){
             data=JSON.parse(data);
             user_success(data,function(){
                 render_list(data);
-//                pageSet($('.page'),data);
-                $('.page').append(pageSet(data).join(''));
             })
         })
     }
     //渲染消息列表
     function render_list(data){
+//        data.pageNo=5;
+//        data.totalPage=10;
+//        data.totalCount=100;
+        public_obj['pageNo']=data.pageNo;
+        public_obj['totalPage']=data.totalPage;
+        public_obj['totalCount']=data.totalCount;
         $('#message_num').text('(共'+data['totalCount']+'条，未读消息'+data['unReadCount']+'条)');
         var resultList=data['resultList'];
-        var message_ele=$('#message_ul');
         var arr=[];
         var len=resultList.length;
-        var cName='';
-        if(resultList.readStatus==0){
-            cName='weidu';
-        }else{
-            cName='yidu';
-        }
+        var cName=resultList.readStatus==0?'weidu':'yidu';
         if(len<=0){
             arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
         }else{
             for(var i=0;i<len;i++){
-                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['createTime']+'</span></li>');
+                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['updateTime']+'</span></li>');
             }
         }
-        message_ele.html(arr.join(''));
+        $('.page').html(pageSet(public_obj).join(''));
+        $('#message_ul').html(arr.join(''));
     }
     function changeElement(element,isCheck){
         if(isCheck){

@@ -106,11 +106,12 @@
         </div>
         <div class="activation_div2 email_content" style="display:none">
             <p>Hi,激活邮件已经发送至您的邮箱：<label id="email_label">Cindy@gmai.com</label>请前往邮箱进行激活！</p>
-            <a id="email_url" href="javascript:void(0)">前往邮箱进行激活</a>
+            <a id="email_url" href="javascript:void(0)" target="_blank">前往邮箱进行激活</a>
+            <p><a class="update_email" href="javascript:void(0)">点此可更换邮箱<i>></i></a></p>
         </div>
         <div class="success_div2 email_content" style="display:none">
             <p>恭喜您，验证成功！</p>
-            <a id="update_email" href="javascript:void(0)">点此可更换邮箱<i>></i></a>
+            <a class="update_email" href="javascript:void(0)">点此可更换邮箱<i>></i></a>
         </div>
     </div>
 </section>
@@ -132,14 +133,17 @@
 <script src="js/user.js"></script>
 <script>
     $(function(){
-        var email_div1=$('.email_div1');
         var email_content=$('.email_content');
-        var div_head=email_div1.children('div');
+        var div_head=$('.email_div1').children('div');
         login_post('/uc/emailInfo.do','','',function(data){
             var data=JSON.parse(data);
             user_success(data,function(){
 //                data.activeStatus=0;
                 load(data);
+                $('.update_email').click(function(){
+                    data.activeStatus=0;
+                    load(data);
+                })
             })
         })
         function load(data){
@@ -153,6 +157,7 @@
                     check_email(value);
                 })
                 $('#submit_email').click(function(){
+                    $(this).attr('disabled','disabled').addClass('disabled');
                     var value=email_input.val();
                     check_email(value,function(){
                         update_email(value);
@@ -164,15 +169,13 @@
                     if(value!="" && emailReg.test(value)){
                         //这里检测邮箱是否占用,占用的话,return false，不要在执行了
                         login_post('/uc/isUsable.do','email='+value,'',function(data){
-                            var data=JSON.parse(data);
-                            console.log(data);
+                            data=JSON.parse(data);
                             user_success(data,function(){
                                 if(data.isUsed){//true为已使用
-                                    email.attr('disabled','disabled').addClass('disabled');
+                                    email.removeAttr('disabled').removeClass('disabled');
                                     message.html('<i class="error">×</i>&nbsp;<span>邮箱地址被占用</span>');
                                     return false;
                                 }else{
-                                    email.removeAttr('disabled').removeClass('disabled');
                                     message.html('<i>√</i>&nbsp;<span>邮箱地址未使用</span>');
                                     callback && callback();
                                     return true;
@@ -180,14 +183,15 @@
                             })
                         });
                     }else{
-                        email.attr('disabled','disabled').addClass('disabled');
+                        email.removeAttr('disabled').removeClass('disabled');
                         message.html('<i class="error">×</i>&nbsp;<span>邮箱地址不正确</span>');
                         return false;
                     }
                 }
                 function update_email(value){
                     login_post('/uc/activeEmail.do','email='+value,'',function(data){
-                        var data=JSON.parse(data);
+                        data=JSON.parse(data);
+                        console.log(data);
                         user_success(data,function(){
                             load(data);
                         })
@@ -207,10 +211,6 @@
             }else{
                 div_head.eq(2).addClass('email_active').siblings('.email_active').removeClass('email_active');
                 email_content.eq(2).show().siblings('.email_content').hide();
-                $('#update_email').click(function(){
-                    data.activeStatus=0;
-                    load(data);
-                })
             }
         }
     })

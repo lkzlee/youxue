@@ -82,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <p class="con1_info_p3">产品特色：<label class="feature"></label></p>
                 <p class="con1_info_p4">服务保障：<label class="serviceSupport"></label></p>
-                <p class="cont_info_p5">报名人数：<input type="number" value="1" class="signUp_number doneCount"></p>
+                <p class="cont_info_p5">报名人数：<input type="number" value="1" class="signUp_number shopCartCount"></p>
                 <div class="con1_info_d3">
                     <div class="left">
                         <input type="button" class="leftA1 shoppingCar" value="加入购物车"/>

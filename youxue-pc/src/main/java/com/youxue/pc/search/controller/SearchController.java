@@ -23,6 +23,7 @@ import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.CategoryVo;
 import com.youxue.core.vo.Page;
 import com.youxue.pc.search.dto.SearchResultDto;
 
@@ -51,7 +52,7 @@ public class SearchController extends BaseController
 	 */
 	@RequestMapping("/getCampsList.do")
 	@ResponseBody
-	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String LocaleCategoryId,
+	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String localeCategoryId,
 			String subjectCategoryId, String timeDuration, String priceRange, String departureMonth,
 			String departureTime, Integer pageNo, String searchContent)
 	{
@@ -82,17 +83,23 @@ public class SearchController extends BaseController
 				queryConditions.put("minPrice", minPrice);
 				queryConditions.put("maxPrice", maxPrice);
 			}
+			if (StringUtils.isNotBlank(departureTime))
+			{
+				String[] times = departureTime.split("-");
+				String minTime = times[0];
+				String maxTime = times[1];
+				if (StringUtils.isBlank(minTime) || StringUtils.isBlank(maxTime))
+					return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("出发时间范围设置不合理"));
+				queryConditions.put("minDepartureTime", minTime);
+				queryConditions.put("maxDepartureTime", maxTime);
+			}
 			if (StringUtils.isNotBlank(departureMonth))
 			{
 				queryConditions.put("departureMonth", Integer.valueOf(departureMonth));
 			}
-			if (StringUtils.isNotBlank(departureTime) && departureTime.length() == 8)
+			if (StringUtils.isNotBlank(localeCategoryId))
 			{
-				queryConditions.put("departureTime", departureTime);
-			}
-			if (StringUtils.isNotBlank(LocaleCategoryId))
-			{
-				queryConditions.put("LocaleCategoryId", LocaleCategoryId);
+				queryConditions.put("LocaleCategoryId", localeCategoryId);
 			}
 			if (StringUtils.isNotBlank(subjectCategoryId))
 			{
@@ -107,6 +114,27 @@ public class SearchController extends BaseController
 			SearchResultDto dto = new SearchResultDto();
 			Page<CampsVo> campsList = campsDao.selectByConditions(queryConditions, pageNo,
 					CommonConstant.CAMPS_PAGE_SIZE);
+			Map<String, String> cMap = new HashMap<>();
+			for (CampsVo camps : campsList.getResultList())
+			{
+				if (StringUtils.isBlank(camps.getCampsSubjectId()))
+				{
+					continue;
+				}
+				if (cMap.containsKey(camps.getCampsSubjectId()))
+				{
+					camps.setCampsSubjectName(cMap.get(camps.getCampsSubjectId()));
+				}
+				else
+				{
+					CategoryVo category = catetoryDao.selectByPrimaryKey(camps.getCampsSubjectId());
+					if (category != null)
+					{
+						camps.setCampsSubjectName(category.getCategoryName());
+						cMap.put(camps.getCampsSubjectId(), category.getCategoryName());
+					}
+				}
+			}
 			dto.setResult(100);
 			dto.setCampsList(campsList);
 			return JsonUtil.serialize(dto);

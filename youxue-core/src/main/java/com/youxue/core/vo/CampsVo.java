@@ -23,6 +23,7 @@ public class CampsVo
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
 	private String campsSubjectId;//主题类型id
+	private String campsSubjectName;//主题类型名称
 	private String orientedPeople;
 
 	private String feature;
@@ -339,6 +340,16 @@ public class CampsVo
 	public void setRealCampsImages(String realCampsImages)
 	{
 		this.realCampsImages = realCampsImages;
+	}
+
+	public String getCampsSubjectName()
+	{
+		return campsSubjectName;
+	}
+
+	public void setCampsSubjectName(String campsSubjectName)
+	{
+		this.campsSubjectName = campsSubjectName;
 	}
 
 }

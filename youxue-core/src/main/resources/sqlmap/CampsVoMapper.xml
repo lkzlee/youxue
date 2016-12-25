@@ -65,8 +65,11 @@
      <if test="departureMonth != null" >
         and month(departure_date) = #{departureMonth}
       </if>
-     <if test="departureTime != null" >
-        and date_format(departure_date,'%Y%c%d') = #{departureTime}
+     <if test="minDepartureTime != null" >
+        and date_format(departure_date,'%Y%c%d') &gt;= #{minDepartureTime}
+      </if>
+      <if test="maxDepartureTime != null" >
+        and date_format(departure_date,'%Y%c%d') &lt;= #{maxDepartureTime}
       </if>
      <if test="minPrice != null" >
         and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}

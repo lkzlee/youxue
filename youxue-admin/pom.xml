@@ -7,4 +7,43 @@
   </parent>
   <artifactId>youxue-admin</artifactId>
   <packaging>war</packaging>
+  <dependencies>
+		<!-- common dependency -->
+		<dependency>
+			<groupId>com.youxue</groupId>
+			<artifactId>youxue-core</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.9.v20130131</version>
+				<configuration>
+					<webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+					<webApp>
+						<contextPath>/</contextPath>
+						<resourceBases>
+							<resourceBase>${project.basedir}/src/main/resources</resourceBase>
+							<resourceBase>${project.basedir}/src/main/webapp</resourceBase>
+						</resourceBases>
+					</webApp>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<contextXml>${project.basedir}/src/main/resources/jetty-context.xml</contextXml>
+					<classesDirectory>target/classes</classesDirectory>
+					<requestLog implementation="org.eclipse.jetty.server.NCSARequestLog">
+						<filename>target/access-yyyy_mm_dd.log</filename>
+						<filenameDateFormat>yyyy_MM_dd</filenameDateFormat>
+						<logDateFormat>yyyy-MM-dd HH:mm:ss</logDateFormat>
+						<logTimeZone>GMT+8:00</logTimeZone>
+						<append>true</append>
+						<logServer>true</logServer>
+						<retainDays>120</retainDays>
+						<logCookies>true</logCookies>
+					</requestLog>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

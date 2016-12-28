@@ -7,6 +7,21 @@ var strReg=/[`~!@#$%^&*()_+=<>?:"{},.\/;'[\]]/im;//验证特殊字符
 var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 var pwdReg=/^\d{4,6}$/;
 var codeReg=/^[a-z0-9]{0,4}$/;
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [ o[this.name] ];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 $(function(){
     //鼠标经过导航，改变样式
     var nav_div=$("div",$("nav"));
@@ -24,6 +39,28 @@ function is_login(callback){
         callback(data);
     })
 }
+//加载目的地
+function load_local(callback) {
+    var con1=[{"categoryId":"","categoryName":"暂无数据"}];
+    login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
+        data=JSON.parse(data);
+        if(data.result==100){
+            con1=data.categoryList;
+        }
+        callback(con1)
+    });
+}
+//加载主题类型
+function load_subject(callback){
+    var con2=[{"categoryId":"","categoryName":"暂无数据"}];
+    login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
+        data=JSON.parse(data);
+        if(data.result==100){
+            con2=data.categoryList;
+        }
+        callback(con2);
+    });
+}
 //搜索
 function search(){
     var search=$('.search');
@@ -31,26 +68,39 @@ function search(){
     this.input=search.children('input');
     this.btn=search.find('a');
     this.btn.click(function(){
+        btn_search();
+        return false;
+    })
+    $(window).keydown(function(ev){
+        if(ev.keyCode==13){
+            btn_search();
+            return false;
+        }
+    })
+    function btn_search(){
         var val=This.input.prop('value');
         if(!val || strReg.test(val)){
-            alert('请输入正确的内容');
+            alert('请输入正确的搜索内容');
             return false;
         }
         var obj={
             'searchContent':val
         };
-        auto_submit(obj);
-        return false;
-    })
+        auto_submit('/search.jsp',$.param(obj),'get');
+    }
 }
-function auto_submit(obj){
-    window.location.href='/search.jsp?'+$.param(obj);
-    // var frm=$('<form action="/search.jsp" method="post">');
-    // for(var key in obj){
-    //     frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
-    // }
-    // $('body').append(frm);
-    // frm.submit();
+function auto_submit(address,obj,method){
+    method=method || 'POST';
+    if(method.toLowerCase()=='get'){
+        window.location.href=address+'?'+obj;
+    }else{
+        var frm=$('<form action='+address+' method="post">');
+        for(var key in obj){
+            frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
+        }
+        $('body').append(frm);
+        frm.submit();
+    }
 }
 //创建一个div,并定位
 function index_select(element,con){
@@ -70,6 +120,9 @@ function index_select(element,con){
     }
     var cName=element.attr('class');
     if(!document.getElementById(cName)){
+        if(!li){
+            li='<li>正在加载&nbsp;&nbsp;&nbsp;&nbsp;<img src="../img/load.gif" width="25"/> </li>';
+        }
         var nDiv=$("<ul class='posElement' id='"+cName+"' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
         $(document.body).append(nDiv);
     }else{
@@ -86,7 +139,7 @@ function index_blur(element){
     posElement.fadeOut(300);
     $('li',posElement).click(function(){
         if($(this).attr('data-value')){
-            element.val($(this).html());
+            element.val($(this).html()).attr('data-value',$(this).attr('data-value'));
         }
     })
 }
@@ -110,12 +163,13 @@ function bg_showORhide(){
     }
 }
 //提交表单
-function login_post(address,data,method,successFn,errorFn){
+function login_post(address,data,method,successFn,errorFn,contentType){
     $.ajax({
         url:address,
         type:method || 'post',
         data:data,
         dataType:"json",
+        contentType:contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
         success:successFn,
         error:errorFn ||function(data,error){
             alert('系统获取异常');
@@ -123,6 +177,13 @@ function login_post(address,data,method,successFn,errorFn){
             console.log(error);
         }
     })
+}
+//验证对象是否为空
+function isEmptyObject(obj){
+    for(var item in obj){
+        return true;
+    }
+    return false;
 }
 function success(data,callback,errback){
     if(data.result==100){

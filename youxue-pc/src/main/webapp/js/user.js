@@ -225,10 +225,8 @@ function car(){
         var check=$('#car_ul input:checked');
         if(check.length>0){
             var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
-            console.log(str)
             login_post('/deleteCartItem.do',str,'',function(data){
                 user_success(JSON.parse(data),function(){
-                    console.log(JSON.parse(data));
                     check.each(function(){
                         var childCheck=$(this);
                         del_change($(this),childCheck)
@@ -246,6 +244,20 @@ function car(){
                 del_change(This,childCheck);
             })
         })
+    })
+    //结算
+    $('.checkout').click(function(){
+        var check=$('#car_ul input:checked');
+        if(check.length>0){
+            var arr=[];
+            arr.push(moneyTotal);
+            check.each(function(){
+                var title=$(this).siblings('.yingdi_title');
+                arr.push([$(this).attr('value'),title.children('img').attr('src'),title.children('span').text(),Number($(this).siblings('.span4').text()),Number($(this).siblings('.num_span_car').text()),Number($(this).siblings('.money_span_car').text())].join('$$'));
+            });
+            auto_submit('/user_checkout.jsp',{'orderList':arr},'post');
+        }
+        return false;
     })
     //删除购物车的列表后，改变元素
     function del_change(That,childCheck){

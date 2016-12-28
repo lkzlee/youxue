@@ -56,9 +56,9 @@
 <section class="select_camp">
     <div class="width_content">
         <p class="p1">选择我的营地</p>
-        <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="on"></div>
-        <div class="div_input"><input type="text" id="wantDo" class="posElement2" placeholder="想做什么" autocomplete="on"></div>
-        <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间" autocomplete="on"></div>
+        <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="off"></div>
+        <div class="div_input"><input type="text" id="wantDo" class="posElement2" placeholder="想做什么" autocomplete="off"></div>
+        <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间" autocomplete="off"></div>
         <a href="javascript:void(0)" id="search"><i></i></a>
     </div>
 </section>
@@ -115,54 +115,51 @@
 <script src="js/calendar_1.0.js"></script>
 <script>
 $(function(){
+    changeEvent($('.startTime'));
     //选择我的营地
-    select_yingdi();
+    event_yingdi();
     //特价&热门分类营地列表、主题分类列表
     CampsDetail();
-    $('#search').click(function(){
-        var place=$('#place').val();
-        var wantDo=$('#wantDo').val();
-        var startTime=$('.startTime').val();
-        var obj={
-            'place':place,
-            'wantDo':wantDo,
-            'startTime':startTime
-        };
-        auto_submit(obj)
-    })
 })
-function select_yingdi(){
-    var con1=[{"categoryId":"","categoryName":"暂无数据"}];
-    login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
-        data=JSON.parse(data);
-        if(data.result==100){
-            con1=data.categoryList;
-        }
+function event_yingdi(){
+    var con1={},con2={};
+    //加载下拉
+    load_local(function(arr){
+        con1=arr;
     });
-    var con2=[{"categoryId":"","categoryName":"暂无数据"}];
-    login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
-        data=JSON.parse(data);
-        if(data.result==100){
-            con2=data.categoryList;
-        }
+    load_subject(function(arr){
+        con2=arr;
     });
-    $('#place').focus(function(ev){
+    $('#place').focus(function(){
         index_select($(this),con1);
     })
-    $('#place').blur(function(ev){
+    $('#place').blur(function(){
         index_blur($(this));
     })
-    $('#wantDo').focus(function(ev){
+    $('#wantDo').focus(function(){
         index_select($(this),con2);
     });
-    $('#wantDo').blur(function(ev){
+    $('#wantDo').blur(function(){
         index_blur($(this));
     });
+    $('#search').click(function(){
+        var place=$('#place').attr('data-value');
+        var wantDo=$('#wantDo').attr('data-value');
+        var startdate=$('.startTime').attr('startdate');
+        var enddate=$('.startTime').attr('enddate');
+        var obj={
+            'localeCategoryId':place,
+            'subjectCategoryId':wantDo,
+            'startdate':startdate,
+            'enddate':enddate
+        };
+        auto_submit('/search.jsp',$.param(obj),'get')
+    })
 }
 function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
-        if(data.result==100){
+        success(data,function(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
             if(data.hotCampsList){//热门
@@ -175,7 +172,6 @@ function CampsDetail(){
             }
             if(data.subjectList){//主题分类
                 var obj=data.subjectList;
-    console.log(obj)
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){
                     if(i==5){
@@ -194,9 +190,7 @@ function CampsDetail(){
                 li.push('<p>'+val['campsDesc']+'</p></a></li>');
                 hot_list.append(li.join(''));
             }
-        }else{
-            alert(data.resultDesc);
-        }
+        })
     });
 }
 </script>

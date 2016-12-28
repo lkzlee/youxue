@@ -80,7 +80,7 @@
             <h3>全部商品</h3>
             <div class="right">
                 <span>合计：<i class="money_car">¥0</i>元</span>
-                <a href="user_checkout.html">结算</a>
+                <a href="user_checkout.html" class="checkout">结算</a>
             </div>
         </div>
         <div class="cont_right_car">
@@ -108,7 +108,7 @@
                 <div class="div_foot_caont">
                     <span class="span3">已选：<i class="number_car">0</i>件</span>
                     <span class="span4">合计：<i class="money_car">¥0</i>元</span>
-                    <a href="user_checkout.html" class="span5">结算</a>
+                    <a href="user_checkout.html" class="span5 checkout">结算</a>
                 </div>
             </div>
         </div>
@@ -132,6 +132,7 @@
 <script src="js/user.js"></script>
 <script>
     $(function(){
+        $('.input_all_car').prop('checked',false);
         login_post('/shopCartDetailList.do','','',function(data){
             data=JSON.parse(data);
             user_success(data,function(){
@@ -144,7 +145,7 @@
                 }else{
                     for(var i=0;i<len;i++){
                         arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');
-                        arr.push('<a href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsName+'</span></a>');
+                        arr.push('<a class="yingdi_title" href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsName+'</span></a>');
                         arr.push('<span class="span4">'+source[i].totalPrice+'</span><span class="span5 num_span_car">'+source[i].cartBuyCount+'</span><span class="span6 money_span_car">'+(source[i].totalPrice*source[i].cartBuyCount)+'</span><a href="javascript:void(0)" class="span7 child_del">删除</a></li>');
                     }
                     $('#car_ul').html(arr.join(''));

@@ -23,7 +23,9 @@ import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.RefundDao;
+import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
 import com.youxue.core.vo.CouponCodeVo;
@@ -76,10 +78,10 @@ public class OrderServiceImpl implements OrderService
 		{
 			OrderVo orderVo = new OrderVo();
 			String orderId = setOrderItemInfo(ip, accountId, logicOrderId, ot, orderVo);
-			OrderPersonVo[] outPersonList = ot.getOutPersonList();
+			AddOrderPersonDto[] outPersonList = ot.getOutPersonList();
 			if (ArrayUtils.isEmpty(outPersonList))
 				throw new BusinessException("订单对应的出行人数据为空，请检查");
-			for (OrderPersonVo po : outPersonList)
+			for (AddOrderPersonDto po : outPersonList)
 			{
 				OrderPersonVo personVo = new OrderPersonVo();
 				personVo.setOrderId(orderId);
@@ -87,6 +89,18 @@ public class OrderServiceImpl implements OrderService
 				personVo.setPersonIdno(po.getPersonIdno());
 				personVo.setPersonName(po.getPersonName());
 				personVo.setPersonPhone(po.getPersonPhone());
+				int personAge = 0;
+				int personSex = 0;
+				try
+				{
+					personAge = Integer.parseInt(po.getPersonAge().trim());
+					personSex = Integer.parseInt(po.getPersonSex().trim());
+				}
+				catch (Exception e)
+				{
+				}
+				personVo.setPersonAge(personAge);
+				personVo.setPersonSex(personSex);
 				personList.add(personVo);
 			}
 			orderList.add(orderVo);
@@ -112,7 +126,7 @@ public class OrderServiceImpl implements OrderService
 		orderVo.setOrderIp(ip);
 		orderVo.setPayPrice(ot.getPayPrice());
 		orderVo.setStatus(OrderVo.UNPAY);
-		orderVo.setTotalCount(ot.getTotalCount());
+		orderVo.setTotalCount(Integer.parseInt(ot.getTotalCount()));
 		orderVo.setTotalPrice(ot.getTotalPrice());
 		return orderId;
 	}
@@ -120,23 +134,33 @@ public class OrderServiceImpl implements OrderService
 	private LogicOrderVo buildLogicOrderInfo(AddTradeOrderDto orderData, String ip, String accountId)
 	{
 		LogicOrderVo logicOrderVo = new LogicOrderVo();
-		String logicOrderId = commonDao.getIdByPrefix(CommonConstant.LOGIC_ORDER_ID_PREFIX);
-		logicOrderVo.setLogicOrderId(logicOrderId);
-		logicOrderVo.setCreateTime(DateUtil.getCurrentTimestamp());
-		logicOrderVo.setOrderIp(ip);
-		logicOrderVo.setPayStatus(LogicOrderVo.UNPAY);
-		logicOrderVo.setAccountId(accountId);
-		logicOrderVo.setPayType(orderData.getPayType());
-		BigDecimal totalMoney = BigDecimal.ZERO;
-		BigDecimal totalPayMoney = BigDecimal.ZERO;
-		for (AddTradeItemDto orderItem : orderData.getOrderList())
+		try
 		{
-			totalMoney = totalMoney.add(orderItem.getTotalPrice());
-			totalPayMoney = totalPayMoney.add(orderItem.getPayPrice());
+			int payType = PayTypeEnum.UNKNOW_PAY.getValue();
+			payType = Integer.parseInt(orderData.getPayType().trim());
+			String logicOrderId = commonDao.getIdByPrefix(CommonConstant.LOGIC_ORDER_ID_PREFIX);
+			logicOrderVo.setLogicOrderId(logicOrderId);
+			logicOrderVo.setCreateTime(DateUtil.getCurrentTimestamp());
+			logicOrderVo.setOrderIp(ip);
+			logicOrderVo.setPayStatus(LogicOrderVo.UNPAY);
+			logicOrderVo.setAccountId(accountId);
+			logicOrderVo.setPayType(payType);
+			BigDecimal totalMoney = BigDecimal.ZERO;
+			BigDecimal totalPayMoney = BigDecimal.ZERO;
+			for (AddTradeItemDto orderItem : orderData.getOrderList())
+			{
+				totalMoney = totalMoney.add(orderItem.getTotalPrice());
+				totalPayMoney = totalPayMoney.add(orderItem.getPayPrice());
+			}
+			logicOrderVo.setTotalPrice(totalMoney);
+			logicOrderVo.setTotalPayPrice(totalPayMoney);
+			return logicOrderVo;
 		}
-		logicOrderVo.setTotalPrice(totalMoney);
-		logicOrderVo.setTotalPayPrice(totalPayMoney);
-		return logicOrderVo;
+		catch (Exception e)
+		{
+			log.fatal("参数错误，orderData=" + orderData, e);
+		}
+		return null;
 	}
 
 	@Transactional

@@ -1,39 +1,29 @@
-package com.youxue.core.vo;
+package com.youxue.core.service.order.dto;
 
 import java.io.Serializable;
 
-public class OrderPersonVo implements Serializable
+public class AddOrderPersonDto implements Serializable
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String orderId;
-
 	private String personName;
 
 	private String personPhone;
 
 	private String personIdno;
-
+	/**
+	 * 
+	 */
 	private String personAddress;
 
-	private Integer personAge;
+	private String personAge;
 	/**
 	 * 出行人性别 男为0 女为1
 	 */
-	private Integer personSex;
-
-	public String getOrderId()
-	{
-		return orderId;
-	}
-
-	public void setOrderId(String orderId)
-	{
-		this.orderId = orderId == null ? null : orderId.trim();
-	}
+	private String personSex;
 
 	public String getPersonName()
 	{
@@ -75,22 +65,22 @@ public class OrderPersonVo implements Serializable
 		this.personAddress = personAddress == null ? null : personAddress.trim();
 	}
 
-	public Integer getPersonAge()
+	public String getPersonAge()
 	{
 		return personAge;
 	}
 
-	public void setPersonAge(Integer personAge)
+	public void setPersonAge(String personAge)
 	{
 		this.personAge = personAge;
 	}
 
-	public Integer getPersonSex()
+	public String getPersonSex()
 	{
 		return personSex;
 	}
 
-	public void setPersonSex(Integer personSex)
+	public void setPersonSex(String personSex)
 	{
 		this.personSex = personSex;
 	}
@@ -98,9 +88,8 @@ public class OrderPersonVo implements Serializable
 	@Override
 	public String toString()
 	{
-		return "OrderPersonVo [orderId=" + orderId + ", personName=" + personName + ", personPhone=" + personPhone
-				+ ", personIdno=" + personIdno + ", personAddress=" + personAddress + ", personAge=" + personAge
-				+ ", personSex=" + personSex + "]";
+		return "AddOrderPersonDto [personName=" + personName + ", personPhone=" + personPhone + ", personIdno="
+				+ personIdno + ", personAddress=" + personAddress + ", personAge=" + personAge + ", personSex="
+				+ personSex + "]";
 	}
-
 }

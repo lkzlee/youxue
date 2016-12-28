@@ -6,6 +6,10 @@ import java.util.Date;
 public class CouponCodeVo
 {
 	public static final int NORMAL = 1;
+	public static final int INIT = 0;
+
+	protected int result;
+	protected String resultDesc;
 
 	private String codeId;
 
@@ -24,6 +28,26 @@ public class CouponCodeVo
 	private Integer useCount;
 
 	private String categoryIds;
+
+	public int getResult()
+	{
+		return result;
+	}
+
+	public void setResult(int result)
+	{
+		this.result = result;
+	}
+
+	public String getResultDesc()
+	{
+		return resultDesc;
+	}
+
+	public void setResultDesc(String resultDesc)
+	{
+		this.resultDesc = resultDesc;
+	}
 
 	public String getCodeId()
 	{
@@ -113,5 +137,14 @@ public class CouponCodeVo
 	public void setCategoryIds(String categoryIds)
 	{
 		this.categoryIds = categoryIds == null ? null : categoryIds.trim();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "CouponCodeVo [result=" + result + ", resultDesc=" + resultDesc + ", codeId=" + codeId + ", codeValue="
+				+ codeValue + ", codeAmount=" + codeAmount + ", createTime=" + createTime + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", status=" + status + ", useCount=" + useCount + ", categoryIds="
+				+ categoryIds + "]";
 	}
 }

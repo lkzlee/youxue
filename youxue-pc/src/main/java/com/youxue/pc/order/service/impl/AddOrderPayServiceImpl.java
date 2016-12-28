@@ -72,8 +72,8 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			 * 插入数据库订单数据
 			 */
 			String logicOrderId = orderService.addOrder(orderData, ip, accountId);
-
-			PayService payService = getPayService(orderData.getPayType());
+			int payType = Integer.parseInt(orderData.getPayType().trim());
+			PayService payService = getPayService(payType);
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
 			LOG.info("@@构造下单的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 

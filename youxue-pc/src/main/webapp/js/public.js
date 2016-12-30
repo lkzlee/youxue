@@ -186,6 +186,7 @@ function isEmptyObject(obj){
     return false;
 }
 function success(data,callback,errback){
+    console.log(data)
     if(data.result==100){
         callback();
     }else{

@@ -156,13 +156,18 @@ pageEncoding="utf-8"%>
         var discount=0;
         //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
         $('input[name=codeId]').blur(function () {
-            changeRadio(discountFn)
+            if(changeRadio() && changeRadio()!==1){
+                login_post('/coupon/getCouponByCode.do','codeId='+$(this).val(),'',function(data){
+                    data=JSON.parse(data);
+                    success(data,function(){
+                        discount=data.codeAmount;
+                        $('.moneyTotal').text(moneyTotal-discount);
+                    },function(){
+                        $('.codeId_radio').prop('checked',false);
+                    })
+                })
+            }
         })
-        function discountFn(){
-            alert('优惠码接口')
-            discount=10;
-            $('.moneyTotal').text(moneyTotal-discount);
-        }
         if(orderList){
             var arr=orderList.split(',');
             moneyTotal=arr[0];
@@ -189,19 +194,11 @@ pageEncoding="utf-8"%>
         setTimeout(function(){
             $('body').append("<script src='js/distpicker.data.js'><\/script><script src='js/distpicker.js'><\/script>");
         },300)
-//        $('#btn_order').click(function(){
-//            for(var i=1;i<=num;i++){
-//                console.log($('.person'+i).serializeArray());
-//            }
-//            console.log($('#outher_form').serializeArray());
-//            var outher_obj=$('#outher_form').serializeArray();
-//            return false;
-//        })
         $('#btn_order').click(function(){
             if(!auto_range()){
                 return false;
             }
-            if(!changeRadio(discountFn)){
+            if(!changeRadio()){
                 return false;
             }
             if(!$('.agree_check').prop('checked')){
@@ -220,14 +217,14 @@ pageEncoding="utf-8"%>
                         'contactName':outherObj['contactName'],
                         'contactEmail':outherObj['contactEmail'],
                         'contactPhone':outherObj['contactPhone'],
-                        'outPersonList':{
+                        'outPersonList':[{
                             'personName':orderListObj['personName'],
                             'personSex':orderListObj['personSex'],
                             'personAge':orderListObj['personAge'],
                             'personPhone':orderListObj['personPhone'],
                             'personIdno':orderListObj['personIdno'],
                             'personAddress':orderListObj['province']+orderListObj['city']+orderListObj['district']+orderListObj['personAddress']
-                        }
+                        }]
                     })
                 }
             }
@@ -235,13 +232,13 @@ pageEncoding="utf-8"%>
             AllObj['payType']=outherObj['payType'];
             login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                 data=JSON.parse(data);
-                console.log(data);
-                success(function(){
-
+                success(data,function(){
+                    if(data.payUrl){
+                        console.log('window.location.href='+data.payUrl);
+                        window.location.href=data.payUrl
+                    }
                 })
             },'','application/json; charset=utf-8')
-            console.log(AllObj);
-            console.log(JSON.stringify(AllObj));
             return false;
         })
     })
@@ -268,18 +265,16 @@ pageEncoding="utf-8"%>
         return arr.join('')
     }
     //根据输入优惠码，改变单选状态
-    function changeRadio(callback){
-        var codeId_radio=$('.codeId_radio');
+    function changeRadio(){
         var code=$('input[name=codeId]');
-        var bool=true;
+        var bool=1;
         if(code.val().length>0){
-            if(code.val().length>4){
+            if(code.val().length>2){
                 bool=true;
-                callback && callback();
             }else{
                 bool=false;
             }
-            codeId_radio.prop('checked',bool);
+            $('.codeId_radio').prop('checked',bool);
             return range_input(code,bool);
         }
         return bool;
@@ -305,7 +300,6 @@ pageEncoding="utf-8"%>
                 return range_input($(this),true);
             }
         })
-        console.log('is bool:'+bool)
         return bool;
     }
 </script>

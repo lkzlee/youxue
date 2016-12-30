@@ -146,6 +146,7 @@
         })
         login_post('/uc/userorder.do',public_obj,'',function(data){
             data=JSON.parse(data);
+            console.log(data);
             user_success(data,function(){
                 render_list(data);
             })

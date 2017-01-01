@@ -128,9 +128,6 @@
             public_obj['totalCount']=data.totalCount;
             load();
         });
-        load();
-    })
-    function load(){
         login_post('/uc/userinfo.do','','',function(data){
             data=JSON.parse(data);
             user_success(data,function(){
@@ -143,7 +140,30 @@
                     $('#photo_img').attr('src',data.photoUrl).show();
                 }
             });
+        });
+        $('.ul_payment').on('click','.del_order',function(){
+            btn_disable($(this),true)
+            login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    load();
+                })
+            });
         })
+        $('.ul_payment').on('click','.pay_order',function(){
+            btn_disable($(this),true)
+            login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    if(data.payUrl){
+                        window.location.href=data.payUrl
+                    }
+                })
+            });
+        })
+        load();
+    })
+    function load(){
         login_post('/uc/userorder.do',public_obj,'',function(data){
             data=JSON.parse(data);
             console.log(data);
@@ -167,14 +187,27 @@
             arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
         }else{
             for(var i=0;i<len;i++){
-                arr.push('<li><a href="?orderId='+result[i]['orderId']+'"><img src="uploads/images/index0_03.jpg" alt="">');
-                arr.push('<dl><dt>'+result[i]['contactName']+'</dt>');
-                arr.push('<dd>订单号：'+result[i]['orderId']+'</dd><dd>出发日期：2016-07-30</dd><dd>预定日期：2016-04-01</dd></dl></a><div>');
-                arr.push('<span>费用：<b>¥5000</b></span><a href="#">删除记录</a><a href="#" class="a2_payment">立即购买</a></div></li>');
+                arr.push('<li>');
+                var orderList=result[i]['orderList'];
+                for(var j=0,jLen=orderList.length;j<jLen;j++){
+                    arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'">');
+                    arr.push('<dl><dt>'+orderList[j]['campsTitle']+'</dt><dd>订单号：'+orderList[j]['orderId']+'</dd>');
+                    arr.push('<dd>出发日期：'+orderList[j]['departureDate']+'</dd><dd>预定日期：'+orderList[j]['startDate']+'</dd></dl></a><div><span>费用：<b>¥'+orderList[j]['totalPrice']+'</b></span>');
+                    arr.push('<input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>')
+                    arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
+                }
+                arr.push('</li>');
             }
         }
         $('.ul_payment').html(arr.join(''));
         $('.page').html(pageSet(public_obj).join(''));
+    }
+    function btn_disable(That,isDisabled){
+        if(isDisabled){
+            That.attr('disabled','disabled').addClass('disabled');
+        }else{
+            That.removeAttr('disabled').removeClass('disabled');
+        }
     }
 </script>
 </body>

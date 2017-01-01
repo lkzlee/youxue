@@ -175,16 +175,17 @@ i{font-family: "simsun";}
 .right_payment .div_rigPay .bghui a{float: right; padding-right: 23px; color: #666;}
 .right_payment .div_rigPay .bghui a img{padding-left:3px;width:14px;vertical-align:middle;}
 .right_payment .ul_payment{}
-.right_payment .ul_payment li{margin-top:10px;padding:11px 16px 15px 19px;height:99px;border:solid 1px #959595;}
+.right_payment .ul_payment li{margin-top:10px;padding:11px 16px 0 19px;border:solid 1px #959595;}
+.right_payment .ul_payment li .list_li{width:100%;height:99px;padding-bottom:15px;}
 .right_payment .ul_payment img{float:left;width:147px;height:99px;}
 .right_payment .ul_payment dl{float:left;padding-left:12px;width:444px;color: #666;text-decoration:underline;}
 .right_payment .ul_payment dt{font-size:14px;margin-bottom:12px;}
 .right_payment .ul_payment dd{line-height:22px;}
-.right_payment .ul_payment div{float:right;padding-top:17px;}
+.right_payment .ul_payment .list_li div{float:right;padding-top:17px;}
 .right_payment .ul_payment span{padding-bottom:27px;display:block;text-align:right;}
 .right_payment .ul_payment b{font-size:22px;color:#29abe2;}
-.right_payment .ul_payment div a{margin-right:10px;display:inline-block;width:120px;height:28px;line-height:28px;border:solid 1px #666;text-align:center;color:#666;}
-.right_payment .ul_payment div a.a2_payment,.right_payment .ul_payment div a:hover:hover{background:#29abe2;color:#fff;border-color:#29abe2;}
+.right_payment .ul_payment .list_li div input{margin-right:10px;display:inline-block;width:120px;height:28px;line-height:28px;border:solid 1px #666;text-align:center;color:#666;cursor:pointer;}
+.right_payment .ul_payment .list_li div input.a2_payment,.right_payment .ul_payment .list_li div input:hover:hover{background:#29abe2;color:#fff;border-color:#29abe2;}
 /*取消订单*/
 .right_payment .ul_payment div.div_travel{}
 .right_payment .ul_payment div.div_travel span{float:right;width:100%;line-height:37px;padding-bottom:2px;font-size:16px;}

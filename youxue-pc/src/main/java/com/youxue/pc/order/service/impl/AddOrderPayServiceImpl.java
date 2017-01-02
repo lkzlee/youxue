@@ -76,7 +76,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			PayService payService = getPayService(payType);
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
 			LOG.info("@@构造下单的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
-
+			jedisProxy.del(RedisConstant.SHOP_CART_KEY + accountId);
 			/**
 			 * 向第三方下单
 			 */
@@ -140,7 +140,6 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			/**
 			 * 微信需要自己构造支付页面因此保存支付链接
 			 */
-			jedisProxy.setex(RedisConstant.getAddUserOrderKey(accountId, logicOrderId), resultDto.getCode_url(), 7200);
 			String wxOrderUrl = PropertyUtils.getProperty(CommonConstant.WEI_XIN_ORDER_URL,
 					"http://127.0.0.1/pay/wxpay.do");
 			responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);

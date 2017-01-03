@@ -180,6 +180,7 @@ i{font-family: "simsun";}
 .right_payment .ul_payment img{float:left;width:147px;height:99px;}
 .right_payment .ul_payment dl{float:left;padding-left:12px;width:444px;color: #666;text-decoration:underline;}
 .right_payment .ul_payment dt{font-size:14px;margin-bottom:12px;}
+.right_payment .ul_payment a{color: #666;}
 .right_payment .ul_payment dd{line-height:22px;}
 .right_payment .ul_payment .list_li div{float:right;padding-top:17px;}
 .right_payment .ul_payment span{padding-bottom:27px;display:block;text-align:right;}

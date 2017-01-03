@@ -19,7 +19,7 @@ body {
 <body>
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
   <tr>
-    <td><iframe name="I2" height="100%" width="100%" border="0" frameborder="0" src="middel.html"> 浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe></td>
+    <td><iframe name="I2" height="100%" width="100%" border="0" frameborder="0" src="middel.jsp"> 浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe></td>
     <td width="6" bgcolor="#1873aa" style=" width:6px;">&nbsp;</td>
   </tr>
 </table>

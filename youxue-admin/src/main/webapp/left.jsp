@@ -37,7 +37,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
     <td height="28" background="images/main_40.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="19%">&nbsp;</td>
-        <td width="81%" height="20"><span class="STYLE1">π‹¿Ì≤Àµ•</span></td>
+        <td width="81%" height="20"><span class="STYLE1">ÁÆ°ÁêÜËèúÂçï</span></td>
       </tr>
     </table></td>
   </tr>
@@ -49,7 +49,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
             <td height="23" background="images/main_47.gif" id="imgmenu1" class="menu_title" onMouseOver="this.className='menu_title2';" onClick="showsubmenu(1)" onMouseOut="this.className='menu_title';" style="cursor:hand"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="18%">&nbsp;</td>
-                <td width="82%" class="STYLE1">“µŒÒ÷––ƒ</td>
+                <td width="82%" class="STYLE1">‰∏öÂä°‰∏≠ÂøÉ</td>
               </tr>
             </table></td>
           </tr>
@@ -63,7 +63,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                     <td width="16%" height="25"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                     <td width="84%" height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">∂Ã–≈»∫∑¢</span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Áü≠‰ø°Áæ§Âèë</span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -71,7 +71,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                     <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">”√ªß◊ ¡œ–ﬁ∏ƒ</span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Áî®Êà∑ËµÑÊñô‰øÆÊîπ</span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -79,7 +79,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                     <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">π´Àæ–≈œ¢π‹¿Ì</span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">ÂÖ¨Âè∏‰ø°ÊÅØÁÆ°ÁêÜ</span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -87,7 +87,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                     <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                     <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">∆‰À˚“µŒÒ</span></td>
+                          <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">ÂÖ∂‰ªñ‰∏öÂä°</span></td>
                         </tr>
                     </table></td>
                   </tr>
@@ -107,7 +107,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
             <td height="23" background="images/main_47.gif" id="imgmenu2" class="menu_title" onmouseover="this.className='menu_title2';" onclick="showsubmenu(2)" onmouseout="this.className='menu_title';" style="cursor:hand"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="18%">&nbsp;</td>
-                  <td width="82%" class="STYLE1">œµÕ≥π‹¿Ì</td>
+                  <td width="82%" class="STYLE1">Á≥ªÁªüÁÆ°ÁêÜ</td>
                 </tr>
             </table></td>
           </tr>
@@ -120,7 +120,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td width="16%" height="25"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td width="84%" height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">œµÕ≥≈‰÷√</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Á≥ªÁªüÈÖçÁΩÆ</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -128,7 +128,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">–ﬁ∏ƒ”√ªß√‹¬Î</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">‰øÆÊîπÁî®Êà∑ÂØÜÁ†Å</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -136,7 +136,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3"> ˝æ›∏¸–¬</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Êï∞ÊçÆÊõ¥Êñ∞</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -144,7 +144,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Õ¯’æŒ¨ª§</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">ÁΩëÁ´ôÁª¥Êä§</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -164,7 +164,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
             <td height="23" background="images/main_47.gif" id="imgmenu3" class="menu_title" onmouseover="this.className='menu_title2';" onclick="showsubmenu(3)" onmouseout="this.className='menu_title';" style="cursor:hand"><table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="18%">&nbsp;</td>
-                  <td width="82%" class="STYLE1">∞≤»´π‹¿Ì</td>
+                  <td width="82%" class="STYLE1">ÂÆâÂÖ®ÁÆ°ÁêÜ</td>
                 </tr>
             </table></td>
           </tr>
@@ -177,7 +177,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td width="16%" height="25"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td width="84%" height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">∆Û“µ∞≤»´</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">‰ºÅ‰∏öÂÆâÂÖ®</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -185,7 +185,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">–≈œ¢∞≤»´π‹¿Ì</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">‰ø°ÊÅØÂÆâÂÖ®ÁÆ°ÁêÜ</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -193,7 +193,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">∞≤»´…Ûº∆</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">ÂÆâÂÖ®ÂÆ°ËÆ°</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -201,7 +201,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
                           <td height="23"><div align="center"><img src="images/left.gif" width="10" height="10" /></div></td>
                           <td height="23"><table width="95%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
-                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">Õ¯’æ∞≤»´</span></td>
+                                <td height="20" style="cursor:hand" onmouseover="this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#7bc4d3'; "onmouseout="this.style.borderStyle='none'"><span class="STYLE3">ÁΩëÁ´ôÂÆâÂÖ®</span></td>
                               </tr>
                           </table></td>
                         </tr>
@@ -220,7 +220,7 @@ document.write("<div id=tt style=height:"+he+";overflow:hidden>")
   <tr>
     <td height="18" background="images/main_58.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td height="18" valign="bottom"><div align="center" class="STYLE3">∞Ê±æ£∫2008V1.0</div></td>
+        <td height="18" valign="bottom"><div align="center" class="STYLE3">ÁâàÊú¨Ôºö2008V1.0</div></td>
       </tr>
     </table></td>
   </tr>

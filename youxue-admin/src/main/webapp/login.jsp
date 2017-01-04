@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<% 
+String path = request.getContextPath(); 
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
+pageContext.setAttribute("basePath",basePath); 
+%> 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>企业信息管理系统_用户登录</title>
+<title>用户登录</title>
 <style type="text/css">
 <!--
 body {
@@ -22,7 +27,7 @@ body {
 </style></head>
 
 <body>
-<form action="/admin/login.do" method="post">
+<form action="/login.do" method="post">
 <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
   <tr>
     <td><table width="962" border="0" align="center" cellpadding="0" cellspacing="0">

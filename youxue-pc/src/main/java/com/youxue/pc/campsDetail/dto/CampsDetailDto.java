@@ -344,6 +344,8 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 
 	private Date updateTime;
 
+	private Integer shopCartCount;
+
 	public List<CampsTraceVo> getTraces()
 	{
 		return traces;
@@ -352,6 +354,16 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setTraces(List<CampsTraceVo> traces)
 	{
 		this.traces = traces;
+	}
+
+	public Integer getShopCartCount()
+	{
+		return shopCartCount;
+	}
+
+	public void setShopCartCount(Integer shopCartCount)
+	{
+		this.shopCartCount = shopCartCount;
 	}
 
 }

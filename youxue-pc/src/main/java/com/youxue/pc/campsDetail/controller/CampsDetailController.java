@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CampsTraceDao;
 import com.youxue.core.enums.CategoryTypeEnum;
@@ -64,6 +66,16 @@ public class CampsDetailController extends BaseController
 		catch (IllegalArgumentException | IllegalAccessException e)
 		{
 			LOG.error("error during campsDetail,campsId:" + campusId);
+		}
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+		{
+			campsDto.setShopCartCount(1);
+		}
+		else
+		{
+			Object shopCartCount = jedisProxy.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId);
+			campsDto.setShopCartCount((Integer) shopCartCount);
 		}
 		campsDto.setTraces(traces);
 		campsDto.setResult(100);

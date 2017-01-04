@@ -14,7 +14,8 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<!-- 定义受环境影响易变的变量 -->
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
 		<property name="ignoreResourceNotFound" value="false" />
 		<property name="locations">
@@ -22,6 +23,24 @@
 				<value>classpath:config.properties</value>
 			</list>
 		</property>
+	</bean>
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/ftl">
+		</property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="freemarkerSettings">
+
+			<props>
+				<prop key="template_update_delay">10</prop>
+				<prop key="locale">zh_CN</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8"></property>
+		<property name="suffix" value=".ftl" />
 	</bean>
 	<!-- 解决中文乱码问题 -->
 	<bean
@@ -45,9 +64,35 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com" />
 	<mvc:annotation-driven />
-	<import resource="classpath*:spring-redis-aop.xml"/>
+	<import resource="classpath*:spring-redis-aop.xml" />
 	<import resource="classpath:youxue-base.xml" />
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+	<mvc:interceptors>
+
+		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <bean class="com.masterwind.admin.interceptor.LoginInterceptor"> 
+			<property name="allowUrls"> <list> <value>/login</value> <value>/doLogin</value> 
+			<value>/js</value> <value>/css</value> <value>/image</value> <value>/images</value> 
+			</list> </property> </bean> </mvc:interceptor> -->
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.youxue.admin.power.interceptor.PowerInterceptor">
+				<property name="allowUrls">
+					<list>
+						<value>/js</value>
+						<value>/css</value>
+						<value>/image</value>
+						<value>/images</value>
+						<value>/login</value>
+						<value>/doLogin</value>
+						<value>/outlogin</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
 	</bean>

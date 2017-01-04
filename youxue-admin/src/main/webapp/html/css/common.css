@@ -1,0 +1,119 @@
+/*解决table超出页面宽度*/
+table{
+	word-break: break-all;
+}
+
+/*上传容器*/
+.upload-wrapper:after {
+  content: '';
+  clear: both;
+  height: 0;
+  font-size: 0;
+  visibility: 0;
+}
+
+
+/*上传触发器*/
+.upload-trigger {
+    position: relative;
+    display: inline-block;
+    padding-top: 46px;
+    width: 74px;
+    height: 74px;
+    text-align: center;
+    border: 3px dashed #c9c9c9;
+    color: #c9c9c9;
+    vertical-align: bottom;
+}
+.upload-trigger:before,
+.upload-trigger:after {
+    position: absolute;
+    left: 50%;
+    background-color: #c9c9c9;
+    content: '';
+}
+.upload-trigger:before {
+    top: 21px;
+    width: 34px;
+    height: 2px;
+    margin-left: -17px;
+}
+.upload-trigger:after {
+    top: 6px;
+    width: 2px;
+    height: 34px;
+    margin-left: -1px;
+}
+.upload-trigger .trigger-desc:before {
+    content: '点击上传';
+}
+.upload-trigger.uploading .trigger-desc:before {
+    content: '上传中...';
+}
+.upload-trigger.uploading:before {
+    display: none;
+}
+.upload-trigger.uploading:after {
+   width: 32px;
+   height: 32px;
+   margin-left: -16px;
+   background: url(/html/img/loading.gif) no-repeat;
+}
+.upload-trigger .auto_upload_file {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 999;
+}
+
+/*错误提示*/
+.upload-err {
+  display: none;
+  margin-top: 5px;
+}
+
+/*上传后的文件预览*/
+.upload-preview,
+.upload-preview img {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.upload-preview {
+  position: relative;
+  margin-right: 10px;
+  color: #999;
+  vertical-align: bottom;
+}
+.upload-preview:hover .preview-del {
+  display: block;
+}
+.upload-preview .preview-del {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 20;
+  padding-right: 3px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.upload-preview img {
+  height: auto;
+  max-height: 80px;
+}
+.upload-preview .preview-ext {
+  font-size: 16px;
+  line-height: 80px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.form-group .collapsed .glyphicon-resize-full::before{
+  content: "\e097";
+}

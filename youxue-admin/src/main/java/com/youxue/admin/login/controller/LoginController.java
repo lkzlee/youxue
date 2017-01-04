@@ -14,8 +14,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lkzlee.pay.utils.DateUtil;
+import com.youxue.admin.constant.AdminConstant;
 import com.youxue.admin.login.service.SysUserLoginLogService;
 import com.youxue.admin.login.service.SysUserService;
+import com.youxue.admin.power.constant.PowerConstant;
 import com.youxue.core.util.NetUtil;
 import com.youxue.core.vo.SysUser;
 import com.youxue.core.vo.SysUserLoginLog;
@@ -24,8 +26,6 @@ import com.youxue.core.vo.SysUserLoginLog;
 public class LoginController
 {
 	private static final Log logger = LogFactory.getLog(LoginController.class);
-	private static String loginPage = "login";//后台登录页面
-	private static String loginSuccess = "redirect:/main.do";//后台管理主界面
 
 	@Autowired
 	private SysUserService sysUserService;
@@ -42,15 +42,21 @@ public class LoginController
 	{
 		try
 		{
-			request.getSession().removeAttribute("LOGIN_ADMIN_USER");
-
+			request.getSession().removeAttribute(AdminConstant.CURRENT_USER);
+			request.getSession().removeAttribute(AdminConstant.MENU_LIST);
 			request.getSession().invalidate();
 		}
 		catch (Exception e)
 		{
 			logger.error("outLogin()---error", e);
 		}
-		return "redirect:/login";
+		return "login";
+	}
+
+	@RequestMapping(value = "login.do")
+	public String login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser, ModelMap modelMap)
+	{
+		return "login";
 	}
 
 	/**
@@ -58,32 +64,33 @@ public class LoginController
 	 * @param request
 	 * @return ModelAndView
 	 */
-	@RequestMapping(value = "login.do")
-	public String login(HttpServletRequest request, HttpServletResponse response, SysUser sysUser, ModelMap modelMap)
+	@RequestMapping(value = "doLogin.do")
+	public String doLogin(HttpServletRequest request, HttpServletResponse response, SysUser sysUser, ModelMap modelMap)
 	{
 		try
 		{
+			logger.info("enter doLogin request---- name:" + sysUser.getLoginName() + ",pwd:" + sysUser.getLoginPwd());
 			if (sysUser.getLoginName() == null || sysUser.getLoginName().trim().equals(""))
 			{
-				modelMap.put("message", "请输入用户名!");
+				modelMap.put(AdminConstant.ERROR_MSG, "请输入用户名!");
 				return "login";
 			}
 			if (sysUser.getLoginPwd() == null || sysUser.getLoginPwd().trim().equals(""))
 			{
-				modelMap.put("message", "请输入密码!");
+				modelMap.put(AdminConstant.ERROR_MSG, "请输入密码!");
 				return "login";
 			}
 			sysUser.setLoginPwd(sysUser.getLoginPwd());
 			SysUser su = sysUserService.queryLoginUser(sysUser);
 			if (su == null)
 			{
-				modelMap.put("message", "用户名或密码错误！");
+				modelMap.put(AdminConstant.ERROR_MSG, "用户名或密码错误！");
 				return "login";
 			}
 			//判断用户是否是可用状态
 			if (su.getStatus() != 0)
 			{
-				modelMap.put("message", "该用户已经冻结！");
+				modelMap.put(AdminConstant.ERROR_MSG, "该用户已经冻结！");
 				return "login";
 			}
 			//缓存用登录信息
@@ -104,7 +111,8 @@ public class LoginController
 			}
 			//保存登录日志
 			sysUserLoginLogService.createLoginLog(loginLog);
-			request.getSession().setAttribute("LOGIN_ADMIN_USER", su);
+			request.getSession().setAttribute(AdminConstant.CURRENT_USER, su);
+			request.getSession().setAttribute(AdminConstant.MENU_LIST, PowerConstant.menuMap.get(su.getRoleId()));
 		}
 		catch (Exception e)
 		{
@@ -113,6 +121,6 @@ public class LoginController
 			return "login";
 		}
 		//		return "redirect:/main.do";
-		return "main";
+		return "index";
 	}
 }

@@ -1,11 +1,9 @@
 package com.youxue.admin.constant;
 
-
 public class AdminConstant
 {
 	//接口请求的错误信息
 	public static final String ERROR_MSG = "errorMessage";
-
 	/**session attribute key*/
 	public static final String MENU_LIST = "menuList";//用户的菜单列表
 	public static final String CURRENT_USER = "currentAdminUser";//当前登录用户

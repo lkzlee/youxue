@@ -17,6 +17,11 @@
     from tb_category
     where category_id = #{categoryId,jdbcType=VARCHAR}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_category
+  </select>
   <select id="selectByCategoryType" resultMap="BaseResultMap" parameterType="Integer" >
     select 
     <include refid="Base_Column_List" />

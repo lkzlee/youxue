@@ -19,10 +19,14 @@ public class CampsVo
 
 	private String campsImages;
 	private String realCampsImages;
-
+	private String hotOrPrice = "";//给后台管理系统的显示字段
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
 	private String campsSubjectId;//主题类型id
+	private String campsDurationId;//持续时间类型id
+	private String campsDepartureId;//出发时间类型id
+	private String campsPriceId;//价格类型id
+
 	private String campsSubjectName;//主题类型名称
 	private String orientedPeople;
 
@@ -45,6 +49,8 @@ public class CampsVo
 	private String feeDesc;
 
 	private Integer status;
+	private Integer ifHot;
+	private Integer ifPrice;
 
 	private BigDecimal totalPrice;
 
@@ -61,6 +67,56 @@ public class CampsVo
 	private Date createTime;
 
 	private Date updateTime;
+
+	public String getCampsDurationId()
+	{
+		return campsDurationId;
+	}
+
+	public Integer getIfHot()
+	{
+		return ifHot;
+	}
+
+	public void setIfHot(Integer ifHot)
+	{
+		this.ifHot = ifHot;
+	}
+
+	public Integer getIfPrice()
+	{
+		return ifPrice;
+	}
+
+	public void setIfPrice(Integer ifPrice)
+	{
+		this.ifPrice = ifPrice;
+	}
+
+	public void setCampsDurationId(String campsDurationId)
+	{
+		this.campsDurationId = campsDurationId;
+	}
+
+	public String getCampsDepartureId()
+	{
+		return campsDepartureId;
+	}
+
+	public void setCampsDepartureId(String campsDepartureId)
+	{
+		this.campsDepartureId = campsDepartureId;
+	}
+
+	public String getCampsPriceId()
+	{
+		return campsPriceId;
+	}
+
+	public void setCampsPriceId(String campsPriceId)
+	{
+		this.campsPriceId = campsPriceId;
+	}
 
 	public String getCampsId()
 	{
@@ -350,6 +406,24 @@ public class CampsVo
 	public void setCampsSubjectName(String campsSubjectName)
 	{
 		this.campsSubjectName = campsSubjectName;
+	}
+
+	public String getHotOrPrice()
+	{
+		if (this.getIfHot() == 1)
+		{
+			hotOrPrice = " 热门";
+		}
+		if (this.getIfPrice() == 1)
+		{
+			hotOrPrice = hotOrPrice + " 特价";
+		}
+		return hotOrPrice;
+	}
+
+	public void setHotOrPrice(String hotOrPrice)
+	{
+		this.hotOrPrice = hotOrPrice;
 	}
 
 }

@@ -22,7 +22,6 @@ import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
-import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
@@ -84,7 +83,8 @@ public class ShopCartController extends BaseController
 		dto.setCamps(camps);
 		dto.setCount(currentCount);
 
-		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 10);
+		//		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 10);
+		List<CampsVo> hotCampsList = campsDao.getHotCampusList(true);
 		dto.setHotCamps(hotCampsList);
 		return JsonUtil.serialize(dto);
 	}

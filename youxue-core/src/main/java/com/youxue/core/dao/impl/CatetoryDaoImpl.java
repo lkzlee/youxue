@@ -76,4 +76,10 @@ public class CatetoryDaoImpl extends BaseDao implements CatetoryDao
 		return sqlSessionTemplate.selectList("com.youxue.core.dao.CategoryDao.selectByCategoryType", categoryType);
 	}
 
+	@Override
+	public List<CategoryVo> selectAll()
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CategoryDao.selectAll");
+	}
+
 }

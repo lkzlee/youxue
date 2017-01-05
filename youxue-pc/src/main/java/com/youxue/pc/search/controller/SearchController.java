@@ -53,8 +53,9 @@ public class SearchController extends BaseController
 	@RequestMapping("/getCampsList.do")
 	@ResponseBody
 	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String localeCategoryId,
-			String subjectCategoryId, String timeDuration, String priceRange, String departureMonth,
-			String departureTime, Integer pageNo, String searchContent)
+			String subjectCategoryId, String durationCategoryId, String departureCategoryId, String priceCategoryId,
+			String timeDuration, String priceRange, String departureMonth, String departureTime, Integer pageNo,
+			String searchContent)
 	{
 		try
 		{
@@ -63,6 +64,7 @@ public class SearchController extends BaseController
 				pageNo = 1;
 			}
 			Map<String, Object> queryConditions = new HashMap<>();
+			queryConditions.put("status", 1);
 			if (StringUtils.isNotBlank(timeDuration))
 			{
 				String[] days = timeDuration.split("-");
@@ -104,6 +106,18 @@ public class SearchController extends BaseController
 			if (StringUtils.isNotBlank(subjectCategoryId))
 			{
 				queryConditions.put("subjectCategoryId", subjectCategoryId);
+			}
+			if (StringUtils.isNotBlank(durationCategoryId))
+			{
+				queryConditions.put("durationCategoryId", durationCategoryId);
+			}
+			if (StringUtils.isNotBlank(departureCategoryId))
+			{
+				queryConditions.put("departureCategoryId", departureCategoryId);
+			}
+			if (StringUtils.isNotBlank(priceCategoryId))
+			{
+				queryConditions.put("priceCategoryId", priceCategoryId);
 			}
 			if (StringUtils.isNotBlank(searchContent))
 			{

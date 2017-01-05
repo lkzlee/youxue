@@ -10,6 +10,9 @@
     <result column="camps_locale" property="campsLocale" jdbcType="VARCHAR" />
     <result column="camps_locale_id" property="campsLocaleId" jdbcType="VARCHAR" />
     <result column="camps_subject_id" property="campsSubjectId" jdbcType="VARCHAR" />
+    <result column="camps_duration_id" property="campsDurationId" jdbcType="VARCHAR" />
+    <result column="camps_departure_id" property="campsDepartureId" jdbcType="VARCHAR" />
+    <result column="camps_price_id" property="campsPriceId" jdbcType="VARCHAR" />
     <result column="oriented_people" property="orientedPeople" jdbcType="VARCHAR" />
     <result column="feature" property="feature" jdbcType="VARCHAR" />
     <result column="service_support" property="serviceSupport" jdbcType="VARCHAR" />
@@ -21,6 +24,8 @@
     <result column="camps_hotel_photos" property="campsHotelPhotos" jdbcType="VARCHAR" />
     <result column="fee_desc" property="feeDesc" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="if_hot" property="ifHot" jdbcType="INTEGER" />
+    <result column="if_price" property="ifPrice" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
     <result column="done_count" property="doneCount" jdbcType="DECIMAL" />
     <result column="deadline_date" property="deadlineDate" jdbcType="DATE" />
@@ -34,7 +39,8 @@
     camps_id, camps_name, camps_title, camps_desc, camps_images, camps_locale, oriented_people, 
     feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
     camps_hotel_desc, camps_hotel_photos, fee_desc, status, total_price, done_count, 
-    deadline_date, departure_date, start_date, duration_time, create_time, update_time,camps_locale_id,camps_subject_id
+    deadline_date, departure_date, start_date, duration_time, create_time, update_time,camps_locale_id,camps_subject_id,
+    camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -51,6 +57,24 @@
     #{ite,jdbcType=VARCHAR}
     </foreach>
   </select>
+  <select id="getHotCampusList" resultMap="BaseResultMap" parameterType="Boolean">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+    where if_hot=1
+    <if test="ifCheckValid == true" >
+        and status=1
+      </if>
+  </select>
+  <select id="getPriceCampusList" resultMap="BaseResultMap" parameterType="Boolean">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps
+    where if_price=1
+     <if test="ifCheckValid == true" >
+        and status=1
+      </if>
+  </select>
   <select id="selectByConditions" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
     select 
     <include refid="Base_Column_List" />
@@ -62,8 +86,23 @@
      <if test="LocaleCategoryId != null" >
         and camps_locale_id =#{LocaleCategoryId}
       </if>
+     <if test="durationCategoryId != null" >
+        and camps_duration_id =#{durationCategoryId}
+      </if>
+     <if test="departureCategoryId != null" >
+        and camps_departure_id =#{departureCategoryId}
+      </if>
+     <if test="priceCategoryId != null" >
+        and camps_price_id =#{priceCategoryId}
+      </if>
      <if test="departureMonth != null" >
         and month(departure_date) = #{departureMonth}
+      </if>
+     <if test="status != null" >
+        and status = #{status}
+      </if>
+     <if test="campsNameKey != null" >
+        and camps_title LIKE CONCAT('%',CONCAT(#{campsNameKey},'%'))
       </if>
      <if test="minDepartureTime != null" >
         and date_format(departure_date,'%Y%c%d') &gt;= #{minDepartureTime}
@@ -95,6 +134,12 @@
       </if>
      <if test="LocaleCategoryId != null" >
         and camps_locale_id =#{LocaleCategoryId}
+      </if>
+      <if test="status != null" >
+        and status = #{status}
+      </if>
+     <if test="campsNameKey != null" >
+        and camps_title LIKE CONCAT('%',CONCAT(#{campsNameKey},'%'))
       </if>
      <if test="departureMonth != null" >
         and month(departure_date) = #{departureMonth}
@@ -147,7 +192,7 @@
       fee_desc, status, total_price, 
       done_count, deadline_date, departure_date, 
       start_date, duration_time, create_time, 
-      update_time,camps_locale_id,camps_subject_id)
+      update_time,camps_locale_id,camps_subject_id,camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price)
     values (#{campsId,jdbcType=VARCHAR}, #{campsName,jdbcType=VARCHAR}, #{campsTitle,jdbcType=VARCHAR}, 
       #{campsDesc,jdbcType=VARCHAR}, #{campsImages,jdbcType=VARCHAR}, #{campsLocale,jdbcType=VARCHAR}, 
       #{orientedPeople,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{serviceSupport,jdbcType=VARCHAR}, 
@@ -156,7 +201,9 @@
       #{feeDesc,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, 
       #{doneCount,jdbcType=DECIMAL}, #{deadlineDate,jdbcType=DATE}, #{departureDate,jdbcType=DATE}, 
       #{startDate,jdbcType=DATE}, #{durationTime,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{campsLocaleId,jdbcType=VARCHAR}, #{campsSubjectId,jdbcType=VARCHAR})
+      #{updateTime,jdbcType=TIMESTAMP}, #{campsLocaleId,jdbcType=VARCHAR}, #{campsSubjectId,jdbcType=VARCHAR}
+      , #{campsDurationId,jdbcType=VARCHAR}, #{campsDepartureId,jdbcType=VARCHAR}, #{campsPriceId,jdbcType=VARCHAR}
+      , #{ifHot,jdbcType=INTEGER}, #{ifPrice,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsVo" >
     insert into tb_camps
@@ -242,6 +289,21 @@
       <if test="campsSubjectId != null" >
         camps_subject_id,
       </if>
+      <if test="campsDurationId != null" >
+        camps_duration_id,
+      </if>
+      <if test="campsDepartureId != null" >
+        camps_departure_id,
+      </if>
+      <if test="campsPriceId != null" >
+        camps_price_id,
+      </if>
+      <if test="ifHot != null" >
+        if_hot,
+      </if>
+      <if test="ifPrice != null" >
+        if_price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="campsId != null" >
@@ -324,6 +386,21 @@
       </if>
       <if test="campsSubjectId != null" >
         #{campsSubjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsDurationId != null" >
+        #{campsDurationId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsDepartureId != null" >
+        #{campsDepartureId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsPriceId != null" >
+        #{campsPriceId,jdbcType=VARCHAR},
+      </if>
+      <if test="ifHot != null" >
+        #{ifHot,jdbcType=INTEGER},
+      </if>
+      <if test="ifPrice != null" >
+        #{ifPrice,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -408,6 +485,21 @@
       <if test="campsSubjectId != null" >
         camps_subject_id = #{campsSubjectId,jdbcType=VARCHAR},
       </if>
+      <if test="campsDurationId != null" >
+        camps_duration_id = #{campsDurationId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsDepartureId != null" >
+        camps_departure_id = #{campsDepartureId,jdbcType=VARCHAR},
+      </if>
+      <if test="campsPriceId != null" >
+        camps_price_id = #{campsPriceId,jdbcType=VARCHAR},
+      </if>
+      <if test="ifHot != null" >
+        if_hot = #{ifHot,jdbcType=INTEGER},
+      </if>
+      <if test="ifPrice != null" >
+        if_price = #{ifPrice,jdbcType=INTEGER},
+      </if>
     </set>
     where camps_id = #{campsId,jdbcType=VARCHAR}
   </update>
@@ -420,6 +512,9 @@
       camps_locale = #{campsLocale,jdbcType=VARCHAR},
       camps_locale_id = #{campsLocaleId,jdbcType=VARCHAR},
       camps_subject_id = #{campsSubjectId,jdbcType=VARCHAR},
+      camps_duration_id = #{campsDurationId,jdbcType=VARCHAR},
+      camps_departure_id = #{campsDepartureId,jdbcType=VARCHAR},
+      camps_price_id = #{campsPriceId,jdbcType=VARCHAR},
       oriented_people = #{orientedPeople,jdbcType=VARCHAR},
       feature = #{feature,jdbcType=VARCHAR},
       service_support = #{serviceSupport,jdbcType=VARCHAR},
@@ -431,6 +526,8 @@
       camps_hotel_photos = #{campsHotelPhotos,jdbcType=VARCHAR},
       fee_desc = #{feeDesc,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
+      if_hot = #{ifHot,jdbcType=INTEGER},
+      if_price = #{ifPrice,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       done_count = #{doneCount,jdbcType=DECIMAL},
       deadline_date = #{deadlineDate,jdbcType=DATE},

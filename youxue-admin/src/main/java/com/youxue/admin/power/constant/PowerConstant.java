@@ -18,7 +18,7 @@ public class PowerConstant
 	{
 		MenuShow yDGLMenu = new MenuShow(PowerTypeEnum.YDGL.getDesc(), "");
 		yDGLMenu.getSonList().add(new MenuShow("营地列表", "/campsList.do"));
-		yDGLMenu.getSonList().add(new MenuShow("营地分组", "/campsListGroup.do"));
+		yDGLMenu.getSonList().add(new MenuShow("营地分组", "/campsCategoryListIndex.do"));
 		menuMap.put(PowerTypeEnum.YDGL.getValue(), Lists.newArrayList(yDGLMenu));
 		allMenuList.add(yDGLMenu);
 

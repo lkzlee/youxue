@@ -23,4 +23,6 @@ public interface CatetoryDao
 	List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize);
 
 	List<CategoryVo> selectByCategoryType(Integer categoryType);
+
+	List<CategoryVo> selectAll();
 }

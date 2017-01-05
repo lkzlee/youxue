@@ -1,5 +1,6 @@
 package com.youxue.pc.campsDetail.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,8 +98,19 @@ public class CampsDetailController extends BaseController
 		if (pageNo == null || pageNo <= 0)
 			pageNo = 1;
 		CampsListDto campsListDto = new CampsListDto();
-		List<CampsVo> campsList = campsDao
-				.getCampusListByType(CategoryTypeEnum.getByValue(categoryType), pageNo, count);
+		List<CampsVo> campsList = new LinkedList<>();
+		if (categoryType == 1)
+		{
+			campsList = campsDao.getHotCampusList(true);
+		}
+		if (categoryType == 2)
+		{
+			campsList = campsDao.getPriceCampusList(true);
+		}
+		else
+		{
+			campsList = campsDao.getCampusListByType(CategoryTypeEnum.getByValue(categoryType), pageNo, count);
+		}
 		campsListDto.setCampsList(campsList);
 		campsListDto.setResult(100);
 		return JsonUtil.serialize(campsListDto);

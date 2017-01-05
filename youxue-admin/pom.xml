@@ -15,7 +15,7 @@
 			<artifactId>youxue-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.yishan.util</groupId>
+			<groupId>com.netease.lede</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.19</version>
 		</dependency>

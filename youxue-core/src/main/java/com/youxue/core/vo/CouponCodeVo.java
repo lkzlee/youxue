@@ -8,6 +8,7 @@ public class CouponCodeVo
 	public static final int NORMAL = 1;
 
 	private String codeId;
+	private String codeName;
 
 	private String codeValue;
 
@@ -113,5 +114,15 @@ public class CouponCodeVo
 	public void setCategoryIds(String categoryIds)
 	{
 		this.categoryIds = categoryIds == null ? null : categoryIds.trim();
+	}
+
+	public String getCodeName()
+	{
+		return codeName;
+	}
+
+	public void setCodeName(String codeName)
+	{
+		this.codeName = codeName;
 	}
 }

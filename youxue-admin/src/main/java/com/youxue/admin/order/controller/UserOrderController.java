@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.order.constant.ConstantMapUtil;
@@ -86,6 +87,7 @@ public class UserOrderController extends BaseController
 	}
 
 	@RequestMapping(path = "/admin/auditOrder.do")
+	@ResponseBody
 	public String auditOrder(HttpServletRequest request, HttpServletResponse response, String type, String orderId,
 			ModelMap modelMap)
 	{

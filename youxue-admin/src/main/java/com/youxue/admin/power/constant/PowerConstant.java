@@ -14,6 +14,8 @@ public class PowerConstant
 
 	public static Map<Integer, List<MenuShow>> menuMap = new HashMap<>();
 	public static List<MenuShow> allMenuList = new LinkedList<>();
+
+	public static final Map<String, String> roleMap = new HashMap<String, String>();
 	static
 	{
 		MenuShow yDGLMenu = new MenuShow(PowerTypeEnum.YDGL.getDesc(), "");
@@ -34,7 +36,7 @@ public class PowerConstant
 		allMenuList.add(ddGLMenu);
 
 		MenuShow hyGLMenu = new MenuShow(PowerTypeEnum.HYGL.getDesc(), "");
-		hyGLMenu.getSonList().add(new MenuShow("会员用户", "/userList.do"));
+		hyGLMenu.getSonList().add(new MenuShow("会员用户", "/admin/userList.do"));
 		menuMap.put(PowerTypeEnum.HYGL.getValue(), Lists.newArrayList(hyGLMenu));
 		allMenuList.add(hyGLMenu);
 
@@ -51,6 +53,13 @@ public class PowerConstant
 		allMenuList.add(htxtGLMenu);
 
 		menuMap.put(PowerTypeEnum.ALL.getValue(), allMenuList);
+	}
+	static
+	{
+		for (PowerTypeEnum pt : PowerTypeEnum.values())
+		{
+			roleMap.put("" + pt.getValue(), pt.getDesc());
+		}
 	}
 	//接口请求的错误信息
 	public static final String ERROR_MSG = "errorMessage";

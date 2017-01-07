@@ -2,7 +2,6 @@ package com.youxue.admin.login.service;
 
 import java.util.Date;
 
-import com.youxue.core.vo.Page;
 import com.youxue.core.vo.SysUser;
 
 /**
@@ -30,14 +29,6 @@ public interface SysUserService
 	 * @return SysUser
 	 */
 	public SysUser querySysUserByUserId(int userId);
-
-	/**
-	 * 分页查询用户列表
-	 * @param querySysUser 查询条件
-	 * @param page 分页条件
-	 * @return 用户实体列表
-	 */
-	public Page<SysUser> querySysUserPage(String querySysUser, Page<SysUser> page);
 
 	/**
 	 * 验证用户帐户是否存在

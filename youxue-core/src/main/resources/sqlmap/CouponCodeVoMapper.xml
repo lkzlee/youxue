@@ -29,11 +29,17 @@
     <include refid="Base_Column_List" />
     from tb_coupon_code
     <where>
+     <if test="validStartTime != null" >
+        and end_time&gt;=#{validStartTime}
+      </if>
+     <if test="validEndTime != null" >
+        and end_time&lt;=#{validEndTime}
+      </if>
      <if test="couponName != null" >
         and code_name LIKE CONCAT('%',CONCAT(#{couponName},'%'))
       </if>
      <if test="categoryId != null" >
-        and code_id LIKE CONCAT('%',CONCAT(#{categoryId},'%'))
+        and category_ids LIKE CONCAT('%',CONCAT(#{categoryId},'%'))
       </if>
      <if test="couponValue != null" >
         and code_value LIKE CONCAT('%',CONCAT(#{couponValue},'%'))
@@ -49,7 +55,7 @@
         and code_name LIKE CONCAT('%',CONCAT(#{couponName},'%'))
       </if>
      <if test="categoryId != null" >
-        and code_id LIKE CONCAT('%',CONCAT(#{categoryId},'%'))
+        and category_ids LIKE CONCAT('%',CONCAT(#{categoryId},'%'))
       </if>
      <if test="couponValue != null" >
         and code_value LIKE CONCAT('%',CONCAT(#{couponValue},'%'))

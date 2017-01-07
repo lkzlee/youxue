@@ -21,6 +21,7 @@ public class CouponCodeVo
 	private Date endTime;
 
 	private Integer status;
+	private String statusStr;
 
 	private Integer useCount;
 
@@ -146,5 +147,15 @@ public class CouponCodeVo
 	public void setCreator(String creator)
 	{
 		this.creator = creator;
+	}
+
+	public String getStatusStr()
+	{
+		return status == 0 ? "下架状态" : "在线状态";
+	}
+
+	public void setStatusStr(String statusStr)
+	{
+		this.statusStr = statusStr;
 	}
 }

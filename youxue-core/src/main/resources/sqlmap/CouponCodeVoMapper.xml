@@ -12,10 +12,11 @@
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="use_count" property="useCount" jdbcType="INTEGER" />
     <result column="category_ids" property="categoryIds" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     code_id, code_name,code_value, code_amount, create_time, start_time, end_time, status, use_count, 
-    category_ids
+    category_ids,creator
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -39,6 +40,22 @@
       </if>
     </where>
   </select>
+  <select id="selectCountByConditions" resultType="Integer" parameterType="java.util.Map" >
+    select 
+    count(1)
+    from tb_coupon_code
+    <where>
+     <if test="couponName != null" >
+        and code_name LIKE CONCAT('%',CONCAT(#{couponName},'%'))
+      </if>
+     <if test="categoryId != null" >
+        and code_id LIKE CONCAT('%',CONCAT(#{categoryId},'%'))
+      </if>
+     <if test="couponValue != null" >
+        and code_value LIKE CONCAT('%',CONCAT(#{couponValue},'%'))
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_coupon_code
     where code_id = #{codeId,jdbcType=VARCHAR}
@@ -46,11 +63,12 @@
   <insert id="insert" parameterType="com.youxue.core.vo.CouponCodeVo" >
     insert into tb_coupon_code (code_id, code_value, code_amount, 
       create_time, start_time, end_time, 
-      status, use_count, category_ids, code_name
+      status, use_count, category_ids, code_name,creator
       )
     values (#{codeId,jdbcType=VARCHAR}, #{codeValue,jdbcType=VARCHAR}, #{codeAmount,jdbcType=DECIMAL}, 
       #{createTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER}, #{useCount,jdbcType=INTEGER}, #{categoryIds,jdbcType=VARCHAR}, #{codeName,jdbcType=VARCHAR}
+      , #{creator,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CouponCodeVo" >
@@ -86,6 +104,9 @@
       <if test="codeName != null" >
         code_name,
       </if>
+      <if test="creator != null" >
+        creator,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="codeId != null" >
@@ -117,6 +138,9 @@
       </if>
       <if test="codeName != null" >
         #{codeName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,6 +174,9 @@
       <if test="codeName != null" >
         code_name = #{codeName,jdbcType=VARCHAR},
       </if>
+      <if test="creator != null" >
+        code_name = #{creator,jdbcType=VARCHAR},
+      </if>
     </set>
     where code_id = #{codeId,jdbcType=VARCHAR}
   </update>
@@ -164,6 +191,7 @@
       use_count = #{useCount,jdbcType=INTEGER},
       category_ids = #{categoryIds,jdbcType=VARCHAR}
       code_name = #{codeName,jdbcType=VARCHAR}
+      creator = #{creator,jdbcType=VARCHAR}
     where code_id = #{codeId,jdbcType=VARCHAR}
   </update>
   <select id="selectCouponByCode" resultMap="BaseResultMap" parameterType="java.util.Map" >

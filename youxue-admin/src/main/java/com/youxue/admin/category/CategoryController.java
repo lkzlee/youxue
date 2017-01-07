@@ -85,7 +85,7 @@ public class CategoryController
 		}
 	}
 
-	@RequestMapping(value = "modifyCampsIndex.do")
+	@RequestMapping(value = "modifyCategoryIndex.do")
 	public String modifyCampsIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
 			String categoryId)
 	{
@@ -111,7 +111,7 @@ public class CategoryController
 		return "camps/addCamps";
 	}
 
-	@RequestMapping(value = "doModifyCamps.do")
+	@RequestMapping(value = "doModifyCategory.do")
 	@ResponseBody
 	public String doModifyCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
 			CategoryVo category)

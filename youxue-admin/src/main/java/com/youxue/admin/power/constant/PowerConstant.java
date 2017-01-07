@@ -36,7 +36,7 @@ public class PowerConstant
 		allMenuList.add(ddGLMenu);
 
 		MenuShow hyGLMenu = new MenuShow(PowerTypeEnum.HYGL.getDesc(), "");
-		hyGLMenu.getSonList().add(new MenuShow("会员用户", "/userList.do"));
+		hyGLMenu.getSonList().add(new MenuShow("会员用户", "/admin/userList.do"));
 		menuMap.put(PowerTypeEnum.HYGL.getValue(), Lists.newArrayList(hyGLMenu));
 		allMenuList.add(hyGLMenu);
 

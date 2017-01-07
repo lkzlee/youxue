@@ -60,11 +60,15 @@
 												</p>
 											</td>
 											<td>${adItem.tel!""}</td>
-											<td>${adItem.roleId!""}</td>
+											<td>${roleMap[adItem.roleId?string('0')]}</td>
 											<td>${adItem.createTime?string("yyyy-MM-dd HH:mm:ss")}</td>
 											<td>
-											<a href="/forbidOrStartSysUser.do?userId=${adItem.userId}"><span>禁用</span></a>  
-											<a href="/resetSysUser.do?userId=${adItem.userId}"><span>重置密码</span></a>
+											<#if adItem.status=0>
+												<a href="javascript:void(0)" onclick="forbidOrStart(${adItem.userId},1)"><span>禁用</span></a>  
+											<#elseif adItem.status=1>
+												<a href="javascript:void(0)" onclick="forbidOrStart(${adItem.userId},0)"><span>恢复</span></a>
+											</#if>
+											<a href="javascript:void(0)" onclick="resetUser(${adItem.userId})"><span>重置密码</span></a>
 											</td>
 										</tr>
 										</#list>
@@ -100,28 +104,14 @@
 							<th class="text-center">管理员手机号:</th><td><input type="text" class="form-control"  data-bv-notempty="true" name="tel" /></td>
 						</tr>
 						<tr>
-							<th class="text-center">管理员权限:</th><td>
-							<label class="radio-inline">
-								<input type="radio" name="roleId" value="0"/>全部
-							</label>
-							<label class="radio-inline">
-								<input type="radio"  name="roleId" value="1"/>营地管理
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="roleId" value="2"/>营销管理
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="roleId" value="3"/>订单管理
-							</label>
-							<label class="radio-inline">
-								<input type="radio"  name="roleId" value="4"/>会员管理
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="roleId" value="5"/>通用管理
-							</label>
-							<label class="radio-inline">
-								<input type="radio" name="roleId" value="6"/>后台系统管理
-							</label>
+							<th class="text-center">管理员权限:</th>
+							
+							<td>
+							<#list roleMap?keys as t>
+							       <label class="radio-inline">
+										<input type="radio" name="roleId" value="${t}"/>${roleMap[t]}
+									</label>
+							</#list>
 							</td>
 						</tr>
                         <tr>
@@ -136,5 +126,21 @@
             <hr>
 		</div>
     </div><!-- /#wrapper -->
+<script>
+	function forbidOrStart(userId,type)
+	{
+		$.getJSON("/forbidOrStartSysUser.do", {userId:userId,type:type}
+			, function(data){
+				  alert(JSON.parse(data).resultDesc);
+				});
+	}
+	function resetUser(userId)
+	{
+		$.getJSON("/resetSysUser.do", {userId:userId}
+			, function(data){
+				  alert(JSON.parse(data).resultDesc);
+				});
+	}
+</script>
 <@docFoot />
 </#compress>

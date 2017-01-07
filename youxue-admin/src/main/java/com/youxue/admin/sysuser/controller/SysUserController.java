@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.login.service.SysUserService;
+import com.youxue.admin.power.constant.PowerConstant;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.SysUserDao;
@@ -63,6 +64,7 @@ public class SysUserController extends BaseController
 		modelMap.put("userName", userName);
 		modelMap.put("tel", tel);
 		modelMap.put("createTime", createTime);
+		modelMap.put("roleMap", PowerConstant.roleMap);
 		return "/sysUser/sysUserList";
 
 	}
@@ -95,11 +97,12 @@ public class SysUserController extends BaseController
 	 */
 	@RequestMapping(path = "/forbidOrStartSysUser.do")
 	@ResponseBody
-	public String auditOrder(HttpServletRequest request, HttpServletResponse response, String userId, String type)
+	public String forbidOrStartSysUser(HttpServletRequest request, HttpServletResponse response, String userId,
+			String type)
 	{
 		try
 		{
-			LOG.info("查询用户个人订单页 sysuser=" + userId);
+			LOG.info("禁用或启用用户 sysuser=" + userId);
 
 			if (StringUtils.isBlank(userId))
 			{

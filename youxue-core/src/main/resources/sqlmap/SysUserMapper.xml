@@ -118,13 +118,13 @@
     <!-- 禁用或启用后台用户 -->
     <update id="updateDisableOrstartUser" parameterType="java.util.Map">
     	update tb_sys_user SET 
-    	<if test="type==1">
+    	<if test="type==0">
     	tb_sys_user.STATUS=0
     	</if>
-    	<if test="type==2">
+    	<if test="type==1">
     	tb_sys_user.STATUS=1
     	</if>
-		<if test="type==3">
+		<if test="type==2">
 			tb_sys_user.STATUS=2
 		</if>
     	WHERE tb_sys_user.USER_ID=#{userId}

@@ -32,14 +32,6 @@ public interface SysUserDao
 	public SysUser querySysUserByUserId(int userId);
 
 	/**
-	 * 分页查询用户列表
-	 * @param querySysUser 查询条件
-	 * @param page 分页条件
-	 * @return 用户实体列表
-	 */
-	public Page<SysUser> querySysUserPage(String querySysUser, Page<SysUser> page);
-
-	/**
 	 * 验证用户帐户是否存在
 	 * @param userLoginName
 	 */
@@ -69,4 +61,6 @@ public interface SysUserDao
 	 * @param map
 	 */
 	public void updateUserLoginLog(Map<String, Object> map);
+
+	public Page<SysUser> querySysUserPage(Page<SysUser> page, String userName, String tel);
 }

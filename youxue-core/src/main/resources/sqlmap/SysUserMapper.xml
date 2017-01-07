@@ -44,8 +44,8 @@
     
     <!-- 添加用户 -->
     <insert id="createSysUser" parameterType="com.youxue.core.vo.SysUser" useGeneratedKeys="true" keyColumn="USER_ID" keyProperty="userId">
-    	INSERT INTO tb_sys_user(<include refid="tb_sys_user_column"/>)
-    	VALUE(<include refid="tb_sys_user_property"/>)
+    	INSERT INTO tb_sys_user(LOGIN_NAME,LOGIN_PWD,USER_NAME,TEL,ROLE_ID,CREATE_TIME)
+    	VALUE(#{loginName},#{loginPwd},#{userName},#{tel},#{roleId},now())
     </insert>
     
     <!-- 修改用户 -->
@@ -68,12 +68,26 @@
     <select id="querySysUserPage" parameterType="java.util.Map" resultMap="SysUserResult">
     	SELECT <include refid="tb_sys_user_column"/> FROM tb_sys_user
     	<where>
-    	tb_sys_user.STATUS!=2 
-    	<if test="e.keyWord!=null and e.keyWord!=''">
-    	AND(tb_sys_user.LOGIN_NAME LIKE CONCAT('%',#{e.keyWord},'%') OR tb_sys_user.EMAIL LIKE CONCAT('%',#{e.keyWord},'%'))
-    	</if>
+	    	<if test="userName!=null">
+	    	and USER_NAME like concat('%',#{userName,jdbcType=VARCHAR},'%')
+	    	</if>
+	    	<if test="tel!=null">
+	    	and TEL =#{tel,jdbcType=VARCHAR}
+	    	</if>
     	</where>
-    	ORDER BY tb_sys_user.USER_ID 
+    	ORDER BY USER_ID 
+    </select>
+     <!-- 分页查询用户列表 ，开始-->
+    <select id="queryCountSysUserPage" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT count(*) FROM tb_sys_user
+    	<where>
+	    	<if test="userName!=null">
+	    	and USER_NAME like concat('%',#{userName,jdbcType=VARCHAR},'%')
+	    	</if>
+	    	<if test="tel!=null">
+	    	and TEL =#{tel,jdbcType=VARCHAR}
+	    	</if>
+    	</where>
     </select>
     <select id="querySysUserPageCount" parameterType="java.util.Map" resultType="int">
     	SELECT COUNT(1) FROM tb_sys_user

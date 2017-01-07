@@ -41,7 +41,7 @@
     		and account_id= #{accountId,jdbcType=VARCHAR}
     	</if>
     	<if test="nickName!=null">
-    		and nick_name like concat('%',#{accountId,jdbcType=VARCHAR},'%')
+    		and nick_name like concat('%',#{nickName,jdbcType=VARCHAR},'%')
     	</if>
     </where>
     order by account_id
@@ -55,7 +55,7 @@
     		and account_id= #{accountId,jdbcType=VARCHAR}
     	</if>
     	<if test="nickName!=null">
-    		and nick_name like concat('%',#{accountId,jdbcType=VARCHAR},'%')
+    		and nick_name like concat('%',#{nickName,jdbcType=VARCHAR},'%')
     	</if>
     </where>
   </select>

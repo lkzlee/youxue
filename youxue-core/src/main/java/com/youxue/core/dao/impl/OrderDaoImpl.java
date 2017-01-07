@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
@@ -78,5 +80,24 @@ public class OrderDaoImpl extends BaseDao implements OrderDao
 		param.put("accountId", accountId);
 		return getPageList(page, "com.youxue.core.dao.OrderDao.selectPageOrderListByType",
 				"com.youxue.core.dao.OrderDao.selectCountPageOrderListByType", param);
+	}
+
+	@Override
+	public Page<OrderDetailVo> selectPageOrderListByInfo(Page<OrderDetailVo> page, int status, PayTypeEnum pType,
+			String orderId, String mobile, String campsName)
+	{
+		Map<String, Object> param = new HashMap<String, Object>();
+		if (status != -1)
+			param.put("status", status);
+		if (pType != null && PayTypeEnum.UNKNOW_PAY != pType)
+			param.put("payType", pType.getValue());
+		if (StringUtils.isNotBlank(orderId))
+			param.put("orderId", orderId);
+		if (StringUtils.isNotBlank(mobile))
+			param.put("accountId", mobile);
+		if (StringUtils.isNotBlank(campsName))
+			param.put("campsName", campsName);
+		return getPageList(page, "com.youxue.core.dao.OrderDao.selectPageOrderListByInfo",
+				"com.youxue.core.dao.OrderDao.selectCountPageOrderListByInfo", param);
 	}
 }

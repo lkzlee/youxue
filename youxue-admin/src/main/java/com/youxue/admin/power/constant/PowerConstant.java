@@ -28,7 +28,7 @@ public class PowerConstant
 		allMenuList.add(yxGLMenu);
 
 		MenuShow ddGLMenu = new MenuShow(PowerTypeEnum.DDGL.getDesc(), "");
-		ddGLMenu.getSonList().add(new MenuShow("营地订单", "/campsOrderList.do"));
+		ddGLMenu.getSonList().add(new MenuShow("营地订单", "/admin/userorder.do"));
 		ddGLMenu.getSonList().add(new MenuShow("周边产品订单", "/otherOrderList.do"));
 		menuMap.put(PowerTypeEnum.DDGL.getValue(), Lists.newArrayList(ddGLMenu));
 		allMenuList.add(ddGLMenu);

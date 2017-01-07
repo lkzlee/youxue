@@ -30,6 +30,10 @@ public class OrderDetailVo extends OrderVo
 
 	private Integer payStatus;
 
+	private Integer payType;
+
+	private String codeName; //优惠券标题描述
+
 	public String getCampsName()
 	{
 		return campsName;
@@ -120,12 +124,32 @@ public class OrderDetailVo extends OrderVo
 		this.payStatus = payStatus;
 	}
 
+	public Integer getPayType()
+	{
+		return payType;
+	}
+
+	public void setPayType(Integer payType)
+	{
+		this.payType = payType;
+	}
+
+	public String getCodeName()
+	{
+		return codeName;
+	}
+
+	public void setCodeName(String codeName)
+	{
+		this.codeName = codeName;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "OrderDetailVo [campsName=" + campsName + ", campsImages=" + campsImages + ", realCampsImages="
 				+ realCampsImages + ", campsTitle=" + campsTitle + ", deadlineDate=" + deadlineDate
 				+ ", departureDate=" + departureDate + ", startDate=" + startDate + ", durationTime=" + durationTime
-				+ ", payStatus=" + payStatus + "]";
+				+ ", payStatus=" + payStatus + ", payType=" + payType + ", codeName=" + codeName + "]";
 	}
 }

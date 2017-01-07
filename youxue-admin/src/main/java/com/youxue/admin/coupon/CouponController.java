@@ -1,5 +1,7 @@
 package com.youxue.admin.coupon;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +14,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,12 +36,19 @@ public class CouponController
 {
 	private static final Log logger = LogFactory.getLog(CouponController.class);
 
+	@InitBinder
+	public void initBinder(ServletRequestDataBinder binder)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
+
 	@Autowired
 	private CatetoryDao categoryDao;
 	@Autowired
 	private CouponCodeDao couponCodeDao;
 
-	@RequestMapping("/couponListIndex.do")
+	@RequestMapping("/couponList.do")
 	public String couponListIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap)
 	{
 		List<CategoryVo> localeCategoryList = categoryDao.selectByCategoryType(CategoryTypeEnum.LOCALE.getValue());
@@ -45,10 +57,29 @@ public class CouponController
 		categoryList.addAll(localeCategoryList);
 		categoryList.addAll(subjectCategoryList);
 		modelMap.put("categoryList", categoryList);
-
+		modelMap.put("subjectCategoryList", subjectCategoryList);
+		modelMap.put("localeCategoryList", localeCategoryList);
+		Map<String, String> cateMap = new HashMap<>();
+		for (CategoryVo category : categoryList)
+		{
+			cateMap.put(category.getCategoryId(), category.getCategoryName());
+		}
 		Map<String, Object> conditions = new HashMap<>();
 		Page<CouponCodeVo> couponPage = couponCodeDao.selectPageByConditions(new Page<CouponCodeVo>(1,
 				Page.DEFAULT_PAGESIZE), conditions);
+		for (CouponCodeVo coupon : couponPage.getResultList())
+		{
+			String cateIds = coupon.getCategoryIds();
+			if (StringUtils.isBlank(cateIds))
+				continue;
+			String[] categoryIds = cateIds.split(",");
+			String cateStrs = "";
+			for (String categoryId : categoryIds)
+			{
+				cateStrs = cateStrs + (cateMap.get(categoryId) == null ? "" : cateMap.get(categoryId)) + " ";
+			}
+			coupon.setCategorys(cateStrs);
+		}
 		modelMap.put("couponPage", couponPage);
 		return "coupon/couponList";
 	}
@@ -61,7 +92,8 @@ public class CouponController
 	@RequestMapping("/doGetCouponList.do")
 	@ResponseBody
 	public String getCategroyList(HttpServletRequest request, HttpServletResponse response, Integer couponStatus,
-			String couponName, String couponValue, String categoryId, String validTime, String pageNo)
+			String couponName, String couponValue, String categoryId, String validStartTime, String validEndTime,
+			String pageNo)
 	{
 
 		try
@@ -133,12 +165,12 @@ public class CouponController
 		{
 			if (StringUtils.isBlank(couponId))
 			{
-				return "redirect:/couponListIndex.do";
+				return "redirect:/couponList.do";
 			}
 			CouponCodeVo coupon = couponCodeDao.selectByPrimaryKey(couponId);
 			if (coupon == null)
 			{
-				return "redirect:/couponListIndex.do";
+				return "redirect:/couponList.do";
 			}
 			modelMap.put("coupon", coupon);
 			List<CategoryVo> localeCategoryList = categoryDao.selectByCategoryType(CategoryTypeEnum.LOCALE.getValue());
@@ -151,7 +183,7 @@ public class CouponController
 		catch (Exception e)
 		{
 			logger.error("modifyCouponIndex()--error", e);
-			return "redirect:/couponListIndex.do";
+			return "redirect:/couponList.do";
 		}
 
 	}
@@ -165,7 +197,7 @@ public class CouponController
 		{
 			if (coupon == null || StringUtils.isBlank(coupon.getCodeId()))
 			{
-				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改异常"));
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改参数异常"));
 			}
 			couponCodeDao.updateByPrimaryKeySelective(coupon);
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("修改成功"));
@@ -174,6 +206,30 @@ public class CouponController
 		{
 			logger.error("doModifyCoupon()--error", e);
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改异常"));
+		}
+	}
+
+	@RequestMapping(value = "downCoupon.do")
+	@ResponseBody
+	public String downCoupon(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
+			String couponId)
+	{
+		try
+		{
+			if (StringUtils.isBlank(couponId))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("下架异常"));
+			}
+			CouponCodeVo coupon = new CouponCodeVo();
+			coupon.setCodeId(couponId);
+			coupon.setStatus(0);
+			couponCodeDao.updateByPrimaryKeySelective(coupon);
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("下架成功"));
+		}
+		catch (Exception e)
+		{
+			logger.error("downCoupon()--error", e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("下架异常"));
 		}
 	}
 }

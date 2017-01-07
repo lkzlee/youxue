@@ -25,6 +25,8 @@ public class CouponCodeVo
 	private Integer useCount;
 
 	private String categoryIds;
+	private String categorys;//后台管理系统前端显示字段
+	private String creator;
 
 	public String getCodeId()
 	{
@@ -124,5 +126,25 @@ public class CouponCodeVo
 	public void setCodeName(String codeName)
 	{
 		this.codeName = codeName;
+	}
+
+	public String getCategorys()
+	{
+		return categorys;
+	}
+
+	public void setCategorys(String categorys)
+	{
+		this.categorys = categorys;
+	}
+
+	public String getCreator()
+	{
+		return creator;
+	}
+
+	public void setCreator(String creator)
+	{
+		this.creator = creator;
 	}
 }

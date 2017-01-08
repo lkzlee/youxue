@@ -1,7 +1,7 @@
 <#compress>
 <#-- 嵌入基础依赖模块 -->
 <#include "../common/core.ftl">
-
+<#assign str="">
 <#-- html文档头部 -->
 <@docHead title="营地管理"/>
 <#-- 正文 -->
@@ -18,34 +18,111 @@
                     <table class="table table-striped table-bordered table-hover" id="dataTables-example1">
 						<tr>
 							<th>营地名称:</th>
-							<td><input type="text" class="form-control" name="campsNameKey" /></td>
+							<td><input type="text" class="form-control" name="campsNameKey" value="${campsNameKey}"/></td>
 							
 							<th>上架状态:</th>
 							<td>
 								<select class="form-control" name="status" id="status">
 					                  <option value=''>--</option>
 									  <#list campsStatusMap?keys as t>
-										<option value='${t}'  <#if status==t?eval> selected="selected"</#if>>${campsStatusMap[t]}</option>
+										<option value='${t}'  <#if status==t> selected="selected"</#if>>${campsStatusMap[t]}</option>
 									  </#list>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<th>营地分组:</th>
+							<th>目的地分类:</th>
 							<td>
-								<select class="form-control" name="categoryId" id="categoryId">
-					                  <option value=''>--</option>
-					                   <#list categoryList![] as t>
-										<option value='${t.categoryId}' <#if categoryId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
-									  </#list>
-								</select>
+								<#list localeCategoryList as category>
+								<#if (localeCategoryIds!'')?split(',')?seq_contains(category.categoryId) >
+										<label class="checkbox-inline" >
+												<input type="checkbox" name="localeCategoryIds" value="${category.categoryId}" checked 
+													 data-bv-notempty-message="" />${category.categoryName}
+										</label>
+								<#else>
+									<label class="checkbox-inline" >
+										<input type="checkbox" name="localeCategoryIds" value="${category.categoryId}" />${category.categoryName}
+									</label>
+								</#if>
+								</#list>
 							</td>
-							<td align=center colspan='6'>
+							<th>主题分类:</th>
+							<td>
+								<#list subjectCategoryList as category>
+								<#if (subjectCategoryIds!'')?split(',')?seq_contains(category.categoryId) >
+										<label class="checkbox-inline" >
+												<input type="checkbox" name="subjectCategoryIds" value="${category.categoryId}" checked 
+													data-bv-notempty-message="" />${category.categoryName}
+										</label>
+								<#else>
+									<label class="checkbox-inline" >
+										<input type="checkbox" name="subjectCategoryIds" value="${category.categoryId}" />${category.categoryName}
+									</label>
+								</#if>
+								</#list>
+							</td>
+						</tr>
+						<tr>
+							<th>价格档位分类:</th>
+							<td>
+								<#list priceCategoryList as category>
+								<#if (priceCategoryIds!'')?split(',')?seq_contains(category.categoryId) >
+										<label class="checkbox-inline" >
+												<input type="checkbox" name="priceCategoryIds" value="${category.categoryId}" checked 
+													 data-bv-notempty-message="" />${category.categoryName}
+										</label>
+								<#else>
+									<label class="checkbox-inline" >
+										<input type="checkbox" name="priceCategoryIds" value="${category.categoryId}" />${category.categoryName}
+									</label>
+								</#if>
+								</#list>
+							</td>
+							<th>出发时间分类:</th>
+							<td>
+								<#list depatureCategoryList as category>
+								<#if (depatureCategoryIds!'')?split(',')?seq_contains(category.categoryId) >
+										<label class="checkbox-inline" >
+												<input type="checkbox" name="depatureCategoryIds" value="${category.categoryId}" checked 
+													data-bv-notempty-message="" />${category.categoryName}
+										</label>
+								<#else>
+									<label class="checkbox-inline" >
+										<input type="checkbox" name="depatureCategoryIds" value="${category.categoryId}" />${category.categoryName}
+									</label>
+								</#if>
+								</#list>
+							</td>
+						</tr>
+						
+					
+						<tr>
+							<th>时间周期分类:</th>
+							<td>
+								<#list durationCategoryList as category>
+								<#if (durationCategoryIds!'')?split(',')?seq_contains(category.categoryId) >
+										<label class="checkbox-inline" >
+												<input type="checkbox" name="durationCategoryIds" value="${category.categoryId}" checked 
+													 data-bv-notempty-message="" />${category.categoryName}
+										</label>
+								<#else>
+									<label class="checkbox-inline" >
+										<input type="checkbox" name="durationCategoryIds" value="${category.categoryId}" />${category.categoryName}
+									</label>
+								</#if>
+								</#list>
+							</td>
+							<td align=center >
 								<p style="text-align:center">
 									<button type="submit" class="btn btn-primary">查询</button> &nbsp;&nbsp;&nbsp;&nbsp;
 								</p>
 							</td>
-							<td align=center colspan='6'>
+							<td align=center >
+								<p style="text-align:center">
+									<button type="reset" class="btn btn-primary">重置</button> &nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+							</td>
+							<td align=center>
 								<p style="text-align:center">
 									<a type="button" class="btn btn-primary" href="addCampsIndex.do">新增</a>
 								</p>
@@ -82,57 +159,33 @@
 										<#list campsList.resultList![] as adItem>
 										<tr class="<#if adItem_index%2 == 0>odd<#else>even</#if>">
 											<td>${adItem.campsName!""}</td>
-											<td>${adItem.statusStr!""}</td>
+											<td>${adItem.categoryStrs!""}</td>
 											<td>${adItem.totalPrice}</td>
 											<td>${adItem.doneCount}</td>
-											<td>${campsStatusMap[adItem.status]}</td>
+											<td>${campsStatusMap[str+adItem.status]}</td>
 											<td>${adItem.hotOrPrice!""}</td>
-											<td><a href="/modifyAccountInfo.html?accountId=${adItem.accountId}"><span>修改</span></a></td>
-											<#if userType == 0><td><a href="/doDeleteAccountInfo.html?accountId=${adItem.accountId}" onclick="return confirm('您确认删除账号“${adItem.accountId}”吗?')"><span>下架</span></a></td></#if>
+											<td><a href="/modifyCampsIndex.do?campsId=${adItem.campsId}"><span>修改</span></a></td>
+											<td>
+												<#if adItem.status == 0>
+													<a href="/upOrDownCamps.do?campsId=${adItem.campsId}&status=1" onclick="return confirm('您确认上架营地“${adItem.campsId}”吗?')"><span>上架</span></a>
+												<#else>
+													<a href="/upOrDownCamps.do?campsId=${adItem.campsId}&status=0" onclick="return confirm('您确认下架营地“${adItem.campsId}”吗?')"><span>下架</span></a>
+												</#if>
+											</td>
 										</tr>
 										</#list>
 									</tbody>
 								</table>
-								<@paging maxRecordNum=accountList.totalCount 
-										totalPage=accountList.totalPage 
-										currentPage=accountList.pageNo 
-										urlTmpl="?pageNo={p}&accountId=${accountId}&area=${area}&buildingNo=${buildingNo}&status=${status}&unitNo=${unitNo}"/>
+								<@paging maxRecordNum=campsList.totalCount 
+										totalPage=campsList.totalPage 
+										currentPage=campsList.pageNo 
+										urlTmpl="?pageNo={p}&localeCategoryIds=${localeCategoryIds}&subjectCategoryIds=${subjectCategoryIds}&durationCategoryIds=${durationCategoryIds}&depatureCategoryIds=${depatureCategoryIds}&priceCategoryIds=${priceCategoryIds}&status=${status}&campsNameKey=${campsNameKey}"/>
 							</div>                            
 						</div>
 						<!-- /.panel-body -->
 					</div>
 					<!-- /.panel -->
 				</div>
-				<hr>
-				<!-- /.col-lg-12 -->
-				<#if userType != 2>
-				 <div class="row">
-                <h4 class="text-center">添加宽带账户</h4>
-                <h5 class="text-center" style="color:red">${addMsg!''}</h5>
-                <div class="col-lg-12">
-                    <form class="form-horizontal" id="addForm" method="POST" action="/doAddAccountInfo.html" data-validate="true">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example1">
-                        <tr>
-							<th>账户名 *:</th><td><input type="text" class="form-control" name="accountId" /></td>
-							<th>小区:</th><td><input type="text" class="form-control" name="area" /></td>
-							<th>楼号:</th><td><input type="text" class="form-control" name="buildingNo" /></td>
-						</tr>
-						<tr>
-							<th>单元号:</th><td><input type="text" class="form-control" name="unitNo" /></td>
-							<th>使用人姓名(可不填):</th><td><input type="text" class="form-control" name="name" /></td>
-							<th>备注:</th><td><input type="text" class="form-control" name="remark" /></td>
-						</tr>
-                        <tr>
-							<td align=center colspan='6'>
-								<p style="text-align:center"><button type="submit" class="btn btn-primary">添加</button></p>
-							</td>
-						</tr>
-					</table>
-                    </form>
-                </div>
-            </div><!-- /.row-->
-            </#if>
-            <hr>
 		</div>
     </div><!-- /#wrapper -->
 <@docFoot />

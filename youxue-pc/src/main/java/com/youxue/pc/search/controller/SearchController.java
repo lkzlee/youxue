@@ -101,7 +101,7 @@ public class SearchController extends BaseController
 			}
 			if (StringUtils.isNotBlank(localeCategoryId))
 			{
-				queryConditions.put("LocaleCategoryId", localeCategoryId);
+				queryConditions.put("localeCategoryId", localeCategoryId);
 			}
 			if (StringUtils.isNotBlank(subjectCategoryId))
 			{
@@ -113,7 +113,7 @@ public class SearchController extends BaseController
 			}
 			if (StringUtils.isNotBlank(departureCategoryId))
 			{
-				queryConditions.put("departureCategoryId", departureCategoryId);
+				queryConditions.put("depatureCategoryId", departureCategoryId);
 			}
 			if (StringUtils.isNotBlank(priceCategoryId))
 			{

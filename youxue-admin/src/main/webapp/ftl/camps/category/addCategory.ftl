@@ -45,7 +45,7 @@
                                 <@fileUpload
                                 	notEmpty="true"
                                     notEmptyMsg="图片不能为空"
-                                    path="camps"
+                                    path="category"
                                     name="categoryUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" />

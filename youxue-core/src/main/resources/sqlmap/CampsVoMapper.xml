@@ -23,6 +23,8 @@
     <result column="camps_hotel_desc" property="campsHotelDesc" jdbcType="VARCHAR" />
     <result column="camps_hotel_photos" property="campsHotelPhotos" jdbcType="VARCHAR" />
     <result column="fee_desc" property="feeDesc" jdbcType="VARCHAR" />
+    <result column="tracePhotos" property="tracePhotos" jdbcType="VARCHAR" />
+    <result column="traceDesc" property="traceDesc" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="if_hot" property="ifHot" jdbcType="INTEGER" />
     <result column="if_price" property="ifPrice" jdbcType="INTEGER" />
@@ -40,7 +42,7 @@
     feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
     camps_hotel_desc, camps_hotel_photos, fee_desc, status, total_price, done_count, 
     deadline_date, departure_date, start_date, duration_time, create_time, update_time,camps_locale_id,camps_subject_id,
-    camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price
+    camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price,tracePhotos,traceDesc
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -83,18 +85,48 @@
      <if test="subjectCategoryId != null" >
         and camps_subject_id =#{subjectCategoryId}
       </if>
-     <if test="LocaleCategoryId != null" >
-        and camps_locale_id =#{LocaleCategoryId}
+      <if test="subjectCategoryIds != null and subjectCategoryIds.length!=0" >
+        and camps_subject_id in 
+        	<foreach collection="subjectCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
       </if>
+     <if test="localeCategoryId != null" >
+        and camps_locale_id =#{localeCategoryId}
+      </if>
+      <if test="localeCategoryIds != null and localeCategoryIds.length!=0" >
+        and camps_locale_id in 
+        	<foreach collection="localeCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if>      
      <if test="durationCategoryId != null" >
         and camps_duration_id =#{durationCategoryId}
       </if>
-     <if test="departureCategoryId != null" >
-        and camps_departure_id =#{departureCategoryId}
+      <if test="durationCategoryIds != null and durationCategoryIds.length!=0" >
+        and camps_duration_id in 
+        	<foreach collection="durationCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if>    
+     <if test="depatureCategoryId != null" >
+        and camps_departure_id =#{depatureCategoryId}
       </if>
+     <if test="depatureCategoryIds != null and depatureCategoryIds.length!=0" >
+        and camps_departure_id in 
+        	<foreach collection="depatureCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if> 
      <if test="priceCategoryId != null" >
         and camps_price_id =#{priceCategoryId}
       </if>
+      <if test="priceCategoryIds != null and priceCategoryIds.length!=0" >
+        and camps_price_id in 
+        	<foreach collection="priceCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if> 
      <if test="departureMonth != null" >
         and month(departure_date) = #{departureMonth}
       </if>
@@ -132,20 +164,62 @@
      <if test="subjectCategoryId != null" >
         and camps_subject_id =#{subjectCategoryId}
       </if>
-     <if test="LocaleCategoryId != null" >
-        and camps_locale_id =#{LocaleCategoryId}
+      <if test="subjectCategoryIds != null and subjectCategoryIds.length!=0" >
+        and camps_subject_id in 
+        	<foreach collection="subjectCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
       </if>
-      <if test="status != null" >
+     <if test="localeCategoryId != null" >
+        and camps_locale_id =#{localeCategoryId}
+      </if>
+      <if test="localeCategoryIds != null and localeCategoryIds.length!=0" >
+        and camps_locale_id in 
+        	<foreach collection="localeCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if>      
+     <if test="durationCategoryId != null" >
+        and camps_duration_id =#{durationCategoryId}
+      </if>
+      <if test="durationCategoryIds != null and durationCategoryIds.length!=0" >
+        and camps_duration_id in 
+        	<foreach collection="durationCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if>    
+     <if test="depatureCategoryId != null" >
+        and camps_departure_id =#{depatureCategoryId}
+      </if>
+     <if test="depatureCategoryIds != null and depatureCategoryIds.length!=0" >
+        and camps_departure_id in 
+        	<foreach collection="depatureCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if> 
+     <if test="priceCategoryId != null" >
+        and camps_price_id =#{priceCategoryId}
+      </if>
+      <if test="priceCategoryIds != null and priceCategoryIds.length!=0" >
+        and camps_price_id in 
+        	<foreach collection="priceCategoryIds" item="cateId" index="index" open="(" close=")" separator=",">
+                    #{cateId}
+             </foreach>
+      </if> 
+     <if test="departureMonth != null" >
+        and month(departure_date) = #{departureMonth}
+      </if>
+     <if test="status != null" >
         and status = #{status}
       </if>
      <if test="campsNameKey != null" >
         and camps_title LIKE CONCAT('%',CONCAT(#{campsNameKey},'%'))
       </if>
-     <if test="departureMonth != null" >
-        and month(departure_date) = #{departureMonth}
+     <if test="minDepartureTime != null" >
+        and date_format(departure_date,'%Y%c%d') &gt;= #{minDepartureTime}
       </if>
-      <if test="departureTime != null" >
-        and date_format(departure_date,'%Y%c%d') = #{departureTime}
+      <if test="maxDepartureTime != null" >
+        and date_format(departure_date,'%Y%c%d') &lt;= #{maxDepartureTime}
       </if>
      <if test="minPrice != null" >
         and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}
@@ -153,7 +227,7 @@
      <if test="minDays != null" >
         and duration_time &gt;= #{minDays} and duration_time &lt;=#{maxDays}
       </if>
-      <if test="searchContent != null" >
+     <if test="searchContent != null" >
         and (
         	camps_name LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
         	camps_title LIKE CONCAT('%',CONCAT(#{searchContent},'%')) or
@@ -192,7 +266,7 @@
       fee_desc, status, total_price, 
       done_count, deadline_date, departure_date, 
       start_date, duration_time, create_time, 
-      update_time,camps_locale_id,camps_subject_id,camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price)
+      update_time,camps_locale_id,camps_subject_id,camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price,traceDesc,tracePhotos)
     values (#{campsId,jdbcType=VARCHAR}, #{campsName,jdbcType=VARCHAR}, #{campsTitle,jdbcType=VARCHAR}, 
       #{campsDesc,jdbcType=VARCHAR}, #{campsImages,jdbcType=VARCHAR}, #{campsLocale,jdbcType=VARCHAR}, 
       #{orientedPeople,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{serviceSupport,jdbcType=VARCHAR}, 
@@ -203,7 +277,7 @@
       #{startDate,jdbcType=DATE}, #{durationTime,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{campsLocaleId,jdbcType=VARCHAR}, #{campsSubjectId,jdbcType=VARCHAR}
       , #{campsDurationId,jdbcType=VARCHAR}, #{campsDepartureId,jdbcType=VARCHAR}, #{campsPriceId,jdbcType=VARCHAR}
-      , #{ifHot,jdbcType=INTEGER}, #{ifPrice,jdbcType=INTEGER})
+      , #{ifHot,jdbcType=INTEGER}, #{ifPrice,jdbcType=INTEGER}, #{traceDesc,jdbcType=VARCHAR}, #{tracePhotos,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsVo" >
     insert into tb_camps
@@ -304,6 +378,12 @@
       <if test="ifPrice != null" >
         if_price,
       </if>
+      <if test="traceDesc != null" >
+        traceDesc,
+      </if>
+      <if test="tracePhotos != null" >
+        tracePhotos,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="campsId != null" >
@@ -401,6 +481,12 @@
       </if>
       <if test="ifPrice != null" >
         #{ifPrice,jdbcType=INTEGER},
+      </if>
+      <if test="traceDesc != null" >
+        #{traceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tracePhotos != null" >
+        #{tracePhotos,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -500,6 +586,12 @@
       <if test="ifPrice != null" >
         if_price = #{ifPrice,jdbcType=INTEGER},
       </if>
+      <if test="traceDesc != null" >
+        traceDesc = #{traceDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="tracePhotos != null" >
+        tracePhotos = #{tracePhotos,jdbcType=VARCHAR},
+      </if>
     </set>
     where camps_id = #{campsId,jdbcType=VARCHAR}
   </update>
@@ -525,6 +617,8 @@
       camps_hotel_desc = #{campsHotelDesc,jdbcType=VARCHAR},
       camps_hotel_photos = #{campsHotelPhotos,jdbcType=VARCHAR},
       fee_desc = #{feeDesc,jdbcType=VARCHAR},
+       traceDesc = #{traceDesc,jdbcType=VARCHAR},
+        tracePhotos = #{tracePhotos,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       if_hot = #{ifHot,jdbcType=INTEGER},
       if_price = #{ifPrice,jdbcType=INTEGER},

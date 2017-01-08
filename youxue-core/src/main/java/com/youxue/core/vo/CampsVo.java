@@ -17,7 +17,8 @@ public class CampsVo
 
 	private String campsImages;
 	private String realCampsImages;
-	private String hotOrPrice = "";//给后台管理系统的显示字段
+	private String hotOrPrice = "";//给后台管理系统的显示字段:热门、特价标签
+	private String categoryStrs = "";//给后台管理系统的显示字段:主题、地区分类
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
 	private String campsSubjectId;//主题类型id
@@ -43,7 +44,8 @@ public class CampsVo
 	private String campsHotelDesc;
 
 	private String campsHotelPhotos;
-
+	private String traceDesc;
+	private String tracePhotos;
 	private String feeDesc;
 
 	private Integer status;
@@ -422,6 +424,36 @@ public class CampsVo
 	public void setHotOrPrice(String hotOrPrice)
 	{
 		this.hotOrPrice = hotOrPrice;
+	}
+
+	public String getCategoryStrs()
+	{
+		return categoryStrs;
+	}
+
+	public void setCategoryStrs(String categoryStrs)
+	{
+		this.categoryStrs = categoryStrs;
+	}
+
+	public String getTraceDesc()
+	{
+		return traceDesc;
+	}
+
+	public void setTraceDesc(String traceDesc)
+	{
+		this.traceDesc = traceDesc;
+	}
+
+	public String getTracePhotos()
+	{
+		return tracePhotos;
+	}
+
+	public void setTracePhotos(String tracePhotos)
+	{
+		this.tracePhotos = tracePhotos;
 	}
 
 }

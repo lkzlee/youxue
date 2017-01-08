@@ -90,7 +90,7 @@ $(function() {
 			fileObj = $fileInput[0].files[0],
 			ext = fileObj.name.replace(/.+\.([^\.\/\\]+)$/, "$1").toLowerCase(),
 			path = $wrapper.data('path') || '',
-			url = '/duobao/'+ (path ? (path+'/') : '') +'duobaoAdminUpLoadImages.html',
+			url = '/img/'+ (path ? (path+'/') : '') +'uploadImg.do',
 			formData = new FormData();
 		
 		$uploadErr.empty().hide();
@@ -128,7 +128,7 @@ $(function() {
 			contentType: false,
 			success: function(ret) {
 				$trigger.removeClass('uploading');
-
+				ret=JSON.parse(ret);
 				if(ret.retCode === 200) {
 					//保存对应的隐藏表单域的Id, 用于删除
 					var hiddenInputId = 'uploadHidden' + (+new Date());

@@ -1,6 +1,5 @@
 package com.youxue.core.vo;
 
-import com.youxue.core.constant.ImgConstant;
 
 public class CampsTraceVo
 {
@@ -79,7 +78,7 @@ public class CampsTraceVo
 
 	public String getRealTracePhotos()
 	{
-		return ImgConstant.getHttpImgUrls(tracePhotos);
+		return tracePhotos;
 	}
 
 	public void setRealTracePhotos(String realTracePhotos)

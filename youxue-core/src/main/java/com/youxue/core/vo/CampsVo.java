@@ -3,8 +3,6 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.youxue.core.constant.ImgConstant;
-
 public class CampsVo
 {
 	public final static int NORMAL = 0;
@@ -390,7 +388,7 @@ public class CampsVo
 
 	public String getRealCampsImages()
 	{
-		return ImgConstant.getHttpImgUrls(campsImages);
+		return campsImages;
 	}
 
 	public void setRealCampsImages(String realCampsImages)

@@ -9,7 +9,7 @@
     <result column="category_weight" property="categoryWeight" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    category_id, category_name, category_url, category_type
+    category_id, category_name, category_url, category_type,category_weight
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

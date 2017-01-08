@@ -29,12 +29,12 @@ public enum CategoryTypeEnum
 		return null;
 	}
 
-	private static Map<Integer, String> cateTypeMap = new HashMap<>();
+	private static Map<String, String> cateTypeMap = new HashMap<>();
 	static
 	{
 		for (CategoryTypeEnum type : CategoryTypeEnum.values())
 		{
-			cateTypeMap.put(type.getValue(), type.getDesc());
+			cateTypeMap.put(String.valueOf(type.getValue()), type.getDesc());
 		}
 	}
 
@@ -58,9 +58,14 @@ public enum CategoryTypeEnum
 		this.desc = desc;
 	}
 
-	public static Map<Integer, String> getCateTypeMap()
+	public static Map<String, String> getCateTypeMap()
 	{
 		return cateTypeMap;
+	}
+
+	public static void main(String[] args)
+	{
+		System.out.println(cateTypeMap);
 	}
 
 	private int value;

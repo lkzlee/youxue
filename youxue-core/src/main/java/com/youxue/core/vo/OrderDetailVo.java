@@ -2,8 +2,6 @@ package com.youxue.core.vo;
 
 import java.util.Date;
 
-import com.youxue.core.constant.ImgConstant;
-
 public class OrderDetailVo extends OrderVo
 {
 
@@ -56,7 +54,7 @@ public class OrderDetailVo extends OrderVo
 
 	public String getRealCampsImages()
 	{
-		return ImgConstant.getHttpImgUrls(campsImages);
+		return campsImages;
 	}
 
 	public void setRealCampsImages(String realCampsImages)

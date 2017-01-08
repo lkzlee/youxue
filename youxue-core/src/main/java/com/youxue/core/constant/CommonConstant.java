@@ -7,6 +7,7 @@ public class CommonConstant
 	public static final String ORDER_ID_PREFIX = "OD";
 	public static final String LOGIC_ORDER_ID_PREFIX = "LD";
 	public static final String COUPON_ID_PREFIX = "COU";
+	public static final String CATEGORY_ID_PREFIX = "CA";
 
 	public static final String WEI_XIN_ORDER_URL = "weiXinPageUrl";
 

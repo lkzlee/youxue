@@ -1,5 +1,6 @@
 package com.youxue.admin.category;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.dao.CommonDao;
 import com.youxue.core.dto.CategoryListDto;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.util.JsonUtil;
@@ -28,14 +31,35 @@ public class CategoryController
 
 	@Autowired
 	private CatetoryDao categoryDao;
+	@Autowired
+	private CommonDao commonDao;
 
 	@RequestMapping("/campsCategoryListIndex.do")
-	public String campsCategoryListIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap)
+	public String campsCategoryListIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
+			Integer categoryType)
 	{
-		modelMap.put("categoryType", CategoryTypeEnum.getCateTypeMap());
-		List<CategoryVo> categoryList = categoryDao.selectAll();
-		modelMap.put("categoryList", categoryList);
-		return "camps/category/categoryList";
+		try
+		{
+			List<CategoryVo> categoryList = new LinkedList<>();
+			if (categoryType == null || CategoryTypeEnum.getByValue(categoryType) == null)
+			{
+				categoryList = categoryDao.selectAll();
+				categoryType = 0;
+			}
+			else
+			{
+				categoryList = categoryDao.selectByCategoryType(categoryType);
+			}
+			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
+			modelMap.put("categoryList", categoryList);
+			modelMap.put("categoryType", categoryType);
+			return "camps/category/categoryList";
+		}
+		catch (Exception e)
+		{
+			logger.info("error in campsCategoryListIndex", e);
+			return "camps/category/categoryList";
+		}
 	}
 
 	/**
@@ -60,12 +84,11 @@ public class CategoryController
 	@RequestMapping(value = "addCategoryIndex.do")
 	public String addCategoryIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap)
 	{
-		modelMap.put("categoryType", CategoryTypeEnum.getCateTypeMap());
+		modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
 		return "camps/category/addCategory";
 	}
 
 	@RequestMapping(value = "doAddCategory.do")
-	@ResponseBody
 	public String doAddCategory(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
 			CategoryVo category)
 	{
@@ -73,15 +96,18 @@ public class CategoryController
 		{
 			if (category == null || StringUtils.isBlank(category.getCategoryName()))
 			{
-				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("添加分类异常"));
+				modelMap.put("msg", "添加分类异常:参数缺失");
+				return "redirect:/campsCategoryListIndex.do";
 			}
+			category.setCategoryId(commonDao.getIdByPrefix(CommonConstant.CATEGORY_ID_PREFIX));
 			categoryDao.insertSelective(category);
-			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("添加分类成功"));
+			return "redirect:/campsCategoryListIndex.do";
 		}
 		catch (Exception e)
 		{
 			logger.error("doAddCategory()--error", e);
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("添加分类异常"));
+			modelMap.put("msg", "添加分类异常:后台异常");
+			return "redirect:/campsCategoryListIndex.do";
 		}
 	}
 
@@ -129,6 +155,27 @@ public class CategoryController
 		{
 			logger.error("doModifyCamps()--error", e);
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改分类异常"));
+		}
+	}
+
+	@RequestMapping(value = "doDeleteCategory.do")
+	@ResponseBody
+	public String doDeleteCategory(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
+			String categoryId)
+	{
+		try
+		{
+			if (StringUtils.isBlank(categoryId))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除分类异常，参数错误"));
+			}
+			categoryDao.deleteByPrimaryKey(categoryId);
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除分类成功"));
+		}
+		catch (Exception e)
+		{
+			logger.error("doDeleteCategory()--error", e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除分类异常"));
 		}
 	}
 }

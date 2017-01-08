@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.youxue.admin.constant.AdminBaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CatetoryDao;
@@ -25,7 +26,7 @@ import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CategoryVo;
 
 @Controller
-public class CategoryController
+public class CategoryController extends AdminBaseController
 {
 	private static final Log logger = LogFactory.getLog(CategoryController.class);
 
@@ -112,33 +113,32 @@ public class CategoryController
 	}
 
 	@RequestMapping(value = "modifyCategoryIndex.do")
-	public String modifyCampsIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
+	public String modifyCategoryIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
 			String categoryId)
 	{
 		try
 		{
 			if (StringUtils.isBlank(categoryId))
 			{
-				return "camps/category/categoryList";
+				return "redirect:/campsCategoryListIndex.do";
 			}
 			CategoryVo category = categoryDao.selectByPrimaryKey(categoryId);
 			if (category == null)
 			{
-				return "camps/category/categoryList";
+				return "redirect:/campsCategoryListIndex.do";
 			}
 			modelMap.put("category", category);
-			modelMap.put("categoryType", CategoryTypeEnum.getCateTypeMap());
+			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
+			return "camps/category/modifyCategory";
 		}
 		catch (Exception e)
 		{
-			logger.error("modifyCampsIndex()--error", e);
-			return "camps/campsList";
+			logger.error("modifyCategoryIndex()--error", e);
+			return "redirect:/campsCategoryListIndex.do";
 		}
-		return "camps/addCamps";
 	}
 
 	@RequestMapping(value = "doModifyCategory.do")
-	@ResponseBody
 	public String doModifyCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
 			CategoryVo category)
 	{
@@ -146,10 +146,14 @@ public class CategoryController
 		{
 			if (category == null || StringUtils.isBlank(category.getCategoryId()))
 			{
-				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改分类异常"));
+				modelMap.put("msg", "修改分类异常:参数缺失");
+				return "redirect:/campsCategoryListIndex.do";
 			}
 			categoryDao.updateByPrimaryKeySelective(category);
-			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("修改分类成功"));
+			modelMap.put("msg", "修改分类成功");
+			logger.info("修改分类成功,id:" + category.getCategoryId() + ",current user:"
+					+ getCurrentAdminLoginUserName(request));
+			return "redirect:/campsCategoryListIndex.do";
 		}
 		catch (Exception e)
 		{
@@ -170,6 +174,7 @@ public class CategoryController
 				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除分类异常，参数错误"));
 			}
 			categoryDao.deleteByPrimaryKey(categoryId);
+			logger.info("删除分类成功,id:" + categoryId + ",current user:" + getCurrentAdminLoginUserName(request));
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除分类成功"));
 		}
 		catch (Exception e)

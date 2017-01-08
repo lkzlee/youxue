@@ -1,4 +1,4 @@
-package com.youxue.core.common;
+package com.youxue.admin.constant;
 
 import java.io.IOException;
 
@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.NetUtil;
 
 /**
@@ -18,9 +17,9 @@ import com.youxue.core.util.NetUtil;
  * @author luming
  */
 @Controller
-public class BaseController
+public class AdminBaseController
 {
-	protected final static Log LOG = LogFactory.getLog(BaseController.class);
+	protected final static Log LOG = LogFactory.getLog(AdminBaseController.class);
 	public final static String ERROR_PAGE = "error";//error.ftl
 
 	@ExceptionHandler(Exception.class)
@@ -38,28 +37,19 @@ public class BaseController
 	}
 
 	/**
-	 * 获取当前用户名
-	 * @return
-	 */
-	public String getCurrentLoginUserName(HttpServletRequest request)
-	{
-		return ControllerUtil.getCurrentLoginUserName(request);
-	}
-
-	/**
 	 * @param request
 	 * @return 获取当前后台登录用户名
 	 */
 	public String getCurrentAdminLoginUserName(HttpServletRequest request)
 	{
-		Object name = request.getSession().getAttribute("currentAdminUserName");
+		Object name = request.getSession().getAttribute(AdminConstant.CURRENT_USER_NAME);
 		if (name != null)
 		{
 			return (String) name;
 		}
 		else
 		{
-			return null;
+			return "";
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.youxue.admin.camps.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.dao.CommonDao;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
@@ -35,6 +38,14 @@ public class CampsController
 	private CampsDao campsDao;
 	@Autowired
 	private CatetoryDao categoryDao;
+	@Autowired
+	private CommonDao commonDao;
+	static Map<String, String> campsStatusMap = new HashMap<>();
+	static
+	{
+		campsStatusMap.put("0", "下架");
+		campsStatusMap.put("1", "上架");
+	}
 
 	/**
 	 * @param request
@@ -42,7 +53,7 @@ public class CampsController
 	 */
 	@RequestMapping(value = "campsList.do")
 	public String campsListIndex(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			String campsNameKey, Integer categoryType, String categoryId, Integer status, String pageNo)
+			String campsNameKey, String categoryId, Integer status, String pageNo)
 	{
 		try
 		{
@@ -51,27 +62,31 @@ public class CampsController
 			{
 				conditions.put("campsNameKey", campsNameKey);
 			}
-			if (categoryType != null || StringUtils.isNotBlank(categoryId))
+			if (StringUtils.isNotBlank(categoryId))
 			{
-				if (categoryType == CategoryTypeEnum.LOCALE.getValue())
+				CategoryVo category = categoryDao.selectByPrimaryKey(categoryId);
+				if (category != null)
 				{
-					conditions.put("localeCategoryId", categoryId);
-				}
-				if (categoryType == CategoryTypeEnum.SUBJECT.getValue())
-				{
-					conditions.put("subjectCategoryId", categoryId);
-				}
-				if (categoryType == CategoryTypeEnum.DURATION.getValue())
-				{
-					conditions.put("durationCategoryId", categoryId);
-				}
-				if (categoryType == CategoryTypeEnum.DEPARTURETIME.getValue())
-				{
-					conditions.put("departureCategoryId", categoryId);
-				}
-				if (categoryType == CategoryTypeEnum.PRICE.getValue())
-				{
-					conditions.put("priceCategoryId", categoryId);
+					if (category.getCategoryType() == CategoryTypeEnum.LOCALE.getValue())
+					{
+						conditions.put("localeCategoryId", categoryId);
+					}
+					if (category.getCategoryType() == CategoryTypeEnum.SUBJECT.getValue())
+					{
+						conditions.put("subjectCategoryId", categoryId);
+					}
+					if (category.getCategoryType() == CategoryTypeEnum.DURATION.getValue())
+					{
+						conditions.put("durationCategoryId", categoryId);
+					}
+					if (category.getCategoryType() == CategoryTypeEnum.DEPARTURETIME.getValue())
+					{
+						conditions.put("departureCategoryId", categoryId);
+					}
+					if (category.getCategoryType() == CategoryTypeEnum.PRICE.getValue())
+					{
+						conditions.put("priceCategoryId", categoryId);
+					}
 				}
 			}
 			if (status != null && status >= 0)
@@ -85,7 +100,13 @@ public class CampsController
 			}
 			Page<CampsVo> campsList = campsDao.selectByConditions(conditions, page, pageSize);
 			modelMap.put("campsList", campsList);
-			modelMap.put("categoryType", CategoryTypeEnum.getCateTypeMap());
+			List<CategoryVo> categoryList = categoryDao.selectAll();
+			modelMap.put("categoryList", categoryList);
+			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
+			modelMap.put("campsStatusMap", campsStatusMap);
+			modelMap.put("campsNameKey", StringUtils.isBlank(campsNameKey) ? "" : campsNameKey);
+			modelMap.put("categoryId", StringUtils.isBlank(categoryId) ? "" : categoryId);
+			modelMap.put("status", status);
 		}
 		catch (Exception e)
 		{
@@ -180,17 +201,18 @@ public class CampsController
 				}
 			}
 			modelMap.put("categoryMap", categoryMap);
+			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
+			modelMap.put("campsStatusMap", campsStatusMap);
 		}
 		catch (Exception e)
 		{
 			logger.error("addCampsIndex()--error", e);
-			return "camps/campsList";
+			return "redirect:/campsList.do";
 		}
 		return "camps/addCamps";
 	}
 
 	@RequestMapping(value = "doAddCamps.do")
-	@ResponseBody
 	public String doAddCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap, CampsVo camps)
 	{
 		try
@@ -200,14 +222,15 @@ public class CampsController
 			{
 				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("添加营地异常"));
 			}
+			camps.setCampsId(commonDao.getIdByPrefix(CommonConstant.CAMPS_ID_PREFIX));
+			camps.setCreateTime(new Date());
 			campsDao.insertSelective(camps);
-			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("添加营地成功"));
 		}
 		catch (Exception e)
 		{
 			logger.error("doAddCampsIndex()--error", e);
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("添加营地异常"));
 		}
+		return "redirect:/campsList.do";
 	}
 
 	@RequestMapping(value = "modifyCampsIndex.do")

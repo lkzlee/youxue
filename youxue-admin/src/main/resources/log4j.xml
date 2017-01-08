@@ -29,7 +29,10 @@
 		<level value="DEBUG" />
 		<appender-ref ref="configAppender" />
 	</logger>
-
+	<logger name="com.alibaba.druid" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="configAppender" />
+	</logger>
 	<root>
 		<level value="DEBUG" />
 		<appender-ref ref="rootAppender" />

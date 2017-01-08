@@ -7,6 +7,7 @@ public class AdminConstant
 	/**session attribute key*/
 	public static final String MENU_LIST = "menuList";//用户的菜单列表
 	public static final String CURRENT_USER = "currentAdminUser";//当前登录用户
+	public static final String CURRENT_USER_NAME = "currentAdminUserName";//当前登录用户
 
 	/**权限id*/
 	public static final String POWER_MANAGE_POWER = "managePower";

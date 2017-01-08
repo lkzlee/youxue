@@ -43,6 +43,7 @@ public class LoginController
 		try
 		{
 			request.getSession().removeAttribute(AdminConstant.CURRENT_USER);
+			request.getSession().removeAttribute(AdminConstant.CURRENT_USER_NAME);
 			request.getSession().removeAttribute(AdminConstant.MENU_LIST);
 			request.getSession().invalidate();
 		}
@@ -112,6 +113,7 @@ public class LoginController
 			//保存登录日志
 			sysUserLoginLogService.createLoginLog(loginLog);
 			request.getSession().setAttribute(AdminConstant.CURRENT_USER, su);
+			request.getSession().setAttribute(AdminConstant.CURRENT_USER_NAME, su.getLoginName());
 			request.getSession().setAttribute(AdminConstant.MENU_LIST, PowerConstant.menuMap.get(su.getRoleId()));
 		}
 		catch (Exception e)

@@ -19,7 +19,7 @@
                             <label class="col-lg-2 control-label">营地名称：</label>
                             <div class="col-lg-6">
                                 <input type="text" class="form-control" name="campsName"
-                                        data-bv-notempty="true"  value="${camps.campsName}"/>
+                                        data-bv-notempty="true"  value="${camps.campsName!""}"/>
 							     <input type="hidden"  name="campsId"
                                         data-bv-notempty="true"  value="${camps.campsId}"/>
                             </div>
@@ -28,14 +28,14 @@
                             <label class="col-lg-2 control-label">营地标题：</label>
                             <div class="col-lg-6">
                                 <input type="text" class="form-control" name="campsTitle"
-                                        data-bv-notempty="true" value="${camps.campsTitle}"/>
+                                        data-bv-notempty="true" value="${camps.campsTitle!""}"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">面向对象：</label>
                             <div class="col-lg-6">
                                 <input class="form-control" name="orientedPeople" 
-                                 		data-bv-notempty="true" value="${camps.orientedPeople}"
+                                 		data-bv-notempty="true" value="${camps.orientedPeople!""}"
                                         type="text" />
                             </div>
                         </div>
@@ -124,14 +124,14 @@
                         <div class="form-group">
                             <label class="col-lg-2 control-label">行程开始时间：</label>
                             <div class="col-lg-6">
-                               <input class="form-control form_datetime" name="startDateStr" value="${camps.startDate}"
-                                        type="text"  data-picker-position="top-right"/>
+                               <input class="form-control" name="startDateStr" value="${camps.startDateStr!""}"
+                                        type="date"/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">持续天数：</label>
                             <div class="col-lg-6">
-                                <input class="form-control" name="durationTime"  value="${camps.durationTime}"
+                                <input class="form-control" name="durationTime"  value="${camps.durationTime!""}"
                                  		data-bv-notempty="true"
                                         type="text" />
                             </div>
@@ -139,22 +139,22 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">报名截止时间：</label>
                             <div class="col-lg-6">
-                                <input class="form-control form_datetime" name="deadlineDateStr" value="${camps.deadlineDate}"
-                                        type="text"  data-picker-position="top-right"/>
+                                <input class="form-control" name="deadlineDateStr" value="${camps.deadlineDateStr!""}"
+                                        type="date"/>
                             </div>
                         </div>
                   
                         <div class="form-group">
                             <label class="col-lg-2 control-label">产品金额：</label>
                             <div class="col-lg-6">
-                                <input class="form-control" name="totalPrice"  data-bv-notempty="true" value="${camps.totalPrice}"
+                                <input class="form-control" name="totalPrice"  data-bv-notempty="true" value="${camps.totalPrice!""}"
                                         type="text"/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">产品特色：</label>
                             <div class="col-lg-6">
-                                <input class="form-control" name="feature" value="${camps.feature}"
+                                <input class="form-control" name="feature" value="${camps.feature!""}"
                                         type="text"/>
                             </div>
                         </div>
@@ -168,31 +168,31 @@
                                     name="campsImages"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
-									value=(category.campsImages!'')?split(',')/>
+									value=(camps.campsImages!'')?split(',')/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地介绍：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="campsDesc"  value="${camps.campsDesc}"></textarea>
+                               <textarea class="form-control" name="campsDesc" >${camps.campsDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地课程内容：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="courseDesc" value="${camps.courseDesc}"></textarea>
+                               <textarea class="form-control" name="courseDesc" >${camps.courseDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地活动内容：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="activityDesc" value="${camps.activityDesc}"></textarea>
+                               <textarea class="form-control" name="activityDesc" >${camps.activityDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地伙食描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="campsFoodDesc" value="${camps.campsFoodDesc}"></textarea>
+                               <textarea class="form-control" name="campsFoodDesc">${camps.campsFoodDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
@@ -205,13 +205,13 @@
                                     name="campsFoodsPhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
-									value=(category.campsFoodsPhotos!'')?split(',')/>
+									value=(camps.campsFoodsPhotos!'')?split(',')/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地住宿描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="campsHotelDesc"  value="${camps.campsHotelDesc}"></textarea>
+                               <textarea class="form-control" name="campsHotelDesc" >${camps.campsHotelDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
@@ -224,13 +224,13 @@
                                     name="campsHotelPhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
-									value=(category.campsHotelPhotos!'')?split(',')/>
+									value=(camps.campsHotelPhotos!'')?split(',')/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地行程描述<br>(每日营地用;分割)：</label>
                             <div class="col-lg-6">
-                                <textarea class="form-control" name="traceDesc" value="${camps.traceDesc}"></textarea>
+                                <textarea class="form-control" name="traceDesc" >${camps.traceDesc!""}</textarea>
                             </div>
                         </div>
 						<div class="form-group">
@@ -243,13 +243,13 @@
                                     name="tracePhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
-									value=(category.tracePhotos!'')?split(',')/>
+									value=(camps.tracePhotos!'')?split(',')/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">费用详情：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="feeDesc"  value="${camps.feeDesc}"></textarea>
+                               <textarea class="form-control" name="feeDesc" >${camps.feeDesc}</textarea>
                             </div>
                         </div>
                         <div class="form-group">

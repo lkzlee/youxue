@@ -3,6 +3,8 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.youxue.core.util.DateUtil;
+
 public class CampsVo
 {
 	public final static int NORMAL = 0;
@@ -61,12 +63,47 @@ public class CampsVo
 	private Date departureDate;
 
 	private Date startDate;
+	private String deadlineDateStr;
+
+	private String departureDateStr;
+
+	private String startDateStr;
 
 	private Integer durationTime;//持续天数
 
 	private Date createTime;
 
 	private Date updateTime;
+
+	public String getDeadlineDateStr()
+	{
+		return DateUtil.formatDate(deadlineDate, "yyyy-MM-dd");
+	}
+
+	public void setDeadlineDateStr(String deadlineDateStr)
+	{
+		this.deadlineDateStr = deadlineDateStr;
+	}
+
+	public String getDepartureDateStr()
+	{
+		return DateUtil.formatDate(departureDate, "yyyy-MM-dd");
+	}
+
+	public void setDepartureDateStr(String departureDateStr)
+	{
+		this.departureDateStr = departureDateStr;
+	}
+
+	public String getStartDateStr()
+	{
+		return DateUtil.formatDate(startDate, "yyyy-MM-dd");
+	}
+
+	public void setStartDateStr(String startDateStr)
+	{
+		this.startDateStr = startDateStr;
+	}
 
 	public String getCampsDurationId()
 	{

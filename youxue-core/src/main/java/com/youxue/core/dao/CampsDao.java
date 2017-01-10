@@ -26,4 +26,8 @@ public interface CampsDao
 	List<CampsVo> getCampusListByType(CategoryTypeEnum type, int pageNo, int pageSize);
 
 	List<CampsVo> selectCampsListByIds(List<String> keySet);
+
+	List<CampsVo> getHotCampusList(boolean ifCheckValid);
+
+	List<CampsVo> getPriceCampusList(boolean ifCheckValid);
 }

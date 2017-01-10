@@ -1,6 +1,9 @@
 package com.youxue.core.dao;
 
+import java.util.Map;
+
 import com.youxue.core.vo.CouponCodeVo;
+import com.youxue.core.vo.Page;
 
 public interface CouponCodeDao
 {
@@ -17,4 +20,6 @@ public interface CouponCodeDao
 	int updateByPrimaryKey(CouponCodeVo record);
 
 	CouponCodeVo selectCouponByCode(String codeId, boolean lock);
+
+	Page<CouponCodeVo> selectPageByConditions(Page<CouponCodeVo> page, Map<String, Object> conditions);
 }

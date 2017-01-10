@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.youxue.core.vo.WordCountVo" >
     <id column="word" property="word" jdbcType="VARCHAR" />
     <result column="count" property="count" jdbcType="BIGINT" />
+    <result column="last_search_time" property="lastSearchTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    word, count
+    word, count,last_search_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -19,8 +20,8 @@
     where word = #{word,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.WordCountVo" >
-    insert into tb_word_count (word, count)
-    values (#{word,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT})
+    insert into tb_word_count (word, count,last_search_time)
+    values (#{word,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT}, #{lastSearchTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.WordCountVo" >
     insert into tb_word_count
@@ -31,6 +32,9 @@
       <if test="count != null" >
         count,
       </if>
+      <if test="lastSearchTime != null" >
+        last_search_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="word != null" >
@@ -39,6 +43,9 @@
       <if test="count != null" >
         #{count,jdbcType=BIGINT},
       </if>
+      <if test="lastSearchTime != null" >
+        #{lastSearchTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.WordCountVo" >
@@ -46,6 +53,9 @@
     <set >
       <if test="count != null" >
         count = #{count,jdbcType=BIGINT},
+      </if>
+      <if test="lastSearchTime != null" >
+        last_search_time = #{lastSearchTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where word = #{word,jdbcType=VARCHAR}

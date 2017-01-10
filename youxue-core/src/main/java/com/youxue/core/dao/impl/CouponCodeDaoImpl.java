@@ -8,10 +8,17 @@ import org.springframework.stereotype.Repository;
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.vo.CouponCodeVo;
+import com.youxue.core.vo.Page;
 
 @Repository
 public class CouponCodeDaoImpl extends BaseDao implements CouponCodeDao
 {
+	@Override
+	public Page<CouponCodeVo> selectPageByConditions(Page<CouponCodeVo> page, Map<String, Object> conditions)
+	{
+		return getPageList(page, "com.youxue.core.dao.CouponCodeDao.selectPageByConditions",
+				"com.youxue.core.dao.CouponCodeDao.selectCountByConditions", conditions);
+	}
 
 	@Override
 	public int deleteByPrimaryKey(String codeId)

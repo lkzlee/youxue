@@ -16,12 +16,12 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.dto.CategoryListDto;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CategoryVo;
-import com.youxue.pc.campsDetail.dto.CategoryListDto;
 import com.youxue.pc.index.dto.IndexCampsDetailsDto;
 
 /**
@@ -76,9 +76,9 @@ public class IndexController extends BaseController
 	public String getIndexCampsDetail(HttpServletRequest request, HttpServletResponse response)
 	{
 		IndexCampsDetailsDto dto = new IndexCampsDetailsDto();
-		List<CampsVo> hotCampsList = campsDao.getCampusListByType(CategoryTypeEnum.HOT, 1, 3);
+		List<CampsVo> hotCampsList = campsDao.getHotCampusList(true);
 		dto.setHotCampsList(hotCampsList);
-		List<CampsVo> priceCampsList = campsDao.getCampusListByType(CategoryTypeEnum.PRICE, 1, 3);
+		List<CampsVo> priceCampsList = campsDao.getPriceCampusList(true);
 		dto.setPriceCampsList(priceCampsList);
 		List<CategoryVo> categoryList = catetoryDao.selectByCategoryType(CategoryTypeEnum.SUBJECT.getValue());
 		dto.setSubjectList(categoryList);

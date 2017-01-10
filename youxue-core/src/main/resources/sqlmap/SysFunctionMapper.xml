@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SysFunctionMapper" >
+	<sql id="TB_SYS_FUNCTION_column">
+	TB_SYS_FUNCTION.FUNCTION_ID,
+	TB_SYS_FUNCTION.PARENT_ID,
+	TB_SYS_FUNCTION.FUNCTION_NAME,
+	TB_SYS_FUNCTION.FUNCTION_URL,
+	TB_SYS_FUNCTION.FUNCTION_TYPE,
+	TB_SYS_FUNCTION.CREATE_TIME,
+	TB_SYS_FUNCTION.SORT
+	</sql>
+	<sql id="TB_SYS_FUNCTION_property">
+	#{functionId},
+	#{parentId},
+	#{functionName},
+	#{functionUrl},
+	#{functionType},
+	#{createTime},
+	#{sort}
+	</sql>
+	
+    <resultMap type="SysFunction" id="SysFunctionResult">
+    <result property="functionId" column="FUNCTION_ID"/>
+    <result property="parentId" column="PARENT_ID"/>
+    <result property="functionName" column="FUNCTION_NAME"/>
+    <result property="functionUrl" column="FUNCTION_URL"/>
+    <result property="functionType" column="FUNCTION_TYPE"/>
+    <result property="createTime" column="CREATE_TIME"/>
+    <result property="sort" column="SORT"/>
+    </resultMap>
+    
+    <!-- 查询所有的权限记录 -->
+    <select id="queryAllSysFunction" resultMap="SysFunctionResult">
+    	SELECT <include refid="TB_SYS_FUNCTION_column"/> FROM TB_SYS_FUNCTION ORDER BY TB_SYS_FUNCTION.SORT DESC
+    </select>
+    <!-- 添加权限 -->
+    <insert id="cresateSysFunction" parameterType="SysFunction" keyProperty="functionId" keyColumn="FUNCTION_ID" useGeneratedKeys="true">
+    	INSERT INTO TB_SYS_FUNCTION(<include refid="TB_SYS_FUNCTION_column"/>)
+    	VALUE(<include refid="TB_SYS_FUNCTION_property"/>)
+    </insert>
+    
+    <!-- 修改权限 -->
+    <update id="updateFunction" parameterType="SysFunction">
+    	UPDATE TB_SYS_FUNCTION SET 
+    	
+    	TB_SYS_FUNCTION.FUNCTION_NAME=#{functionName},
+    	TB_SYS_FUNCTION.FUNCTION_URL=#{functionUrl},
+    	TB_SYS_FUNCTION.FUNCTION_TYPE=${functionType},
+    	TB_SYS_FUNCTION.SORT=#{sort}
+    	WHERE TB_SYS_FUNCTION.FUNCTION_ID=#{functionId}
+    </update>
+    
+    <update id="updateFunctionParentId" parameterType="java.util.Map">
+    	UPDATE TB_SYS_FUNCTION SET TB_SYS_FUNCTION.PARENT_ID=#{parentId} WHERE TB_SYS_FUNCTION.FUNCTION_ID=#{functionId}
+    </update>
+    
+    <delete id="deleteFunctionByIds" parameterType="java.lang.String">
+    	DELETE FROM TB_SYS_FUNCTION WHERE TB_SYS_FUNCTION.FUNCTION_ID IN (${value})
+    </delete>
+    <!-- 查询用户权限 -->
+    <select id="querySysUserFunction" parameterType="int" resultMap="SysFunctionResult">
+    SELECT <include refid="TB_SYS_FUNCTION_column"/> FROM TB_SYS_FUNCTION
+	LEFT JOIN SYS_ROLE_FUNCTION ON SYS_ROLE_FUNCTION.FUNCTION_ID = TB_SYS_FUNCTION.FUNCTION_ID
+	LEFT JOIN SYS_USER ON SYS_USER.ROLE_ID = SYS_ROLE_FUNCTION.ROLE_ID
+	WHERE SYS_USER.USER_ID=#{value}  ORDER BY TB_SYS_FUNCTION.SORT DESC
+    </select>
+</mapper>

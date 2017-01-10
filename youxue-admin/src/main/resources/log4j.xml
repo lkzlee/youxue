@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<!-- 控制台输出 -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<!-- 输出debug级别日志 -->
+		<param name="threshold" value="INFO" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c [%t] %-5p %c %x %l - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 业务日志输出 -->
+	<appender name="rootAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="log/youxue.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="threshold" value="DEBUG" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c [%t] %-5p %c %x %l - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="java.sql" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="daoAppender" />
+	</logger>
+	<logger name="org" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="configAppender" />
+	</logger>
+	<logger name="com.alibaba.druid" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="configAppender" />
+	</logger>
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="rootAppender" />
+		<appender-ref ref="stdout" />
+	</root>
+</log4j:configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserPowerRelationDao">
+
+  <resultMap id="powerRelationMap" type="powerRelation">
+  	<result property="powerId" column="power_id"/>
+  	<result property="username" column="username"/>
+  </resultMap>
+  
+  <select id="selectByUsername" resultType="String" parameterType="String">
+    select  power_id from tb_user_power_relation where username= #{username}
+  </select>
+  <insert id="add"  parameterType="powerRelation">
+    insert  into tb_user_power_relation(username,power_id)
+    values (#{username,jdbcType=VARCHAR},#{powerId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="delete"  parameterType="powerRelation">
+    delete from tb_user_power_relation where username= #{username} and power_id = #{powerId}
+  </insert>
+  
+</mapper>

@@ -3,7 +3,7 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.youxue.core.constant.ImgConstant;
+import com.youxue.core.util.DateUtil;
 
 public class CampsVo
 {
@@ -19,10 +19,15 @@ public class CampsVo
 
 	private String campsImages;
 	private String realCampsImages;
-
+	private String hotOrPrice = "";//给后台管理系统的显示字段:热门、特价标签
+	private String categoryStrs = "";//给后台管理系统的显示字段:主题、地区分类
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
 	private String campsSubjectId;//主题类型id
+	private String campsDurationId;//持续时间类型id
+	private String campsDepartureId;//出发时间类型id
+	private String campsPriceId;//价格类型id
+
 	private String campsSubjectName;//主题类型名称
 	private String orientedPeople;
 
@@ -41,10 +46,13 @@ public class CampsVo
 	private String campsHotelDesc;
 
 	private String campsHotelPhotos;
-
+	private String traceDesc;
+	private String tracePhotos;
 	private String feeDesc;
 
 	private Integer status;
+	private Integer ifHot;
+	private Integer ifPrice;
 
 	private BigDecimal totalPrice;
 
@@ -55,12 +63,97 @@ public class CampsVo
 	private Date departureDate;
 
 	private Date startDate;
+	private String deadlineDateStr;
+
+	private String departureDateStr;
+
+	private String startDateStr;
 
 	private Integer durationTime;//持续天数
 
 	private Date createTime;
 
 	private Date updateTime;
+
+	public String getDeadlineDateStr()
+	{
+		return DateUtil.formatDate(deadlineDate, "yyyy-MM-dd");
+	}
+
+	public void setDeadlineDateStr(String deadlineDateStr)
+	{
+		this.deadlineDateStr = deadlineDateStr;
+	}
+
+	public String getDepartureDateStr()
+	{
+		return DateUtil.formatDate(departureDate, "yyyy-MM-dd");
+	}
+
+	public void setDepartureDateStr(String departureDateStr)
+	{
+		this.departureDateStr = departureDateStr;
+	}
+
+	public String getStartDateStr()
+	{
+		return DateUtil.formatDate(startDate, "yyyy-MM-dd");
+	}
+
+	public void setStartDateStr(String startDateStr)
+	{
+		this.startDateStr = startDateStr;
+	}
+
+	public String getCampsDurationId()
+	{
+		return campsDurationId;
+	}
+
+	public Integer getIfHot()
+	{
+		return ifHot;
+	}
+
+	public void setIfHot(Integer ifHot)
+	{
+		this.ifHot = ifHot;
+	}
+
+	public Integer getIfPrice()
+	{
+		return ifPrice;
+	}
+
+	public void setIfPrice(Integer ifPrice)
+	{
+		this.ifPrice = ifPrice;
+	}
+
+	public void setCampsDurationId(String campsDurationId)
+	{
+		this.campsDurationId = campsDurationId;
+	}
+
+	public String getCampsDepartureId()
+	{
+		return campsDepartureId;
+	}
+
+	public void setCampsDepartureId(String campsDepartureId)
+	{
+		this.campsDepartureId = campsDepartureId;
+	}
+
+	public String getCampsPriceId()
+	{
+		return campsPriceId;
+	}
+
+	public void setCampsPriceId(String campsPriceId)
+	{
+		this.campsPriceId = campsPriceId;
+	}
 
 	public String getCampsId()
 	{
@@ -334,7 +427,7 @@ public class CampsVo
 
 	public String getRealCampsImages()
 	{
-		return ImgConstant.getHttpImgUrls(campsImages);
+		return campsImages;
 	}
 
 	public void setRealCampsImages(String realCampsImages)
@@ -350,6 +443,54 @@ public class CampsVo
 	public void setCampsSubjectName(String campsSubjectName)
 	{
 		this.campsSubjectName = campsSubjectName;
+	}
+
+	public String getHotOrPrice()
+	{
+		if (this.getIfHot() == 1)
+		{
+			hotOrPrice = " 热门";
+		}
+		if (this.getIfPrice() == 1)
+		{
+			hotOrPrice = hotOrPrice + " 特价";
+		}
+		return hotOrPrice;
+	}
+
+	public void setHotOrPrice(String hotOrPrice)
+	{
+		this.hotOrPrice = hotOrPrice;
+	}
+
+	public String getCategoryStrs()
+	{
+		return categoryStrs;
+	}
+
+	public void setCategoryStrs(String categoryStrs)
+	{
+		this.categoryStrs = categoryStrs;
+	}
+
+	public String getTraceDesc()
+	{
+		return traceDesc;
+	}
+
+	public void setTraceDesc(String traceDesc)
+	{
+		this.traceDesc = traceDesc;
+	}
+
+	public String getTracePhotos()
+	{
+		return tracePhotos;
+	}
+
+	public void setTracePhotos(String tracePhotos)
+	{
+		this.tracePhotos = tracePhotos;
 	}
 
 }

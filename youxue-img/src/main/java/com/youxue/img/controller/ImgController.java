@@ -36,19 +36,22 @@ public class ImgController
 		return "hello world";
 	}
 
-	@RequestMapping("/img/{imgType}/{imgName}")
+	@RequestMapping("/img/{businessType}/{imgType}/{imgName}")
 	public void getImage(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("imgType") String imgType, @PathVariable("imgName") String imgName) throws Exception
+			@PathVariable("businessType") String businessType, @PathVariable("imgType") String imgType,
+			@PathVariable("imgName") String imgName) throws Exception
 	{
-		if (StringUtils.isBlank(imgType) || StringUtils.isBlank(imgName))
+		if (StringUtils.isBlank(imgType) || StringUtils.isBlank(imgName) || StringUtils.isBlank(businessType))
 		{
 			return;
 		}
-		if (!"png".equals(imgType) && !"jpg".equals(imgType))
-		{
-			return;
-		}
-		String filePath = ImgConstant.getImgFilePath(imgType + File.separator + imgName + "." + imgType);
+		//		if (!"png".equals(imgType) && !"jpg".equals(imgType))
+		//		{
+		//			return;
+		//		}
+		String filePath = ImgConstant.getImgFilePath(businessType + File.separator + imgType + File.separator + imgName
+				+ "." + imgType);
+		log.info("file Path:" + filePath);
 		File file = new File(filePath);
 		if (file == null || !file.exists())
 		{

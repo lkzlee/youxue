@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="power">
+
+  <resultMap id="powerMap" type="power">
+  	<result property="powerId" column="power_id"/>
+  	<result property="powerName" column="power_name"/>
+  	<result property="powerUrl" column="power_url"/>
+  	<result property="isMenu" column="is_menu"/>
+  </resultMap>
+  
+  <select id="findAll" resultMap="powerMap" >
+    select  * from tb_power
+  </select>
+  
+  <select id="selectByUserName" resultMap="powerMap"  parameterType="String">
+    select  p.* from tb_power p,tb_user_power_relation r 
+    	where p.power_id = r.power_id and r.username = #{username}
+  </select>
+  
+</mapper>

@@ -1,0 +1,49 @@
+.thumbnail .thumbSize{
+	max-height:200px;
+	width:auto;
+}
+.thumbnail{
+	position:relative;
+	overflow: hidden;
+}
+.addImg{
+	margin-top:50px;
+	padding:50px;
+	height:200px;
+}
+.a1{
+	display:inline-block;
+	width:50%;
+	float:left;
+	height:50px;
+	border-bottom:1px solid #000;
+	border-right:1px solid #000;
+	
+}
+.a2{
+	display:inline-block;
+	width:50%;
+	float:left;
+	height:50px;
+	border-left:1px solid #000;
+	border-bottom:1px solid #000;
+}
+.a3{
+	display:inline-block;
+	width:50%;
+	float:left;
+	height:50px;
+	border-right:1px solid #000;
+	border-top:1px solid #000;
+}
+.a4{
+	display:inline-block;
+	width:50%;
+	float:left;
+	height:50px;
+	border-top:1px solid #000;
+	border-left:1px solid #000;
+}
+.center-block{
+	font-size:150%;
+}

@@ -76,7 +76,43 @@
 		</dependency>
 		
 	</dependencies>
+	<profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <env>src/main/resources/local</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>src/main/resources/test</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>online</id>
+            <properties>
+                <env>src/main/resources/online</env>
+            </properties>
+        </profile>
+    </profiles>
 	<build>
+		<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>local/*</exclude>
+                    <exclude>online/*</exclude>
+                    <exclude>test/*</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>${env}</directory>
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>

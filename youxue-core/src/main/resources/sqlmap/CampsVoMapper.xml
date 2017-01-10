@@ -59,7 +59,7 @@
     #{ite,jdbcType=VARCHAR}
     </foreach>
   </select>
-  <select id="getHotCampusList" resultMap="BaseResultMap" parameterType="Boolean">
+  <select id="getHotCampusList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
     select 
     <include refid="Base_Column_List" />
     from tb_camps
@@ -68,7 +68,7 @@
         and status=1
       </if>
   </select>
-  <select id="getPriceCampusList" resultMap="BaseResultMap" parameterType="Boolean">
+  <select id="getPriceCampusList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
     select 
     <include refid="Base_Column_List" />
     from tb_camps

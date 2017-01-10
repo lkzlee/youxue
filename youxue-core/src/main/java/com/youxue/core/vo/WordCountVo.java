@@ -1,23 +1,42 @@
 package com.youxue.core.vo;
 
-public class WordCountVo {
-    private String word;
+import java.util.Date;
 
-    private Long count;
+public class WordCountVo
+{
+	private String word;
 
-    public String getWord() {
-        return word;
-    }
+	private Long count;
 
-    public void setWord(String word) {
-        this.word = word == null ? null : word.trim();
-    }
+	private Date lastSearchTime;
 
-    public Long getCount() {
-        return count;
-    }
+	public String getWord()
+	{
+		return word;
+	}
 
-    public void setCount(Long count) {
-        this.count = count;
-    }
+	public void setWord(String word)
+	{
+		this.word = word == null ? null : word.trim();
+	}
+
+	public Long getCount()
+	{
+		return count;
+	}
+
+	public void setCount(Long count)
+	{
+		this.count = count;
+	}
+
+	public Date getLastSearchTime()
+	{
+		return lastSearchTime;
+	}
+
+	public void setLastSearchTime(Date lastSearchTime)
+	{
+		this.lastSearchTime = lastSearchTime;
+	}
 }

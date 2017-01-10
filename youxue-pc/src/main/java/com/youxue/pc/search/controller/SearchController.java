@@ -1,5 +1,6 @@
 package com.youxue.pc.search.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +21,13 @@ import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.dao.WordCountDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CategoryVo;
 import com.youxue.core.vo.Page;
+import com.youxue.core.vo.WordCountVo;
 import com.youxue.pc.search.dto.SearchResultDto;
 
 /**
@@ -43,6 +46,8 @@ public class SearchController extends BaseController
 	CatetoryDao catetoryDao;
 	@Autowired
 	JedisProxy jedisProxy;
+	@Autowired
+	WordCountDao wordCountDao;
 
 	/**
 	 * @param request
@@ -124,6 +129,21 @@ public class SearchController extends BaseController
 				queryConditions.put("searchContent", searchContent);
 				LOG.info("searchContent:" + searchContent);
 				jedisProxy.hincrBy(RedisConstant.SEARCH_MAP_KEY, searchContent, 1);
+				WordCountVo wordCount = wordCountDao.selectByPrimaryKey(searchContent);
+				if (wordCount == null)
+				{
+					WordCountVo newWord = new WordCountVo();
+					newWord.setCount(1l);
+					newWord.setLastSearchTime(new Date());
+					newWord.setWord(searchContent);
+					wordCountDao.insertSelective(newWord);
+				}
+				else
+				{
+					wordCount.setCount(wordCount.getCount() + 1);
+					wordCount.setLastSearchTime(new Date());
+					wordCountDao.updateByPrimaryKeySelective(wordCount);
+				}
 			}
 			SearchResultDto dto = new SearchResultDto();
 			Page<CampsVo> campsList = campsDao.selectByConditions(queryConditions, pageNo,

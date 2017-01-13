@@ -41,8 +41,10 @@ public class PowerConstant
 		allMenuList.add(hyGLMenu);
 
 		MenuShow tyGLMenu = new MenuShow(PowerTypeEnum.TYGL.getDesc(), "");
-		tyGLMenu.getSonList().add(new MenuShow("首页管理", "/indexManage.do"));
+		//		tyGLMenu.getSonList().add(new MenuShow("首页管理", "/indexManage.do"));
 		tyGLMenu.getSonList().add(new MenuShow("搜索管理", "/searchList.do"));
+		tyGLMenu.getSonList().add(new MenuShow("关于我们", "/aboutUs.do"));
+		tyGLMenu.getSonList().add(new MenuShow("资讯", "/news.do"));
 		menuMap.put(PowerTypeEnum.TYGL.getValue(), Lists.newArrayList(tyGLMenu));
 		allMenuList.add(tyGLMenu);
 

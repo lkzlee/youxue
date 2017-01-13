@@ -158,7 +158,7 @@ public class CategoryController extends AdminBaseController
 		catch (Exception e)
 		{
 			logger.error("doModifyCamps()--error", e);
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("修改分类异常"));
+			return "redirect:/campsCategoryListIndex.do";
 		}
 	}
 

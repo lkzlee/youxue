@@ -5,11 +5,12 @@
     <id column="news_id" property="newsId" jdbcType="VARCHAR" />
     <result column="news_title" property="newsTitle" jdbcType="VARCHAR" />
     <result column="news_content" property="newsContent" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    news_id, news_title, news_content, create_time, update_time
+    news_id, news_title, news_content, create_time, update_time,author
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -17,14 +18,25 @@
     from tb_news
     where news_id = #{newsId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_news
+    order by create_time desc
+  </select>
+  <select id="selectCountByPage" resultType="Integer" parameterType="java.util.Map" >
+    select count(1)
+    from tb_news
+    order by create_time desc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_news
     where news_id = #{newsId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.NewsVo" >
     insert into tb_news (news_id, news_title, news_content, 
-      create_time, update_time)
-    values (#{newsId,jdbcType=VARCHAR}, #{newsTitle,jdbcType=VARCHAR}, #{newsContent,jdbcType=VARCHAR}, 
+      create_time, update_time,author)
+    values (#{newsId,jdbcType=VARCHAR}, #{newsTitle,jdbcType=VARCHAR}, #{newsContent,jdbcType=VARCHAR},  #{author,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.NewsVo" >
@@ -45,6 +57,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="author != null" >
+        author,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="newsId != null" >
@@ -61,6 +76,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -79,6 +97,9 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
     </set>
     where news_id = #{newsId,jdbcType=VARCHAR}
   </update>
@@ -86,6 +107,7 @@
     update tb_news
     set news_title = #{newsTitle,jdbcType=VARCHAR},
       news_content = #{newsContent,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where news_id = #{newsId,jdbcType=VARCHAR}

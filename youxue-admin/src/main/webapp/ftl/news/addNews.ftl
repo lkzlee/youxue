@@ -16,23 +16,32 @@
                     <form class="form-horizontal" id="Form" method="POST" action="doAddNews.do" data-validate="true">
                         <div class="form-group">
                             <label class="col-lg-2 control-label">标题：</label>
-                            <div class="col-lg-6">
+                            <div class="col-lg-8">
                                 <input type="text" class="form-control" name="newsTitle"
                                         data-bv-notempty="true" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">作者：</label>
-                            <div class="col-lg-6">
-                                <input class="form-control" name="orientedPeople" 
+                            <div class="col-lg-8">
+                                <input class="form-control" name="author" 
                                  		data-bv-notempty="true"
                                         type="text" />
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">文章内容：</label>
-                            <div class="col-lg-6">
-                              <textarea name="newsContent" id="content" data-rule="required;" style="background-image: none;margin-top:26px;"></textarea>
+                            <div class="col-lg-8">
+								<script id="container" name="newsContent" type="text/plain">
+									
+								</script>
+                                <!-- 编辑器源码文件 -->
+								<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
+								<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container');
+								</script>
                             </div>
                         </div>
                         <div class="form-group">

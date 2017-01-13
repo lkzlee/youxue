@@ -70,6 +70,7 @@ public class NewsController extends AdminBaseController
 			news.setUpdateTime(new Date());
 			news.setCreateTime(new Date());
 			newsDao.insertSelective(news);
+			logger.info("添加news成功,id:" + news.getNewsId() + ",current user:" + getCurrentAdminLoginUserName(request));
 			return "redirect:/news.do";
 		}
 		catch (Exception e)
@@ -96,7 +97,7 @@ public class NewsController extends AdminBaseController
 				return "redirect:/news.do";
 			}
 			modelMap.put("news", news);
-			return "new/modifyNews";
+			return "news/modifyNews";
 		}
 		catch (Exception e)
 		{

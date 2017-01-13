@@ -6,8 +6,13 @@ import java.util.Date;
 public class CouponCodeVo
 {
 	public static final int NORMAL = 1;
+	public static final int INIT = 0;
+
+	protected int result;
+	protected String resultDesc;
 
 	private String codeId;
+	private String codeName;
 
 	private String codeValue;
 
@@ -20,10 +25,33 @@ public class CouponCodeVo
 	private Date endTime;
 
 	private Integer status;
+	private String statusStr;
 
 	private Integer useCount;
 
 	private String categoryIds;
+	private String categorys;//后台管理系统前端显示字段
+	private String creator;
+
+	public int getResult()
+	{
+		return result;
+	}
+
+	public void setResult(int result)
+	{
+		this.result = result;
+	}
+
+	public String getResultDesc()
+	{
+		return resultDesc;
+	}
+
+	public void setResultDesc(String resultDesc)
+	{
+		this.resultDesc = resultDesc;
+	}
 
 	public String getCodeId()
 	{
@@ -113,5 +141,54 @@ public class CouponCodeVo
 	public void setCategoryIds(String categoryIds)
 	{
 		this.categoryIds = categoryIds == null ? null : categoryIds.trim();
+	}
+
+	@Override
+	public String toString()
+	{
+		return "CouponCodeVo [result=" + result + ", resultDesc=" + resultDesc + ", codeId=" + codeId + ", codeValue="
+				+ codeValue + ", codeAmount=" + codeAmount + ", createTime=" + createTime + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", status=" + status + ", useCount=" + useCount + ", categoryIds="
+				+ categoryIds + "]";
+	}
+
+	public String getCodeName()
+	{
+		return codeName;
+	}
+
+	public void setCodeName(String codeName)
+	{
+		this.codeName = codeName;
+	}
+
+	public String getCategorys()
+	{
+		return categorys;
+	}
+
+	public void setCategorys(String categorys)
+	{
+		this.categorys = categorys;
+	}
+
+	public String getCreator()
+	{
+		return creator;
+	}
+
+	public void setCreator(String creator)
+	{
+		this.creator = creator;
+	}
+
+	public String getStatusStr()
+	{
+		return status == 0 ? "下架状态" : "在线状态";
+	}
+
+	public void setStatusStr(String statusStr)
+	{
+		this.statusStr = statusStr;
 	}
 }

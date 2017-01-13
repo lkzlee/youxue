@@ -14,16 +14,50 @@
     <result column="credit" property="credit" jdbcType="DECIMAL" />
     <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="love_city" property="loveCity" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     account_id, nick_name, email, email_active_status, mobile, gender, create_ip, create_time, 
-    birth_time, credit, photo_url, update_time
+    birth_time, credit, photo_url, update_time,love_city
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from tb_user_info
     where account_id = #{accountId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_info
+    where email = #{email,jdbcType=VARCHAR} and email_active_status=2 limit 0,1
+  </select>
+   <select id="selectPageUserInfoListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_info
+    <where>
+    	<if test="accountId!=null">
+    		and account_id= #{accountId,jdbcType=VARCHAR}
+    	</if>
+    	<if test="nickName!=null">
+    		and nick_name like concat('%',#{nickName,jdbcType=VARCHAR},'%')
+    	</if>
+    </where>
+    order by account_id
+  </select>
+   <select id="selectCountPageUserInfoListByInfo" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    select 
+   count(1)
+    from tb_user_info
+    <where>
+    	<if test="accountId!=null">
+    		and account_id= #{accountId,jdbcType=VARCHAR}
+    	</if>
+    	<if test="nickName!=null">
+    		and nick_name like concat('%',#{nickName,jdbcType=VARCHAR},'%')
+    	</if>
+    </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_user_info
@@ -33,12 +67,13 @@
     insert into tb_user_info (account_id, nick_name, email, 
       email_active_status, mobile, gender, 
       create_ip, create_time, birth_time, 
-      credit, photo_url, update_time
+      credit, photo_url, update_time,love_city
       )
     values (#{accountId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{emailActiveStatus,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
       #{createIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{birthTime,jdbcType=TIMESTAMP}, 
-      #{credit,jdbcType=DECIMAL}, #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      #{credit,jdbcType=DECIMAL}, #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{loveCity,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.UserInfoVo" >
@@ -80,6 +115,9 @@
       <if test="updateTime != null" >
         update_time,
       </if>
+      <if test="loveCity != null" >
+       love_city,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="accountId != null" >
@@ -117,6 +155,9 @@
       </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loveCity != null" >
+        #{loveCity,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -156,6 +197,9 @@
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="loveCity != null" >
+        love_city = #{loveCity,jdbcType=VARCHAR},
+      </if>
     </set>
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
@@ -171,7 +215,8 @@
       birth_time = #{birthTime,jdbcType=TIMESTAMP},
       credit = #{credit,jdbcType=DECIMAL},
       photo_url = #{photoUrl,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      love_city = #{loveCity,jdbcType=VARCHAR}
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
 </mapper>

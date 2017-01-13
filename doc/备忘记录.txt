@@ -1,0 +1,7 @@
+1.
+public String getCampsList(HttpServletRequest request, HttpServletResponse response, String localeCategoryId,
+			String subjectCategoryId, String timeDuration, String priceRange, String departureMonth,
+			String departureTime, Integer pageNo, String searchContent)
+departureTime 代表的是出发时间的范围，重做下
+
+2.

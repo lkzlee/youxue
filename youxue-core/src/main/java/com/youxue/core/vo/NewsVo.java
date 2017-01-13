@@ -2,54 +2,77 @@ package com.youxue.core.vo;
 
 import java.util.Date;
 
-public class NewsVo {
-    private String newsId;
+public class NewsVo
+{
+	private String newsId;
 
-    private String newsTitle;
+	private String newsTitle;
 
-    private String newsContent;
+	private String newsContent;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Date updateTime;
+	private Date updateTime;
 
-    public String getNewsId() {
-        return newsId;
-    }
+	private String author;
 
-    public void setNewsId(String newsId) {
-        this.newsId = newsId == null ? null : newsId.trim();
-    }
+	public String getNewsId()
+	{
+		return newsId;
+	}
 
-    public String getNewsTitle() {
-        return newsTitle;
-    }
+	public void setNewsId(String newsId)
+	{
+		this.newsId = newsId == null ? null : newsId.trim();
+	}
 
-    public void setNewsTitle(String newsTitle) {
-        this.newsTitle = newsTitle == null ? null : newsTitle.trim();
-    }
+	public String getNewsTitle()
+	{
+		return newsTitle;
+	}
 
-    public String getNewsContent() {
-        return newsContent;
-    }
+	public void setNewsTitle(String newsTitle)
+	{
+		this.newsTitle = newsTitle == null ? null : newsTitle.trim();
+	}
 
-    public void setNewsContent(String newsContent) {
-        this.newsContent = newsContent == null ? null : newsContent.trim();
-    }
+	public String getNewsContent()
+	{
+		return newsContent;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setNewsContent(String newsContent)
+	{
+		this.newsContent = newsContent == null ? null : newsContent.trim();
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Date getCreateTime()
+	{
+		return createTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreateTime(Date createTime)
+	{
+		this.createTime = createTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public Date getUpdateTime()
+	{
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime)
+	{
+		this.updateTime = updateTime;
+	}
+
+	public String getAuthor()
+	{
+		return author;
+	}
+
+	public void setAuthor(String author)
+	{
+		this.author = author;
+	}
 }

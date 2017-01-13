@@ -30,7 +30,7 @@
 		from tb_message
 		where account_id = #{accountId,jdbcType=VARCHAR}
 		<if test="startDate!=null">
-			and message_id>=#{startDate,jdbcType=VARCHAR}
+			and message_id &lt;=#{startDate,jdbcType=VARCHAR}
 		</if>
 		order by message_id desc
 	</select>
@@ -41,7 +41,7 @@
 		from tb_message
 		where account_id = #{accountId,jdbcType=VARCHAR}
 		<if test="startDate!=null">
-			and message_id>=#{startDate,jdbcType=VARCHAR}
+			and message_id &lt;=#{startDate,jdbcType=VARCHAR}
 		</if>
 	</select>
 	<select id="selectUnReadCount" resultType="java.lang.Integer"
@@ -150,5 +150,16 @@
 		create_time = #{createTime,jdbcType=TIMESTAMP},
 		update_time = #{updateTime,jdbcType=TIMESTAMP}
 		where message_id = #{messageId,jdbcType=VARCHAR}
+	</update>
+	<update id="markMessageReadDone" parameterType="java.util.Map">
+		update tb_message
+		set 
+		read_status =1,
+		update_time = now()
+		where account_id = #{accountId,jdbcType=VARCHAR}
+		and message_id in 
+		<foreach collection="msgIdList" item="item" open="(" close=")" separator=",">
+		#{item,jdbcType=VARCHAR}
+		</foreach>
 	</update>
 </mapper>

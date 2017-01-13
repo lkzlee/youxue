@@ -47,6 +47,23 @@ public class BaseController
 	}
 
 	/**
+	 * @param request
+	 * @return 获取当前后台登录用户名
+	 */
+	public String getCurrentAdminLoginUserName(HttpServletRequest request)
+	{
+		Object name = request.getSession().getAttribute("currentAdminUserName");
+		if (name != null)
+		{
+			return (String) name;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	/**
 	 * 获取当前登录ip
 	 * @param request
 	 * @return

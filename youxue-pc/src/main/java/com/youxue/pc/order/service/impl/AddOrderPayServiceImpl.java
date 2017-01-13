@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
 import com.lkzlee.pay.bean.WeiXinConfigBean;
+import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.service.PayService;
 import com.lkzlee.pay.third.alipay.dto.request.AliPayOrderDto;
@@ -71,11 +72,11 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			 * 插入数据库订单数据
 			 */
 			String logicOrderId = orderService.addOrder(orderData, ip, accountId);
-
-			PayService payService = getPayService(orderData.getPayType());
+			int payType = Integer.parseInt(orderData.getPayType().trim());
+			PayService payService = getPayService(payType);
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
 			LOG.info("@@构造下单的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
-
+			jedisProxy.del(RedisConstant.SHOP_CART_KEY + accountId);
 			/**
 			 * 向第三方下单
 			 */
@@ -85,6 +86,35 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			 */
 			BaseResponseDto responseDto = parseOrderParam(param, accountId, logicOrderId);
 			LOG.info("@@下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
+			return responseDto;
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("系统异常，请检查，msg：" + e.getMessage(), e);
+			return BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后");
+		}
+	}
+
+	@Override
+	public BaseResponseDto addTradeOrderServiceById(String logicOrderId, String ip, String accountId)
+	{
+		try
+		{
+			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
+			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
+			PayService payService = getPayService(logicOrderVo.getPayType());
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
+			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
+
+			/**
+			 * 向第三方下单
+			 */
+			Object param = payService.addThirdPayOrderService(thirdPayDto);
+			/***
+			 * 解析构造下单结果，并返回
+			 */
+			BaseResponseDto responseDto = parseOrderParam(param, accountId, logicOrderId);
+			LOG.info("@@支付购买，下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
 			return responseDto;
 		}
 		catch (Exception e)
@@ -110,7 +140,6 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			/**
 			 * 微信需要自己构造支付页面因此保存支付链接
 			 */
-			jedisProxy.setex(RedisConstant.getAddUserOrderKey(accountId, logicOrderId), resultDto.getCode_url(), 7200);
 			String wxOrderUrl = PropertyUtils.getProperty(CommonConstant.WEI_XIN_ORDER_URL,
 					"http://127.0.0.1/pay/wxpay.do");
 			responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
@@ -163,7 +192,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		payResultDto.setFee_type("CNY");
 		//		payResultDto.setGoods_tag(goods_tag);
 		//		payResultDto.setLimit_pay(limit_pay);
-		String notfiyUrl = WeiXinConfigBean.getPayConfigValue(CommonConstant.WEIXIN_PAY_NOTIFY_URL);
+		String notfiyUrl = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_PAY_NOTIFY_URL);
 		payResultDto.setNotify_url(notfiyUrl);
 		//		payResultDto.setOpenid(openid);
 		payResultDto.setOut_trade_no(logicOrderVo.getLogicOrderId());
@@ -190,13 +219,13 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		AliPayOrderDto payResultDto = new AliPayOrderDto();
 		payResultDto.setExter_invoke_ip(logicOrderVo.getOrderIp());
 		payResultDto.setOut_trade_no(logicOrderVo.getLogicOrderId());
-		String notfiyUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_NOTIFY_URL);
+		String notfiyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_NOTIFY_URL);
 		payResultDto.setNotify_url(notfiyUrl);
-		String returnUrl = AlipayConfigBean.getPayConfigValue(CommonConstant.ALIPAY_RETURN_URL);
+		String returnUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_RETURN_URL);
 		payResultDto.setReturn_url(returnUrl);
 		payResultDto.setSubject("游学营地活动");
 		payResultDto.setTotal_fee(CommonUtil.formatBigDecimal(logicOrderVo.getTotalPayPrice()));
-		//		payResultDto.setBody();
+		payResultDto.setBody("订单支付");
 		return payResultDto;
 	}
 
@@ -206,5 +235,4 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			return aliPayService;
 		return weiXinPayService;
 	}
-
 }

@@ -27,12 +27,12 @@ import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
-import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.pc.order.service.AddOrderPayService;
 
 /**
@@ -90,6 +90,37 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
+	@RequestMapping(path = "/pay/addTradeOrderById.do")
+	@ResponseBody
+	public String addTrade(HttpServletRequest request, HttpServletResponse response, String logicOrderId)
+	{
+		try
+		{
+			String ip = getCurrentLoginUserIp(request);
+			String accountId = getCurrentLoginUserName(request);
+			if (StringUtils.isEmpty(accountId))
+				throw new BusinessException("用户未登录，请检查");
+			BaseResponseDto responseDto = addOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId);
+			return JsonUtil.serialize(responseDto);
+		}
+		catch (BusinessException e)
+		{
+			log.error("下单参数校验及流程处理，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage());
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc(e.getMessage()));
+		}
+		catch (Exception e)
+		{
+			log.error("下单处理流程异常，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage(), e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后！"));
+		}
+	}
+
+	/***
+	 * 下单接口
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(path = "/pay/wxpay.do", method = RequestMethod.GET)
 	public String wxPayPage(HttpServletRequest request, HttpServletResponse response, String logicOrderId,
 			ModelMap modelMap)
@@ -128,7 +159,8 @@ public class OrderController extends BaseController
 			throw new BusinessException("用户未登录，请检查");
 		if (orderData == null || orderData.getPayType() == null)
 			throw new BusinessException("参数非法");
-		PayTypeEnum payType = PayTypeEnum.getByValue(orderData.getPayType());
+		int pType = Integer.parseInt(orderData.getPayType().trim());
+		PayTypeEnum payType = PayTypeEnum.getByValue(pType);
 		if (payType != PayTypeEnum.ALIPAY && payType != PayTypeEnum.WEIXIN_APY)
 			throw new BusinessException("非法支付方式");
 		if (ArrayUtils.isEmpty(orderData.getOrderList()))
@@ -139,10 +171,10 @@ public class OrderController extends BaseController
 		AddTradeItemDto orderItemList[] = orderData.getOrderList();
 		for (AddTradeItemDto ote : orderItemList)
 		{
-			int totalPerson = ote.getTotalCount();
+			int totalPerson = Integer.parseInt(ote.getTotalCount().trim());
 			if (totalPerson <= 0)
 				throw new BusinessException("对应订单提交的出行人数非法，请检查");
-			OrderPersonVo personList[] = ote.getOutPersonList();
+			AddOrderPersonDto personList[] = ote.getOutPersonList();
 			if (ArrayUtils.isEmpty(personList))
 				throw new BusinessException("对应的订单没有出现人信息，请检查");
 			if (totalPerson != personList.length)

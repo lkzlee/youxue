@@ -37,7 +37,9 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		{
 			String xmlResonse = IOStreamTools.inputStream2String(request.getInputStream());
 			LOG.info("@@--收到微信支付通知，payNotfiyDto=" + xmlResonse);
-			WeiXinPayNotifyResultDto payNotfiyDto = XstreamUtil.fromXml(xmlResonse, WeiXinPayNotifyResultDto.class);
+
+			WeiXinPayNotifyResultDto payNotfiyDto = (WeiXinPayNotifyResultDto) XstreamUtil.fromXml(xmlResonse,
+					WeiXinPayNotifyResultDto.class);
 			return super.payNotifyHandler(request, response, payNotfiyDto, true);
 		}
 		catch (IOException e)

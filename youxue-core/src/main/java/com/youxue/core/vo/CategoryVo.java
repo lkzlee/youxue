@@ -1,6 +1,5 @@
 package com.youxue.core.vo;
 
-import com.youxue.core.constant.ImgConstant;
 
 public class CategoryVo
 {
@@ -66,7 +65,7 @@ public class CategoryVo
 
 	public String getRealCategoryUrl()
 	{
-		return ImgConstant.getHttpImgUrls(categoryUrl);
+		return categoryUrl;
 	}
 
 }

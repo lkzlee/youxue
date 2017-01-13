@@ -22,6 +22,27 @@
 			</list>
 		</property>
 	</bean>
+	<!-- 解决中文乱码问题 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/html;charset=UTF-8</value>
+							<value>text/plain;charset=UTF-8</value>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="synchronizeOnSession" value="true" />
+	</bean>
+	 <!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>  
 	<context:annotation-config />
 	<context:component-scan base-package="com.youxue.img" />
 	<mvc:annotation-driven />

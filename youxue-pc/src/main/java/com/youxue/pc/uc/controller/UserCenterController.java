@@ -1,5 +1,7 @@
 package com.youxue.pc.uc.controller;
 
+import java.net.URLEncoder;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +19,14 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.EmailActiveStatusConstant;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.MessageDao;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.UserInfoVo;
 import com.youxue.pc.uc.dto.EmailActiveDto;
+import com.youxue.pc.uc.dto.EmailUsableDto;
+import com.youxue.pc.uc.dto.UserInfoDto;
 import com.youxue.pc.uc.service.EmailVerifyService;
 
 /***
@@ -34,6 +39,8 @@ public class UserCenterController extends BaseController
 {
 	@Resource
 	private UserInfoDao userInfoDao;
+	@Resource
+	private MessageDao messageDao;
 	@Resource
 	private EmailVerifyService emailVerifyService;
 	@Resource
@@ -59,7 +66,16 @@ public class UserCenterController extends BaseController
 		if (StringUtils.isNotBlank(userInfo.getMobile()))
 			userInfo.setMobile(CommonUtil.getSecretNumberWithStart(userInfo.getMobile(), 3, 4, 4));
 		if (StringUtils.isNotBlank(userInfo.getEmail()))
-			userInfo.setEmail(CommonUtil.getEncryptAccountId(userInfo.getEmail(), 1));
+			userInfo.setEmail(userInfo.getEmail());
+		boolean ifPop = jedisProxy.exists(RedisConstant.getUserOrderIfPopCreditKey(accountId));
+		if (!ifPop)
+		{
+			jedisProxy.setex(RedisConstant.getUserOrderIfPopCreditKey(accountId), "1", 24 * 60 * 60);
+		}
+		userInfo.setIfPop(ifPop ? false : true);
+		userInfo.setResult(100);
+		userInfo.setUnReads(messageDao.selectUnReadCount(accountId, null));
+		userInfo.setResultDesc("查询成功");
 		LOG.info("查询用户信息为：userInfo=" + userInfo);
 		return JsonUtil.serialize(userInfo);
 
@@ -74,29 +90,31 @@ public class UserCenterController extends BaseController
 	 */
 	@RequestMapping("/uc/updateUserInfo.do")
 	@ResponseBody
-	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, UserInfoVo userInfo)
+	public String updatePhoto(HttpServletRequest request, HttpServletResponse response, UserInfoDto userInfo)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		/***
-		 * 这几个值不能进行设置
-		 */
-
-		userInfo.setCreateIp(null);
-		userInfo.setCredit(null);
-		userInfo.setEmail(null);
-		userInfo.setEmailActiveStatus(null);
-		userInfo.setPhotoUrl(null);
+		if (userInfo == null)
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户修改信息失败"));
 		/**
 		 * 设置附加属性
 		 */
-		userInfo.setAccountId(accountId);
-		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
-		int success = userInfoDao.updateByPrimaryKeySelective(userInfo);
+		UserInfoVo dbUserInfo = new UserInfoVo();
+		dbUserInfo.setAccountId(accountId);
+		if (StringUtils.isNotBlank(userInfo.getBirthTime()))
+			dbUserInfo.setBirthTime(DateUtil.formatToDate(userInfo.getBirthTime(), DateUtil.DEFAULT_DATE_FORMAT));
+		if (StringUtils.isNotBlank(userInfo.getNickName()))
+			dbUserInfo.setNickName(userInfo.getNickName());
+		if (null != userInfo.getGender())
+			dbUserInfo.setGender(userInfo.getGender());
+		if (StringUtils.isNotBlank(userInfo.getLoveCity()))
+			dbUserInfo.setLoveCity(userInfo.getLoveCity());
+		dbUserInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
+		int success = userInfoDao.updateByPrimaryKeySelective(dbUserInfo);
 		if (success <= 0)
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，头像更新失败"));
-		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户头像更新成功"));
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在，修改信息失败"));
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("用户信息修改成功"));
 	}
 
 	/**
@@ -150,9 +168,26 @@ public class UserCenterController extends BaseController
 
 	}
 
+	@RequestMapping("/uc/isUsable.do")
+	@ResponseBody
+	public String isUsableEmail(HttpServletRequest request, HttpServletResponse response, String email)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(email) || !CommonUtil.isValidEmail(email))
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("email为空或者格式有误"));
+		UserInfoVo userInfo = userInfoDao.selectByEmail(email);
+		EmailUsableDto resultDto = new EmailUsableDto();
+		resultDto.setResult(100);
+		resultDto.setResultDesc("操作成功");
+		resultDto.setIsUsed(userInfo == null ? false : true);
+		return JsonUtil.serialize(resultDto);
+	}
+
 	@RequestMapping("/uc/emailInfo.do")
 	@ResponseBody
-	public String emailInfo(HttpServletRequest request, HttpServletResponse response)
+	public String emailInfo(HttpServletRequest request, HttpServletResponse response, String ifModify)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
@@ -162,30 +197,47 @@ public class UserCenterController extends BaseController
 		if (userInfo == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
 		EmailActiveDto emailDto = getResultEmailDto(userInfo);
+		if (StringUtils.isNotBlank(ifModify) && "1".equals(ifModify))
+		{
+			emailDto.setActiveStatus(EmailActiveStatusConstant.INIT);
+		}
 		return JsonUtil.serialize(emailDto);
 
 	}
 
 	@RequestMapping("/uc/verifyEmail.do")
-	@ResponseBody
-	public String emailInfo(HttpServletRequest request, HttpServletResponse response, String accountId, String key)
+	public void emailInfo(HttpServletRequest request, HttpServletResponse response, String accountId, String key)
 	{
-		if (StringUtils.isBlank(accountId) || StringUtils.isBlank(key))
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("链接非法"));
-		UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
-		if (userInfo == null)
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("用户不存在"));
-		boolean isValid = emailVerifyService.isValidActiveAccountUrl(accountId, key);
-		if (!isValid)
+		try
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("链接过期失效，请重新激活"));
+			LOG.info("--参数：accountId=" + accountId + ",key=" + key);
+			if (StringUtils.isBlank(accountId) || StringUtils.isBlank(key))
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接非法", "utf-8"));
+				return;
+			}
+			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
+			if (userInfo == null)
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("用户不存在", "utf-8"));
+				return;
+			}
+			boolean isValid = emailVerifyService.isValidActiveAccountUrl(accountId, key);
+			if (!isValid)
+			{
+				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接过期失效，请重新激活", "utf-8"));
+				return;
+			}
+			userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
+			userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
+			userInfoDao.updateByPrimaryKeySelective(userInfo);
+			jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
+			response.sendRedirect("/index.html");
 		}
-		userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
-		userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
-		userInfoDao.updateByPrimaryKeySelective(userInfo);
-		jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
-		return JsonUtil.serialize(BaseResponseDto.successDto());
-
+		catch (Exception e)
+		{
+			LOG.fatal("业务异常，msg:" + e.getMessage(), e);
+		}
 	}
 
 	private EmailActiveDto getResultEmailDto(UserInfoVo userInfo)
@@ -208,6 +260,7 @@ public class UserCenterController extends BaseController
 		{
 			String suffixEmail = userInfo.getEmail().split("@")[1];
 			String emailUrl = EmailActiveStatusConstant.emailUrl.get(suffixEmail);
+			emailDto.setActiveEmail(userInfo.getEmail());
 			emailDto.setActiveEmailUrl(emailUrl);
 		}
 		else

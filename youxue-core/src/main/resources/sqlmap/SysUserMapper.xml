@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SysUserMapper" >
+	<sql id="tb_sys_user_column">
+	tb_sys_user.USER_ID,
+	tb_sys_user.LOGIN_NAME,
+	tb_sys_user.LOGIN_PWD,
+	tb_sys_user.USER_NAME,
+	tb_sys_user.STATUS,
+	tb_sys_user.LAST_LOGIN_TIME,
+	tb_sys_user.LAST_LOGIN_IP,
+	tb_sys_user.CREATE_TIME,
+	tb_sys_user.EMAIL,
+	tb_sys_user.TEL,
+	tb_sys_user.ROLE_ID
+	</sql>
+	<sql id="tb_sys_user_property">
+	#{userId},
+	#{loginName},
+	#{loginPwd},
+	#{userName},
+	#{status},
+	#{lastLoginTime},
+	#{lastLoginIp},
+	#{createTime},
+	#{email},
+	#{tel},
+	#{roleId}
+	</sql>
+	
+    <resultMap type="SysUser" id="SysUserResult">
+   	<result property="userId" column="USER_ID"/>
+   	<result property="loginName" column="LOGIN_NAME"/>
+   	<result property="loginPwd" column="LOGIN_PWD"/>
+   	<result property="userName" column="USER_NAME"/>
+   	<result property="status" column="STATUS"/>
+   	<result property="lastLoginTime" column="LAST_LOGIN_TIME"/>
+   	<result property="lastLoginIp" column="LAST_LOGIN_IP"/>
+   	<result property="createTime" column="CREATE_TIME"/>
+   	<result property="email" column="EMAIL"/>
+   	<result property="tel" column="TEL"/>
+   	<result property="roleId" column="ROLE_ID"/>
+    </resultMap>
+    
+    <!-- 添加用户 -->
+    <insert id="createSysUser" parameterType="com.youxue.core.vo.SysUser" useGeneratedKeys="true" keyColumn="USER_ID" keyProperty="userId">
+    	INSERT INTO tb_sys_user(LOGIN_NAME,LOGIN_PWD,USER_NAME,TEL,ROLE_ID,CREATE_TIME)
+    	VALUE(#{loginName},#{loginPwd},#{userName},#{tel},#{roleId},now())
+    </insert>
+    
+    <!-- 修改用户 -->
+    <update id="updateSysUser" parameterType="SysUser">
+    	UPDATE tb_sys_user SET 
+		tb_sys_user.USER_NAME=#{userName},
+		tb_sys_user.EMAIL=#{email},
+		tb_sys_user.TEL=#{tel},
+		tb_sys_user.ROLE_ID=#{roleId}
+		WHERE
+    	tb_sys_user.USER_ID=#{userId}
+    </update>
+    
+    <!-- 根据ID，查询用户信息 -->
+    <select id="querySysUserByUserId" parameterType="int" resultMap="SysUserResult">
+    	SELECT <include refid="tb_sys_user_column"/> FROM tb_sys_user WHERE tb_sys_user.USER_ID=#{value}
+    </select>
+    
+    <!-- 分页查询用户列表 ，开始-->
+    <select id="querySysUserPage" parameterType="java.util.Map" resultMap="SysUserResult">
+    	SELECT <include refid="tb_sys_user_column"/> FROM tb_sys_user
+    	<where>
+	    	<if test="userName!=null">
+	    	and USER_NAME like concat('%',#{userName,jdbcType=VARCHAR},'%')
+	    	</if>
+	    	<if test="tel!=null">
+	    	and TEL =#{tel,jdbcType=VARCHAR}
+	    	</if>
+    	</where>
+    	ORDER BY USER_ID 
+    </select>
+     <!-- 分页查询用户列表 ，开始-->
+    <select id="queryCountSysUserPage" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT count(*) FROM tb_sys_user
+    	<where>
+	    	<if test="userName!=null">
+	    	and USER_NAME like concat('%',#{userName,jdbcType=VARCHAR},'%')
+	    	</if>
+	    	<if test="tel!=null">
+	    	and TEL =#{tel,jdbcType=VARCHAR}
+	    	</if>
+    	</where>
+    </select>
+    <select id="querySysUserPageCount" parameterType="java.util.Map" resultType="int">
+    	SELECT COUNT(1) FROM tb_sys_user
+    	<where>
+   		tb_sys_user.STATUS!=2
+   		<if test="e.keyWord!=null and e.keyWord!=''">
+    	AND(tb_sys_user.LOGIN_NAME LIKE CONCAT('%',#{e.keyWord},'%') OR tb_sys_user.EMAIL LIKE CONCAT('%',#{e.keyWord},'%'))
+   		</if>
+    	</where>
+    </select>
+    <!-- 分页查询用户列表 ，结束-->
+    
+    <select id="validateLoginName" parameterType="java.lang.String" resultType="int">
+    	SELECT COUNT(1) FROM tb_sys_user WHERE tb_sys_user.LOGIN_NAME=#{valeu}
+    </select>
+    
+    <!-- 查询登录用户 -->
+    <select id="queryLoginUser" parameterType="com.youxue.core.vo.SysUser" resultMap="SysUserResult">
+    	SELECT <include refid="tb_sys_user_column"/> FROM tb_sys_user
+    	WHERE tb_sys_user.LOGIN_NAME=#{loginName} AND tb_sys_user.LOGIN_PWD=#{loginPwd}
+    </select>
+    
+    <!-- 修改用户密码 -->
+    <update id="updateUserPwd" parameterType="com.youxue.core.vo.SysUser">
+    	UPDATE tb_sys_user SET tb_sys_user.LOGIN_PWD=#{loginPwd} WHERE tb_sys_user.USER_ID=#{userId}
+    </update>
+    
+    <!-- 禁用或启用后台用户 -->
+    <update id="updateDisableOrstartUser" parameterType="java.util.Map">
+    	update tb_sys_user SET 
+    	<if test="type==0">
+    	tb_sys_user.STATUS=0
+    	</if>
+    	<if test="type==1">
+    	tb_sys_user.STATUS=1
+    	</if>
+		<if test="type==2">
+			tb_sys_user.STATUS=2
+		</if>
+    	WHERE tb_sys_user.USER_ID=#{userId}
+    </update>
+    
+    <!-- 更新用户最后登录的时间和IP -->
+    <update id="updateUserLoginLog" parameterType="java.util.Map">
+    	UPDATE tb_sys_user SET tb_sys_user.LAST_LOGIN_IP=#{ip} ,tb_sys_user.LAST_LOGIN_TIME=#{time}
+    	WHERE tb_sys_user.USER_ID=#{userId}
+    </update>
+</mapper>

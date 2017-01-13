@@ -21,11 +21,11 @@ public class EmailActiveStatusConstant
 	public static final Map<String, String> emailUrl = new HashMap<String, String>();
 	static
 	{
-		emailUrl.put("@126.com", "http://mail.126.com");
-		emailUrl.put("@163.com", "http://mail.163.com");
-		emailUrl.put("@qq.com", "http://mail.qq.com");
-		emailUrl.put("@gmail.com", "http://mail.google.com");
-		emailUrl.put("@sina.com.cn", "http://mail.sina.com.cn/");
-		emailUrl.put("@sohu.com", "http://mail.sohu.com/");
+		emailUrl.put("126.com", "http://mail.126.com");
+		emailUrl.put("163.com", "http://mail.163.com");
+		emailUrl.put("qq.com", "http://mail.qq.com");
+		emailUrl.put("gmail.com", "http://mail.google.com");
+		emailUrl.put("sina.com.cn", "http://mail.sina.com.cn/");
+		emailUrl.put("sohu.com", "http://mail.sohu.com/");
 	}
 }

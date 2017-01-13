@@ -31,9 +31,11 @@ public class BaseDao
 		}
 		int maxResults = page.getPageSize();
 		List<T> resultList = sqlSessionTemplate.selectList(listSql, param, new RowBounds(skipResults, maxResults));
-		page.setResult(resultList);
+		page.setResultList(resultList);
 		int totalCount = sqlSessionTemplate.selectOne(countSql, param);
 		page.setTotalCount(totalCount);
+		page.setResult(100);
+		page.setResultDesc("查询成功");
 		return page;
 	}
 }

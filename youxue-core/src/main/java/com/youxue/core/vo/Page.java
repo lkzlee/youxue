@@ -24,8 +24,9 @@ public class Page<T> implements Serializable
 	public static final int DEFAULT_PAGESIZE = 10;
 
 	public static final int SIX_PAGESIZE = 6;
-
-	protected List<T> result = Collections.emptyList();
+	protected int result;
+	protected String resultDesc;
+	protected List<T> resultList = Collections.emptyList();
 	protected long totalCount = -1;
 	protected int pageNo = 1;
 	protected int totalPage = 1;
@@ -59,14 +60,34 @@ public class Page<T> implements Serializable
 		this.pageSize = pageSize;
 	}
 
-	public List<T> getResult()
+	public int getResult()
 	{
 		return result;
 	}
 
-	public void setResult(List<T> result)
+	public void setResult(int result)
 	{
 		this.result = result;
+	}
+
+	public String getResultDesc()
+	{
+		return resultDesc;
+	}
+
+	public void setResultDesc(String resultDesc)
+	{
+		this.resultDesc = resultDesc;
+	}
+
+	public List<T> getResultList()
+	{
+		return resultList;
+	}
+
+	public void setResultList(List<T> resultList)
+	{
+		this.resultList = resultList;
 	}
 
 	public long getTotalCount()

@@ -1,214 +1,196 @@
 /**
  * Created by Administrator on 2016/11/9.
  */
-var phoneReg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
-var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-var strReg=/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im;//验证特殊字符
-var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 $(function(){
-    //弹出框
-    var alertMessage=$('.alertMessage');
-    var close=$('.close',alertMessage);
-    close.click(function(){
-        alertMessage.hide(300);
-    })
     //个人首页的左侧导航列表
     userIndexList();
-    function userIndexList(){
-        var userList=$('#userList');
-        var a_userList=$('.a_userList');
-        var userUl=userList.find('ul');
-        a_userList.click(function(){
-            var This=$(this);
-            var index=a_userList.index(this);
-            var ulIndex=userUl.eq(index);
-            var liList=$('li',ulIndex);
-            var liLength=liList.length;
-            var ulHeight=ulIndex.height()>0?0:(47*liLength);
-            if(ulHeight==0){
-                This.addClass('li_aActive');
-            }else{
-                This.removeClass('li_aActive');
+});
+//个人首页的左侧导航列表
+function userIndexList(){
+    var userList=$('#userList');
+    var a_userList=$('.a_userList');
+    var userUl=userList.find('ul');
+    a_userList.click(function(){
+        var This=$(this);
+        var index=a_userList.index(this);
+        var ulIndex=userUl.eq(index);
+        var liList=$('li',ulIndex);
+        var liLength=liList.length;
+        var ulHeight=ulIndex.height()>0?0:(47*liLength);
+        if(ulHeight==0){
+            This.addClass('li_aActive');
+        }else{
+            This.removeClass('li_aActive');
+        }
+        ulIndex.animate({
+            height:ulHeight},{
+            easing: 'easeOutBounce',
+            duration: 500,
+            complete:function(){
+
             }
-            ulIndex.animate({
-                height:ulHeight},{
-                easing: 'easeOutBounce',
-                duration: 500,
-                complete:function(){
-
-                }
-            });
-            return false;
-        })
-    }
-    //个人首页，点击编辑，显示文本框，并自动保存提交
+        });
+        return false;
+    })
+}
+//首页基础信息编辑
+function user_edit(){
     var default_edit=$('#default_edit');
+    var nickname=$('#nickname');
+    var nspan=nickname.children('span');
+    var ninput=nickname.children('input');
+
+    var birthday=$('#birthday');
+    var bspan=birthday.children('span');
+    var binput=birthday.find("input");
+
+    var loveCity=$('#loveCity');
+    var lspan=loveCity.children('span');
+    var linput=loveCity.children('input');
+
+    var sex=$('#sex');
+    var sspan=sex.children('span');
     default_edit.click(function(){
-        var this_value=$(this).html()=="编辑"?"保存":"编辑";
         if($(this).html()=="编辑"){
-            var phone=$('#phone');
-            var span=phone.find('span');
-            span.hide();
-            var pinput=phone.children('input');
-            pinput.attr("value",span.html()).show();
-            var pvalue=pinput.val();
-            pinput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(pvalue==value){
-                    i.html('');
-                }else if(value.length==11 && phoneReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的手机');
-                }
-            })
-
-            var email=$('#email');
-            var span=email.children('span');
-            span.hide();
-            var einput=email.children('input');
-            einput.attr("value",span.html()).show();
-            var evalue=einput.val();
-            einput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(evalue==value){
-                    i.html('');
-                }else if(value!="" && emailReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的邮箱');
-                }
-            })
-
-            var nickname=$('#nickname');
-            var span=nickname.children('span');
-            span.hide();
-            var ninput=nickname.children('input');
-            ninput.attr("value",span.html()).show();
-            var nvalue=ninput.val();
-            ninput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(nvalue==value){
-                    i.html('');
-                }else if(value.length>2 && !(strReg.test(value))){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的昵称');
-                }
-            })
-
-            var sex=$('#sex');
-            var span=sex.children('span');
-            span.hide();
-            var num=span.html()=="女"?1:0;
+            this_value="保存";
+            nspan.hide();
+            ninput.attr("value",nspan.text()).show();
+            bspan.hide();
+            birthday.children('.calendar-input-wrap').css('display','inline-block').children("input").attr("value",bspan.text());
+            lspan.hide();
+            linput.attr("value",lspan.text()).show();
+            sspan.hide();
+            var num=sspan.text()=="女"?1:0;
             sex.children('label').css('display','inline-block').children('input:eq('+num+')').attr('checked','checked');
-            sex.children('label').click(function(){
-                var value=$(this).children('input:checked').val();
-                if(value){
-                    //把value通过ajax给后端
-                    console.log(value);
-                }
-            })
-
-            var birthday=$('#birthday');
-            var span=birthday.children('span');
-            span.hide();
-            var binput=birthday.children('.calendar-input-wrap').css('display','inline-block').children("input");
-            binput.attr("value",span.html());
-            var bvalue=binput.val();
-            binput.blur(function(){
-                var value=$(this).val();
-                var i=birthday.find('i');
-                if(bvalue==value){
-                    i.html('');
-                }else if(value!="" && dateReg.test(value)){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入正确的生日');
-                }
-            })
-
-            var loveCity=$('#loveCity');
-            var span=loveCity.children('span');
-            span.hide();
-            var linput=loveCity.children('input');
-            linput.attr("value",span.html()).show();
-            var lvalue=linput.val();
-            linput.blur(function(){
-                var value=$(this).val();
-                var i=$(this).siblings('i');
-                if(lvalue==value){
-                    i.html('');
-                }else if(value!=""){
-                    i.html('正在提交…');
-                    //把value通过ajax给后端
-                }else{
-                    $(this).focus();
-                    i.html('请输入内容');
-                }
-            })
         }
         else{
-            //此处提交表单
-            console.log("保存");
+            if(check_nickname(ninput) && check_birthday(binput,birthday) && check_loveCity(linput)){
+                var nvalue=ninput.val();
+                var bvalue=binput.val();
+                var lvalue=linput.val();
+                var svalue=sex.find('input:checked').val();
+                var data={
+                    'birthTime':bvalue,
+                    'gender':svalue,
+                    'nickName':nvalue,
+                    'loveCity':lvalue
+                }
+                login_post('/uc/updateUserInfo.do',data,'',function (data) {
+                    user_success(JSON.parse(data),function(){
+                        nspan.text(nvalue).show();
+                        ninput.hide();
+                        bspan.text(bvalue).show();
+                        birthday.children('.calendar-input-wrap').css('display','none');
+                        lspan.text(lvalue).show();
+                        linput.hide();
+                        sspan.text(svalue==0?'男':'女').show();
+                        sex.children('label').css('display','none');
+                    })
+                });
+                this_value="编辑";
+            }
         }
         $(this).html(this_value);
     })
-    //我的消息_单选多选
-    var all_checked=$('.all_checked');
-    var cont_border=$('.cont_border');
-    var radio_label=cont_border.children('label');
-    var input=radio_label.children('input');
-    var input_all=all_checked.children('input');
-    var length=input.length;
-    var count=0,checkedCount=0;
-    var del=$('#delete');
-    var signRead=$('#signRead');
-    all_checked.click(function(){
-        var isChecked=!input.prop('checked');
-        //如果全部选中，那么值为length，else就是0--在单选时，也会改变此值
-        if(isChecked){
-            checkedCount=length;
-            del.css('display','inline-block');
-            signRead.css('display','inline-block');
-        }else{
-            checkedCount=0;
-            del.css('display','none');
-            signRead.css('display','none');
-        }
-        input.prop('checked',isChecked);
-        input_all.prop('checked',isChecked);
-        return false;
+    ninput.blur(function(){
+        check_nickname($(this));
     })
-    radio_label.click(function(){
-        var this_input=$(this).children('input');
-        var isChecked=this_input.prop('checked');
-        this_input.prop('checked',!isChecked);
-        checkedCount=isChecked?(checkedCount-1):(checkedCount+1);//如果当前没有选中，那么+1，下面就会选中了
-        if(checkedCount==length){
-            check_bool=true;
-            del.css('display','inline-block');
-            signRead.css('display','inline-block');
-        }else{
-            check_bool=false;
-            del.css('display','none');
-            signRead.css('display','none');
-        }
-        input_all.prop('checked',check_bool);
-        return false;
+    binput.blur(function(){
+        check_birthday($(this),birthday);
     })
-    //购物车
+    linput.blur(function(){
+        check_loveCity($(this))
+    })
+}
+function user_success(data,callback){
+    if(data.result==100){
+        callback();
+    }else if(data.result==-2){
+        alert(data.resultDesc);
+        window.location.href='/login.html';
+    }else{
+        alert(data.resultDesc);
+    }
+}
+function check_nickname(This){
+    var value=This.val();
+    var message=This.siblings('i');
+    if(value.length>1 && !(strReg.test(value))){
+        message.html('');
+    }else{
+        // This.focus();
+        message.html('请输入正确的昵称');
+        return false;
+    }
+    return true;
+}
+function check_birthday(This,birthday){
+    var value=This.val();
+    var i=birthday.find('i');
+    if(value!="" && dateReg.test(value)){
+        i.html('');
+    }else{
+        // This.focus();
+        i.html('请输入正确的生日');
+        return false;
+    }
+    return true;
+}
+function check_loveCity(This){
+    var value=This.val();
+    var i=This.siblings('i');
+    if(value!=""){
+        i.html('');
+    }else{
+        // This.focus();
+        i.html('请输入内容');
+        return false;
+    }
+    return true;
+}
+//首页基础信息编辑
+function user_edit_photo(url,successFn,errorFn){
+    var edit_photo=$('#edit_photo');
+    var photoDiv=$('.photoDiv');
+    var uploadFile=$('#uploadFile');
+    var btn_upload=$('#btn_upload');
+    edit_photo.click(function(){
+        if($(this).html()=="保存"){
+            $(this).html("编辑");
+            photoDiv.fadeOut(300);
+        }else{
+            $(this).html("保存");
+            photoDiv.fadeIn(300);
+            btn_upload.click(function(){
+                uploadFile.click();
+            })
+            uploadFile.on('change',function(){
+                uploadImage($(this)[0])
+            })
+            function uploadImage(obj) {
+                if(validateImage(obj)) {
+                    // var frm_pic=$('#frm_pic');
+                    // frm_pic.attr('action',url);
+                    // var frm=$('<iframe id="frm" name="frm">a</iframe>');
+                    // $(frm_pic).parents('.photo1').append(frm);
+                    // frm.append(frm_pic);
+                    // // frm[0].contentWindow.document.write(frm_pic);
+                    // frm_pic.attr('target','frm');
+                    // frm_pic.submit();
+
+
+                    var data = new FormData();
+                    data.append('uploadFile', obj.files[0]);
+                    file_post(url,data,'',function(data){
+                        console.log(data);
+                    });
+                }
+            }
+        }
+        return false;
+    });
+}
+function car(){
     var car_ul=$('#car_ul');
     var li=$('li',car_ul);
     var all_car_check=$('.input_all_car');
@@ -217,7 +199,7 @@ $(function(){
     var number_car=$('.number_car'),numTotal=0;
     var checkedCount_car=0,len=li_car_check.length;
     //点击li下的input改变li样式
-    li_car_check.click(function(){
+    car_ul.on('click','input',function(){
         var money=Number($(this).siblings('.money_span_car').html());
         var numCar=Number($(this).siblings('.num_span_car').html());
         var isChecked=$(this).prop('checked');
@@ -232,18 +214,75 @@ $(function(){
             numTotal-=numCar;
             $(this).parents('li').removeClass('active');
         }
-        if(checkedCount_car==len){
-            all_car_check.prop('checked',true);
-        }else{
-            all_car_check.prop('checked',false);
-        }
-        change_total();
+        isAll()
     })
     //点击全选改变样式
     all_car_check.click(function(){
         var isChecked=$(this).prop('checked');
         checked_change_li(isChecked);
     });
+    $('.a_del').click(function(){
+        var check=$('#car_ul input:checked');
+        if(check.length>0){
+            var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
+            login_post('/deleteCartItem.do',str,'',function(data){
+                user_success(JSON.parse(data),function(){
+                    check.each(function(){
+                        var childCheck=$(this);
+                        del_change($(this),childCheck)
+                    })
+                })
+            })
+        }
+    })
+    $('.child_del').click(function(){
+        var This=$(this);
+        var childCheck=$(this).siblings('input[name="campusId"]');
+        var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
+        login_post('/deleteCartItem.do','campusId='+value,'',function(data){
+            user_success(JSON.parse(data),function(){
+                del_change(This,childCheck);
+            })
+        })
+    })
+    //结算
+    $('.checkout').click(function(){
+        var check=$('#car_ul input:checked');
+        if(check.length>0){
+            var arr=[];
+            arr.push(moneyTotal);
+            check.each(function(){
+                var title=$(this).siblings('.yingdi_title');
+                arr.push([$(this).attr('value'),title.children('img').attr('src'),title.children('span').text(),Number($(this).siblings('.span4').text()),Number($(this).siblings('.num_span_car').text()),Number($(this).siblings('.money_span_car').text())].join('$$'));
+            });
+            auto_submit('/user_checkout.jsp',{'orderList':arr},'post');
+        }
+        return false;
+    })
+    //删除购物车的列表后，改变元素
+    function del_change(That,childCheck){
+        var money=Number(That.siblings('.money_span_car').html());
+        var numCar=Number(That.siblings('.num_span_car').html());
+        if(childCheck.prop('checked')){
+            checkedCount_car--;
+            moneyTotal-=money;
+            numTotal-=numCar;
+            That.parents('li').removeClass('active');
+        }
+        isAll();
+        That.parent('li').remove();
+        if($('.child_del').parent('li').length==0){
+            $('.cont_right_car').html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
+        }
+    }
+    function isAll(){
+        if(checkedCount_car==len){
+            all_car_check.prop('checked',true);
+        }else{
+            all_car_check.prop('checked',false);
+        }
+        change_total();
+    }
     function checked_change_li(isChecked){
         if(isChecked){
             checkedCount_car=len;
@@ -274,9 +313,9 @@ $(function(){
     }
     function change_total(){
         money_car.html('¥'+moneyTotal);
-        number_car.html('¥'+numTotal);
+        number_car.html(numTotal);
     }
-});
+}
 //校验图片格式及大小 Add Date 2012-6-14 LIUYI
 function validateImage(obj) {
     var file = obj;

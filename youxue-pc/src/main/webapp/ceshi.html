@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script>
+    var json1='{"orderList":[{"campsId":"1","codeId":"","totalCount":1,"contactName":"31","contactEmail":"31","contactPhone":"31","outPersonList":[{"personName":"11","personSex":"0","personAge":"11","personPhone":"11","personIdno":"11","personAddress":"北京市北京市市辖区东城区11"}]},{"campsId":"2","codeId":"","totalCount":1,"contactName":"31","contactEmail":"31","contactPhone":"31","outPersonList":[{"personName":"21","personSex":"0","personAge":"21","personPhone":"21","personIdno":"21","personAddress":"北京市北京市市辖区东城区21"}]}],"payType":"2"}';
+    $.ajax({
+        url:'/pay/addTradeOrder.do',
+        type:'POST',
+        data:json1,
+        dataType:"json",
+        contentType:'application/json; charset=utf-8',
+        success:function(data){
+            console.log(data)
+        },
+        error:function(data,error){
+            console.log(data);
+            console.log(error);
+        }
+    })
+</script>
+</body>
+</html>

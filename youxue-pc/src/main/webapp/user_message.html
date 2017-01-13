@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-我的消息_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -78,41 +79,37 @@
         <div class="right1">
             <div class="bghui">
                 <span>发送消息</span>
-                <select name="" id="" onchange="parent.location.href=options[selectedIndex].value">
-                    <option value="?1">一周内</option>
-                    <option value="?2">一个月内</option>
-                    <option value="index.html">两个月内</option>
+                <select name="" id="date_select">
+                    <option value="">--默认所有--</option>
+                    <option value="0">一周内</option>
+                    <option value="1">一个月内</option>
+                    <option value="2">两个月内</option>
                     <option value="3">三个月内</option>
                 </select>
             </div>
         </div>
         <div class="right2">
-            <p>所有消息<span>(共2条，未读消息0条)</span></p>
+            <p>所有消息<span id="message_num"></span></p>
             <ul class="border_div">
                 <li class="head_boder li_border">
-                    <label class="all_checked"><input type="checkbox">全选</label>
+                    <label class="all_checked"><input type="checkbox" class="checkAll">全选</label>
                     <span class="cont_span">内容</span>
                     <span class="time_span">发送时间</span>
                 </li>
-                <li class="cont_border li_border">
-                    <label><input type="checkbox">系统消息</label>
-                    <span class="cont_span"><a href="#">尊敬的顾客您好，为了您及时参与营地，请尽快支付您的订单~</a></span>
-                    <span class="time_span">2016-05-04</span>
-                </li>
-                <li class="cont_border li_border">
-                    <label><input type="checkbox">系统消息</label>
-                    <span class="cont_span"><a href="#">尊敬的顾客您好，为了您及时参与营地，请尽快支付您的订单~</a></span>
-                    <span class="time_span">2016-05-04</span>
-                </li>
-                <li class="noMessage_border">
-                    您目前没有任何消息
+                <li>
+                    <form id="frm_list">
+                        <ul id="message_ul">
+
+                        </ul>
+                    </form>
                 </li>
                 <li class="foot_boder li_border">
-                    <label class="all_checked" for="all_checked2"><input type="checkbox" id="all_checked2">全选</label>
-                    <a href="#" id="delete" style="display:none;">删除</a>
-                    <a href="#" id="signRead" style="display:none;">标记为已读</a>
+                    <label class="all_checked" for="all_checked2"><input type="checkbox" id="all_checked2" class="checkAll">全选</label>
+                    <a href="javascript:void(0)" class="checkShow" id="delete" style="display:none;">删除</a>
+                    <a href="javascript:void(0)" class="checkShow" id="signRead" style="display:none;">标记为已读</a>
                 </li>
             </ul>
+            <div class="page"></div>
         </div>
     </div>
 </section>
@@ -132,5 +129,112 @@
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
+<script>
+    var public_obj={};
+    $(function(){
+        var checkArr=[];
+
+        $('#message_ul').on('change','input[type="checkbox"]',function(){
+            var len=$('#message_ul li').length;
+            var isCheck=$(this).is(':checked');
+            if(isCheck){
+                checkArr.push($(this)[0].value);
+            }else{
+                checkArr.splice(checkArr.indexOf($(this)[0].value),1)
+            }
+            if(len==checkArr.length){
+                $('.checkAll').prop('checked',true);
+            }else{
+                $('.checkAll').prop('checked',false);
+            }
+            changeElement($('.checkShow'),Boolean(checkArr.length));//因为空数组的length转bool是false，数组有值就是true
+        })
+        $('.checkAll').change(function(){
+            checkArr=[];
+            var childCheck=$('#message_ul input[type="checkbox"]');
+            var isCheck=$(this).is(':checked');
+            $('.checkAll').prop('checked',isCheck);
+            childCheck.prop('checked',isCheck);
+            changeElement($('.checkShow'),isCheck);
+            if(isCheck){
+                childCheck.each(function(){
+                    checkArr.push($(this).prop('value'));
+                })
+            }
+        })
+        $('#delete').click(function(){
+            var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
+            console.log(childCheck);
+        })
+        $('#signRead').click(function(){
+            var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
+
+            login_post('/uc/markmessage.do',childCheck,'',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    $('.checkAll').prop('checked',false);
+                    $('#message_ul input:checked').prop({'checked':false}).parents('.cont_border').removeClass('weidu').addClass('yidu');
+                })
+            })
+        })
+        $('#date_select').change(function(){//下拉根据日期-加载消息列表及分页
+            var vals=$(this).val();
+//            var dataObj={};
+            if(vals){
+                public_obj={
+                    'startDate':vals==0?getWeek():getMonth(vals)
+                }
+            }
+//            console.log(public_obj);
+            dyna_list();
+        })
+        change_page('.page',public_obj,function(data){
+            public_obj['pageNo']=data.pageNo;
+            public_obj['totalPage']=data.totalPage;
+            public_obj['totalCount']=data.totalCount;
+            console.log(data);
+            dyna_list();
+        });
+        dyna_list();//加载消息列表及分页
+    })
+    function dyna_list(){
+        login_post('/uc/usermessage.do',public_obj || '','',function(data){
+            data=JSON.parse(data);
+            user_success(data,function(){
+                render_list(data);
+            })
+        })
+    }
+    //渲染消息列表
+    function render_list(data){
+//        data.pageNo=5;
+//        data.totalPage=10;
+//        data.totalCount=100;
+        public_obj['pageNo']=data.pageNo;
+        public_obj['totalPage']=data.totalPage;
+        public_obj['totalCount']=data.totalCount;
+        $('#message_num').text('(共'+data['totalCount']+'条，未读消息'+data['unReadCount']+'条)');
+        var resultList=data['resultList'];
+        var arr=[];
+        var len=resultList.length;
+        var cName=resultList.readStatus==0?'weidu':'yidu';
+        if(len<=0){
+            arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
+        }else{
+            for(var i=0;i<len;i++){
+                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['updateTime']+'</span></li>');
+            }
+        }
+        $('.page').html(pageSet(public_obj).join(''));
+        $('#message_ul').html(arr.join(''));
+    }
+    function changeElement(element,isCheck){
+        if(isCheck){
+           element.show();
+       }else{
+           element.hide();
+       }
+    }
+</script>
 </body>
 </html>

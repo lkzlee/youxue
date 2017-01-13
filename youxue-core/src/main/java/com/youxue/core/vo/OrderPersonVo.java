@@ -19,6 +19,12 @@ public class OrderPersonVo implements Serializable
 
 	private String personAddress;
 
+	private Integer personAge;
+	/**
+	 * 出行人性别 男为0 女为1
+	 */
+	private Integer personSex;
+
 	public String getOrderId()
 	{
 		return orderId;
@@ -69,10 +75,32 @@ public class OrderPersonVo implements Serializable
 		this.personAddress = personAddress == null ? null : personAddress.trim();
 	}
 
+	public Integer getPersonAge()
+	{
+		return personAge;
+	}
+
+	public void setPersonAge(Integer personAge)
+	{
+		this.personAge = personAge;
+	}
+
+	public Integer getPersonSex()
+	{
+		return personSex;
+	}
+
+	public void setPersonSex(Integer personSex)
+	{
+		this.personSex = personSex;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "OrderPersonVo [orderId=" + orderId + ", personName=" + personName + ", personPhone=" + personPhone
-				+ ", personIdno=" + personIdno + ", personAddress=" + personAddress + "]";
+				+ ", personIdno=" + personIdno + ", personAddress=" + personAddress + ", personAge=" + personAge
+				+ ", personSex=" + personSex + "]";
 	}
+
 }

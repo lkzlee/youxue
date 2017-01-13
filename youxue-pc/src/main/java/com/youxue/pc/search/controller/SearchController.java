@@ -1,5 +1,6 @@
 package com.youxue.pc.search.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +21,13 @@ import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
+import com.youxue.core.dao.WordCountDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.CategoryVo;
 import com.youxue.core.vo.Page;
+import com.youxue.core.vo.WordCountVo;
 import com.youxue.pc.search.dto.SearchResultDto;
 
 /**
@@ -42,6 +46,8 @@ public class SearchController extends BaseController
 	CatetoryDao catetoryDao;
 	@Autowired
 	JedisProxy jedisProxy;
+	@Autowired
+	WordCountDao wordCountDao;
 
 	/**
 	 * @param request
@@ -51,9 +57,10 @@ public class SearchController extends BaseController
 	 */
 	@RequestMapping("/getCampsList.do")
 	@ResponseBody
-	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String LocaleCategoryId,
-			String subjectCategoryId, String timeDuration, String priceRange, String departureMonth,
-			String departureTime, Integer pageNo, String searchContent)
+	public String getCampsList(HttpServletRequest request, HttpServletResponse response, String localeCategoryId,
+			String subjectCategoryId, String durationCategoryId, String departureCategoryId, String priceCategoryId,
+			String timeDuration, String priceRange, String departureMonth, String departureTime, Integer pageNo,
+			String searchContent)
 	{
 		try
 		{
@@ -62,6 +69,7 @@ public class SearchController extends BaseController
 				pageNo = 1;
 			}
 			Map<String, Object> queryConditions = new HashMap<>();
+			queryConditions.put("status", 1);
 			if (StringUtils.isNotBlank(timeDuration))
 			{
 				String[] days = timeDuration.split("-");
@@ -82,31 +90,85 @@ public class SearchController extends BaseController
 				queryConditions.put("minPrice", minPrice);
 				queryConditions.put("maxPrice", maxPrice);
 			}
+			if (StringUtils.isNotBlank(departureTime))
+			{
+				String[] times = departureTime.split("-");
+				String minTime = times[0];
+				String maxTime = times[1];
+				if (StringUtils.isBlank(minTime) || StringUtils.isBlank(maxTime))
+					return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("出发时间范围设置不合理"));
+				queryConditions.put("minDepartureTime", minTime);
+				queryConditions.put("maxDepartureTime", maxTime);
+			}
 			if (StringUtils.isNotBlank(departureMonth))
 			{
 				queryConditions.put("departureMonth", Integer.valueOf(departureMonth));
 			}
-			if (StringUtils.isNotBlank(departureTime) && departureTime.length() == 8)
+			if (StringUtils.isNotBlank(localeCategoryId))
 			{
-				queryConditions.put("departureTime", departureTime);
-			}
-			if (StringUtils.isNotBlank(LocaleCategoryId))
-			{
-				queryConditions.put("LocaleCategoryId", LocaleCategoryId);
+				queryConditions.put("localeCategoryId", localeCategoryId);
 			}
 			if (StringUtils.isNotBlank(subjectCategoryId))
 			{
 				queryConditions.put("subjectCategoryId", subjectCategoryId);
+			}
+			if (StringUtils.isNotBlank(durationCategoryId))
+			{
+				queryConditions.put("durationCategoryId", durationCategoryId);
+			}
+			if (StringUtils.isNotBlank(departureCategoryId))
+			{
+				queryConditions.put("depatureCategoryId", departureCategoryId);
+			}
+			if (StringUtils.isNotBlank(priceCategoryId))
+			{
+				queryConditions.put("priceCategoryId", priceCategoryId);
 			}
 			if (StringUtils.isNotBlank(searchContent))
 			{
 				queryConditions.put("searchContent", searchContent);
 				LOG.info("searchContent:" + searchContent);
 				jedisProxy.hincrBy(RedisConstant.SEARCH_MAP_KEY, searchContent, 1);
+				WordCountVo wordCount = wordCountDao.selectByPrimaryKey(searchContent);
+				if (wordCount == null)
+				{
+					WordCountVo newWord = new WordCountVo();
+					newWord.setCount(1l);
+					newWord.setLastSearchTime(new Date());
+					newWord.setWord(searchContent);
+					wordCountDao.insertSelective(newWord);
+				}
+				else
+				{
+					wordCount.setCount(wordCount.getCount() + 1);
+					wordCount.setLastSearchTime(new Date());
+					wordCountDao.updateByPrimaryKeySelective(wordCount);
+				}
 			}
 			SearchResultDto dto = new SearchResultDto();
 			Page<CampsVo> campsList = campsDao.selectByConditions(queryConditions, pageNo,
 					CommonConstant.CAMPS_PAGE_SIZE);
+			Map<String, String> cMap = new HashMap<>();
+			for (CampsVo camps : campsList.getResultList())
+			{
+				if (StringUtils.isBlank(camps.getCampsSubjectId()))
+				{
+					continue;
+				}
+				if (cMap.containsKey(camps.getCampsSubjectId()))
+				{
+					camps.setCampsSubjectName(cMap.get(camps.getCampsSubjectId()));
+				}
+				else
+				{
+					CategoryVo category = catetoryDao.selectByPrimaryKey(camps.getCampsSubjectId());
+					if (category != null)
+					{
+						camps.setCampsSubjectName(category.getCategoryName());
+						cMap.put(camps.getCampsSubjectId(), category.getCategoryName());
+					}
+				}
+			}
 			dto.setResult(100);
 			dto.setCampsList(campsList);
 			return JsonUtil.serialize(dto);

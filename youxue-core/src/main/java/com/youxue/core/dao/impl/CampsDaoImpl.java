@@ -75,4 +75,26 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 		conditions.put("size", maxResults);
 		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getCampusListByType", conditions);
 	}
+
+	@Override
+	public List<CampsVo> selectCampsListByIds(List<String> campsId)
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectCampsListByIds", campsId);
+	}
+
+	@Override
+	public List<CampsVo> getHotCampusList(boolean ifCheckValid)
+	{
+		Map<String, Object> conditions = new HashMap<>();
+		conditions.put("ifCheckValid", ifCheckValid);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getHotCampusList", conditions);
+	}
+
+	@Override
+	public List<CampsVo> getPriceCampusList(boolean ifCheckValid)
+	{
+		Map<String, Object> conditions = new HashMap<>();
+		conditions.put("ifCheckValid", ifCheckValid);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getPriceCampusList", conditions);
+	}
 }

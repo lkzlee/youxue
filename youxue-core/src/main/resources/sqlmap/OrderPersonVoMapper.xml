@@ -7,20 +7,25 @@
     <result column="person_phone" property="personPhone" jdbcType="VARCHAR" />
     <result column="person_idno" property="personIdno" jdbcType="VARCHAR" />
     <result column="person_address" property="personAddress" jdbcType="VARCHAR" />
+    <result column="person_age" property="personAge" jdbcType="INTEGER" />
+    <result column="person_sex" property="personSex" jdbcType="INTEGER" />
   </resultMap>
   <insert id="insert" parameterType="com.youxue.core.vo.OrderPersonVo" >
     insert into tb_order_person (order_id, person_name, person_phone, 
-      person_idno, person_address)
+      person_idno, person_address, person_age, person_sex)
     values (#{orderId,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{personPhone,jdbcType=VARCHAR}, 
-      #{personIdno,jdbcType=VARCHAR}, #{personAddress,jdbcType=VARCHAR})
+      #{personIdno,jdbcType=VARCHAR}, #{personAddress,jdbcType=VARCHAR}, 
+      #{personAge,jdbcType=INTEGER}, #{personSex,jdbcType=INTEGER})
   </insert>
   <insert id="batchInsertOrderPerson" parameterType="java.util.List" >
     insert into tb_order_person (order_id, person_name, person_phone, 
-      person_idno, person_address)
+      person_idno, person_address, person_age, person_sex) 
     values 
     <foreach collection="list" item="ite" separator=",">
     (#{ite.orderId,jdbcType=VARCHAR}, #{ite.personName,jdbcType=VARCHAR}, #{ite.personPhone,jdbcType=VARCHAR}, 
-      #{ite.personIdno,jdbcType=VARCHAR}, #{ite.personAddress,jdbcType=VARCHAR})
+      #{ite.personIdno,jdbcType=VARCHAR}, #{ite.personAddress,jdbcType=VARCHAR},
+      #{ite.personAge,jdbcType=INTEGER},#{ite.personSex,jdbcType=INTEGER}
+      )
     </foreach>
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.OrderPersonVo" >
@@ -41,6 +46,12 @@
       <if test="personAddress != null" >
         person_address,
       </if>
+      <if test="personAge != null" >
+        person_age,
+      </if>
+      <if test="personSex != null" >
+        person_sex,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
@@ -57,6 +68,12 @@
       </if>
       <if test="personAddress != null" >
         #{personAddress,jdbcType=VARCHAR},
+      </if>
+       <if test="personAge != null" >
+        #{personAge,jdbcType=INTEGER},
+      </if>
+      <if test="personSex != null" >
+        #{personSex,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

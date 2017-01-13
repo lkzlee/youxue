@@ -2,6 +2,8 @@ package com.youxue.core.dao;
 
 import java.util.List;
 
+import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
 
@@ -23,5 +25,8 @@ public interface OrderDao
 
 	List<OrderVo> selectOrderByLogicOrderId(String logicOrderId, boolean lock);
 
-	Page<OrderVo> selectPageOrderListByType(Page<OrderVo> page, int orderType, String accountId);
+	Page<OrderDetailVo> selectPageOrderListByType(Page<OrderDetailVo> page, int orderType, String accountId);
+
+	Page<OrderDetailVo> selectPageOrderListByInfo(Page<OrderDetailVo> page, int status, PayTypeEnum pType,
+			String orderId, String mobile, String campsName);
 }

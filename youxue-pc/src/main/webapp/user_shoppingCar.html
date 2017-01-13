@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-我的购物车_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -79,7 +80,7 @@
             <h3>全部商品</h3>
             <div class="right">
                 <span>合计：<i class="money_car">¥0</i>元</span>
-                <a href="user_checkout.html">结算</a>
+                <a href="user_checkout.html" class="checkout">结算</a>
             </div>
         </div>
         <div class="cont_right_car">
@@ -96,48 +97,6 @@
                 <span class="span6">操作</span>
             </div>
             <ul id="car_ul">
-                <li>
-                    <input type="checkbox" id="checked1">
-                    <label class="check_label" for="checked1">
-                        <div></div>
-                    </label>
-                    <a href="#">
-                        <img src="uploads/images/index0_03.jpg" alt="">
-                        <span class="span3">英国亲自营地，5天3地，学习英语文化氛围</span>
-                    </a>
-                    <span class="span4">5000</span>
-                    <span class="span5 num_span_car">2345</span>
-                    <span class="span6 money_span_car">50000</span>
-                    <a href="#" class="span7">删除</a>
-                </li>
-                <li>
-                    <input type="checkbox" id="checked2">
-                    <label class="check_label" for="checked2">
-                        <div></div>
-                    </label>
-                    <a href="#">
-                        <img src="uploads/images/index0_03.jpg" alt="">
-                        <span class="span3">英国亲自营地，5天3地，学习英语文化氛围</span>
-                    </a>
-                    <span class="span4">500000000</span>
-                    <span class="span5 num_span_car">456</span>
-                    <span class="span6 money_span_car">80000</span>
-                    <a href="#" class="span7">删除</a>
-                </li>
-                <li>
-                    <input type="checkbox" id="checked3">
-                    <label class="check_label" for="checked3">
-                        <div></div>
-                    </label>
-                    <a href="#">
-                        <img src="uploads/images/index0_03.jpg" alt="">
-                        <span class="span3">英国亲自营地，5天3地，学习英语文化氛围</span>
-                    </a>
-                    <span class="span4">5000000000000000</span>
-                    <span class="span5 num_span_car">123</span>
-                    <span class="span6 money_span_car">968689699</span>
-                    <a href="#" class="span7">删除</a>
-                </li>
             </ul>
             <div class="foot_cont">
                 <input type="checkbox" id="checked01" class="input_all_car">
@@ -149,7 +108,7 @@
                 <div class="div_foot_caont">
                     <span class="span3">已选：<i class="number_car">0</i>件</span>
                     <span class="span4">合计：<i class="money_car">¥0</i>元</span>
-                    <a href="user_checkout.html" class="span5">结算</a>
+                    <a href="user_checkout.html" class="span5 checkout">结算</a>
                 </div>
             </div>
         </div>
@@ -171,5 +130,31 @@
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
+<script>
+    $(function(){
+        $('.input_all_car').prop('checked',false);
+        login_post('/shopCartDetailList.do','','',function(data){
+            data=JSON.parse(data);
+            user_success(data,function(){
+                var arr=[];
+                var source=data.shopCartList;
+                var len=source.length;
+                if(len<=0){
+                    arr.push('');
+                    $('.cont_right_car').html('<ul><li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li></ul>')
+                }else{
+                    for(var i=0;i<len;i++){
+                        arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');
+                        arr.push('<a class="yingdi_title" href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsName+'</span></a>');
+                        arr.push('<span class="span4">'+source[i].totalPrice+'</span><span class="span5 num_span_car">'+source[i].cartBuyCount+'</span><span class="span6 money_span_car">'+(source[i].totalPrice*source[i].cartBuyCount)+'</span><a href="javascript:void(0)" class="span7 child_del">删除</a></li>');
+                    }
+                    $('#car_ul').html(arr.join(''));
+                    //购物车状态勾选
+                    car();
+                }
+            })
+        })
+    })
+</script>
 </body>
 </html>

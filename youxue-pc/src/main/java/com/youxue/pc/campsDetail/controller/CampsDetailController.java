@@ -1,5 +1,6 @@
 package com.youxue.pc.campsDetail.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +80,17 @@ public class CampsDetailController extends BaseController
 		}
 		campsDto.setTraces(traces);
 		campsDto.setResult(100);
+		/**设置当前商品在购物车中数量*/
+		String accountId = getCurrentLoginUserName(request);
+		if (StringUtils.isNotBlank(accountId) && jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId))
+		{
+			campsDto.setShopCartCount(Integer.valueOf(jedisProxy
+					.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId)));
+		}
+		else
+		{
+			campsDto.setShopCartCount(1);
+		}
 		return JsonUtil.serialize(campsDto);
 	}
 
@@ -96,8 +108,19 @@ public class CampsDetailController extends BaseController
 		if (pageNo == null || pageNo <= 0)
 			pageNo = 1;
 		CampsListDto campsListDto = new CampsListDto();
-		List<CampsVo> campsList = campsDao
-				.getCampusListByType(CategoryTypeEnum.getByValue(categoryType), pageNo, count);
+		List<CampsVo> campsList = new LinkedList<>();
+		if (categoryType == 1)
+		{
+			campsList = campsDao.getHotCampusList(true);
+		}
+		if (categoryType == 2)
+		{
+			campsList = campsDao.getPriceCampusList(true);
+		}
+		else
+		{
+			campsList = campsDao.getCampusListByType(CategoryTypeEnum.getByValue(categoryType), pageNo, count);
+		}
 		campsListDto.setCampsList(campsList);
 		campsListDto.setResult(100);
 		return JsonUtil.serialize(campsListDto);

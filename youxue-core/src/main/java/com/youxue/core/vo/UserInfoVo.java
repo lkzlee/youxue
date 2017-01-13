@@ -3,8 +3,15 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class UserInfoVo
+import com.youxue.core.common.BaseResponseDto;
+
+public class UserInfoVo extends BaseResponseDto
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private String accountId;
 
 	private String nickName;
@@ -28,6 +35,12 @@ public class UserInfoVo
 	private String photoUrl;
 
 	private Date updateTime;
+
+	private boolean ifPop;
+
+	private String loveCity;
+
+	private int unReads;
 
 	public String getAccountId()
 	{
@@ -149,12 +162,43 @@ public class UserInfoVo
 		this.updateTime = updateTime;
 	}
 
+	public boolean isIfPop()
+	{
+		return ifPop;
+	}
+
+	public void setIfPop(boolean ifPop)
+	{
+		this.ifPop = ifPop;
+	}
+
+	public String getLoveCity()
+	{
+		return loveCity;
+	}
+
+	public void setLoveCity(String loveCity)
+	{
+		this.loveCity = loveCity;
+	}
+
+	public int getUnReads()
+	{
+		return unReads;
+	}
+
+	public void setUnReads(int unReads)
+	{
+		this.unReads = unReads;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "UserInfoVo [accountId=" + accountId + ", nickName=" + nickName + ", email=" + email
 				+ ", emailActiveStatus=" + emailActiveStatus + ", mobile=" + mobile + ", gender=" + gender
 				+ ", createIp=" + createIp + ", createTime=" + createTime + ", birthTime=" + birthTime + ", credit="
-				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + "]";
+				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + ", ifPop=" + ifPop + ", loveCity="
+				+ loveCity + ", unReads=" + unReads + "]";
 	}
 }

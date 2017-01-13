@@ -15,15 +15,15 @@ public class AddTradeOrderDto implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer payType = 0;
+	private String payType = "0";
 	private AddTradeItemDto[] orderList;
 
-	public Integer getPayType()
+	public String getPayType()
 	{
 		return payType;
 	}
 
-	public void setPayType(Integer payType)
+	public void setPayType(String payType)
 	{
 		this.payType = payType;
 	}

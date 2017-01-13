@@ -53,7 +53,7 @@ public class NewsVoDaoImpl extends BaseDao implements NewsVoDao
 	{
 		Page<NewsVo> page = new Page<NewsVo>(pageNo, pageSize);
 		return getPageList(page, "com.youxue.core.dao.NewsDao.selectByPage",
-				"com.youxue.core.dao.CampsDao.selectCountByPage", Maps.newHashMap(), sqlSessionTemplate);
+				"com.youxue.core.dao.NewsDao.selectCountByPage", Maps.newHashMap(), sqlSessionTemplate);
 	}
 
 }

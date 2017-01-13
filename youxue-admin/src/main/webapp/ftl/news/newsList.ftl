@@ -11,7 +11,8 @@
 		<@pagehead />
 		<#-- 主体内容 -->
         <div id="page-wrapper" class="form-wrapper">
-            <button type="button" class="btn btn-primary" onclick="modify()">新增</button>
+            <a type="button" class="btn btn-primary" href="/addNews.do">新增文章</a>
+            <hr>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">

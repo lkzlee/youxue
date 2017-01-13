@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,7 +28,7 @@ import com.youxue.core.vo.Page;
 @Controller
 public class NewsController extends AdminBaseController
 {
-	private static Logger logger = LoggerFactory.getLogger(NewsController.class);
+	private static final Log logger = LogFactory.getLog(NewsController.class);
 
 	@Autowired
 	private NewsVoDao newsDao;

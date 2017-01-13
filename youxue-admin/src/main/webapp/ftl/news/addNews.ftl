@@ -2,31 +2,6 @@
 <#-- 嵌入基础依赖模块 -->
 <#include "../common/core.ftl">
 <#setting date_format="yyyy-MM-dd">
-<#-- html文档头部 -->
-<script src="../../jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.js"></script>
-<script src="../../jquery-ui-1.10.4/js/jquery.ui.datepicker-zh-CN.js"></script>
-<link rel="stylesheet" type="text/css" href="../../kindeditor/themes/default/default.css" />
-<script type="text/javascript" src="../../kindeditor/kindeditor-all.js"></script>
-<%--ue编辑器--%>
-<script type="text/javascript" charset="utf-8" src="../../ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../ueditor/ueditor.all.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../common/webutils.js"></script>
-<script type="text/javascript" src="../../common/article.js"></script>
-<script type="text/javascript">
-	$(function() {
-		//实例化编辑器 UE编辑器
-		initUEEditor("content",'580','400');
-		//initKindEditor_addblog('content', 580, 400, 'articleContent', 'true');
-		initSimpleImageUpload('imageFile', 'article', callback);
-		
-		$("#publishTime").datetimepicker({
-			regional:"zh-CN",
-	        changeMonth: true,
-	        dateFormat:"yy-mm-dd",
-	        timeFormat: "HH:mm:ss"
-	    });
-	});
-</script>
 <@docHead title="新增营地"/>
 <#-- 正文 -->
     <div id="wrapper">

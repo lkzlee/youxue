@@ -2,7 +2,17 @@
 <#-- 嵌入基础依赖模块 -->
 <#include "../common/core.ftl">
 <#setting date_format="yyyy-MM-dd">
+
 <@docHead title="新增营地"/>
+<!-- 编辑器源码文件 -->
+<script>
+window.UEDITOR_HOME_URL = "/ueditor/";
+</script>
+<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../ueditor/lang/zh-cn/zh-cn.js"></script>
+<!-- 默认样式 -->
+<link type="text/css" href="./../ueditor/themes/default/css/ueditor.css" rel="stylesheet" />
 <#-- 正文 -->
     <div id="wrapper">
     	<#-- 页头和导航 文件地址："../common/header.ftl"-->
@@ -35,12 +45,19 @@
 								<script id="container" name="newsContent" type="text/plain">
 									
 								</script>
-                                <!-- 编辑器源码文件 -->
-								<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
-								<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
+        
 								<!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											var id = $('#carInfoId').val();  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
 								</script>
                             </div>
                         </div>

@@ -127,7 +127,7 @@ function event_yingdi(){
     load_local(function(arr){
         con1=arr;
     });
-    load_subject(function(arr){
+    load_wantDo(function(arr){
         con2=arr;
     });
     $('#place').focus(function(){
@@ -162,15 +162,15 @@ function CampsDetail(){
         success(data,function(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
-            if(data.hotCampsList){//热门
+            if(data.hotCampsList.length>0){//热门
                 var val=data.hotCampsList[0];
                 str(val)
             }
-            if(data.priceCampsList){//特价
+            if(data.priceCampsList.length>0){//特价
                 var val=data.priceCampsList[0];
                 str(val)
             }
-            if(data.subjectList){//主题分类
+            if(data.subjectList.length>0){//主题分类
                 var obj=data.subjectList;
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){

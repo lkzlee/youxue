@@ -44,21 +44,25 @@ function load_local(callback) {
     var con1=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
         data=JSON.parse(data);
-        if(data.result==100){
-            con1=data.categoryList;
-        }
-        callback(con1)
+        success(data,function(){
+            if(data.categoryList.length>0){
+                con1=data.categoryList;
+            }
+            callback(con1);
+        })
     });
 }
 //加载主题类型
-function load_subject(callback){
-    var con2=[{"categoryId":"","categoryName":"暂无数据"}];
+function load_wantDo(callback){
+    var con1=[{"categoryId":"","categoryName":"暂无数据"}];
     login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
         data=JSON.parse(data);
-        if(data.result==100){
-            con2=data.categoryList;
-        }
-        callback(con2);
+        success(data,function(){
+            if(data.categoryList.length>0){
+                con1=data.categoryList;
+            }
+            callback(con1);
+        })
     });
 }
 //搜索
@@ -186,7 +190,6 @@ function isEmptyObject(obj){
     return false;
 }
 function success(data,callback,errback){
-    console.log(data)
     if(data.result==100){
         callback();
     }else{

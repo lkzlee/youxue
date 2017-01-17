@@ -106,8 +106,13 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
-          -->
+         
              <table tableName="tb_aboutUs" domainObjectName="AboutUsVo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+                -->
+          <table tableName="tb_personal_case" domainObjectName="PersonalCaseVo"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

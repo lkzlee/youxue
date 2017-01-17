@@ -31,9 +31,9 @@
 									<tbody>
 										<#list searchList.resultList![] as adItem>
 										<tr class="<#if adItem_index%2 == 0>odd<#else>even</#if>">
-											<td>${adItem.searchContent!""}</td>
-											<td>${adItem.searchCount}</td>
-											<td>${adItem.searchDate?date}</td>
+											<td>${adItem.word!""}</td>
+											<td>${adItem.count}</td>
+											<td>${adItem.lastSearchTime?datetime}</td>
 										</tr>
 										</#list>
 									</tbody>

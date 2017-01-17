@@ -69,19 +69,6 @@ public class CampsDetailController extends BaseController
 			LOG.error("error during campsDetail,campsId:" + campusId);
 		}
 		String accountId = getCurrentLoginUserName(request);
-		if (StringUtils.isBlank(accountId))
-		{
-			campsDto.setShopCartCount(1);
-		}
-		else
-		{
-			Object shopCartCount = jedisProxy.hget(RedisConstant.SHOP_CART_KEY + accountId, campusId);
-			campsDto.setShopCartCount((Integer) shopCartCount);
-		}
-		campsDto.setTraces(traces);
-		campsDto.setResult(100);
-		/**设置当前商品在购物车中数量*/
-		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isNotBlank(accountId) && jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId))
 		{
 			campsDto.setShopCartCount(Integer.valueOf(jedisProxy
@@ -91,6 +78,10 @@ public class CampsDetailController extends BaseController
 		{
 			campsDto.setShopCartCount(1);
 		}
+		campsDto.setTraces(traces);
+		campsDto.setResult(100);
+		/**设置当前商品在购物车中数量*/
+
 		return JsonUtil.serialize(campsDto);
 	}
 

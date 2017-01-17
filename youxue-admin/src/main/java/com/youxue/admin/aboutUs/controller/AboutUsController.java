@@ -1,4 +1,4 @@
-package com.youxue.admin.search;
+package com.youxue.admin.aboutUs.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +16,9 @@ import com.youxue.core.vo.Page;
 import com.youxue.core.vo.WordCountVo;
 
 @Controller
-public class SearchController
+public class AboutUsController
 {
-	private static final Log log = LogFactory.getLog(SearchController.class);
+	private static final Log log = LogFactory.getLog(AboutUsController.class);
 	@Autowired
 	WordCountDao wordCountDao;
 

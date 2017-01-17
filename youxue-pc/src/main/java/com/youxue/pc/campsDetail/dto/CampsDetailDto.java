@@ -10,7 +10,6 @@ import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
-	private int shopCartCount;
 
 	public String getCampsId()
 	{

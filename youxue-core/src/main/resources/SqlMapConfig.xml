@@ -37,6 +37,7 @@
 		<mapper resource="sqlmap/UserInfoVoMapper.xml" />
 		<mapper resource="sqlmap/RefundVoMapper.xml" />
 		<mapper resource="sqlmap/WordCountVoMapper.xml" />
+		<mapper resource="sqlmap/AboutUsVoMapper.xml" />
 		<!-- 后台管理相关表 -->
 		<mapper resource="sqlmap/SysFunctionMapper.xml" />
 		<mapper resource="sqlmap/SysRoleMapper.xml" />

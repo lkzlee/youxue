@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.CommonConstant;
-import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.dao.WordCountDao;
@@ -128,7 +127,7 @@ public class SearchController extends BaseController
 			{
 				queryConditions.put("searchContent", searchContent);
 				LOG.info("searchContent:" + searchContent);
-				jedisProxy.hincrBy(RedisConstant.SEARCH_MAP_KEY, searchContent, 1);
+				//				jedisProxy.hincrBy(RedisConstant.SEARCH_MAP_KEY, searchContent, 1);
 				WordCountVo wordCount = wordCountDao.selectByPrimaryKey(searchContent);
 				if (wordCount == null)
 				{

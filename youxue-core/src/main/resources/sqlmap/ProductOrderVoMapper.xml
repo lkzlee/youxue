@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.ProductOrderVoDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.ProductOrderVo" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="buy_type" property="buyType" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="buy_time" property="buyTime" jdbcType="TIMESTAMP" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    order_id, buy_type, content, pay_type, account_id, create_time, buy_time, price, 
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_product_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectPageOrderListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	   select 
+	   <include refid="Base_Column_List" />
+	   from tb_product_order
+	   <where>
+		   	<if test="orderId !=null">
+		   		and order_id = #{orderId,jdbcType=VARCHAR}
+		   	</if>
+		   	<if test="payType !=null">
+		   		and pay_type = #{payType,jdbcType=INTEGER}
+		   	</if>
+		   	<if test="accountId !=null">
+		   		and account_id = #{accountId,jdbcType=VARCHAR}
+		   	</if>
+		   	<if test="startTime !=null">
+		   		and buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+		   	</if>
+		   	<if test="endTime !=null">
+		   		and buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+		   	</if>
+	   </where>
+	   order by order_id desc
+  </select>
+  <select id="selectPageOrderListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
+	   select 
+	  	count(1)
+	   from tb_product_order
+	   <where>
+		   	<if test="orderId !=null">
+		   		and order_id = #{orderId,jdbcType=VARCHAR}
+		   	</if>
+		   	<if test="payType !=null">
+		   		and pay_type = #{payType,jdbcType=INTEGER}
+		   	</if>
+		   	<if test="accountId !=null">
+		   		and account_id = #{accountId,jdbcType=VARCHAR}
+		   	</if>
+		   	<if test="startTime !=null">
+		   		and buy_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+		   	</if>
+		   	<if test="endTime !=null">
+		   		and buy_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+		   	</if>
+	   </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_product_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.ProductOrderVo" >
+    insert into tb_product_order (order_id, buy_type, content, 
+      pay_type, account_id, create_time, 
+      buy_time, price, remark
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{buyType,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{payType,jdbcType=INTEGER}, #{accountId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{buyTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.ProductOrderVo" >
+    insert into tb_product_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="buyType != null" >
+        buy_type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="buyTime != null" >
+        buy_time,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyType != null" >
+        #{buyType,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyTime != null" >
+        #{buyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.ProductOrderVo" >
+    update tb_product_order
+    <set >
+      <if test="buyType != null" >
+        buy_type = #{buyType,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buyTime != null" >
+        buy_time = #{buyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.ProductOrderVo" >
+    update tb_product_order
+    set buy_type = #{buyType,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      account_id = #{accountId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      buy_time = #{buyTime,jdbcType=TIMESTAMP},
+      price = #{price,jdbcType=DECIMAL},
+      remark = #{remark,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

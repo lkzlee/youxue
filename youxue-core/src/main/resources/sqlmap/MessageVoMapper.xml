@@ -162,4 +162,11 @@
 		#{item,jdbcType=VARCHAR}
 		</foreach>
 	</update>
+	<delete id="deleteMessage"  parameterType="java.util.Map">
+		delete from tb_message where account_id = #{accountId,jdbcType=VARCHAR}
+		and message_id in 
+		<foreach collection="msgIdList" item="item" open="(" close=")" separator=",">
+		#{item,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
 </mapper>

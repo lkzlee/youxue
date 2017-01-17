@@ -85,4 +85,13 @@ public class MessageDaoImpl extends BaseDao implements MessageDao
 		param.put("accountId", accountId);
 		return sqlSessionTemplate.update("com.youxue.core.dao.MessageDao.markMessageReadDone", param);
 	}
+
+	@Override
+	public int deleteMessage(String accountId, List<String> msgIdList)
+	{
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("msgIdList", msgIdList);
+		param.put("accountId", accountId);
+		return sqlSessionTemplate.delete("com.youxue.core.dao.MessageDao.deleteMessage", param);
+	}
 }

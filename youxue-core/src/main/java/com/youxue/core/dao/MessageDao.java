@@ -24,4 +24,6 @@ public interface MessageDao
 	int selectUnReadCount(String accountId, String startDate);
 
 	int markMessageReadDone(String accountId, List<String> msgIdList);
+
+	int deleteMessage(String accountId, List<String> msgIdList);
 }

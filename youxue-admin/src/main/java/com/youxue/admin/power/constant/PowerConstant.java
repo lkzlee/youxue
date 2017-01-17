@@ -31,7 +31,7 @@ public class PowerConstant
 
 		MenuShow ddGLMenu = new MenuShow(PowerTypeEnum.DDGL.getDesc(), "");
 		ddGLMenu.getSonList().add(new MenuShow("营地订单", "/admin/userorder.do"));
-		ddGLMenu.getSonList().add(new MenuShow("周边产品订单", "/otherOrderList.do"));
+		ddGLMenu.getSonList().add(new MenuShow("周边产品订单", "/admin/productorder.do"));
 		menuMap.put(PowerTypeEnum.DDGL.getValue(), Lists.newArrayList(ddGLMenu));
 		allMenuList.add(ddGLMenu);
 
@@ -46,7 +46,7 @@ public class PowerConstant
 		tyGLMenu.getSonList().add(new MenuShow("关于我们", "/aboutUs.do"));
 		tyGLMenu.getSonList().add(new MenuShow("资讯", "/news.do"));
 		tyGLMenu.getSonList().add(new MenuShow("私人订制-定制案例", "/personalCaseList.do"));
-		tyGLMenu.getSonList().add(new MenuShow("私人订制-周边产品", "/surround.do"));
+		tyGLMenu.getSonList().add(new MenuShow("私人订制-周边产品", "/admin/productDetail.do"));
 		menuMap.put(PowerTypeEnum.TYGL.getValue(), Lists.newArrayList(tyGLMenu));
 		allMenuList.add(tyGLMenu);
 

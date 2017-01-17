@@ -26,7 +26,28 @@ $(function() {
 		    initialDate:initialDate
 		});
 	});
+	//日期组件
+	$('.form_datetimestamp').each(function(i, elem) {
+		var $input = $(elem),
+			format = $input.data('format') || 'yyyy-mm-dd hh:ii:ss',
+			initialDate = $input.attr('id'),
+			minView = format === 'yyyy-mm-dd hh:ii:ss' ? 'month' : 'month';
+		   
+		$input.change(function() {//解决【因日期未输入导致校验失败，然后输入日期但input框状态不改变】的问题
+			$input.trigger('input').trigger('keyup');
 
+		}).datetimepicker({
+			language:  'zh-CN',
+			weekStart: 1,
+			todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+		    format: format,
+		    minView: minView,
+		    isInline: true,
+		    initialDate:initialDate
+		});
+	});
 	/*=============================文件上传==============================*/
 	//注册事件
 	$(document)

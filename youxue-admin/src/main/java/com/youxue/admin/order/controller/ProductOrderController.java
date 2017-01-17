@@ -13,9 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.constant.ConstantMapUtil;
 import com.youxue.core.common.BaseController;
+import com.youxue.core.constant.CommonConstant;
+import com.youxue.core.dao.CommonDao;
 import com.youxue.core.dao.ProductOrderVoDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.vo.Page;
@@ -32,6 +35,8 @@ public class ProductOrderController extends BaseController
 	private final static Log LOG = LogFactory.getLog(ProductOrderController.class);
 	@Resource
 	private ProductOrderVoDao productOrderDao;
+	@Resource
+	private CommonDao commonDao;
 
 	/***
 	 * 
@@ -88,6 +93,7 @@ public class ProductOrderController extends BaseController
 		modelMap.put("startTime", startTime);
 		modelMap.put("endTime", endTime);
 		modelMap.put("payTypeMap", ConstantMapUtil.payTypeMap);
+		modelMap.put("productTypeMap", ConstantMapUtil.productTypeMap);
 		return "/productOrder/productOrderList";
 
 	}
@@ -96,25 +102,32 @@ public class ProductOrderController extends BaseController
 	public String userPageOrderInfo(HttpServletRequest request, HttpServletResponse response,
 			ProductOrderVo productOrder)
 	{
-		LOG.info("插入产品订单操作 productOrder=" + productOrder);
 
 		try
 		{
-			checkParam(productOrder);
-			productOrder.setCreateTime(DateUtil.getCurrentTimestamp());
+			checkParamAndFill(productOrder);
+			LOG.info("插入产品订单操作 productOrder=" + productOrder);
 			productOrderDao.insertSelective(productOrder);
 		}
 		catch (Exception e)
 		{
+			request.setAttribute("addMsg", e.getMessage());
 		}
-
 		return "redirect:/admin/productorder.do";
 
 	}
 
-	private void checkParam(ProductOrderVo productOrder)
+	private void checkParamAndFill(ProductOrderVo productOrder)
 	{
-		// TODO Auto-generated method stub
-
+		if (productOrder == null)
+			throw new BusinessException("参数非法");
+		productOrder.setCreateTime(DateUtil.getCurrentTimestamp());
+		productOrder.setBuyTime(DateUtil.getCurrentTimestamp());
+		if (StringUtils.isNotEmpty(productOrder.getBuyTimeStr()))
+		{
+			productOrder.setBuyTime(DateUtil.formatToDate(productOrder.getBuyTimeStr(),
+					DateUtil.DATE_FORMAT_YYYYMMDD_HHMMSS));
+		}
+		productOrder.setOrderId(commonDao.getIdByPrefix(CommonConstant.PRODUCT_ORDER_PREFIX));
 	}
 }

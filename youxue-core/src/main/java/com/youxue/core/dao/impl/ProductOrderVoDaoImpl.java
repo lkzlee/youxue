@@ -54,12 +54,12 @@ public class ProductOrderVoDaoImpl extends BaseDao implements ProductOrderVoDao
 	}
 
 	@Override
-	public Page<ProductOrderVo> selectPageOrderListByInfo(Page<ProductOrderVo> page, PayTypeEnum pType, String orderId,
+	public Page<ProductOrderVo> selectPageOrderListByInfo(Page<ProductOrderVo> page, PayTypeEnum payType, String orderId,
 			String accountId, Date startTime, Date endTime)
 	{
 		Map<String, Object> param = new HashMap<String, Object>();
-		if (pType != null && PayTypeEnum.UNKNOW_PAY != pType)
-			param.put("payType", pType.getValue());
+		if (payType != null && PayTypeEnum.UNKNOW_PAY != payType)
+			param.put("payType", payType.getValue());
 		if (StringUtils.isNotBlank(orderId))
 			param.put("orderId", orderId);
 		if (StringUtils.isNotBlank(accountId))

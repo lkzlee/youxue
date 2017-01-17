@@ -3,94 +3,125 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProductOrderVo {
-    private String orderId;
+public class ProductOrderVo
+{
+	private String orderId;
 
-    private Integer buyType;
+	private Integer buyType;
 
-    private String content;
+	private String content;
 
-    private Integer payType;
+	private Integer payType;
 
-    private String accountId;
+	private String accountId;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Date buyTime;
+	private Date buyTime;
 
-    private BigDecimal price;
+	private String buyTimeStr;
 
-    private String remark;
+	private BigDecimal price;
 
-    public String getOrderId() {
-        return orderId;
-    }
+	private String remark;
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
-    }
+	public String getBuyTimeStr()
+	{
+		return buyTimeStr;
+	}
 
-    public Integer getBuyType() {
-        return buyType;
-    }
+	public void setBuyTimeStr(String buyTimeStr)
+	{
+		this.buyTimeStr = buyTimeStr;
+	}
 
-    public void setBuyType(Integer buyType) {
-        this.buyType = buyType;
-    }
+	public String getOrderId()
+	{
+		return orderId;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setOrderId(String orderId)
+	{
+		this.orderId = orderId == null ? null : orderId.trim();
+	}
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
+	public Integer getBuyType()
+	{
+		return buyType;
+	}
 
-    public Integer getPayType() {
-        return payType;
-    }
+	public void setBuyType(Integer buyType)
+	{
+		this.buyType = buyType;
+	}
 
-    public void setPayType(Integer payType) {
-        this.payType = payType;
-    }
+	public String getContent()
+	{
+		return content;
+	}
 
-    public String getAccountId() {
-        return accountId;
-    }
+	public void setContent(String content)
+	{
+		this.content = content == null ? null : content.trim();
+	}
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId == null ? null : accountId.trim();
-    }
+	public Integer getPayType()
+	{
+		return payType;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setPayType(Integer payType)
+	{
+		this.payType = payType;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getAccountId()
+	{
+		return accountId;
+	}
 
-    public Date getBuyTime() {
-        return buyTime;
-    }
+	public void setAccountId(String accountId)
+	{
+		this.accountId = accountId == null ? null : accountId.trim();
+	}
 
-    public void setBuyTime(Date buyTime) {
-        this.buyTime = buyTime;
-    }
+	public Date getCreateTime()
+	{
+		return createTime;
+	}
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+	public void setCreateTime(Date createTime)
+	{
+		this.createTime = createTime;
+	}
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+	public Date getBuyTime()
+	{
+		return buyTime;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public void setBuyTime(Date buyTime)
+	{
+		this.buyTime = buyTime;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
+	public BigDecimal getPrice()
+	{
+		return price;
+	}
+
+	public void setPrice(BigDecimal price)
+	{
+		this.price = price;
+	}
+
+	public String getRemark()
+	{
+		return remark;
+	}
+
+	public void setRemark(String remark)
+	{
+		this.remark = remark == null ? null : remark.trim();
+	}
 }

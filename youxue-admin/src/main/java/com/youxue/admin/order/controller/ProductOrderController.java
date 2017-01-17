@@ -14,7 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.lkzlee.pay.utils.DateUtil;
-import com.youxue.admin.order.constant.ConstantMapUtil;
+import com.youxue.admin.constant.ConstantMapUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.dao.ProductOrderVoDao;
 import com.youxue.core.enums.PayTypeEnum;

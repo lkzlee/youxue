@@ -13,8 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.youxue.admin.aboutUs.constant.AboutUsTypeEnum;
 import com.youxue.core.dao.AboutUsDao;
+import com.youxue.core.enums.AboutUsTypeEnum;
 import com.youxue.core.vo.AboutUsVo;
 
 @Controller

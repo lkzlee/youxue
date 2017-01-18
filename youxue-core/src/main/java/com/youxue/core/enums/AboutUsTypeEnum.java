@@ -1,4 +1,4 @@
-package com.youxue.admin.aboutUs.constant;
+package com.youxue.core.enums;
 
 /**
  * @author Masterwind

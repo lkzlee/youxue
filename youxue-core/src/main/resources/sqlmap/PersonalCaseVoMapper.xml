@@ -11,6 +11,16 @@
   <sql id="Base_Column_List" >
     case_id, case_name, case_content, create_time, update_time
   </sql>
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_personal_case
+  </select>
+  <select id="selectCountByConditions" resultType="Integer" parameterType="java.util.Map" >
+    select 
+    count(1)
+    from tb_personal_case
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

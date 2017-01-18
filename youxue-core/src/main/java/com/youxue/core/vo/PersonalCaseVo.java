@@ -69,4 +69,12 @@ public class PersonalCaseVo
 	{
 		this.updateTime = updateTime;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "PersonalCaseVo [caseId=" + caseId + ", caseName=" + caseName + ", caseContent=" + caseContent
+				+ ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+	}
+
 }

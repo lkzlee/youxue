@@ -2,8 +2,10 @@ package com.youxue.core.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Maps;
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.PersonalCaseDao;
+import com.youxue.core.vo.Page;
 import com.youxue.core.vo.PersonalCaseVo;
 
 @Repository
@@ -44,6 +46,14 @@ public class PersonalCaseDaoImpl extends BaseDao implements PersonalCaseDao
 	public int updateByPrimaryKey(PersonalCaseVo record)
 	{
 		return sqlSessionTemplate.update("com.youxue.core.dao.PersonalCaseDao.updateByPrimaryKey", record);
+	}
+
+	@Override
+	public Page<PersonalCaseVo> selectByPage(int pageNo, int i)
+	{
+		Page<PersonalCaseVo> page = new Page<PersonalCaseVo>(pageNo, i);
+		return getPageList(page, "com.youxue.core.dao.PersonalCaseDao.selectByConditions",
+				"com.youxue.core.dao.PersonalCaseDao.selectCountByConditions", Maps.newHashMap(), sqlSessionTemplate);
 	}
 
 }

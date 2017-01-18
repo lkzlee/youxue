@@ -10,6 +10,7 @@ public class CommonConstant
 	public static final String CATEGORY_ID_PREFIX = "CA";
 	public static final String CAMPS_ID_PREFIX = "CAM";
 	public static final String NEWS_ID_PREFIX = "NE";
+	public static final String PERSONAL_CASE_ID_PREFIX = "PC";
 
 	public static final String WEI_XIN_ORDER_URL = "weiXinPageUrl";
 

@@ -77,4 +77,22 @@ public class UserMessageController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("标记成功"));
 		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("未标记信息为空"));
 	}
+
+	@RequestMapping(path = "/uc/delmessage.do")
+	@ResponseBody
+	public String deleteMessage(HttpServletRequest request, HttpServletResponse response, String pageNo,
+			String[] messageId)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		LOG.info("删除用户站内信，accountId=" + accountId + ",messageId=" + Arrays.toString(messageId));
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (ArrayUtils.isEmpty(messageId))
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+		List<String> msgIdList = Arrays.asList(messageId);
+		int successCount = messageDao.deleteMessage(accountId, msgIdList);
+		if (successCount > 0)
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除成功"));
+		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除的信息为空"));
+	}
 }

@@ -44,5 +44,6 @@
 		<mapper resource="sqlmap/SysRoleMapper.xml" />
 		<mapper resource="sqlmap/SysUserLoginLogMapper.xml" />
 		<mapper resource="sqlmap/SysUserMapper.xml" />
+		<mapper resource="sqlmap/ProductOrderVoMapper.xml" />
 	</mappers>
 </configuration>

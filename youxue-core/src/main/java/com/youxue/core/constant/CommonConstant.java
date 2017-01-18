@@ -12,9 +12,13 @@ public class CommonConstant
 	public static final String NEWS_ID_PREFIX = "NE";
 	public static final String PERSONAL_CASE_ID_PREFIX = "PC";
 
+	public static final String PRODUCT_ID_PREFIX = "PT";
 	public static final String WEI_XIN_ORDER_URL = "weiXinPageUrl";
 
 	public static final String SYSTEM_SECRET = "systemSecret";
 
 	public static final String AUTO_LOGIN_COOKIE = "autoLoginId";
+
+	public static final String PRODUCT_ORDER_PREFIX = "PO";
+
 }

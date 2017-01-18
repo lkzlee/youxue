@@ -4,12 +4,15 @@
   <resultMap id="BaseResultMap" type="com.youxue.core.vo.SurroundProductVo" >
     <id column="product_id" property="productId" jdbcType="VARCHAR" />
     <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="product_desc" property="productDesc" jdbcType="VARCHAR" />
     <result column="product_photos" property="productPhotos" jdbcType="VARCHAR" />
     <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+    <result column="weixin_qrcode_url" property="weixinQrcodeUrl" jdbcType="VARCHAR" />
+    <result column="alipay_qrcode_url" property="alipayQrcodeUrl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    product_id, product_name, product_desc, product_photos, product_price
+    product_id, product_name, type,product_desc, product_photos, product_price,weixin_qrcode_url,alipay_qrcode_url
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -17,15 +20,22 @@
     from tb_surround_product
     where product_id = #{productId,jdbcType=VARCHAR}
   </select>
+  <select id="selectProductByType" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_surround_product
+    where type = #{type,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_surround_product
     where product_id = #{productId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.SurroundProductVo" >
     insert into tb_surround_product (product_id, product_name, product_desc, 
-      product_photos, product_price)
+      product_photos, product_price,type,weixin_qrcode_url,alipay_qrcode_url)
     values (#{productId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productDesc,jdbcType=VARCHAR}, 
-      #{productPhotos,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL})
+      #{productPhotos,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL},
+      #{type,jdbcType=INTEGER},#{weixinQrcodeUrl,jdbcType=VARCHAR},#{alipayQrcodeUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.SurroundProductVo" >
     insert into tb_surround_product
@@ -45,6 +55,15 @@
       <if test="productPrice != null" >
         product_price,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
+       <if test="weixinQrcodeUrl != null" >
+        weixin_qrcode_url,
+      </if>
+       <if test="alipayQrcodeUrl != null" >
+        alipay_qrcode_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="productId != null" >
@@ -61,6 +80,15 @@
       </if>
       <if test="productPrice != null" >
         #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+       #{type,jdbcType=INTEGER},
+      </if>
+      <if test="weixinQrcodeUrl != null" >
+        #{weixinQrcodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayQrcodeUrl != null" >
+       #{alipayQrcodeUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -79,6 +107,12 @@
       <if test="productPrice != null" >
         product_price = #{productPrice,jdbcType=DECIMAL},
       </if>
+      <if test="weixinQrcodeUrl != null" >
+        weixin_qrcode_url =  #{weixinQrcodeUrl,jdbcType=VARCHAR},
+      </if>
+       <if test="alipayQrcodeUrl != null" >
+        alipay_qrcode_url = #{alipayQrcodeUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where product_id = #{productId,jdbcType=VARCHAR}
   </update>
@@ -87,7 +121,9 @@
     set product_name = #{productName,jdbcType=VARCHAR},
       product_desc = #{productDesc,jdbcType=VARCHAR},
       product_photos = #{productPhotos,jdbcType=VARCHAR},
-      product_price = #{productPrice,jdbcType=DECIMAL}
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      weixin_qrcode_url =  #{weixinQrcodeUrl,jdbcType=VARCHAR},
+      alipay_qrcode_url = #{alipayQrcodeUrl,jdbcType=VARCHAR}
     where product_id = #{productId,jdbcType=VARCHAR}
   </update>
 </mapper>

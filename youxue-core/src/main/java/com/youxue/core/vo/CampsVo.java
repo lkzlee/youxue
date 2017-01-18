@@ -7,7 +7,7 @@ import com.youxue.core.util.DateUtil;
 
 public class CampsVo
 {
-	public final static int NORMAL = 0;
+	public final static int NORMAL = 1;
 
 	private String campsId;
 

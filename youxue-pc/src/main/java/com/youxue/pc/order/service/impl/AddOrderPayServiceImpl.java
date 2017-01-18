@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
 import com.lkzlee.pay.bean.WeiXinConfigBean;
@@ -103,6 +104,10 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			PayService payService = getPayService(logicOrderVo.getPayType());
+			if (PayTypeEnum.WEIXIN_APY.getValue() == logicOrderVo.getPayType())
+			{
+				return paramContinuePayPara(accountId, logicOrderId);
+			}
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
 			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
@@ -124,6 +129,24 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		}
 	}
 
+	private BaseResponseDto paramContinuePayPara(String accountId, String logicOrderId)
+	{
+		AddTradeResonseDto responseDto = new AddTradeResonseDto();
+		String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
+		if (StringUtils.isEmpty(payUrl))
+		{
+			responseDto.setResult(-3);
+			responseDto.setResultDesc("你需要支付的订单已过期，请重新支付");
+			return responseDto;
+		}
+		String wxOrderUrl = PropertyUtils
+				.getProperty(CommonConstant.WEI_XIN_ORDER_URL, "http://127.0.0.1/pay/wxpay.do");
+		responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
+		responseDto.setResult(100);
+		responseDto.setResultDesc("下单成功");
+		return responseDto;
+	}
+
 	private BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId)
 	{
 		if (param == null)
@@ -140,6 +163,8 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			/**
 			 * 微信需要自己构造支付页面因此保存支付链接
 			 */
+			jedisProxy.setex(RedisConstant.getAddUserOrderKey(accountId, logicOrderId), resultDto.getCode_url(),
+					3 * 60 * 60);
 			String wxOrderUrl = PropertyUtils.getProperty(CommonConstant.WEI_XIN_ORDER_URL,
 					"http://127.0.0.1/pay/wxpay.do");
 			responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);

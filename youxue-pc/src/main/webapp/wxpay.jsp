@@ -52,7 +52,7 @@ pageEncoding="utf-8"%>
 支付订单号：<%= logicOrderId%>
 </p>
 <p>
-<%= tradeAmount%>
+支付金额:<%= tradeAmount%>
 </p>
 <section class="footer">
     <div class="div1_foot">

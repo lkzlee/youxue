@@ -177,7 +177,7 @@ public class OrderController extends BaseController
 		{
 
 			String accountId = getCurrentLoginUserName(request);
-			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountI=" + accountId);
+			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountId=" + accountId);
 
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			if (LogicOrderVo.UNPAY != logicOrderVo.getPayStatus())

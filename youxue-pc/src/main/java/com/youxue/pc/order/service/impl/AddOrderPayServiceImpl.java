@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -75,9 +76,9 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			String logicOrderId = orderService.addOrder(orderData, ip, accountId);
 			int payType = Integer.parseInt(orderData.getPayType().trim());
 			PayService payService = getPayService(payType);
-			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, true);
 			LOG.info("@@构造下单的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
-			jedisProxy.del(RedisConstant.SHOP_CART_KEY + accountId);
+
 			/**
 			 * 向第三方下单
 			 */
@@ -108,7 +109,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			{
 				return paramContinuePayPara(accountId, logicOrderId);
 			}
-			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId);
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, false);
 			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
 			/**
@@ -179,7 +180,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		return responseDto;
 	}
 
-	private AbstThirdPayDto buildThirdPayOrderByLogicOrderId(String logicOrderId)
+	private AbstThirdPayDto buildThirdPayOrderByLogicOrderId(String logicOrderId, boolean isDel)
 	{
 		LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, false);
@@ -203,6 +204,21 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			{
 				LOG.fatal("支付方式错误，请检查，payTypeEnum=" + payTypeEnum);
 				throw new BusinessException("支付方式错误，请检查，payTypeEnum=" + payTypeEnum + ",logicOrderId=" + logicOrderId);
+			}
+		}
+		if (isDel)
+		{
+			try
+			{
+				List<String> campsIdList = orderList.stream().map(t -> {
+					return t.getCampsId();
+				}).collect(Collectors.toList());
+				String[] ids = (String[]) campsIdList.toArray();
+				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + logicOrderVo.getAccountId(), ids);
+			}
+			catch (Exception e)
+			{
+				LOG.fatal("删除用户购物车列表，异常", e);
 			}
 		}
 		return thirdPayDto;

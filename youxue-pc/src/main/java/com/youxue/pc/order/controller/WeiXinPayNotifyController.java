@@ -29,6 +29,32 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 	@Resource
 	private OrderService orderService;
 
+	public static void main(String[] args)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("<xml><appid><![CDATA[wx855e27a3d08ed53f]]></appid>");
+		sb.append("<bank_type><![CDATA[CFT]]></bank_type>");
+		sb.append("<cash_fee><![CDATA[1]]></cash_fee>");
+		sb.append("<device_info><![CDATA[WEB]]></device_info>");
+		sb.append("<fee_type><![CDATA[CNY]]></fee_type>");
+		sb.append("<is_subscribe><![CDATA[N]]></is_subscribe>");
+		sb.append("<mch_id><![CDATA[1370242202]]></mch_id>");
+		sb.append("<nonce_str><![CDATA[MW8DQ2TVYEYM]]></nonce_str>");
+		sb.append("<openid><![CDATA[ojdUWwfPHlWyJjBlijgO-siBPK_k]]></openid>");
+		sb.append("<out_trade_no><![CDATA[20170119180656LDd2512d35]]></out_trade_no>");
+		sb.append("<result_code><![CDATA[SUCCESS]]></result_code>");
+		sb.append("<return_code><![CDATA[SUCCESS]]></return_code>");
+		sb.append("<sign><![CDATA[2E58F88BEFC4E076F1A83F6D469B77B8]]></sign>");
+		sb.append("<time_end><![CDATA[20170119180735]]></time_end>");
+		sb.append("<total_fee>1</total_fee>");
+		sb.append("<trade_type><![CDATA[NATIVE]]></trade_type>");
+		sb.append("<transaction_id><![CDATA[4004372001201701196866254045]]></transaction_id>");
+		sb.append("</xml>");
+		WeiXinPayNotifyResultDto payNotfiyDto = (WeiXinPayNotifyResultDto) XstreamUtil.fromXml(sb.toString(),
+				WeiXinPayNotifyResultDto.class);
+		System.out.println(payNotfiyDto);
+	}
+
 	@RequestMapping("/payNotify/wxPayNotfiy.do")
 	@ResponseBody
 	public String payNotify(HttpServletRequest request, HttpServletResponse response)
@@ -36,10 +62,11 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		try
 		{
 			String xmlResonse = IOStreamTools.inputStream2String(request.getInputStream());
-			LOG.info("@@--收到微信支付通知，payNotfiyDto=" + xmlResonse);
+			LOG.info("@@--收到微信支付通知，xmlResponse=" + xmlResonse);
 
 			WeiXinPayNotifyResultDto payNotfiyDto = (WeiXinPayNotifyResultDto) XstreamUtil.fromXml(xmlResonse,
 					WeiXinPayNotifyResultDto.class);
+			LOG.info("@@--收到微信支付通知，payNotfiyDto=" + payNotfiyDto);
 			return super.payNotifyHandler(request, response, payNotfiyDto, true);
 		}
 		catch (IOException e)

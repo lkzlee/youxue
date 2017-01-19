@@ -18,6 +18,7 @@ import com.lkzlee.pay.third.weixin.service.WeiXinOrderPayService;
 import com.youxue.core.dao.RefundDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.RefundService;
 import com.youxue.core.vo.RefundVo;
 
 @Service
@@ -28,6 +29,8 @@ public class WeiXinRefundQueryTask
 	private RefundDao refundDao;
 	@Resource(name = "weiXinOrderPayService")
 	private WeiXinOrderPayService weiXinPayService;
+	@Resource
+	private RefundService refundService;
 	@Resource
 	private OrderService orderService;
 	private static final ExecutorService exec = Executors.newSingleThreadExecutor();
@@ -62,9 +65,16 @@ public class WeiXinRefundQueryTask
 						for (RefundVo r : refundList)
 						{
 							WeiXinQueryRefundDto refundDto = new WeiXinQueryRefundDto();
+							refundDto.setOut_refund_no(r.getOrderId());
+
 							WeiXinQueryRefundResultDto refundResult = (WeiXinQueryRefundResultDto) weiXinPayService
 									.queryRefundOrderService(refundDto);
 							log.info("微信退款查询返回结果:refundResult=" + refundResult);
+							if ("REFUNDNOTEXIST".equalsIgnoreCase(refundResult.getErr_code()))
+							{
+								refundService.addRefund(r.getOrderId());
+								return;
+							}
 							if ("SUCCESS".equalsIgnoreCase(refundResult.getRefund_status_0())
 									&& r.getOrderId().equals(refundResult.getOut_refund_no_0()))
 							{

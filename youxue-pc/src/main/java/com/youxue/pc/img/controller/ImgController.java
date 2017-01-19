@@ -32,7 +32,7 @@ public class ImgController
 	@ResponseBody
 	public String uploadImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("businessType") String businessType,
-			@RequestParam(value = "imgFile", required = false) MultipartFile imgFile) throws Exception
+			@RequestParam(value = "uploadFile", required = false) MultipartFile imgFile) throws Exception
 	{
 		if (imgFile == null)
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("上传文件不存在"));

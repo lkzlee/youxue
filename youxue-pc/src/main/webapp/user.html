@@ -241,7 +241,7 @@
         render_userinfo();
         //个人首页，点击编辑，显示文本框，并自动保存提交
 //        user_edit_photo('/uc/updatePhoto.do',sucessFn);
-        user_edit_photo('http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT//img/uploadImg.html',sucessFn);
+        user_edit_photo('/img/userphoto/uploadImg.do',sucessFn);
         function sucessFn(){
             data=JSON.parse(data);
             user_success(data,function(){

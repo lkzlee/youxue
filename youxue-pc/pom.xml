@@ -15,6 +15,12 @@
 			<groupId>com.youxue</groupId>
 			<artifactId>youxue-core</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
 	</dependencies>
 	<profiles>
         <profile>

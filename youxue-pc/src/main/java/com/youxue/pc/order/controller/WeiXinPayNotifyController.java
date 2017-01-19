@@ -11,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.notify.controller.WeiXinPayNotfiyController;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
@@ -66,8 +65,7 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 	}
 
 	@RequestMapping("/payNotify/wxPayNotfiy.do")
-	@ResponseBody
-	public String payNotify(HttpServletRequest request, HttpServletResponse response)
+	public void payNotify(HttpServletRequest request, HttpServletResponse response)
 	{
 		try
 		{
@@ -77,13 +75,15 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 			WeiXinPayNotifyResultDto payNotfiyDto = (WeiXinPayNotifyResultDto) XstreamUtil.fromXml(xmlResonse,
 					WeiXinPayNotifyResultDto.class);
 			LOG.info("@@--收到微信支付通知，payNotfiyDto=" + payNotfiyDto);
-			return super.payNotifyHandler(request, response, payNotfiyDto, true);
+			String msg = super.payNotifyHandler(request, response, payNotfiyDto, true);
+			response.getWriter().println(msg);
+			return;
 		}
 		catch (IOException e)
 		{
 			LOG.fatal("通知异常，请检查，msg:" + e.getMessage(), e);
 		}
-		return null;
+		return;
 	}
 
 	@Override

@@ -171,7 +171,7 @@ public class OrderServiceImpl implements OrderService
 		if (logicOrderVo == null)
 			throw new BusinessException("订单号不存在，请检查，logicOrderId=" + logicOrderId + ",platformTradeId="
 					+ platformTradeId + ",notifyTime=" + notifyTime + ",payTime=" + payTime);
-		if (LogicOrderVo.PAY == logicOrderVo.PAY)
+		if (LogicOrderVo.UNPAY != logicOrderVo.getPayStatus())
 		{
 			log.info("订单已处理，重复通知无需再次处理，logicOrderId=" + logicOrderId + ",platformTradeId=" + platformTradeId
 					+ ",notifyTime=" + notifyTime + ",payTime=" + payTime);

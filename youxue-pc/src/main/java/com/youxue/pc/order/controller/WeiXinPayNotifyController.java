@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.notify.controller.WeiXinPayNotfiyController;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
+import com.lkzlee.pay.third.weixin.dto.response.WeiXinOrderResultDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinPayNotifyResultDto;
 import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.utils.IOStreamTools;
@@ -31,6 +32,14 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 
 	public static void main(String[] args)
 	{
+		StringBuilder sbs = new StringBuilder();
+		sbs.append("<xml>" + "" + "" + "" + "<return_code><![CDATA[FAIL]]></return_code> ");
+		sbs.append("<return_msg>" + "" + "<![CDATA[appid参数长度有误]]>" + "</return_msg>");
+		sbs.append("</xml>");
+		WeiXinOrderResultDto resultDto = (WeiXinOrderResultDto) XstreamUtil.fromXml(sbs.toString(),
+				WeiXinOrderResultDto.class);
+		System.out.println(resultDto);
+
 		StringBuffer sb = new StringBuffer();
 		sb.append("<xml><appid><![CDATA[wx855e27a3d08ed53f]]></appid>");
 		sb.append("<bank_type><![CDATA[CFT]]></bank_type>");
@@ -53,6 +62,7 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		WeiXinPayNotifyResultDto payNotfiyDto = (WeiXinPayNotifyResultDto) XstreamUtil.fromXml(sb.toString(),
 				WeiXinPayNotifyResultDto.class);
 		System.out.println(payNotfiyDto);
+
 	}
 
 	@RequestMapping("/payNotify/wxPayNotfiy.do")

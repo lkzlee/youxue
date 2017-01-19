@@ -2,64 +2,101 @@ package com.youxue.core.vo;
 
 import java.util.Date;
 
-public class PersonTailorVo {
-    private String id;
+public class PersonTailorVo
+{
 
-    private String name;
+	private String id;
 
-    private String phone;
+	private String name;
+	private String email;
 
-    private String destination;
+	private String phone;
 
-    private Date departureTime;
+	private String destination;
 
-    private String descs;
+	private Date departureTime;
 
-    public String getId() {
-        return id;
-    }
+	private String descs;
 
-    public void setId(String id) {
-        this.id = id == null ? null : id.trim();
-    }
+	private String remark;
 
-    public String getName() {
-        return name;
-    }
+	public String getId()
+	{
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+	public void setId(String id)
+	{
+		this.id = id == null ? null : id.trim();
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getName()
+	{
+		return name;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
+	public void setName(String name)
+	{
+		this.name = name == null ? null : name.trim();
+	}
 
-    public String getDestination() {
-        return destination;
-    }
+	public String getPhone()
+	{
+		return phone;
+	}
 
-    public void setDestination(String destination) {
-        this.destination = destination == null ? null : destination.trim();
-    }
+	public void setPhone(String phone)
+	{
+		this.phone = phone == null ? null : phone.trim();
+	}
 
-    public Date getDepartureTime() {
-        return departureTime;
-    }
+	public String getDestination()
+	{
+		return destination;
+	}
 
-    public void setDepartureTime(Date departureTime) {
-        this.departureTime = departureTime;
-    }
+	public void setDestination(String destination)
+	{
+		this.destination = destination == null ? null : destination.trim();
+	}
 
-    public String getDescs() {
-        return descs;
-    }
+	public Date getDepartureTime()
+	{
+		return departureTime;
+	}
 
-    public void setDescs(String descs) {
-        this.descs = descs == null ? null : descs.trim();
-    }
+	public void setDepartureTime(Date departureTime)
+	{
+		this.departureTime = departureTime;
+	}
+
+	public String getDescs()
+	{
+		return descs;
+	}
+
+	public void setDescs(String descs)
+	{
+		this.descs = descs == null ? null : descs.trim();
+	}
+
+	public String getRemark()
+	{
+		return remark;
+	}
+
+	public void setRemark(String remark)
+	{
+		this.remark = remark;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
 }

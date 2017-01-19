@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.youxue.core.dao.PersonTailorVoMapper" >
+<mapper namespace="com.youxue.core.dao.PersonTailorDao" >
   <resultMap id="BaseResultMap" type="com.youxue.core.vo.PersonTailorVo" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -8,9 +8,11 @@
     <result column="destination" property="destination" jdbcType="VARCHAR" />
     <result column="departure_time" property="departureTime" jdbcType="DATE" />
     <result column="descs" property="descs" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, phone, destination, departure_time, descs
+    id, name, phone, destination, departure_time, descs,remark,email
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -24,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.PersonTailorVo" >
     insert into tb_personal_tailor (id, name, phone, 
-      destination, departure_time, descs
+      destination, departure_time, descs,remark
       )
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{destination,jdbcType=VARCHAR}, #{departureTime,jdbcType=DATE}, #{descs,jdbcType=VARCHAR}
+      #{destination,jdbcType=VARCHAR}, #{departureTime,jdbcType=DATE}, #{descs,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.PersonTailorVo" >
@@ -38,6 +40,9 @@
       </if>
       <if test="name != null" >
         name,
+      </if>
+      <if test="email != null" >
+        email,
       </if>
       <if test="phone != null" >
         phone,
@@ -59,6 +64,9 @@
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
@@ -79,6 +87,9 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
@@ -91,6 +102,9 @@
       <if test="descs != null" >
         descs = #{descs,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -98,9 +112,21 @@
     update tb_personal_tailor
     set name = #{name,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       destination = #{destination,jdbcType=VARCHAR},
       departure_time = #{departureTime,jdbcType=DATE},
-      descs = #{descs,jdbcType=VARCHAR}
+      descs = #{descs,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+   <select id="selectByConditions" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_personal_tailor
+  </select>
+  <select id="selectCountByConditions" resultType="Integer" parameterType="java.util.Map" >
+    select 
+    count(1)
+    from tb_personal_tailor
+  </select>
 </mapper>

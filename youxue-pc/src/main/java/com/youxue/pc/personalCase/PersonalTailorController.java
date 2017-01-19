@@ -3,6 +3,7 @@ package com.youxue.pc.personalCase;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.dao.PersonalCaseDao;
+import com.youxue.core.constant.CommonConstant;
+import com.youxue.core.dao.CommonDao;
+import com.youxue.core.dao.PersonTailorDao;
 import com.youxue.core.util.JsonUtil;
-import com.youxue.core.vo.Page;
-import com.youxue.core.vo.PersonalCaseVo;
+import com.youxue.core.vo.PersonTailorVo;
 
 /**
  * @author Masterwind
@@ -27,24 +29,31 @@ public class PersonalTailorController
 {
 	private static final Log logger = LogFactory.getLog(PersonalTailorController.class);
 	@Autowired
-	PersonalCaseDao personalCaseDao;
+	PersonTailorDao personTailorDao;
+	@Autowired
+	CommonDao commonDao;
 
 	@RequestMapping("personalTailorList.do")
 	@ResponseBody
-	public String personalTailorList(HttpServletRequest request, HttpServletResponse response, String pageNo)
+	public String personalTailorList(HttpServletRequest request, HttpServletResponse response, PersonTailorVo record)
 			throws Exception
 	{
 		try
 		{
-			Page<PersonalCaseVo> personalCaseList = personalCaseDao.selectByPage(Page.getPageNo(pageNo), 10);
-			return JsonUtil.serialize(personalCaseList);
+			if (record == null || StringUtils.isBlank(record.getName()) || StringUtils.isBlank(record.getPhone())
+					|| StringUtils.isBlank(record.getDestination()) || StringUtils.isBlank(record.getEmail()))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数缺失"));
+			}
+			record.setId(commonDao.getIdByPrefix(CommonConstant.PERSONAL_TAILOR_ID_PREFIX));
+			personTailorDao.insertSelective(record);
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("成功"));
 		}
 		catch (Exception e)
 		{
-			logger.info("error in personalCaseList", e);
+			logger.info("error in personalTailorList", e);
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请求异常"));
 		}
-
 	}
 
 }

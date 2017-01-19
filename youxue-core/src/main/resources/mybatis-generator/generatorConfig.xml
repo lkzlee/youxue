@@ -117,7 +117,12 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table> -->
-         <table tableName="tb_product_order" domainObjectName="ProductOrderVo"
+        <!--  <table tableName="tb_product_order" domainObjectName="ProductOrderVo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table> -->
+         <table tableName="tb_personal_tailor" domainObjectName="PersonTailorVo"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

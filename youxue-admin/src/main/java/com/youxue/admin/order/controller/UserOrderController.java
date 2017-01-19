@@ -18,6 +18,7 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
+import com.youxue.core.service.order.RefundService;
 import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
@@ -35,6 +36,8 @@ public class UserOrderController extends BaseController
 	private OrderDao orderDao;
 	@Resource
 	private OrderService orderService;
+	@Resource
+	private RefundService refundService;
 
 	/***
 	 *  用户个人订单信息查询
@@ -107,7 +110,7 @@ public class UserOrderController extends BaseController
 		}
 		else if ("0".equals(type))
 		{
-			orderService.refundOrder(orderId);
+			refundService.addRefund(orderId);
 		}
 		else
 		{

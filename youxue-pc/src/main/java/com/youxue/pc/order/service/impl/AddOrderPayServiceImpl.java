@@ -213,7 +213,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 				List<String> campsIdList = orderList.stream().map(t -> {
 					return t.getCampsId();
 				}).collect(Collectors.toList());
-				String[] ids = (String[]) campsIdList.toArray();
+				String[] ids = campsIdList.toArray(new String[0]);
 				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + logicOrderVo.getAccountId(), ids);
 			}
 			catch (Exception e)

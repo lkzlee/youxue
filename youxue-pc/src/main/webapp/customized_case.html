@@ -51,13 +51,13 @@
 </section>
 <section class="content content_qg width_content clear">
     <section class="left">
-        <div><a href="customized.html">私人定制<span></span><i></i></a></div>
-        <p class="active"><a href="customized_case.html">定制案例</a></p>
-        <p><a href="customized_product.html">周边产品</a></p>
+        <p><a href="customized.html">私人定制<i></i></a></p>
+        <p class="active"><a href="customized_case.html">定制案例<i></i></a></p>
+        <p><a href="customized_product.html">周边产品<i></i></a></p>
     </section>
     <section class="cus_right">
         <h2>定制案例</h2>
-        <div class="case_content">
+        <div class="case_content j_content">
             <div>
                 <h3><span>Case1</span>美国的交换生活</h3>
                 <div class="cont_caseCont">
@@ -98,5 +98,30 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+$(function(){
+    load_case();
+})
+function load_case(){
+    login_post('/personalCaseList.do','pageNo=1','',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            var resultList=data.resultList;
+            var len=resultList.length;
+            var list=['暂无数据'];
+            if(len>0){
+                list=[];
+                for(var i=0;i<len;i++){
+                    var last_class=i==len-1?'noBorder':'';
+                    list.push('<div class="'+last_class+'"><h3><span>Case'+(i+1)+'</span>'+resultList[i]['caseName']+'</h3><div class="cont_caseCont">');
+                    list.push(resultList[i]['caseName']);
+                    list.push('</div><div class="linea_blue clear"><i class="i1"></i><i class="i2"></i></div></div>');
+                }
+            }
+            $('.j_content').html(list.join(''));
+        })
+    })
+}
+</script>
 </body>
 </html>

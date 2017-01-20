@@ -1,8 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Camplink-私人定制_首页</title>
+    <title>Camplink资讯</title>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -36,10 +37,10 @@
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>
                 </div>
-                <div class="news_icon ">
+                <div class="news_icon " id="user_active">
                     <a href="news.html"><i></i><span>Camplink</span>资讯</a>
                 </div>
-                <div class="private_icon " id="user_active">
+                <div class="private_icon ">
                     <a href="customized.html"><i></i>私人定制</a>
                 </div>
                 <div class="personal_icon ">
@@ -49,47 +50,20 @@
         </div>
     </section>
 </section>
-<section class="content content_qg width_content clear">
+<section class="content width_content clear">
     <section class="left">
-        <p class="active"><a href="customized.html">私人定制<i></i></a></p>
-        <p><a href="customized_case.html">定制案例<i></i></a></p>
-        <p><a href="customized_product.html">周边产品<i></i></a></p>
+        <div><a href="javascript:void(0)">Camaplink资讯<span></span><i></i></a></div>
+        <p><a href="javascript:void(0)">行业新闻</a></p>
     </section>
-    <section class="cus_right">
-        <h2>私人定制</h2>
-        <p class="p_cus">汇聚了一批有想法、有创意、有技术、有能力的优质同学。他们作为联络阿里和校园的纽带，在校园推广宣传阿里的技术品牌，将校园的声音反馈给我们，从而帮助实现阿里和校园之间的无障碍的沟通。通过联盟的各类活动，案例可以帮助更多的同学提升在技术、职场、商业等环节的技能，增强同学们的竞争力，拓展同学们的求职之路。 </p>
-        <div class="cus_form">
-            <div class="name">
-                <i></i>
-                <span>姓名：</span>
-                <input type="text">
+    <section class="right">
+        <!-- <div class="top_img">
+            <img src="img/news1.jpg" alt="">
+        </div> -->
+        <div class="bottom_content news_content">
+            <h1></h1>
+            <div class="j_content">
+                
             </div>
-            <div class="phone">
-                <i></i>
-                <span>联系电话：</span>
-                <input type="text">
-            </div>
-            <div class="email">
-                <i></i>
-                <span>E-email：</span>
-                <input type="text">
-            </div>
-            <div class="address">
-                <i></i>
-                <span>期望目的地：</span>
-                <input type="text">
-            </div>
-            <div class="time">
-                <i></i>
-                <span>期望出行日期：</span>
-                <input type="text">
-            </div>
-            <div class="describe">
-                <i></i>
-                <span>需求描述：</span>
-                <textarea></textarea>
-            </div>
-            <input type="submit" value="提交需求" class="btn_submit">
         </div>
     </section>
 </section>
@@ -107,5 +81,20 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+var newsId= '<%=request.getParameter("newsId")==null?"":request.getParameter("newsId")%>';
+$(function(){
+    load_newsList();
+})
+function load_newsList(){
+    login_post('/newsContent.do','newsId='+newsId,'',function(data){
+        data=JSON.parse(data);
+        if(data.newsTitle){
+            $('h1').text(data.newsTitle);
+            $('.j_content').html(data.newsContent);
+        }
+    })
+}
+</script>
 </body>
 </html>

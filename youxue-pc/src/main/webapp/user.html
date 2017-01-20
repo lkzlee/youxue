@@ -139,7 +139,7 @@
         <div class="right2">
             <div class="bghui clear">
                 <span>头像信息</span>
-                <a href="javascript:void(0)" id="edit_photo">编辑</a>
+                <a href="javascript:void(0)" class="j_edit_photo">编辑</a>
             </div>
             <div class="photoDiv">
                 <div class="photo1">
@@ -171,7 +171,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" class="saveButton">保存</a>
+                <a href="javascirpt:void(0)" class="saveButton j_edit_photo">保存</a>
             </div>
         </div>
         <div class="alertMessage" style="display:none;">
@@ -197,7 +197,7 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/jquery.easing.min.js"></script>
-<script src="js/ajaxfileupload.js"></script>
+<!-- <script src="js/ajaxfileupload.js"></script> -->
 <script src="js/yui-min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
@@ -238,70 +238,19 @@
                 .render();
     });
     $(function(){
-        render_userinfo();
+        getUserData(function(data){
+            render_alertANDuserinfo(data);
+        })
         //个人首页，点击编辑，显示文本框，并自动保存提交
-//        user_edit_photo('/uc/updatePhoto.do',sucessFn);
-        user_edit_photo('/img/userphoto/uploadImg.do',sucessFn);
-        function sucessFn(){
-            data=JSON.parse(data);
-            user_success(data,function(){
-                var bigPhoto=$('#bigPhoto');
-                changeEl(bigPhoto,data.big1.src);
-                var photo_108=$('#photo_108');
-                changeEl(photo_108,data.big2.src);
-                var photo_100=$('#photo_100');
-                changeEl(photo_100,data.big3.src);
-                var photo_50=$('#photo_50');
-                changeEl(photo_50,data.big4.src);
-
-                function changeEl(element,src){
-                    var bi=$('i',element).hide();
-                    $('img',element).attr({'src':src,'display':'inline-block'});
-                }
-            });
+        edit_photo('/img/userphoto/uploadImg.do',sucessFn);
+        function sucessFn(data){
+            if(data.retCode==200){
+                see_photo(data);
+            }
         }
-    })
-    //获取渲染基础信息
-    function render_userinfo(){
-        login_post('/uc/userinfo.do','','',function(data){
-            data=JSON.parse(data);
-//            console.log(data);
-            //虚拟的数据
-//            data.ifPop=false;//是否弹窗
-            user_success(data,function(){
-                render_alert(data);
-                render_default(data);
-            });
-        })
-    }
-    //渲染弹出框和页面上展示的用户信息
-    function render_alert(users){
-        var alertMessage=$('.alertMessage');
-        users.ifPop && alertMessage.show();
-        $('.nicknNme_lbl').text(users.nickName);
-        $('.integral_lbl').text(users.credit);
-        var close=$('.close',alertMessage);
-        close.click(function(){
-            alertMessage.hide(300);
-        })
-    }
-    //渲染基础信息
-    function render_default(users){
-        if(Number(users.unReads)>0){
-            $('.message').show().children('span').text(users.unReads);
-        }
-        if(users.photoUrl){
-            $('#photo_img').attr('src',users.photoUrl).show();
-        }
-        $('#phone').children('span').text(users.mobile);
-        $('#email').children('span').text(users.email);
-        $('#nickname').children('span').text(users.nickName);
-        $('#sex').children('span').text(users.gender==0?'男':'女');
-        $('#birthday').children('span').text(formatDate(new Date(users.birthTime),0));
-        $('#loveCity').children('span').text(users.loveCity);
         //首页基础信息编辑
-        user_edit();
-    }
+        edit_userInfo();
+    })
 </script>
 </body>
 </html>

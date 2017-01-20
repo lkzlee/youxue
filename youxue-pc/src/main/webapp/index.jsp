@@ -123,11 +123,12 @@ $(function(){
 })
 function event_yingdi(){
     var con1={},con2={};
-    //加载下拉
-    load_local(function(arr){
+    //3 加载目的地
+    load_local(3,function(arr){
         con1=arr;
     });
-    load_wantDo(function(arr){
+    //4加载主题类型-想去哪里
+    load_local(4,function(arr){
         con2=arr;
     });
     $('#place').focus(function(){
@@ -160,6 +161,7 @@ function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
         success(data,function(){
+            console.log(data);
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
             if(data.hotCampsList.length>0){//热门
@@ -175,9 +177,9 @@ function CampsDetail(){
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){
                     if(i==5){
-                        li.push('<li class="li6"><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
+                        li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
                     }else{
-                        li.push('<li><a href="/info.jsp?categoryType='+val['categoryType']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
+                        li.push('<li><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }
                 }
                 subject_list.append(li.join(''));

@@ -163,17 +163,30 @@
             }
         })
         $('#delete').click(function(){
-            var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
-            console.log(childCheck);
+            var checked=$('#message_ul input[type="checkbox"]:checked');
+            var childCheck=checked.serialize();
+            
+            login_post('/uc/delmessage.do',childCheck,'',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    checked.each(function(){
+                        $(this).closest('li').hide();
+                    })
+                })
+            })
         })
         $('#signRead').click(function(){
-            var childCheck=$('#message_ul input[type="checkbox"]:checkbox').serialize();
+            var checked=$('#message_ul input[type="checkbox"]:checked');
+            var childCheck=checked.serialize();
 
             login_post('/uc/markmessage.do',childCheck,'',function(data){
                 data=JSON.parse(data);
                 user_success(data,function(){
                     $('.checkAll').prop('checked',false);
-                    $('#message_ul input:checked').prop({'checked':false}).parents('.cont_border').removeClass('weidu').addClass('yidu');
+                    checked.each(function(){
+                        $(this).prop({'checked':false}).closest('li').removeClass('weidu').addClass('yidu');
+                    })
+                    // $('#message_ul input:checked').prop({'checked':false}).closest('.cont_border').removeClass('weidu').addClass('yidu');
                 })
             })
         })

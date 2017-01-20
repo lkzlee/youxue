@@ -168,6 +168,14 @@ i{font-family: "simsun";}
 .right_message  .foot_boder a{margin-left:6px;display:inline-block;width:124px;height:30px;line-height:30px;border:solid 1px #919191;border-radius:6px;text-align:center;background:#fff;}
 .right_message  .foot_boder a:hover{background:none;}
 /*代付款*/
+.aLeft_user{float:left;width:620px;}
+.divRight_user{float:left;padding-top:20px;width:250px;}
+.divRight_user span{float:right;width:100%;line-height:37px;padding-bottom:2px;font-size:16px;}
+.divRight_user input{float:left;margin-right:10px;width:120px;height:28px;border:solid 1px #666;color:#666;cursor:pointer;}
+.divRight_user input.a2_payment,.divRight_user input:hover{background:#29abe2;color:#fff;border-color:#29abe2;}
+.divRight_user input.a2_payment{margin-right:0;}
+.divRight_user input.right_margin0{float:right;margin-right:0;}
+
 .right_payment .div_rigPay{padding-left:34px;}
 .right_payment .div_rigPay .bghui{height: 38px;line-height: 38px;font-size: 14px;}
 .right_payment .div_rigPay .bghui span{float:left;text-indent: 46px;}
@@ -175,7 +183,7 @@ i{font-family: "simsun";}
 .right_payment .div_rigPay .bghui a{float: right; padding-right: 23px; color: #666;}
 .right_payment .div_rigPay .bghui a img{padding-left:3px;width:14px;vertical-align:middle;}
 .right_payment .ul_payment{}
-.right_payment .ul_payment li{margin-top:10px;padding:11px 16px 0 19px;border:solid 1px #959595;}
+.right_payment .ul_payment li{margin-top:10px;padding:11px 16px 20px 19px;border:solid 1px #959595;}
 .right_payment .ul_payment li .list_li{width:100%;height:99px;padding-bottom:15px;}
 .right_payment .ul_payment img{float:left;width:147px;height:99px;}
 .right_payment .ul_payment dl{float:left;padding-left:12px;width:444px;color: #666;text-decoration:underline;}
@@ -183,14 +191,15 @@ i{font-family: "simsun";}
 .right_payment .ul_payment a{color: #666;}
 .right_payment .ul_payment dd{line-height:22px;}
 .right_payment .ul_payment .list_li div{float:right;padding-top:17px;}
-.right_payment .ul_payment span{padding-bottom:27px;display:block;text-align:right;}
+.right_payment .ul_payment span{padding-bottom:8px;display:block;text-align:right;}
 .right_payment .ul_payment b{font-size:22px;color:#29abe2;}
 .right_payment .ul_payment .list_li div input{margin-right:10px;display:inline-block;width:120px;height:28px;line-height:28px;border:solid 1px #666;text-align:center;color:#666;cursor:pointer;}
-.right_payment .ul_payment .list_li div input.a2_payment,.right_payment .ul_payment .list_li div input:hover:hover{background:#29abe2;color:#fff;border-color:#29abe2;}
+.right_payment .ul_payment .list_li div input.a2_payment,.right_payment .ul_payment .list_li div input:hover{background:#29abe2;color:#fff;border-color:#29abe2;}
 /*取消订单*/
-.right_payment .ul_payment div.div_travel{}
-.right_payment .ul_payment div.div_travel span{float:right;width:100%;line-height:37px;padding-bottom:2px;font-size:16px;}
-.right_payment .ul_payment div.div_travel a{float:right;margin-right:0;}
+/*.right_payment .ul_payment div.div_travel{float:right;padding-top:20px;}*/
+/*.right_payment .ul_payment div.div_travel span{float:right;width:100%;line-height:37px;padding-bottom:2px;font-size:16px;}*/
+/*.right_payment .ul_payment div.div_travel a{float:right;margin-right:0;padding:0 20px;line-height:30px;border:solid 1px #5a5a5a;}*/
+/*已完成*/
 /*购物车*/
 .right_car{float:left;width:945px;}
 .right_car span{font-family:"宋体";}

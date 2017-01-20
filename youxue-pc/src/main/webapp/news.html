@@ -51,8 +51,8 @@
 </section>
 <section class="content width_content clear">
     <section class="left">
-        <div><a href="#">Camaplink资讯<span></span><i></i></a></div>
-        <p><a href="#">行业新闻</a></p>
+        <div><a href="javascript:void(0)">Camaplink资讯<span></span><i></i></a></div>
+        <p><a href="javascript:void(0)">行业新闻</a></p>
     </section>
     <section class="right">
         <div class="top_img">
@@ -60,18 +60,10 @@
         </div>
         <div class="bottom_content">
             <h2>Camplink资讯</h2>
-            <ul>
-                <li><a href="#"><div><b>游学馆目前正在展开企业自行车及户外装备团购项目。</b></div><span>16/07/2016</span></a></li>
-                <li><a href="#"><div><b>每周我们都会举办一系列的活一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及一系列的活动，齐友凭会员卡还可享受优惠及动，齐友凭会员卡还可享受优惠及积分。</b></div><span>16/07/2016</span></a></li>
-                <li><a href="#"><div><b>每周我们都会举办一系列的活动。</b></div><span>16/07/2016</span></a></li>
-                <li><a href="#"><div><b>每周我们都会举办一系列的活动，齐友凭会员卡还可享受优惠及积分。</b></div><span>16/07/2016</span></a></li>
-                <li><a href="#"><div><b>游学馆目前正在展开企业自行车及户外装备团购项目。</b></div><span>16/07/2016</span></a></li>
+            <ul class="j_newList">
             </ul>
             <div class="page">
-                <span class="firstPage current" class="current"><</span>
-                <span class="current">1</span>
-                <a href="#">2</a>
-                <a class="endPage" href="#">></a>
+                
             </div>
         </div>
     </section>
@@ -90,5 +82,42 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+var public_obj={
+    'pageNo':1
+    // 'totalPage':10,
+    // 'totalCount':100
+};
+$(function(){
+    load_newsList();
+    change_page('.page',public_obj,function(data){
+        public_obj['pageNo']=data.pageNo;
+        public_obj['totalPage']=data.totalPage;
+        public_obj['totalCount']=data.totalCount;
+        load_newsList();
+    });
+})
+function load_newsList(){
+    login_post('/newsList.do',public_obj,'',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            public_obj['pageNo']=data.pageNo;
+            public_obj['totalPage']=data.totalPage;
+            public_obj['totalCount']=data.totalCount;
+            var resultList=data.resultList;
+            var list=['暂无数据'];
+            if(resultList.length>0){
+                list=[''];
+                for(var i=0,len=resultList.length;i<len;i++){
+                    // console.log(resultList[i]['newsId']);
+                    list.push('<li><a href="/news_info.jsp?newsId='+resultList[i]['newsId']+'"><div><b>'+resultList[i]["newsTitle"]+'</b></div><span>'+formatDate(resultList[i]["updateTime"],2)+'</span></a></li>');
+                }
+            }
+            $('.page').html(pageSet(public_obj).join(''));
+            $('.j_newList').html(list.join(''));
+        })         
+    })
+}
+</script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-待付款_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -120,97 +121,69 @@
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script>
-    var public_obj={ 'orderType':0};
-    $(function(){
-        change_page('.page',public_obj,function(data){
-            public_obj['pageNo']=data.pageNo;
-            public_obj['totalPage']=data.totalPage;
-            public_obj['totalCount']=data.totalCount;
-            load();
-        });
-        login_post('/uc/userinfo.do','','',function(data){
-            data=JSON.parse(data);
-            user_success(data,function(){
-                $('.nicknNme_lbl').text(data.nickName);
-                $('.integral_lbl').text(data.credit);
-                if(Number(data.unReads)>0){
-                    $('.message').show().children('span').text(data.unReads);
-                }
-                if(data.photoUrl){
-                    $('#photo_img').attr('src',data.photoUrl).show();
-                }
-            });
-        });
-        $('.ul_payment').on('click','.del_order',function(){
-            btn_disable($(this),true)
-            login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
-                data=JSON.parse(data);
-                user_success(data,function(){
-                    load();
-                })
-            });
-        })
-        $('.ul_payment').on('click','.pay_order',function(){
-            btn_disable($(this),true)
-            login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
-                data=JSON.parse(data);
-                user_success(data,function(){
-                    if(data.payUrl){
-                        window.location.href=data.payUrl
-                    }
-                })
-            });
-        })
-        load();
-    })
-    function load(){
-        login_post('/uc/userorder.do',public_obj,'',function(data){
-            data=JSON.parse(data);
-            console.log(data);
-            user_success(data,function(){
-                render_list(data);
-            })
-        });
-    }
-    //渲染消息列表
-    function render_list(data){
-//        data.pageNo=5;
-//        data.totalPage=10;
-//        data.totalCount=100;
+var public_obj={ 'orderType':0};
+$(function(){
+    getUserData(renderUserInfo);
+    get_orderList(public_obj,render_list);
+    change_page('.page',public_obj,function(data){
         public_obj['pageNo']=data.pageNo;
         public_obj['totalPage']=data.totalPage;
         public_obj['totalCount']=data.totalCount;
-        var arr=[];
-        var result=data['resultList'];
-        var len=result.length;
-        if(len<=0){
-            arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
-        }else{
-            for(var i=0;i<len;i++){
-                arr.push('<li>');
-                var orderList=result[i]['orderList'];
-                for(var j=0,jLen=orderList.length;j<jLen;j++){
-                    arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'"></a>');
-                    arr.push('<dl><dt><a href="/info.jsp?campusId='+orderList[j]['campsId']+'">'+orderList[j]['campsTitle']+'</a></dt>');
-                    arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
-                    arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">出发日期：'+orderList[j]['departureDate']+'</a></dd>');
-                    arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">预定日期：'+orderList[j]['startDate']+'</a></dd></dl>');
-                    arr.push('<div><span>费用：<b>¥'+orderList[j]['totalPrice']+'</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
-                    arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
+        get_orderList(public_obj,render_list)
+    });
+    $('.ul_payment').on('click','.del_order',function(){
+        btn_disable($(this),true)
+        login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
+            data=JSON.parse(data);
+            user_success(data,function(){
+                get_orderList(public_obj,render_list)
+            })
+        });
+    })
+    $('.ul_payment').on('click','.pay_order',function(){
+        btn_disable($(this),true)
+        login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+            data=JSON.parse(data);
+            user_success(data,function(){
+                if(data.payUrl){
+                    window.location.href=data.payUrl
                 }
-                arr.push('</li>');
+            })
+        });
+    })
+})
+//渲染消息列表
+function render_list(data){
+    //data.totalPage=10;
+    //data.totalCount=100;
+    public_obj['pageNo']=data.pageNo;
+    public_obj['totalPage']=data.totalPage;
+    public_obj['totalCount']=data.totalCount;
+    var arr=[];
+    var result=data['resultList'];
+    // console.log(JSON.stringify(data));
+    var len=result.length;
+    if(len<=0){
+        arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
+    }else{
+        for(var i=0;i<len;i++){
+            arr.push('<li>');
+            var orderList=result[i]['orderList'];
+            for(var j=0,jLen=orderList.length;j<jLen;j++){
+                arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'"></a>');
+                arr.push('<dl><dt><a href="/info.jsp?campusId='+orderList[j]['campsId']+'">'+orderList[j]['campsTitle']+'</a></dt>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">出发日期：'+orderList[j]['departureDate']+'</a></dd>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?campusId='+orderList[j]['campsId']+'">预定日期：'+orderList[j]['startDate']+'</a></dd></dl>');
+                arr.push('<div><span>费用：<b>¥'+orderList[j]['totalPrice']+'</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
+                arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
             }
-        }
-        $('.ul_payment').html(arr.join(''));
-        $('.page').html(pageSet(public_obj).join(''));
-    }
-    function btn_disable(That,isDisabled){
-        if(isDisabled){
-            That.attr('disabled','disabled').addClass('disabled');
-        }else{
-            That.removeAttr('disabled').removeClass('disabled');
+            arr.push('</li>');
         }
     }
+    $('.ul_payment').html(arr.join(''));
+    $('.page').html(pageSet(public_obj).join(''));
+}
 </script>
 </body>
 </html>

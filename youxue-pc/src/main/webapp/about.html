@@ -50,33 +50,17 @@
     </section>
 </section>
 <section class="content content_qg width_content clear">
-    <section class="left">
-        <div><a href="#">关于我们<span></span><i></i></a></div>
-        <p><a href="#">关于青古</a></p>
-        <p><a href="#">合作伙伴</a></p>
-        <p><a href="#">常见问题</a></p>
+    <section class="left j_list">
+        <p class="active"><a href="#aboutUs">关于我们<i></i></a></div>
+        <p><a href="#qinggu">关于青古<i></i></a></p>
+        <p><a href="#creator">合作伙伴<i></i></a></p>
+        <p><a href="#mainProduct">常见问题<i></i></a></p>
     </section>
     <section class="right">
-        <img src="img/aboutBg.jpg" alt="">
+        <img src="" alt="" class="j_img">
         <div class="cont_right">
-            <div class="left_cont_right">
-                <div>
-                    <i></i>
-                    <span></span>
-                </div>
-                <div class="div2">
-                    <i></i>
-                    <span></span>
-                </div>
-                <div class="div3">
-                    <i></i>
-                </div>
-            </div>
-            <div class="right_cont_right">
-                <p>以“信任 分享 感恩”为核心理念，“游学 创业 公益”为永恒主题的游学概念馆。小馆整合了捷安特、美利达、大行、骓驰等一线自行车品牌与骑行装备以及极星、旅行家等众多品牌，有别于传统户外专卖店的是，
-                    我们还定期举办游学沙龙、创业分享、公益活动、骑游竞技，提供咖啡软饮、骑行咨询等，为广大车友、驴友搭建交流分享平台。</p>
-                <p class="p2_cont">游学馆目前正在开展企业自行车及户外装备团购项目，租车送车等主题推广活动，并承接社区文化活动，如有需要，请联系我们：020-28995885</p>
-                <p class="p3_cont">每周我们都会举办一系列的互动（周二车友拉链，周日夜跑，周五夜骑，周末4+2/徒步活动，周末亲子游等），齐友凭会员卡还可享受优惠及积分。</p>
+            <div class="right_cont_right icon_circ j_content">
+                
             </div>
         </div>
     </section>
@@ -95,5 +79,30 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+$(function(){
+    getHash();
+})
+window.onhashchange=function(){
+    getHash();
+}
+$('.j_list p').click(function(){
+    $(this).addClass('active').siblings('p').removeClass('active');
+})
+function getHash(){
+    var url=window.location.hash;
+    var param=url.split('#')[1];
+    load_aboutInfo(param);
+}
+function load_aboutInfo(type){
+    login_post('/aboutUs.do','type='+(type || 'aboutUs'),'',function(data){
+        data=JSON.parse(data);
+        if(data.descs){
+            $('.j_img').attr('src',data.imgurl);
+            $('.j_content').html(data.descs)
+        }            
+    })
+}
+</script>
 </body>
 </html>

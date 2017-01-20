@@ -64,7 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </ul>
         </div>
         <div class="left con1_right">
-            <h1 class="title">英国亲子营地，5天3地，学习英国文化氛围</h1>
+            <h1 class="title"></h1>
             <div class="con1_info">
                 <div class="con1_info_d1">
                     <p class="p1">面向对象：<label class="orientedPeople"></label></p>

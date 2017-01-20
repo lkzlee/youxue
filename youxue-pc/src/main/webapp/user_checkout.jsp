@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-        <title>个人中心-结算订单_Camplink</title>
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <![endif]-->
-        <script src="js/prefixfree.min.js"></script>
-        <link rel="stylesheet" href="css/style.css">
-            <link rel="stylesheet" href="css/trip-calendar.css">
-                <link rel="stylesheet" href="css/user.css">
+<meta charset="UTF-8">
+<title>个人中心-结算订单_Camplink</title>
+<script src="js/isLogin.js"></script>
+<!--[if lt IE 9]>
+<script src="js/html5shiv.min.js"></script>
+<![endif]-->
+<script src="js/prefixfree.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/trip-calendar.css">
+<link rel="stylesheet" href="css/user.css">
 </head>
 <body>
 <section class="header">
@@ -159,6 +159,7 @@ pageEncoding="utf-8"%>
             if(changeRadio() && changeRadio()!==1){
                 login_post('/coupon/getCouponByCode.do','codeId='+$(this).val(),'',function(data){
                     data=JSON.parse(data);
+                    console.log(data);
                     success(data,function(){
                         discount=data.codeAmount;
                         $('.moneyTotal').text(moneyTotal-discount);

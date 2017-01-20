@@ -51,43 +51,14 @@
 </section>
 <section class="content content_qg width_content clear">
     <section class="left">
-        <div><a href="customized.html">私人定制<span></span><i></i></a></div>
-        <p><a href="customized_case.html">定制案例</a></p>
-        <p class="active"><a href="customized_product.html">周边产品</a></p>
+        <p><a href="customized.html">私人定制<i></i></a></p>
+        <p><a href="customized_case.html">定制案例<i></i></a></p>
+        <p class="active"><a href="customized_product.html">周边产品<i></i></a></p>
     </section>
     <section class="cus_right">
         <h2>周边产品</h2>
-        <div class="product_cus">
-            <div class="div_pro visa_pro clear">
-                <h3><i></i><span>签证服务</span></h3>
-                <div class="cont_prot">
-                    <p>签证有效期为自订单日起半年内，如逾期未办理请联系客服。</p>
-                    <p>齐整出签前不要办理机票、酒店、行程等，以防因领馆政策改变出不了签，而造成不必要的损失，如已经办理，因此而带来的损失由客人自行承担，商家概不负责。</p>
-                    <p>办理时间：14:00之前收到的快递，当日审核，次日送签。</p>
-                    <p><img src="img/product1.jpg" alt=""></p>
-                    <p>签证有效期为自订单日起半年内，如逾期未办理请联系客服。</p>
-                    <p>齐整出签前不要办理机票、酒店、行程等，以防因领馆政策改变出不了签，而造成不必要的损失，如已经办理，因此而带来的损失由客人自行承担，商家概不负责。</p>
-                    <p>办理时间：14:00之前收到的快递，当日审核，次日送签。</p>
-                </div>
-                <div class="bottom_prot">
-                    <span>费用：<i>¥5000</i></span>
-                    <img src="uploads/images/erweima.jpg" alt="">
-                    <img src="uploads/images/erweima.jpg" alt="">
-                </div>
-            </div>
-            <div class="div_pro clear">
-                <h3><i></i><span>接送机服务</span></h3>
-                <div class="cont_prot">
-                    <p>签证有效期为自订单日起半年内，如逾期未办理请联系客服。</p>
-                    <p>齐整出签前不要办理机票、酒店、行程等，以防因领馆政策改变出不了签，而造成不必要的损失，如已经办理，因此而带来的损失由客人自行承担，商家概不负责。</p>
-                    <p>办理时间：14:00之前收到的快递，当日审核，次日送签。</p>
-                </div>
-                <div class="bottom_prot">
-                    <span>费用：<i>¥5000</i></span>
-                    <img src="uploads/images/erweima.jpg" alt="">
-                    <img src="uploads/images/erweima.jpg" alt="">
-                </div>
-            </div>
+        <div class="product_cus j_content">
+            
         </div>
     </section>
 </section>
@@ -105,5 +76,32 @@
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+$(function(){
+    load_case();
+})
+function load_case(){
+    login_post('/productDetail.do','','',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            var productList=data.productList;
+            // console.log(productList);
+            var len=productList.length;
+            var list=['暂无数据'];
+            if(len>0){
+                list=[];
+                for(var i=0;i<len;i++){
+                    var first_class=(i!=len-1)?'visa_pro':'';
+                    list.push('<div class="div_pro '+first_class+' clear"><h3><i></i><span>'+productList[i]['productName']+'</span></h3><div class="cont_prot">');
+                    list.push(productList[i]['productDesc']);
+                    list.push('</div><div class="bottom_prot"><span>费用：<i>¥'+productList[i]['productPrice']+'</i></span>');
+                    list.push('<img src="'+productList[i]['alipayQrcodeUrl']+'"><img src="'+productList[i]['weixinQrcodeUrl']+'"></div></div>');
+                }
+            }
+            $('.j_content').html(list.join(''));
+        })
+    })
+}
+</script>
 </body>
 </html>

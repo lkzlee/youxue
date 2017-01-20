@@ -6,7 +6,7 @@ var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*
 var strReg=/[`~!@#$%^&*()_+=<>?:"{},.\/;'[\]]/im;//验证特殊字符
 var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 var pwdReg=/^\d{4,6}$/;
-var codeReg=/^[a-z0-9]{0,4}$/;
+var codeReg=/^[a-zA-Z0-9]{0,4}$/;
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -39,10 +39,10 @@ function is_login(callback){
         callback(data);
     })
 }
-//加载目的地
-function load_local(callback) {
-    var con1=[{"categoryId":"","categoryName":"暂无数据"}];
-    login_post('/getCategroyList.do?categoryType=3','','GET',function(data){
+//加载目的地 主题分类 时间周期 等
+function load_local(id,callback) {
+    var con1=[];
+    login_post('/getCategroyList.do?categoryType='+id,'','GET',function(data){
         data=JSON.parse(data);
         success(data,function(){
             if(data.categoryList.length>0){
@@ -52,18 +52,13 @@ function load_local(callback) {
         })
     });
 }
-//加载主题类型
-function load_wantDo(callback){
-    var con1=[{"categoryId":"","categoryName":"暂无数据"}];
-    login_post('/getCategroyList.do?categoryType=5','','GET',function(data){
-        data=JSON.parse(data);
-        success(data,function(){
-            if(data.categoryList.length>0){
-                con1=data.categoryList;
-            }
-            callback(con1);
-        })
-    });
+//按钮点击后，不可再点击
+function btn_disable(That,isDisabled){
+    if(isDisabled){
+        That.attr('disabled','disabled').addClass('disabled');
+    }else{
+        That.removeAttr('disabled').removeClass('disabled');
+    }
 }
 //搜索
 function search(){
@@ -115,18 +110,20 @@ function index_select(element,con){
     pos_obj.width=width;
 
     var li='';
-    for(var i=0,len=con.length;i<len;i++){
-        if(!con[i]['categoryId']){
-            li+='<li class="disabled" data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
-        }else{
-            li+='<li data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+    if(con.length>0){
+        for(var i=0,len=con.length;i<len;i++){
+            if(!con[i]['categoryId']){
+                li+='<li class="disabled" data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+            }else{
+                li+='<li data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+'</li>';
+            }
         }
+    }else{
+        li='<li>正在加载&nbsp;&nbsp;&nbsp;&nbsp;<img src="../img/load.gif" width="25"/> </li>';
     }
+    
     var cName=element.attr('class');
     if(!document.getElementById(cName)){
-        if(!li){
-            li='<li>正在加载&nbsp;&nbsp;&nbsp;&nbsp;<img src="../img/load.gif" width="25"/> </li>';
-        }
         var nDiv=$("<ul class='posElement' id='"+cName+"' style='position:absolute;top:"+pos_obj.top+"px;left:"+pos_obj.left+"px;width:"+pos_obj.width+"px'>"+li+"</ul>");
         $(document.body).append(nDiv);
     }else{
@@ -377,19 +374,19 @@ function pageSet(data){
     if(pageNo==1){
         arr.push('<span class="firstPage current"><</span>');
     }else{
-        arr.push('<a class="firstPage" href=""><</a>');
+        arr.push('<a class="firstPage" href="#1"><</a>');
     }
     for(var i=1;i<=totalPage;i++){
         if(i==pageNo){
             arr.push('<span class="current">'+i+'</span>');
         }else{
-            arr.push('<a href="">'+i+'</a>');
+            arr.push('<a href="#'+i+'">'+i+'</a>');
         }
     }
     if(pageNo==totalPage){
         arr.push('<span class="endPage current">></span>');
     }else{
-        arr.push('<a class="endPage" href="">></a>');
+        arr.push('<a class="endPage" href="#'+totalPage+'">></a>');
     }
     return arr;
 }
@@ -417,14 +414,21 @@ function change_page(element,data,callback){
 function formatDate(time,style){
     var format='',str='';
     var dateTime=new Date(time);
-    if(style==0){
-        format='-';
-        str=dateTime.getFullYear()+format+toDb(dateTime.getMonth()+1)+format+toDb(dateTime.getDate());
-    }else if(style==1){
-        format=['年','月','日','时','分','秒'];
-        str=dateTime.getFullYear()+format[0]+toDb(dateTime.getMonth()+1)+format[1]+toDb(dateTime.getDate())+format[2];
-    }else{
-        str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());
+    switch(style){
+        case 0:
+            format='-';
+            str=dateTime.getFullYear()+format+toDb(dateTime.getMonth()+1)+format+toDb(dateTime.getDate());
+            break;
+        case 1:
+            format=['年','月','日','时','分','秒'];
+            str=dateTime.getFullYear()+format[0]+toDb(dateTime.getMonth()+1)+format[1]+toDb(dateTime.getDate())+format[2];
+            break;
+        case 2:
+            str=toDb(dateTime.getDate())+'/'+toDb(dateTime.getMonth()+1)+'/'+dateTime.getFullYear();
+            break;
+        default:
+            str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());
+            break;
     }
     return str;
 }

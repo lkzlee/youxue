@@ -5,6 +5,7 @@ pageEncoding="utf-8"%>
 <head>
     <meta charset="UTF-8">
     <title>个人中心-结算订单_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->

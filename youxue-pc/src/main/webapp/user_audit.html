@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>个人中心-待审核_Camplink</title>
+    <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -79,61 +80,27 @@
             <div class="bghui"></div>
             <div class="imgMessage">
                 <div class="img">
-                    <img src="uploads/images/photo.jpg" alt="">
+                    <img src="" alt="" id="photo_img" style="display:none;">
                 </div>
-                <a class="message" href="#">
+                <a class="message" href="/user_message.html">
                     <i></i>
                     <span>6</span>
                 </a>
             </div>
             <div class="hiDiv">
-                <h2>Hi,Cindy!</h2>
-                <span>你的积分，200</span>
+                <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+                <span>你的积分，<label class="integral_lbl">0</label></span>
             </div>
         </div>
         <div class="div_rigPay">
             <div class="bghui">
                 <span>待审核<i class="i_audit">您的订单已受理，审核通过后可在待出行列表查看</i></span>
-                <a href="#">收起<img src="img/payment1.jpg"/></a>
+                <!-- <a href="#">收起<img src="img/payment1.jpg"/></a> -->
             </div>
             <ul class="ul_payment clear">
-                <li>
-                    <a href="#">
-                        <img src="uploads/images/index0_03.jpg" alt="">
-                        <dl>
-                            <dt>英国亲自营地，5天3地，学习英语文化氛围</dt>
-                            <dd>订单号：123321123456</dd>
-                            <dd>出发日期：2016-07-30</dd>
-                            <dd>预定日期：2016-04-01</dd>
-                        </dl>
-                    </a>
-                    <div class="div_travel">
-                        <span>订单金额：¥5000</span>
-                        <a href="#">审核</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="uploads/images/index0_03.jpg" alt="">
-                        <dl>
-                            <dt>英国亲自营地，5天3地，学习英语文化氛围</dt>
-                            <dd>订单号：123321123456</dd>
-                            <dd>出发日期：2016-07-30</dd>
-                            <dd>预定日期：2016-04-01</dd>
-                        </dl>
-                    </a>
-                    <div class="div_travel">
-                        <span>订单金额：¥5000</span>
-                        <a href="#">审核</a>
-                    </div>
-                </li>
+                
             </ul>
-            <div class="page">
-                <span class="firstPage current" class="current"><</span>
-                <span class="current">1</span>
-                <a href="#">2</a>
-                <a class="endPage" href="#">></a>
-            </div>
+            <div class="page"></div>
         </div>
     </div>
 </section>
@@ -153,5 +120,59 @@
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
+<script type="text/javascript">
+var public_obj={'orderType':1};
+$(function(){
+    getUserData(renderUserInfo);
+    get_orderList(public_obj,render_list);
+    change_page('.page',public_obj,function(data){
+        public_obj['pageNo']=data.pageNo;
+        public_obj['totalPage']=data.totalPage;
+        public_obj['totalCount']=data.totalCount;
+        get_orderList(public_obj,render_list)
+    });
+
+})
+//渲染消息列表
+// var abc=0
+function render_list(data){
+    // var data={"pageNo":1,"pageSize":10,"result":100,"resultDesc":"查询成功","resultList":[{"logicOrderId":"20170120163325LD9659cfd4","orderList":[{"accountId":"18810497384","campsId":"20170119180033CAM6483ae18","campsImages":"http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/camps/jpg/u=1577243255,2649691661&fm=23&gp=0_20170119175955","campsName":"1分钱营地","campsTitle":"1分钱营地","codeId":"","codeName":"","codePrice":0,"codeStatus":0,"contactEmail":"34","contactName":"34","contactPhone":"34","creatTime":"2017-01-20 16:33:25","deadlineDate":"2017-01-29 00:00:00","departureDate":"","durationTime":11,"logicOrderId":"20170120163325LD9659cfd4","orderId":"20170120163325ODbfa30f7e","orderIp":"0:0:0:0:0:0:0:1","payPrice":0.01,"payStatus":0,"payType":1,"realCampsImages":"http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/camps/jpg/u=1577243255,2649691661&fm=23&gp=0_20170119175955","startDate":"2017-01-20 00:00:00","status":0,"totalCount":1,"totalPrice":0.01,"updateTime":""},{"accountId":"18810497384","campsId":"20170108220106CAM1eaf186c","campsImages":"http://127.0.0.1:8081/img/camps/jpg/zb9_20170108220048","campsName":"2分钱营地","campsTitle":"测试营地3","codeId":"","codeName":"","codePrice":0,"codeStatus":0,"contactEmail":"34","contactName":"34","contactPhone":"34","creatTime":"2017-01-20 16:33:25","deadlineDate":"2017-01-25 00:00:00","departureDate":"","durationTime":12,"logicOrderId":"20170120163325LD9659cfd4","orderId":"20170120163325ODa92bcd0d","orderIp":"0:0:0:0:0:0:0:1","payPrice":0.02,"payStatus":0,"payType":1,"realCampsImages":"http://127.0.0.1:8081/img/camps/jpg/zb9_20170108220048","startDate":"2017-01-29 00:00:00","status":0,"totalCount":1,"totalPrice":0.02,"updateTime":""}],"payStatus":0},{"logicOrderId":"20170120143108LD09c3c468","orderList":[{"accountId":"18810497384","campsId":"20170119180033CAM6483ae18","campsImages":"http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/camps/jpg/u=1577243255,2649691661&fm=23&gp=0_20170119175955","campsName":"1分钱营地","campsTitle":"1分钱营地","codeId":"","codeName":"","codePrice":0,"codeStatus":0,"contactEmail":"23","contactName":"23","contactPhone":"23","creatTime":"2017-01-20 14:31:08","deadlineDate":"2017-01-29 00:00:00","departureDate":"","durationTime":11,"logicOrderId":"20170120143108LD09c3c468","orderId":"20170120143108OD78b67ef1","orderIp":"0:0:0:0:0:0:0:1","payPrice":0.01,"payStatus":0,"payType":1,"realCampsImages":"http://101.200.148.203:8000/youxue-img-0.0.1-SNAPSHOT/img/camps/jpg/u=1577243255,2649691661&fm=23&gp=0_20170119175955","startDate":"2017-01-20 00:00:00","status":0,"totalCount":1,"totalPrice":0.01,"updateTime":""}],"payStatus":0}],"totalCount":3,"totalPage":1};
+    // data.pageNo=(++abc);
+//        data.totalPage=10;
+//        data.totalCount=100;
+    public_obj['pageNo']=data.pageNo;
+    public_obj['totalPage']=data.totalPage;
+    public_obj['totalCount']=data.totalCount;
+    var arr=[];
+    var result=data['resultList'];
+    var len=result.length;
+    if(len<=0){
+        arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
+    }else{
+        for(var i=0;i<len;i++){
+            arr.push('<li class="clear">');
+            var orderList=result[i]['orderList'];
+            for(var j=0,jLen=orderList.length;j<jLen;j++){
+                arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'" class="aLeft_user"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'">');
+                arr.push('<dl><dt>'+orderList[j]['campsTitle']+'</dt><dd>订单号：'+orderList[j]['orderId']+'</dd><dd>出发日期：'+orderList[j]['departureDate']+'</dd>');
+                arr.push('<dd>预定日期：'+orderList[j]['startDate']+'</dd></dl></a><div class="divRight_user"><span>订单金额：¥'+orderList[j]['totalPrice']+'</span></div></div>');
+                // arr.push('<input type="button" name="" value="审核订单" class="right_margin0">');
+                // arr.push('<div><span>费用：<b>¥</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
+                // arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
+            }
+            arr.push('</li>');
+        }
+    }
+    $('.ul_payment').html(arr.join(''));
+    $('.page').html(pageSet(public_obj).join(''));
+}
+function btn_disable(That,isDisabled){
+    if(isDisabled){
+        That.attr('disabled','disabled').addClass('disabled');
+    }else{
+        That.removeAttr('disabled').removeClass('disabled');
+    }
+}
+</script>
 </body>
 </html>

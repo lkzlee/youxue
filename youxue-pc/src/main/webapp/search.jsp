@@ -73,10 +73,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="left">时间周期<i></i></div>
             <div class="right timeDuration">
                 <a href="?timeDuration=" data-param="timeDuration" data-value="">不限<i></i></a>
-                <a href="?timeDuration=7-14" data-param="timeDuration" data-value="7-14">7-14天<i></i></a>
+                <!-- <a href="?timeDuration=7-14" data-param="timeDuration" data-value="7-14">7-14天<i></i></a>
                 <a href="?timeDuration=14-21" data-param="timeDuration" data-value="14-21">14-21天<i></i></a>
                 <a href="?timeDuration=21-30" data-param="timeDuration" data-value="21-30">21-30天<i></i></a>
-                <a href="?timeDuration=30-60" data-param="timeDuration" data-value="30-60">1-2月</a>
+                <a href="?timeDuration=30-60" data-param="timeDuration" data-value="30-60">1-2月</a> -->
             </div>
         </li>
         <li>
@@ -89,21 +89,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="left">价格档位<i></i></div>
             <div class="right priceRange">
                 <a href="?priceRange=" data-param="priceRange" data-value="">不限<i></i></a>
-                <a href="?priceRange=5000-8000" data-param="priceRange" data-value="5000-8000">5000-8000<i></i></a>
+               <!--  <a href="?priceRange=5000-8000" data-param="priceRange" data-value="5000-8000">5000-8000<i></i></a>
                 <a href="?priceRange=8000-10000" data-param="priceRange" data-value="8000-10000">8000-10000<i></i></a>
                 <a href="?priceRange=10000-15000" data-param="priceRange" data-value="10000-15000">10000-15000<i></i></a>
                 <a href="?priceRange=15000-20000" data-param="priceRange" data-value="15000-20000">15000-20000<i></i></a>
-                <a href="?priceRange=20000-1000000" data-param="priceRange" data-value="20000-1000000">20000以上</a>
+                <a href="?priceRange=20000-1000000" data-param="priceRange" data-value="20000-1000000">20000以上</a> -->
             </div>
         </li>
         <li>
             <div class="left">出发时间<i></i></div>
             <div class="right departureMonth">
                 <a href="?departureMonth=" data-param="departureMonth" data-value="">不限<i></i></a>
-                <a href="?departureMonth=7" data-param="departureMonth" data-value="7">7月<i></i></a>
-                <a href="?departureMonth=8" data-param="departureMonth" data-value="8">8月<i></i></a>
-                <a href="?departureMonth=9" data-param="departureMonth" data-value="9">9月<i></i></a>
-                <a href="?departureMonth=10" data-param="departureMonth" data-value="10">10月<i></i></a>
+                
                 <a href="?departureTime=" data-param="departureTime" data-value="" id="custom_time">自定义出发时间</a>
             </div>
         </li>
@@ -209,14 +206,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         search_sourch();
     })
     function load_(){
-        //加载下拉
-        load_local(function(arr){
+        //3 加载目的地
+        load_local(3,function(arr){
             $('.localeCategory').append(publics(arr,'localeCategoryId'));
         });
-        load_subject(function(arr){
+        //4加载主题类型-想去哪里
+        load_local(4,function(arr){
             $('.subjectCategory').append(publics(arr,'subjectCategoryId'));
         });
-        function publics(con,str){
+        //5加载时间周期
+        load_local(5,function(arr){
+            $('.timeDuration').append(publics(arr,'timeDuration'));
+        });
+        //6加载时间分类
+        load_local(6,function(arr){
+            $('#custom_time').before(publics(arr,'departureMonth','categoryType'));
+        });
+        //7加载价格档位
+        load_local(7,function(arr){
+            $('.priceRange').append(publics(arr,'priceRange'));
+        });
+        function publics(con,str,param){
+            param=param||'categoryId';
             var as='';
             for(var i=0,len=con.length;i<len;i++){
                 var class1='',i1='';
@@ -226,7 +237,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 if(i!=len-1){
                     i1='<i></i>';
                 }
-                as+='<a '+class1+' href="?'+str+'='+con[i]['categoryId']+'" data-param="'+str+'" data-value="'+con[i]['categoryId']+'">'+con[i]['categoryName']+i1+'</a>';
+                as+='<a '+class1+' href="?'+str+'='+con[i][param]+'" data-param="'+str+'" data-value="'+con[i][param]+'">'+con[i]['categoryName']+i1+'</a>';
             }
             return as;
         }
@@ -249,6 +260,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $('#position').html(public_obj['searchContent']?'<a href="javascript:void(0)"><i>></i>'+public_obj['searchContent']+'</a>':'<a href="javascript:void(0)"><i>></i>搜索</a>');
         login_post('/getCampsList.do',public_obj,'',function(data){
             data=JSON.parse(data);
+        console.log(data);
             success(data,function(){
 //                data.campsList.pageNo=5;
 //                data.campsList.totalPage=10;
@@ -266,7 +278,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     for(var i=0;i<len;i++){
                         li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
                         li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'">'+obj[i]['campsTitle']+'</a></h2>')
-                        li.push('<div><a href="#">产品分类<i>></i></a><a href="#">语言学习<i>></i></a><a href="#">10月</a></div>')
+                        li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
                         li.push('<p>'+obj[i]['campsDesc']+'</p></div>')
                         li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'">点击查看</a></div></li>')
                     }

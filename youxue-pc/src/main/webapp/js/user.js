@@ -33,8 +33,44 @@ function userIndexList(){
         return false;
     })
 }
+//个人首页-渲染弹出框和页面上展示的用户信息
+function render_alertANDuserinfo(data){
+    renderUserInfo(data);
+    var alertMessage=$('.alertMessage');
+    data.ifPop && alertMessage.show();
+    $('#phone').children('span').text(data.mobile);
+    $('#email').children('span').text(data.email);
+    $('#nickname').children('span').text(data.nickName);
+    $('#sex').children('span').text(data.gender==0?'男':'女');
+    $('#birthday').children('span').text(formatDate(new Date(data.birthTime),0));
+    $('#loveCity').children('span').text(data.loveCity);
+    var close=$('.close',alertMessage);
+    close.click(function(){
+        alertMessage.hide(300);
+    })
+}
+//加载用户基本信息
+function getUserData(callback){
+    login_post('/uc/userinfo.do','','',function(data){
+        data=JSON.parse(data);
+        user_success(data,function(){
+            callback && callback(data)
+        });
+    });
+}
+//渲染用户基本信息
+function renderUserInfo(data){
+    $('.nicknNme_lbl').text(data.nickName);
+    $('.integral_lbl').text(data.credit);
+    if(Number(data.unReads)>0){
+        $('.message').show().children('span').text(data.unReads);
+    }
+    if(data.photoUrl){
+        $('#photo_img').attr('src',data.photoUrl).show();
+    }
+}
 //首页基础信息编辑
-function user_edit(){
+function edit_userInfo(){
     var default_edit=$('#default_edit');
     var nickname=$('#nickname');
     var nspan=nickname.children('span');
@@ -50,6 +86,7 @@ function user_edit(){
 
     var sex=$('#sex');
     var sspan=sex.children('span');
+    var this_value='';
     default_edit.click(function(){
         if($(this).html()=="编辑"){
             this_value="保存";
@@ -102,6 +139,80 @@ function user_edit(){
         check_loveCity($(this))
     })
 }
+//首页头像修改
+function edit_photo(url,successFn,errorFn){
+    var edit_photo=$('.j_edit_photo');
+    var photoDiv=$('.photoDiv');
+    var uploadFile=$('#uploadFile');
+    var btn_upload=$('#btn_upload');
+    var imgUrl='';
+    edit_photo.click(function(){
+        if($(this).html()=="保存"){
+            if(imgUrl){
+                save_photo(imgUrl,function(){
+                    $('#photo_img').attr('src',imgUrl).show();
+                    $(this).html("编辑");
+                    photoDiv.fadeOut(300);
+                })
+            }
+        }else{
+            $(this).html("保存");
+            photoDiv.fadeIn(300);
+            btn_upload.click(function(){
+                uploadFile.click();
+            })
+            uploadFile.on('change',function(){
+                uploadImage($(this)[0])
+            })
+            function uploadImage(obj) {
+                if(validateImage(obj)) {
+                    var data = new FormData();
+                    data.append('uploadFile', obj.files[0]);
+                    file_post(url,data,'',function(data){
+                        data=JSON.parse(data);
+                        data=JSON.parse(data);
+                        imgUrl=data.url;
+                        successFn(data);
+                    });
+                }
+            }
+        }
+        return false;
+    });
+    function save_photo(url,callback){
+        login_post('/uc/updatePhoto.do','userPhotoUrl='+url,'',function(data){
+            data=JSON.parse(data);
+            success(data,function(){
+                callback && callback();
+            })
+        })
+    }
+}
+//预览头像
+function see_photo(data){
+    var bigPhoto=$('#bigPhoto');
+    changeEl(bigPhoto,data.url);
+    var photo_108=$('#photo_108');
+    changeEl(photo_108,data.url);
+    var photo_100=$('#photo_100');
+    changeEl(photo_100,data.url);
+    var photo_50=$('#photo_50');
+    changeEl(photo_50,data.url);
+
+    function changeEl(element,src){
+        var bi=$('i',element).hide();
+        $('img',element).attr({'src':src,'display':'inline-block'});
+    }
+}
+//获取订单列表
+function get_orderList(public_obj,callback){
+    login_post('/uc/userorder.do',public_obj,'',function(data){
+        data=JSON.parse(data);
+        user_success(data,function(){
+            callback(data);
+        })
+    });
+}
 function user_success(data,callback){
     if(data.result==100){
         callback();
@@ -147,48 +258,6 @@ function check_loveCity(This){
         return false;
     }
     return true;
-}
-//首页基础信息编辑
-function user_edit_photo(url,successFn,errorFn){
-    var edit_photo=$('#edit_photo');
-    var photoDiv=$('.photoDiv');
-    var uploadFile=$('#uploadFile');
-    var btn_upload=$('#btn_upload');
-    edit_photo.click(function(){
-        if($(this).html()=="保存"){
-            $(this).html("编辑");
-            photoDiv.fadeOut(300);
-        }else{
-            $(this).html("保存");
-            photoDiv.fadeIn(300);
-            btn_upload.click(function(){
-                uploadFile.click();
-            })
-            uploadFile.on('change',function(){
-                uploadImage($(this)[0])
-            })
-            function uploadImage(obj) {
-                if(validateImage(obj)) {
-                    // var frm_pic=$('#frm_pic');
-                    // frm_pic.attr('action',url);
-                    // var frm=$('<iframe id="frm" name="frm">a</iframe>');
-                    // $(frm_pic).parents('.photo1').append(frm);
-                    // frm.append(frm_pic);
-                    // // frm[0].contentWindow.document.write(frm_pic);
-                    // frm_pic.attr('target','frm');
-                    // frm_pic.submit();
-
-
-                    var data = new FormData();
-                    data.append('uploadFile', obj.files[0]);
-                    file_post(url,data,'',function(data){
-                        console.log(data);
-                    });
-                }
-            }
-        }
-        return false;
-    });
 }
 function car(){
     var car_ul=$('#car_ul');

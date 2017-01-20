@@ -57,7 +57,7 @@ public class WeiXinRefundQueryTask
 					List<RefundVo> refundList = refundDao.selectInitRefundByPay(PayTypeEnum.WEIXIN_APY.getValue());
 					if (CollectionUtils.isEmpty(refundList))
 					{
-						log.info("要进行退款的订单为空，额外休息10分钟.....");
+						log.info("要进行退款的订单为空，额外休息20分钟.....");
 						Thread.sleep(20l * 60 * 1000); //休息20分钟
 					}
 					else
@@ -91,7 +91,7 @@ public class WeiXinRefundQueryTask
 
 						}
 					}
-					Thread.sleep(10l * 60 * 1000); //休息30分钟
+					Thread.sleep(10l * 60 * 1000); //休息10分钟
 				}
 				catch (Exception e)
 				{

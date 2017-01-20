@@ -1,0 +1,33 @@
+@charset "utf-8";
+html{
+    -webkit-text-size-adjust:none;
+    font:16px PingFangSC-Regular,"微软雅黑";
+    color: #333333;
+}
+body{
+    background-color: #fff;
+}
+i,u,s,b,span,div,p,h1,h2,h3,h4,h5,ul,li,ol,dl,dt,dd,body,input,form,iframe,video,audio,header,nav,section,footer,article,button{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+button{
+    border:none;
+    background-color: #fff;
+}
+ul{
+    list-style: none;
+}
+img{
+    border:none;
+    vertical-align: middle;
+}
+input{
+    border:none;
+    outline: none;
+}
+a{
+    text-decoration: none;
+    color: #32AFE4;
+}

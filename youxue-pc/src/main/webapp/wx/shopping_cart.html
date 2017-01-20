@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>shopping_cart</title>
+    <link rel="stylesheet" href="css/cssReset.css"/>
+    <link rel="stylesheet" href="css/shopping_cart.css"/>
+</head>
+<body>
+    <header>
+        <p>您购买的营地我们会尽快确认，确认无误后订单状态为“待出行”，若确认购买失败，将会全额退还。咨询热线：<a href="tel:4008-517-517">4008-517-517</a></p>
+    </header>
+    <section>
+        <ul>
+            <li class="cf">
+                <div class="cf choice_goods">
+                    <p class="common_choice"><i></i></p>
+                    <div class="container">
+                        <div class="cf move_path">
+                            <img src="img/stu.png"/>
+                            <div class="js_calc_width">
+                                <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
+                                <p class="price">价格 ¥ <span>1799</span></p>
+                            </div>
+                            <button>删除</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cf cart_edit">
+                    <p>数量  <span>1</span></p>
+                    <div class="cart_edit_number hidden_active">
+                        <span class="sub_button"></span><input type="text" value="1"><span class="sum_button"></span>
+                    </div>
+                    <div class="cart_edit_choice">
+                        编辑
+                    </div>
+                </div>
+            </li>
+            <li class="cf">
+                <div class="cf choice_goods">
+                    <p class="common_choice"><i></i></p>
+                    <div class="container">
+                        <div class="cf move_path">
+                            <img src="img/stu.png"/>
+                            <div class="js_calc_width">
+                                <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
+                                <p class="price">价格 ¥ <span>1799</span></p>
+                            </div>
+                            <button>删除</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="cf cart_edit">
+                    <p>数量  <span>1</span></p>
+                    <div class="cart_edit_number hidden_active">
+                        <span class="sub_button"></span><input type="text" value="1"><span class="sum_button"></span>
+                    </div>
+                    <div class="cart_edit_choice">
+                        编辑
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <footer class="cf">
+        <div class="fl all_choice"><p class="common_choice"><i></i></p> 全选 </div>
+        <button class="fr">结算</button>
+        <div class="fr shopping_total">合计：￥ <span></span></div>
+    </footer>
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/fastclick.js"></script>
+    <script src="js/zepto.js"></script>
+    <script src="js/touch.js"></script>
+    <script>
+        function sum_total(){ //        注意：此函数最后加载，否则可能总计钱数会出问题
+            var allPayNumber=$(".common_choice>i.active").parent().parent().siblings(".cart_edit").find(".cart_edit_number").find("input");
+            var everyPrice=$(".common_choice>i.active").parent().siblings(".container").find(".price").find("span");
+            for(var i= 0,sum=0;i<allPayNumber.length;i++){
+                sum+=parseInt($(allPayNumber[i]).val())*parseInt($(everyPrice[i]).html());
+            }
+            $(".shopping_total>span").html(sum);
+        };
+        function changeNumber(){
+            $(".sub_button").on("click",function(){
+                var temp=Math.round($(this).next().val()-1);
+                if(temp<1){
+                    return;
+                }else{
+                    $(this).next().val(temp);
+                    if($(this).parent().parent().siblings(".choice_goods").children(".common_choice").children("i").hasClass("active")){
+                        sum_total();
+                    }
+                }
+            })
+            $(".sum_button").on("click",function(){
+                    $(this).prev().val(Math.round(parseInt($(this).prev().val())+1));
+                    if($(this).parent().parent().siblings(".choice_goods").children(".common_choice").children("i").hasClass("active")){
+                        sum_total();
+                    }
+            })
+        }
+        $("section>ul .container").on("swipeLeft",".move_path",function(){
+            $(".move_path button").css({display:"block"});
+            $(this).addClass("show_delete_button");
+        }).on("swipeRight",".move_path",function(){
+            $(this).removeClass("show_delete_button");
+        });
+//        计算move_path等宽度
+        var container_width=$(".container").width();
+        $(".move_path").width(container_width+50);
+        $(".js_calc_width").width(container_width-120-26);
+        $(function(){
+            FastClick.attach(document.body);
+            changeNumber();
+            sum_total();
+            $(".cart_edit_number").on("blur","input",function(){
+                var temp=$(this).val();
+                if(/^\d+$/.test(Number(temp))&&(Number(temp)>=1)&&!(/\./g.test(temp))){
+                    sum_total();
+                }else{
+                    $(this).val(1);
+                    sum_total();
+                }
+            })
+            $(".cart_edit_choice").on("click",function(){
+               if($(this).prev().hasClass("hidden_active")){
+                   $(this).prevAll("p").addClass("hidden_active").next().removeClass("hidden_active").next().html("完成");
+               }else{
+                   $(this).parent().children("p:first-child").find("span").html($(this).siblings(".cart_edit_number").find("input").val());
+                   $(this).html("编辑").prev().addClass("hidden_active").prev().removeClass("hidden_active");
+               }
+            })
+            $("section>ul>li").on("click",".common_choice",function(){
+                $(this).children("i").toggleClass("active");
+                $(".shopping_total>span").html("");
+                sum_total();
+            })
+            $(".all_choice>.common_choice").on("click",function(){
+                if($(this).find("i").hasClass("active")){
+                    $(this).find("i").removeClass("active");
+                    $(".common_choice>i").removeClass("active");
+                    sum_total();
+                }else{
+                    $(this).find("i").addClass("active");
+                    $(".common_choice>i").addClass("active");
+                    sum_total();
+                }
+            });
+            $(".move_path>button").on("click",function(){
+                $(this).parent().parent().parent().parent().remove();
+                sum_total();
+            })
+        })
+    </script>
+</body>
+</html>

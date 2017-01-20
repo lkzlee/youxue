@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- 设置 viewport -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>camp_lists</title>
+    <link rel="stylesheet" href="css/cssReset.css"/>
+    <link rel="stylesheet" href="css/camp_lists.css"/>
+</head>
+<body>
+    <header>
+        <ul class="cf">
+            <li class="active">全部营地</li>
+            <li>特价营地</li>
+            <li>热门营地</li>
+        </ul>
+    </header>
+    <section>
+        <ul>
+            <li class="camp_lists_common">
+                <div class="cf">
+                    <img class="fl" src="img/stu.png"/>
+                    <div>
+                        <p>暑假假期 赴美工作旅行</p>
+                        <p>营地主题：<span>语言学习</span></p>
+                        <p>出发时间：<span>2016-10-12</span></p>
+                        <p class="order_number"><span>17990</span>元/人起 </p>
+                    </div>
+                </div>
+            </li>
+            <li class="camp_lists_common">
+                <div class="cf">
+                    <img class="fl" src="img/stu.png"/>
+                    <div>
+                        <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
+                        <p>营地主题：<span>语言学习</span></p>
+                        <p>出发时间：<span>2016-10-12</span></p>
+                        <p class="order_number"><span>41599</span>元/人起 </p>
+                    </div>
+                </div>
+            </li>
+            <li class="camp_lists_common">
+                <div class="cf">
+                    <img class="fl" src="img/stu.png"/>
+                    <div>
+                        <p>暑假假期 赴美工作旅行</p>
+                        <p>营地主题：<span>语言学习</span></p>
+                        <p>出发时间：<span>2016-10-12</span></p>
+                        <p class="order_number"><span>32800</span>元/人起 </p>
+                    </div>
+                </div>
+            </li>
+            <li class="camp_lists_common">
+                <div class="cf">
+                    <img class="fl" src="img/stu.png"/>
+                    <div>
+                        <p>暑假假期 赴美工作旅行</p>
+                        <p>营地主题：<span>语言学习</span></p>
+                        <p>出发时间：<span>2016-10-12</span></p>
+                        <p class="order_number"><span>41800</span>元/人起 </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/fastclick.js"></script>
+    <script>
+        $(function() {
+            FastClick.attach(document.body);
+            $("header>ul").on("click","li",function(){
+                $(this).addClass("active").siblings(".active").removeClass("active");
+            });
+        });
+    </script>
+</body>
+</html>

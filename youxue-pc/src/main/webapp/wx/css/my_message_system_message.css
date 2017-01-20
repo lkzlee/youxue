@@ -1,0 +1,35 @@
+@charset "utf-8";
+body{
+    background-color: #F5F5F5;
+    font-size: 14px;
+    color: #999999;
+}
+section>ul>li{
+    padding:0 20px;
+    background-color: #fff;
+    line-height: 50px;
+    margin-top:10px;
+}
+section>ul>li>div{
+    border-bottom:1px solid #EEEEEE;;
+}
+section>ul>li>div:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+section>ul>li>div>h2{
+    float:left;
+    font-size: 16px;
+    color: #333333;
+}
+section>ul>li>div>i{
+    float:right;
+    font-size: 12px;
+    color: #999999;
+    font-style: normal;
+}
+section>ul>li>p{
+    line-height: 22px;
+    padding:10px 0 20px 0;
+}

@@ -1,0 +1,166 @@
+@charset "utf-8";
+body{
+    margin-bottom: 73px;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.cf:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.swiper-pagination-bullet{
+    background-color: #EECDDB;
+}
+.swiper-pagination-bullet.swiper-pagination-bullet-active{
+    background-color: #fff;
+}
+section{
+    padding:10px 20px 0 20px;
+}
+.camp_details_generalize>ul>li:first-child>span{
+    display: inline-block;
+    border:1px solid #999;
+    padding:1px;
+    margin-left:2px;
+}
+.camp_details_generalize>h2{
+    font-size: 18px;
+    color: #333333;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+.travel_feature>li:first-child span.active{
+    background-color:#20BDF5;
+    color:#fff;
+    border:1px solid #20BDF5;
+}
+.camp_details_generalize>ul:nth-child(2)>li{
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 10px;
+}
+.camp_details_generalize>ul:nth-child(2)>li:not(:first-child) span{
+    margin-left:4px;
+}
+.camp_details_generalize>ul:nth-child(3)>li{
+    padding:3px 6px;
+    margin-right:8px;
+    font-size: 11px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+}
+.camp_details_generalize>ul:nth-child(3)>li.active_shit_yellow{
+    background-color:#F5A623;
+}
+.camp_details_generalize>ul:nth-child(3)>li.active_blue{
+    background-color:#20BDF5;
+}
+.camp_details_items>li>p{
+    border-top: 1px solid #EEEEEE;
+    font-size: 14px;
+    color: #333333;
+    line-height: 49px;
+    background: url("../img/ic_right.png") no-repeat center right;
+}
+.camp_details_items>li>p:not(.no_arrow_down).active_arrow_down{
+    background-image:url("../img/ic_down.png");
+}
+.camp_details_items table td{
+    vertical-align: top;
+    width:19px;
+}
+.camp_eat_live_safe img{
+    margin:6px 1% 0 1%;
+    width:31.3%;
+}
+.camp_details_items>li>div{
+    display: none;
+    margin-bottom: 15px;
+}
+.fixed_button{
+    position: fixed;
+    bottom: 0;
+    left:0;
+    right:0;
+    height:53px;
+    font-size: 16px;
+    background-color: #fff;
+    text-align: center;
+    border-top:1px solid #EEEEEE;
+}
+.fixed_button button:first-child{
+    width:16.1%;
+    height:100%;
+    padding-top:26px;
+    border-right:1px solid #EEEEEE;
+    background: url("../img/ic_custom%20service2.png") no-repeat center 7px;
+    font-size: 12px;
+    color: #666666;
+}
+.fixed_button button:nth-child(2){
+    width:33.6%;
+    height:100%;
+    border-right:1px solid #EEEEEE;
+    line-height: 52px;
+    font-size: 16px;
+    color: #333333;
+}
+.fixed_button button:last-child{
+    width:50.3%;
+    height:100%;
+    line-height: 52px;
+    background-color: #FF5000;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+#camp_trip{position:absolute;top:0;left:0;width:100%;min-height:100%;z-index:99999;background:#fff;display:none;}
+#camp_trip .icon_close{position:fixed;top:10px;right:10px;width:30px;height:30px;background:url(../img/close.png) no-repeat;background-size:100% 100%;}
+#camp_trip header{
+    background-color:#F5F5F5;
+    font-size: 14px;
+    color: #999999;
+    line-height: 20px;
+    text-align: center;
+    height:71px;
+    padding-top:16px;
+}
+#camp_trip section>ul>li{
+    padding-top:17px;
+    padding-right:20px;
+}
+#camp_trip .item_left{
+    width:80px;
+    font-size: 16px;
+    color: #32AFE4;
+    text-align: center;
+}
+#camp_trip .item_right{
+    margin-left:80px;
+}
+#camp_trip .item_right>p:nth-child(2){
+    margin-top:10px;
+    font-size: 14px;
+    color: #666666;
+    line-height: 22px;
+}
+#camp_trip .item_right>h2{
+    font-size: 18px;
+    color: #333333;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #EEEEEE;
+}
+#camp_trip .item_right img:nth-child(odd){
+    width:46.2%;
+    margin-top:10px;
+}
+#camp_trip .item_right img:nth-child(even){
+    width:46.2%;
+    margin-left:3.8%;
+    margin-top:10px;
+}

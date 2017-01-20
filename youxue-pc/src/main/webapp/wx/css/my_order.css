@@ -1,0 +1,125 @@
+@charset "utf-8";
+.cf:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+header{
+    height:45px;
+    border-bottom: 1px solid #EEEEEE;
+}
+header ul{
+    width:294px;
+    margin:0 auto;
+}
+header ul li{
+    float: left;
+    width:60px;
+    height:44px;
+    text-align: center;
+    font-size: 14px;
+    padding-top:13px;
+    padding-bottom:11px;
+    margin-left:18px;
+}
+header ul li:first-child{
+    margin-left:0;
+}
+header ul li.active{
+    border-bottom:2px solid #32AFE4;
+    color:#32AFE4;
+}
+.order_state p:first-child{
+    float: left;
+    font-size: 13px;
+    color: #999999;
+
+}
+.order_state p:last-child{
+    float: right;
+    font-size: 13px;
+}
+.order_item_style_cancel,.order_item_style_not_cancel{
+    margin:20px 20px 0 20px;
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 10px;
+}
+.order_item_style_not_cancel .order_intr>div>div:last-child{
+    position:absolute;
+    top:10px;
+    right:10px;
+    color: #FF553D;
+}
+.order_item_style_not_cancel .order_intr>div>p{
+    width:60%;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.order_item_style_not_cancel .cancel_order_button{
+    margin-right:20px;
+}
+.order_item_style_not_cancel .order_state>p{
+    float: none;
+}
+/*.order_item_style_not_cancel .order_pay_module i{*/
+    /*margin-top:5px;*/
+/*}*/
+/*.order_item_style_not_cancel .order_pay_module i span{*/
+    /*font-size: 12px;*/
+/*}*/
+
+.order_intr img{
+    float:left;
+    margin-bottom: 10px;
+}
+.order_intr>div{
+    position:relative;
+    margin-left:120px;
+    padding:10px 9px 10px 10px;
+    font-size: 13px;
+    background-color: #F9F9F9;
+    height:90px;
+}
+.order_number{
+    margin-top:17px;
+    font-size: 12px;
+    color: #999999;
+}
+.order_pay_module i{
+    float:left;
+    font-size: 12px;
+    font-style: normal;
+}
+.order_pay_module i span{
+    font-size: 20px;
+    color: #FF553D;
+}
+.order_pay_button{
+    float: right;
+    color: #333333;
+}
+.cancel_order_button{
+    font-size: 12px;
+}
+.pay_order_button{
+    width:90px;
+    height:30px;
+    font-size: 12px;
+    background-color:#FF5000;;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    margin-left:20px;
+}
+.non_payment,.non_indeterminate{
+    color:#ff0000 !important;
+}
+.not_travel{
+    color:#0000ff !important;
+}
+.finish,.cancel{
+    color:gray !important;
+}

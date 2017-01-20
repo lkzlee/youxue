@@ -1,0 +1,55 @@
+#camp_trip{position:absolute;top:0;left:0;width:100%;z-index:99999;background:#fff;}
+/*.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.cf:after{
+    content: "";
+    display: block;
+    clear: both;
+}*/
+#camp_trip header{
+    background-color:#F5F5F5;
+    font-size: 14px;
+    color: #999999;
+    line-height: 20px;
+    text-align: center;
+    height:71px;
+    padding-top:16px;
+}
+#camp_trip section>ul>li{
+    padding-top:17px;
+    padding-right:20px;
+}
+#camp_trip .item_left{
+    width:80px;
+    font-size: 16px;
+    color: #32AFE4;
+    text-align: center;
+}
+#camp_trip .item_right{
+    margin-left:80px;
+}
+#camp_trip .item_right>p:nth-child(2){
+    margin-top:10px;
+    font-size: 14px;
+    color: #666666;
+    line-height: 22px;
+}
+#camp_trip .item_right>h2{
+    font-size: 18px;
+    color: #333333;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #EEEEEE;
+}
+#camp_trip .item_right img:nth-child(odd){
+    width:46.2%;
+    margin-top:10px;
+}
+#camp_trip .item_right img:nth-child(even){
+    width:46.2%;
+    margin-left:3.8%;
+    margin-top:10px;
+}

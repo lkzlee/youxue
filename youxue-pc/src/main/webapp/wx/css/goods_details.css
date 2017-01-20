@@ -1,0 +1,214 @@
+@charset "utf-8";
+body{
+    background-color:#F5F5F5;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.cf:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+header{
+    background-color: #fff;
+    margin-top:11px;
+    padding:2px 20px 11px 20px;
+}
+form>div{
+     background-color: #fff;
+     margin-top:10px;
+     padding:14px 30px 0 20px;
+ }
+form li{
+    border-top:1px solid #EEEEEE;
+}
+.goods_message{
+    height:203px;
+    border-bottom: 1px solid #F5F5F5;
+}
+.goods_message>div{
+    line-height: 48px;
+}
+.goods_message>div>p:last-child{
+    font-size: 13px;
+    color: #999999;
+}
+.goods_message>ul>li.cf{
+    background-color: #F9F9F9;
+    position: relative;
+}
+.goods_message>ul>li.cf img{
+    float: left;
+    width:120px;
+}
+.goods_message>ul>li.cf>div{
+    margin-left:120px;
+    padding:10px 9px 5px 10px;
+    font-size: 13px;
+}
+.price span{
+    font-size: 20px;
+    color: #FF553D;
+}
+.price{
+    position: absolute;
+    right:9px;
+    bottom:9px;
+}
+.end_time,.how_long{
+    font-size: 13px;
+    color: #999999;
+}
+.end_time{
+    margin-top:10px;
+}
+.end_time>span,.how_long>span{
+    margin-left:3px;
+}
+.how_long{
+    margin:6px 0 10px 0;
+}
+.goods_count p{
+    font-size: 14px;
+    float: left;
+    margin-top:14px;
+}
+.goods_count>div{
+    float: right;
+    margin-top:9px;
+    border:1px solid #F5F5F5;
+    width:132px;
+    height:32px;
+}
+.goods_count>div span{
+    vertical-align: middle;
+    display: inline-block;
+    width:32px;
+    height:30px;
+    text-align: center;
+    line-height: 30px;
+}
+.sub_button {
+    border-right: 1px solid #EEEEEE;
+    background: url("../img/ic_minus2.png") no-repeat center center;
+}
+.sum_button{
+    background: url("../img/ic_plussign2.png") no-repeat center center;
+}
+.goods_count>div input{
+    width:66px;
+    height:29px;
+    border-right:1px solid #F5F5F5;
+    margin-top:-3px;
+    text-align: center;
+}
+section input{
+    float:right;
+    text-align: right;
+    color: #999999;
+}
+section li{
+    font-size: 14px;
+}
+.section1>p{
+    padding-bottom: 15px;
+}
+.section1 ul li:nth-child(1){
+    padding:12px 0 17px 0;
+}
+.section1 ul li:nth-child(2),.section1 ul li:nth-child(3){
+    padding:14px 0 16px 0;
+}
+.section1 ul li:nth-child(4){
+    padding:13px 0 17px 0;
+}
+.section2>p{
+    padding-bottom: 14px;
+}
+.section2 ul li:nth-child(1){
+    padding:14px 0 16px 0;
+}
+.section2 ul li:nth-child(2),.section2 ul li:nth-child(3){
+    padding:15px 0 15px 0;
+}
+.section3>p{
+    padding-bottom: 14px;
+}
+.section3 ul li:nth-child(1){
+    padding:8px 0 12px 0;
+}
+.section3 ul li:nth-child(2){
+    padding:9px 0 11px 0;
+}
+.section3>ul label{
+    float:right;
+    position: relative;
+    top:7px;
+}
+.section3 img{
+    width:30px;
+    margin-right:10px;
+}
+.section4>p{
+    padding-bottom: 14px;
+}
+.section4 ul li{
+    line-height: 50px;
+}
+.section4 input{
+    margin-top:17px;
+}
+.section4 .common_choice{
+    position: relative;
+    top:14px;
+}
+.section4 .common_choice{
+    margin-right:11px;
+}
+.common_choice{
+    position: relative;
+    float:left;
+    width:20px;
+    height:20px;
+    border:1px solid #D0D0D0;
+    border-radius: 50%;
+    text-align: center;
+}
+.common_choice i.active{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    margin-left:-5px;
+    margin-top: -5px;
+    width:10px;
+    height:10px;
+    border-radius: 50%;
+    background-color:#32AFE4;
+}
+footer{
+    background-color: #fff;
+    margin-top:10px;
+}
+footer span{
+    font-size: 16px;
+    color:#FF644E;
+}
+footer button{
+    float: right;
+    width:124px;
+    height:52px;
+    line-height: 52px;
+    text-align: center;
+    background: #FF5000;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+footer p{
+    float: left;
+    margin:12px 0 12px 20px;
+    font-size: 12px;
+}

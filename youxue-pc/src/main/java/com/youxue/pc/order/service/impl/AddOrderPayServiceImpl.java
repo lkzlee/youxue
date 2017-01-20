@@ -251,7 +251,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		{
 			subOrderId += "|" + order.getOrderId();
 		}
-		payResultDto.setProduct_id(subOrderId.substring(1));
+		payResultDto.setProduct_id(logicOrderVo.getLogicOrderId());
 		return payResultDto;
 	}
 

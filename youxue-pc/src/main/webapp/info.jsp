@@ -258,6 +258,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
+<script src="js/user.js"></script>
 <script src="js/info.js"></script>
 <script>
 $(function(){

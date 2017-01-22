@@ -14,6 +14,7 @@ address,cite,i,em,b,var,q,hr{font-weight:normal;font-style:normal;}
 .clear:after,.div_con2_cont:after,.div1_foot:after,.bottom_content li a:after,.left_cont_right div:after,.cont_right:after,.subject_list li a:after,.select_sc li:after{content:"";display:block;clear:both;visibility:hidden;font-size:0;height:0;line-height:0;}
 .bold{font-weight:700;}
 .width_content{width:1180px;height:100%;margin:0 auto;}
+.calendar-start-icon{visibility: hidden;}
 a{text-decoration:none;color:#06c;outline:0;}
 a:link{}
 a:visited{}

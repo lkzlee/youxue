@@ -47,6 +47,7 @@
 .cus_right .cus_form div i{display:inline-block;width:18px;height:18px;border:solid 6px #29abe2;border-radius:50%;vertical-align:middle;}
 .cus_right .cus_form div span{display:inline-block;padding-right:20px;padding-left:11px;font-size:14px;color:#333;vertical-align:middle;}
 .cus_right .cus_form div input{width:531px;height:30px;border:solid 1px #999;vertical-align:middle;}
+.cus_right .cus_form div label{font-size:12px;}
 .cus_right .cus_form .phone input{width:503px;}
 .cus_right .cus_form .email input{width:509px;}
 .cus_right .cus_form .address input{width:489px;}

@@ -8,6 +8,7 @@
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/trip-calendar.css">
     <link rel="stylesheet" href="css/news.css">
 </head>
 <body>
@@ -62,32 +63,38 @@
             <div class="name">
                 <i></i>
                 <span>姓名：</span>
-                <input type="text">
+                <input type="text" class="j_name" required="">
+                <label></label>
             </div>
             <div class="phone">
                 <i></i>
                 <span>联系电话：</span>
-                <input type="text">
+                <input type="text" class="j_phone" required="">
+                <label></label>
             </div>
             <div class="email">
                 <i></i>
                 <span>E-email：</span>
-                <input type="text">
+                <input type="text" class="j_email" required="">
+                <label></label>
             </div>
             <div class="address">
                 <i></i>
                 <span>期望目的地：</span>
-                <input type="text">
+                <input type="text" class="j_destination" required="">
+                <label></label>
             </div>
             <div class="time">
                 <i></i>
                 <span>期望出行日期：</span>
-                <input type="text">
+                <input type="text" class="j_departureTime">
+                <label></label>
             </div>
             <div class="describe">
                 <i></i>
                 <span>需求描述：</span>
-                <textarea></textarea>
+                <textarea class="j_descs"></textarea>
+                <label></label>
             </div>
             <input type="submit" value="提交需求" class="btn_submit">
         </div>
@@ -106,6 +113,109 @@
     </div>
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/yui-min.js"></script>
 <script src="js/public.js"></script>
+<script type="text/javascript">
+var NAME_MSG='请输入正确的姓名';
+var PHONE_MSG='请输入正确的手机号码';
+var EMAIL_MSG='请输入正确的E-email';
+var DEST_MSG='请输入正确的目的地';
+$(function(){
+    var name=$('.j_name');
+    var j_phone=$('.j_phone');
+    var j_email=$('.j_email');
+    var j_destination=$('.j_destination');
+    var j_departureTime=$('.j_departureTime');
+    var j_descs=$('.j_descs');
+    $('.btn_submit').click(function(){
+        if(checkNameAndMessage(name,NAME_MSG) &&
+            checkPhoneAndMessage(j_phone,PHONE_MSG) &&
+            checkEmailAndMessage(j_email,EMAIL_MSG) &&
+            checkNameAndMessage(j_destination,DEST_MSG)
+            ){
+            $(this).attr('disabled','disabled').addClass('disabled');
+            var paramObj={
+                name:name.val(),
+                phone:j_phone.val(),
+                email:j_email.val(),
+                destination:j_destination.val(),
+                departureTime:j_departureTime.val(),
+                descs:j_descs.val()
+            }
+            sendFrom(paramObj)
+        }
+    })
+    name.blur(function(){
+        return checkNameAndMessage(name,NAME_MSG);
+    })
+    j_phone.blur(function(){
+        return checkPhoneAndMessage(j_phone,PHONE_MSG);
+    })
+    j_email.blur(function(){
+        return checkEmailAndMessage(j_email,EMAIL_MSG);
+    })
+    j_destination.blur(function(){
+        return checkNameAndMessage(j_destination,DEST_MSG);
+    })
+    YUI({
+        modules: {
+            'trip-calendar': {
+                fullpath: 'js/trip-calendar.js',
+                type    : 'js',
+                requires: ['css/trip-calendar-css']
+            },
+            'trip-calendar-css': {
+                fullpath: 'css/trip-calendar.css',
+                type    : 'css'
+            }
+        }
+    }).use('trip-calendar', function(Y) {
+        var oCal = new Y.TripCalendar({
+            triggerNode: '.j_departureTime'
+        });
+        oCal.set('isHoliday', true)//隐藏节假日
+                .set('minDate', new Date)
+                .set('count', 1)
+                .set('isSelect', true)
+                .render();
+    });
+})
+function sendFrom(paramObj){
+    login_post('/personalTailorList.do',paramObj,'',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            alert('恭喜您，提交成功了…')
+        },function(){
+            $('.btn_submit').removeAttr('disabled','disabled').removeClass('disabled');
+        });
+    })
+}
+function checkNameAndMessage(str,msg){
+    var isTrue=$.checkSpechars(str,Boolean(str.attr('required')));
+    changeFromStyle(isTrue,str,msg);
+    return isTrue;
+}
+function checkPhoneAndMessage(str,msg){
+    var isTrue=$.checkPhone(str,Boolean(str.attr('required')));
+    changeFromStyle(isTrue,str,msg)
+    return isTrue;
+}
+function checkEmailAndMessage(str,msg){
+    var isTrue=$.checkEmail(str,Boolean(str.attr('required')));
+    changeFromStyle(isTrue,str,msg)
+    return isTrue;
+}
+function changeFromStyle(isTrue,str,msg){
+    var message=str.siblings('label');
+    if(isTrue){
+        message.text('');
+        str.css('border-color','#999');
+    }else{
+        str.focus();
+        str.css('border-color','red');
+        message.text(msg);
+    }
+}
+</script>
 </body>
 </html>

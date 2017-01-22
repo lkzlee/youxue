@@ -2,11 +2,13 @@ package com.youxue.core.dao.impl;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Maps;
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.ProductOrderVoDao;
 import com.youxue.core.enums.PayTypeEnum;
@@ -54,8 +56,8 @@ public class ProductOrderVoDaoImpl extends BaseDao implements ProductOrderVoDao
 	}
 
 	@Override
-	public Page<ProductOrderVo> selectPageOrderListByInfo(Page<ProductOrderVo> page, PayTypeEnum payType, String orderId,
-			String accountId, Date startTime, Date endTime)
+	public Page<ProductOrderVo> selectPageOrderListByInfo(Page<ProductOrderVo> page, PayTypeEnum payType,
+			String orderId, String accountId, Date startTime, Date endTime)
 	{
 		Map<String, Object> param = new HashMap<String, Object>();
 		if (payType != null && PayTypeEnum.UNKNOW_PAY != payType)
@@ -70,6 +72,15 @@ public class ProductOrderVoDaoImpl extends BaseDao implements ProductOrderVoDao
 			param.put("endTime", endTime);
 		return getPageList(page, "com.youxue.core.dao.ProductOrderVoDao.selectPageOrderListByInfo",
 				"com.youxue.core.dao.ProductOrderVoDao.selectCountPageOrderListByInfo", param);
+	}
+
+	@Override
+	public List<ProductOrderVo> selectByBuyType(String accountId, int type)
+	{
+		Map<String, Object> conditions = Maps.newHashMap();
+		conditions.put("accountId", accountId);
+		conditions.put("type", type);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.ProductOrderVoDao.selectByBuyType", conditions);
 	}
 
 }

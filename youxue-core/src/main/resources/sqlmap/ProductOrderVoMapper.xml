@@ -22,6 +22,12 @@
     from tb_product_order
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByBuyType" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_product_order
+    where account_id = #{accountId,jdbcType=VARCHAR} and buy_type = #{type,jdbcType=DECIMAL}
+  </select>
   
   <select id="selectPageOrderListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
 	   select 

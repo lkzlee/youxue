@@ -49,4 +49,5 @@ public class ProductController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请求异常"));
 		}
 	}
+
 }

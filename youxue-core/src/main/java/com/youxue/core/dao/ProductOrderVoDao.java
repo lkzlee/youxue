@@ -1,6 +1,7 @@
 package com.youxue.core.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.vo.Page;
@@ -22,4 +23,6 @@ public interface ProductOrderVoDao
 
 	Page<ProductOrderVo> selectPageOrderListByInfo(Page<ProductOrderVo> page, PayTypeEnum pType, String orderId,
 			String accountId, Date stTime, Date edTime);
+
+	List<ProductOrderVo> selectByBuyType(String accountId, int type);
 }

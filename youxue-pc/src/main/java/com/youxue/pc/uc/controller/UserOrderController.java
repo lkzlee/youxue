@@ -26,6 +26,7 @@ import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
+import com.youxue.core.dao.ProductOrderVoDao;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.LogicOrderVo;
@@ -33,6 +34,7 @@ import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
+import com.youxue.core.vo.ProductOrderVo;
 import com.youxue.pc.uc.dto.OrderDetailInfoDto;
 import com.youxue.pc.uc.dto.OrderItemDto;
 
@@ -53,6 +55,8 @@ public class UserOrderController extends BaseController
 	private OrderPersonDao orderPersonDao;
 	@Resource
 	private LogicOrderDao logicOrderDao;
+	@Resource
+	private ProductOrderVoDao productOrderVoDao;
 
 	/***
 	 *  用户个人订单信息查询
@@ -186,6 +190,37 @@ public class UserOrderController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后"));
 		}
 
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception 周边产品订单列表
+	 */
+	@RequestMapping("/productOrderList.do")
+	@ResponseBody
+	public String productOrderList(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		try
+		{
+			String accountId = getCurrentLoginUserName(request);
+			if (StringUtils.isBlank(accountId))
+				return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+			List<ProductOrderVo> productOrderList1 = productOrderVoDao.selectByBuyType(accountId, 1);
+			List<ProductOrderVo> productOrderList2 = productOrderVoDao.selectByBuyType(accountId, 2);
+			Map<String, Object> maps = Maps.newHashMap();
+			maps.put("result", "100");
+			maps.put("desc", "success");
+			maps.put("productOrderList1", productOrderList1);
+			maps.put("productOrderList2", productOrderList2);
+			return JsonUtil.mapToJson(maps);
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("error in productOrderList，msg:", e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("请求异常"));
+		}
 	}
 
 	private OrderDetailInfoDto buildOrderDetailInfo(OrderVo order, LogicOrderVo logicOrder, CampsVo camps,

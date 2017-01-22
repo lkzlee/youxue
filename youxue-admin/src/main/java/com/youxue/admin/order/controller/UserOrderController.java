@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.constant.ConstantMapUtil;
 import com.youxue.core.common.BaseController;
@@ -98,24 +99,91 @@ public class UserOrderController extends BaseController
 			modelMap.put("errorMessage", "订单Id不能为空");
 			return "/error";
 		}
-		if ("1".equals(type))
+		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+		order.setUpdateTime(DateUtil.getCurrentTimestamp());
+		if ("pass".equals(type))
 		{
-			OrderVo order = new OrderVo();
-			order.setOrderId(orderId);
-			order.setStatus(OrderVo.TO_OUT);
-			order.setUpdateTime(DateUtil.getCurrentTimestamp());
-			orderDao.updateByPrimaryKeySelective(order);
+			setOrderStatus(order, true);
 		}
-		else if ("0".equals(type))
+		else if ("fail".equals(type))
 		{
-			refundService.addRefund(orderId);
+			setOrderStatus(order, false);
 		}
 		else
 		{
 			modelMap.put("errorMessage", "审核状态非法,type=" + type);
 			return "/error";
 		}
+		if (OrderVo.CANCEL == order.getStatus())
+		{
+			refundService.addRefund(orderId);
+		}
+		else
+		{
+			orderDao.updateByPrimaryKeySelective(order);
+		}
 		return "redirect:/admin/userorder.do";
 
+	}
+
+	private void setOrderStatus(OrderVo order, boolean isPass)
+	{
+		if (isPass)
+		{
+			/***
+			 * 支付成功--->待出行
+			 */
+			if (OrderVo.PAY == order.getStatus())
+			{
+				order.setStatus(OrderVo.TO_OUT);
+			}
+			/***
+			 * 待出行---> 已完成
+			 */
+			else if (OrderVo.TO_OUT == order.getStatus())
+			{
+				order.setStatus(OrderVo.DONE);
+			}
+			/***
+			 * 申请退款-->已退款,
+			 */
+			else if (OrderVo.APPLY_REFUND == order.getStatus())
+			{
+				order.setStatus(OrderVo.CANCEL);
+			}
+			/***
+			 * 退款失败---->申请退款
+			 */
+			else if (OrderVo.APPLY_FAILED == order.getStatus())
+			{
+				order.setStatus(OrderVo.APPLY_REFUND);
+			}
+			else
+			{
+				throw new BusinessException("订单状态在该流程中非法：status=" + order.getStatus());
+			}
+
+		}
+		else
+		{
+			/***
+			 * 支付成功--->申请退款，待出行--->申请退款
+			 */
+			if (OrderVo.PAY == order.getStatus() || OrderVo.TO_OUT == order.getStatus())
+			{
+				order.setStatus(OrderVo.APPLY_REFUND);
+			}
+			/***
+			 * 申请退款-->不通过，退款失败,
+			 */
+			else if (OrderVo.APPLY_REFUND == order.getStatus())
+			{
+				order.setStatus(OrderVo.APPLY_FAILED);
+			}
+			else
+			{
+				throw new BusinessException("订单状态在该流程中非法：status=" + order.getStatus());
+			}
+		}
 	}
 }

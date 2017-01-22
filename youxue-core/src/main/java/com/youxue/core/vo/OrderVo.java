@@ -27,13 +27,21 @@ public class OrderVo implements Serializable
 	 */
 	public static final int DONE = 3;
 	/***
-	 * 取消状态
+	 * 取消状态，已退款
 	 */
 	public static final int CANCEL = 4;
 	/***
 	 * 已删除状态
 	 */
 	public static final int DELETED = 5;
+	/***
+	 * 申请退款
+	 */
+	public static final int APPLY_REFUND = 6;
+	/***
+	 * 退款失败，不通过
+	 */
+	public static final int APPLY_FAILED = 7;
 
 	private String orderId;
 

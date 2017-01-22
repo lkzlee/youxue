@@ -96,11 +96,16 @@
 											<td>${orderStatusMap[adItem.status?string("0")]}</td>
 											<td>
 											<#if adItem.status=1>
-											<a href="/admin/auditOrder.do?type=1&orderId=${adItem.orderId}"><span>通过</span></a>  
-											<a href="/admin/auditOrder.do?type=0&orderId=${adItem.orderId}"><span>拒绝</span></a>
-											<!--<span>查看</span>-->
-											<#else> 
-											<!--<span>查看</span>-->
+											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(待出行)</span></a> | 
+											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(申请退款)</span></a>
+											<#elseif adItem.status=2> 
+											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(已完成)</span></a> | 
+											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(申请退款)</span></a>
+											<#elseif adItem.status=6>
+											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(已取消，已退款)</span></a> | 
+											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(退款失败，不通过)</span></a>
+											<#elseif adItem.status=7>
+											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(申请退款)</span></a>  
 											</#if>
 											</td>
 										</tr>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.vo.OrderVo;
 
 public class ConstantMapUtil
 {
@@ -15,12 +16,14 @@ public class ConstantMapUtil
 	public final static Map<String, String> productTypeMap = new HashMap<String, String>();
 	static
 	{
-		orderStatusMap.put("0", "待支付");
-		orderStatusMap.put("1", "待审核");
-		orderStatusMap.put("2", "待出行");
-		orderStatusMap.put("3", "已完成");
-		orderStatusMap.put("4", "已取消");
-
+		orderStatusMap.put("" + OrderVo.UNPAY, "待支付");
+		orderStatusMap.put("" + OrderVo.PAY, "待审核");
+		orderStatusMap.put("" + OrderVo.TO_OUT, "待出行");
+		orderStatusMap.put("" + OrderVo.DONE, "已完成");
+		orderStatusMap.put("" + OrderVo.APPLY_REFUND, "申请退款");
+		orderStatusMap.put("" + OrderVo.APPLY_FAILED, "退款失败");
+		orderStatusMap.put("" + OrderVo.CANCEL, "已取消,已退款");
+		orderStatusMap.put("" + OrderVo.DELETED, "已删除");
 		payTypeMap.put("0", "全部");
 		payTypeMap.put("" + PayTypeEnum.ALIPAY.getValue(), "支付宝支付");
 		payTypeMap.put("" + PayTypeEnum.WEIXIN_APY.getValue(), "微信支付");

@@ -99,12 +99,47 @@ public class UserOrderController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
 		}
+		if (order.getStatus() != OrderVo.UNPAY)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能删除该订单"));
+		}
 		order.setStatus(OrderVo.DELETED);
 		order.setUpdateTime(DateUtil.getCurrentTimestamp());
 		int success = orderDao.updateByPrimaryKeySelective(order);
 		if (success == 1)
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除成功"));
 		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除失败"));
+
+	}
+
+	@RequestMapping(path = "/uc/cancelorder.do")
+	@ResponseBody
+	public String cancelOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
+			String orderId)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		LOG.info("取消订单，退款申请，accountId=" + accountId + ",orderId=" + orderId);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(orderId))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+		}
+		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+		if (order == null || !accountId.equals(order.getAccountId()))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+		}
+		if (order.getStatus() != OrderVo.TO_OUT)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能对订单进行取消"));
+		}
+		order.setStatus(OrderVo.APPLY_REFUND);
+		order.setUpdateTime(DateUtil.getCurrentTimestamp());
+		int success = orderDao.updateByPrimaryKeySelective(order);
+		if (success == 1)
+			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("取消成功，等待审核退款"));
+		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("取消订单失败,请重新操作"));
 
 	}
 

@@ -159,24 +159,32 @@ public class UserOrderController extends BaseController
 	@ResponseBody
 	public String orderDetailInfo(HttpServletRequest request, HttpServletResponse response, String orderId)
 	{
-		String accountId = getCurrentLoginUserName(request);
-		LOG.info("订单详情页，accountId=" + accountId + ",orderId=" + orderId);
-		if (StringUtils.isBlank(accountId))
-			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		if (StringUtils.isBlank(orderId))
+		try
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+			String accountId = getCurrentLoginUserName(request);
+			LOG.info("订单详情页，accountId=" + accountId + ",orderId=" + orderId);
+			if (StringUtils.isBlank(accountId))
+				return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+			if (StringUtils.isBlank(orderId))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+			}
+			OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+			if (order == null || !accountId.equals(order.getAccountId()))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+			}
+			CampsVo camps = campsDao.selectByPrimaryKey(order.getCampsId());
+			LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(order.getLogicOrderId(), false);
+			List<OrderPersonVo> list = orderPersonDao.getOrderPersonById(order.getOrderId());
+			OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, list);
+			return JsonUtil.serialize(orderDetail);
 		}
-		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
-		if (order == null || !accountId.equals(order.getAccountId()))
+		catch (Exception e)
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+			LOG.fatal("订单详情查询异常", e);
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统繁忙，请稍后"));
 		}
-		CampsVo camps = campsDao.selectByPrimaryKey(order.getCampsId());
-		LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(order.getLogicOrderId(), false);
-		List<OrderPersonVo> list = orderPersonDao.getOrderPersonById(order.getOrderId());
-		OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, list);
-		return JsonUtil.serialize(orderDetail);
 
 	}
 
@@ -188,6 +196,8 @@ public class UserOrderController extends BaseController
 		BeanUtils.copyProperties(camps, orderDto);
 		BeanUtils.copyProperties(order, orderDto);
 		orderDto.setOrderPersonList(list);
+		orderDto.setResult(100);
+		orderDto.setResultDesc("查询成功");
 		return orderDto;
 	}
 

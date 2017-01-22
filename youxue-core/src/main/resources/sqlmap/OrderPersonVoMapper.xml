@@ -10,6 +10,9 @@
     <result column="person_age" property="personAge" jdbcType="INTEGER" />
     <result column="person_sex" property="personSex" jdbcType="INTEGER" />
   </resultMap>
+  <select id="getOrderPersonById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from tb_order_person where order_id=#{orderId,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="com.youxue.core.vo.OrderPersonVo" >
     insert into tb_order_person (order_id, person_name, person_phone, 
       person_idno, person_address, person_age, person_sex)

@@ -11,4 +11,6 @@ public interface OrderPersonDao
 	int insertSelective(OrderPersonVo record);
 
 	void batchInsertOrderPerson(List<OrderPersonVo> personList);
+
+	List<OrderPersonVo> getOrderPersonById(String orderId);
 }

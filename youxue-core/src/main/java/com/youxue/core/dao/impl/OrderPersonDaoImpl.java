@@ -30,4 +30,10 @@ public class OrderPersonDaoImpl extends BaseDao implements OrderPersonDao
 		sqlSessionTemplate.insert("com.youxue.core.dao.OrderPersonDao.batchInsertOrderPerson", personList);
 	}
 
+	@Override
+	public List<OrderPersonVo> getOrderPersonById(String orderId)
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.OrderPersonDao.getOrderPersonById", orderId);
+	}
+
 }

@@ -179,6 +179,7 @@ public class OrderServiceImpl implements OrderService
 		}
 		logicOrderVo.setPayTime(payTime);
 		logicOrderVo.setNotifyTime(notifyTime);
+		logicOrderVo.setPlatformOrderId(platformTradeId);
 		logicOrderVo.setPayStatus(LogicOrderVo.PAY);
 		logicOrderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		logicOrderDao.updateByPrimaryKeySelective(logicOrderVo);

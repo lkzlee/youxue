@@ -12,6 +12,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,11 +22,18 @@ import com.google.common.collect.Maps;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderDetailVo;
+import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
+import com.youxue.pc.uc.dto.OrderDetailInfoDto;
 import com.youxue.pc.uc.dto.OrderItemDto;
 
 /***
@@ -39,6 +47,12 @@ public class UserOrderController extends BaseController
 	private final static Log LOG = LogFactory.getLog(UserOrderController.class);
 	@Resource
 	private OrderDao orderDao;
+	@Resource
+	private CampsDao campsDao;
+	@Resource
+	private OrderPersonDao orderPersonDao;
+	@Resource
+	private LogicOrderDao logicOrderDao;
 
 	/***
 	 *  用户个人订单信息查询
@@ -83,8 +97,7 @@ public class UserOrderController extends BaseController
 
 	@RequestMapping(path = "/uc/deleteorder.do")
 	@ResponseBody
-	public String deleteOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
-			String orderId)
+	public String deleteOrderInfo(HttpServletRequest request, HttpServletResponse response, String orderId)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		LOG.info("删除订单，accountId=" + accountId + ",orderId=" + orderId);
@@ -114,8 +127,7 @@ public class UserOrderController extends BaseController
 
 	@RequestMapping(path = "/uc/cancelorder.do")
 	@ResponseBody
-	public String cancelOrderInfo(HttpServletRequest request, HttpServletResponse response, String pageNo,
-			String orderId)
+	public String cancelOrderInfo(HttpServletRequest request, HttpServletResponse response, String orderId)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		LOG.info("取消订单，退款申请，accountId=" + accountId + ",orderId=" + orderId);
@@ -141,6 +153,42 @@ public class UserOrderController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("取消成功，等待审核退款"));
 		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("取消订单失败,请重新操作"));
 
+	}
+
+	@RequestMapping(path = "/uc/orderdetail.do")
+	@ResponseBody
+	public String orderDetailInfo(HttpServletRequest request, HttpServletResponse response, String orderId)
+	{
+		String accountId = getCurrentLoginUserName(request);
+		LOG.info("订单详情页，accountId=" + accountId + ",orderId=" + orderId);
+		if (StringUtils.isBlank(accountId))
+			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
+		if (StringUtils.isBlank(orderId))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+		}
+		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+		if (order == null || !accountId.equals(order.getAccountId()))
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+		}
+		CampsVo camps = campsDao.selectByPrimaryKey(order.getCampsId());
+		LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(order.getLogicOrderId(), false);
+		List<OrderPersonVo> list = orderPersonDao.getOrderPersonById(order.getOrderId());
+		OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, list);
+		return JsonUtil.serialize(orderDetail);
+
+	}
+
+	private OrderDetailInfoDto buildOrderDetailInfo(OrderVo order, LogicOrderVo logicOrder, CampsVo camps,
+			List<OrderPersonVo> list)
+	{
+		OrderDetailInfoDto orderDto = new OrderDetailInfoDto();
+		orderDto.setPayType(logicOrder.getPayType());
+		BeanUtils.copyProperties(camps, orderDto);
+		BeanUtils.copyProperties(order, orderDto);
+		orderDto.setOrderPersonList(list);
+		return orderDto;
 	}
 
 	private List<OrderItemDto> translatePageList(Page<OrderDetailVo> page)

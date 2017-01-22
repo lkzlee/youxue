@@ -9,7 +9,7 @@ pageEncoding="utf-8"%>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
-    <script src="'/js/prefixfree.min.js"></script>
+    <script src="/js/prefixfree.min.js"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/trip-calendar.css">
     <link rel="stylesheet" href="/css/user.css">
@@ -33,13 +33,13 @@ pageEncoding="utf-8"%>
 	String tradeAmount=request.getAttribute("tradeAmount")+"";
 %>
 <section class="weixin_cont">
-    <p><img src="/img/weixin_erweima.jpg" alt="" width="257" height="257"></p>
+    <p><img src="<%= payUrl%>" alt="" width="257" height="257"></p>
     <p class="p2"><img src="/img/weixin1.jpg" alt="" width="262" height="55"></p>
-    <p class="p3">¥<label>1500</label></p>
+    <p class="p3">¥<label><%= tradeAmount%></label></p>
     <p class="p4">camplink.com</p>
     <p class="p5"><i></i>400-123-456</p>
 </section>
-<p>
+<!-- <p>
 返回码<%= result%>
 </p>
 <p>
@@ -53,7 +53,7 @@ pageEncoding="utf-8"%>
 </p>
 <p>
 支付金额:<%= tradeAmount%>
-</p>
+</p> -->
 <section class="footer">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
@@ -70,6 +70,19 @@ pageEncoding="utf-8"%>
 <script src="/js/jquery.easing.min.js"></script>
 <script src="/js/public.js"></script>
 <script src="/js/user.js"></script>
-
+<script type="text/javascript">
+$(function(){
+    setInterval(function(){
+        login_post('/pay/query.do','logicOrderId=<%= logicOrderId%>','',function(data){
+            data=JSON.parse(data);
+            success(data,function(){
+                window.location.href='/user_audit.html';
+            },function(){
+                window.location.href='/user.html';
+            })
+        })
+    },5000)    
+})
+</script>
 </body>
 </html>

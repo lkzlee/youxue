@@ -151,6 +151,7 @@
 <script src="js/user_pay.js"></script>
 <script>
     var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
+    console.log(orderList);
     $(function(){
         var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0;
         var discount=0;

@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +58,8 @@ public class ControllerUtil
 		else
 		{
 			Cookie[] cookies = request.getCookies();
+			if (ArrayUtils.isEmpty(cookies))
+				return "";
 			for (Cookie cookie : cookies)
 			{
 				if (cookie.getName().equals(CommonConstant.AUTO_LOGIN_COOKIE))

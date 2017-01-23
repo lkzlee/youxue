@@ -15,6 +15,18 @@ pageEncoding="utf-8"%>
     <link rel="stylesheet" href="/css/user.css">
 </head>
 <body style="background:#eeeeee;">
+<%
+//返回码 100 成功，其他状态未失败
+	String result=request.getAttribute("result")+"";
+//返回描述
+	String resultDesc=request.getAttribute("resultDesc")+"";
+	//支付url，需要转换为二维码
+	String payUrl=request.getAttribute("payUrl")+"";
+	// 订单号
+	String logicOrderId=request.getAttribute("logicOrderId")+"";
+	//交易金额
+	String tradeAmount=request.getAttribute("tradeAmount")+"";
+%>
 <section class="weixin_head">
     <div class="logo">
         <img src="/img/weixin_logo.jpg" alt="">

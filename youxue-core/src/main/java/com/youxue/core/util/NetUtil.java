@@ -73,7 +73,7 @@ public class NetUtil
 	}
 
 	/**
-	 * 检查参数ips中是否包含本地服务器ip
+	 * 妫�鏌ュ弬鏁癷ps涓槸鍚﹀寘鍚湰鍦版湇鍔″櫒ip
 	 * @param ips
 	 * @param separator
 	 * @return
@@ -101,18 +101,18 @@ public class NetUtil
 	}
 
 	/**
-	 * 获得IP
+	 * 鑾峰緱IP
 	 * 
 	 * @return
 	 */
 	public static String getCurrentLoginUserIp(HttpServletRequest request, HttpServletResponse response)
 	{
 		String rip = request.getRemoteAddr();
-		String realIp = request.getHeader("X-Real-IP");//运维在nginx配置的ip读取方式
-		if (StringUtils.isNotBlank(realIp))
-		{
-			return realIp;
-		}
+		//		String realIp = request.getHeader("X-Real-IP");//锟斤拷维锟斤拷nginx锟斤拷锟矫碉拷ip锟斤拷取锟斤拷式
+		//		if (StringUtils.isNotBlank(realIp))
+		//		{
+		//			return realIp;
+		//		}
 		String xff = request.getHeader("X-Forwarded-For");
 		String ip;
 		if (xff != null && xff.length() != 0)
@@ -135,7 +135,7 @@ public class NetUtil
 	}
 
 	/**
-	 * 获取本机ip
+	 * 鑾峰彇鏈満ip
 	 * @return
 	 */
 	public static String getLocalIp()
@@ -144,7 +144,7 @@ public class NetUtil
 		try
 		{
 			InetAddress addr = InetAddress.getLocalHost();
-			ip = addr.getHostAddress().toString(); //获取本机ip
+			ip = addr.getHostAddress().toString(); //鑾峰彇鏈満ip
 		}
 		catch (UnknownHostException e)
 		{

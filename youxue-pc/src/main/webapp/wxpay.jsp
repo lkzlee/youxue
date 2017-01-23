@@ -78,11 +78,9 @@ $(function(){
 function getQueryState(){
     login_post('/pay/query.do','logicOrderId='+logicOrderId,'',function(data){
         data=JSON.parse(data);
-        success(data,function(){
-            window.location.href='/user_audit.html';
-        },function(){
+        if(data.result==100){
             window.location.href='/user.html';
-        })
+        }
     })
 }
 </script>

@@ -4,7 +4,7 @@ pageEncoding="utf-8"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>个人中心-我的消息_Camplink</title>
+    <title>微信支付_Camplink</title>
     <script src="/js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
@@ -17,15 +17,15 @@ pageEncoding="utf-8"%>
 <body style="background:#eeeeee;">
 <%
 //返回码 100 成功，其他状态未失败
-	String result=request.getAttribute("result")+"";
+    String result=request.getAttribute("result")+"";
 //返回描述
-	String resultDesc=request.getAttribute("resultDesc")+"";
-	//支付url，需要转换为二维码
-	String payUrl=request.getAttribute("payUrl")+"";
-	// 订单号
-	String logicOrderId=request.getAttribute("logicOrderId")+"";
-	//交易金额
-	String tradeAmount=request.getAttribute("tradeAmount")+"";
+    String resultDesc=request.getAttribute("resultDesc")+"";
+    //支付url，需要转换为二维码
+    String payUrl=request.getAttribute("payUrl")+"";
+    // 订单号
+    String logicOrderId=request.getAttribute("logicOrderId")+"";
+    //交易金额
+    String tradeAmount=request.getAttribute("tradeAmount")+"";
 %>
 <section class="weixin_head">
     <div class="logo">
@@ -33,7 +33,7 @@ pageEncoding="utf-8"%>
     </div>
 </section>
 <section class="weixin_cont">
-    <p id="qrcode"></p>
+    <p id="qrcode" style="width:257px;height:257px;margin:0 auto;"></p>
     <p class="p2"><img src="/img/weixin1.jpg" alt="" width="262" height="55"></p>
     <p class="p3">¥<label><%= tradeAmount%></label></p>
     <p class="p4">camplink.com</p>
@@ -70,7 +70,7 @@ $(function(){
     if(result==100 && payUrl && logicOrderId){
         var qrcode = new QRCode('qrcode');
         qrcode.makeCode(payUrl);
-        setInterval(getInter,5000)
+        setInterval(getQueryState,5000)
     }else{
         resultDesc && alert(resultDesc);
     }

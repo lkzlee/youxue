@@ -90,6 +90,11 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			LOG.info("@@下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
 			return responseDto;
 		}
+		catch (BusinessException e)
+		{
+			LOG.fatal("系统执行出现错误，请检查，msg：" + e.getMessage(), e);
+			return BaseResponseDto.errorDto().setDesc(e.getMessage());
+		}
 		catch (Exception e)
 		{
 			LOG.fatal("系统异常，请检查，msg：" + e.getMessage(), e);

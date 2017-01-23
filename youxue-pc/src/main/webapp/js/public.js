@@ -231,6 +231,10 @@ function file_post(address,data,method,successFn,errorFn){
         }
     })
 }
+//根据传入的数值，获取男或女
+function getSex(sex){
+    return sex==0?'男':'女';
+}
 /**
  * 图片地址处理，用用逗号把图片地址切割成数组，并返回
  * @returns {pic} 给定数组
@@ -352,6 +356,9 @@ function formatDate(time,style){
             break;
         case 2:
             str=toDb(dateTime.getDate())+'/'+toDb(dateTime.getMonth()+1)+'/'+dateTime.getFullYear();
+            break;
+        case 3:
+            str=dateTime.getFullYear()+'-'+toDb(dateTime.getMonth()+1)+'-'+toDb(dateTime.getDate())+' '+dateTime.getHours()+':'+dateTime.getMinutes()+':'+dateTime.getSeconds();
             break;
         default:
             str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());

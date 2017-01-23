@@ -234,6 +234,7 @@
             AllObj['payType']=outherObj['payType'];
             login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                 data=JSON.parse(data);
+                console.log(data);
                 success(data,function(){
                     if(data.payUrl){
                         console.log('window.location.href='+data.payUrl);

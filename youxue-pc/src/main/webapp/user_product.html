@@ -110,23 +110,8 @@
                             <th>支付金额</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>20161026321</td>
-                            <td>2016-10-26 10:23</td>
-                            <td>美国签证*2</td>
-                            <td>微信支付</td>
-                            <td>10000</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>20161026321</td>
-                            <td>2016-10-26 10:23</td>
-                            <td>美国签证</td>
-                            <td>微信支付</td>
-                            <td>5600</td>
-                        </tr>
+                    <tbody id="j_qzfw">
+                        
                     </tbody>
                 </table>
             </div>
@@ -144,23 +129,7 @@
                             <th>支付金额</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>20161026321</td>
-                            <td>2016-10-26 10:23</td>
-                            <td>美国签证*2</td>
-                            <td>微信支付</td>
-                            <td>10000</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>20161026321</td>
-                            <td>2016-10-26 10:23</td>
-                            <td>美国签证</td>
-                            <td>微信支付</td>
-                            <td>5600</td>
-                        </tr>
+                    <tbody id="j_jsjfw">
                     </tbody>
                 </table>
             </div>
@@ -183,6 +152,33 @@
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
-
+<script type="text/javascript">
+$(function(){
+    getProduct();
+})
+function getProduct(){
+    login_post('/productOrderList.do','','',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            renderProduct(data['productOrderList1'],$('#j_qzfw'))
+            renderProduct(data['productOrderList2'],$('#j_jsjfw'))
+        })
+    })
+}
+function renderProduct(list,element){
+    var len=list.length;
+    var arr=['暂无数据'];
+    if(len>0){
+        arr=[];
+        for(var i=0;i<len;i++){
+            arr.push('<tr><td>'+(i+1)+'</td> <td>'+list[i]['accountId']+'</td><td>'+formatDate(list[i]['buyTime']['time'],3)+'</td><td>'+list[i]['content']+'</td><td>'+verif_payType(list[i]['payType'])+'</td><td>'+list[i]['price']+'</td></tr>');
+        }
+    }
+    element.append(arr.join(''));
+}
+function verif_payType(type){
+    return type==1?"支付宝支付":"微信支付";
+}
+</script>
 </body>
 </html>

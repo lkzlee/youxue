@@ -4,6 +4,7 @@ i{font-family: "simsun";}
 #showImg>i{top:8px;right:8px;width:18px;height:18px;background: url(../img/user.png) -38px 0 no-repeat;}
 #showImg h2{font-size:18px;font-weight:700;text-align:center;line-height:40px;}
 #showImg p{height:430px;overflow:auto;}
+.order_info form.j_person li label{display:inline;cursor:default;}
 /*登录页*/
 /*.login span，.login input{font-family: "宋体","微软雅黑";}*/
 .login{width:100%;height:750px;background:url("../img/login_bg1.jpg") center top no-repeat;background-attachment:fixed;}

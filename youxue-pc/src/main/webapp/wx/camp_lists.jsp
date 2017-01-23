@@ -62,6 +62,10 @@ $(function() {
 	        CampsDetail(section,$(this).index());
     	}
     });
+    $("section").on("click",".camp_lists_common",function(){
+        var campusId=$(this).attr('data-campusId');
+        window.location.href='camp_details.jsp?campusId='+campusId;
+    })
     search_sourch();
 });
 //滑动加载数据
@@ -96,7 +100,7 @@ function search_sourch(){
             if(len>0){
 	            li.push('<ul>');
                 for(var i=0;i<len;i++){
-                	li.push('<li class="camp_lists_common" data-campusId='+obj[i]['campsId']+'"><div class="cf"><img class="fl" src="'+handle_pic(obj[i]['campsImages'])[0]+'"/><div>');
+                	li.push('<li class="camp_lists_common" data-campusId='+obj[i]['campsId']+'><div class="cf"><img class="fl" src="'+handle_pic(obj[i]['campsImages'])[0]+'"/><div>');
                 	li.push('<p>'+obj[i]['campsTitle']+'</p><p>营地主题：<span>'+obj[i]['campsSubjectName']+'</span></p><p>出发时间：<span>'+obj[i]['departureDateStr']+'</span></p>');
                 	li.push('<p class="order_number"><span>'+obj[i]['totalPrice']+'</span>元/人起 </p></div></div></li>');
                 }
@@ -141,7 +145,7 @@ function CampsDetail(section,index){
             // }
             function str(val,element){
                 var li=[];
-                li.push('<li class="camp_lists_common" data-campusId='+val['campsId']+'"><div class="cf"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/><div>');
+                li.push('<li class="camp_lists_common" data-campusId='+val['campsId']+'><div class="cf"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/><div>');
             	li.push('<p>'+val['campsTitle']+'</p><p>营地主题：<span>'+val['campsSubjectName']+'</span></p><p>出发时间：<span>'+val['departureDateStr']+'</span></p>');
             	li.push('<p class="order_number"><span>'+val['totalPrice']+'</span>元/人起 </p></div></div></li>');
                 element.append(li.join(''));

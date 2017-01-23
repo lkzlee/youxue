@@ -103,7 +103,7 @@
 <script>
 var campusId= '<%=request.getParameter("campusId")%>';
 $(function() {
-    var isLogin=false;
+    var add_Car='/addCartItem.do',data_car={'campusId':campusId},isLogin=false;
     load_render(data_car);
     FastClick.attach(document.body);
     //下拉显示
@@ -125,22 +125,29 @@ $(function() {
         window.location.href='tel:4006666666';
     })
     $('.j_addCar').click(function(){
-        // isLoginFn(isLogin);
-        addCarFn($(this));
+        addCarFn($(this),true,isLogin);
     })
 });
+function addCarFn(){
+    isLoginFn(isLogin)
+    if(location){
+        if(isAddCar){
+
+        }
+   }
+}
 function isLoginFn(isLogin){
     if(!isLogin){
-        window.location.href='/wx/login.html';
+        window.location.href='/login.html';
     }
 }
-function addCarFn(element){
-    setBtnDisabled(element,true)
+function a(){
+    element && element.attr('disabled','disabled').addClass('disabled');
     data_car['num']=$('.signUp_number').val();
     var message=car_message.find('.message');
     var i=$('i',message);
     var b=$('b',message);
-    login_post('/addCartItem.do',{'campusId':campusId},'',function(data){
+    login_post(add_Car,data_car,'',function(data){
         data=JSON.parse(data);
         success(data,function(){
             if(location){
@@ -151,10 +158,10 @@ function addCarFn(element){
                 car_message.show();
                 notLogin.fadeIn(300);
                 bg_showORhide();
-                setBtnDisabled(element,false)
+                element && element.removeAttr('disabled').removeClass('disabled');
             }
         },function(){
-            setBtnDisabled(element,false)
+                element && element.removeAttr('disabled').removeClass('disabled');
         })
     });
 }

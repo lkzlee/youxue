@@ -2,6 +2,7 @@
 body{
     margin-bottom: 73px;
 }
+button.disabled{color:#666!important;background: #eee!important;}
 .fl{
     float: left;
 }

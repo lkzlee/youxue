@@ -71,6 +71,14 @@ function success(data,callback,errback){
         return false;
     }
 }
+//设置按钮可点或不可点样式
+function setBtnDisabled(btn,bool){
+    if(bool){
+        btn.attr('disabled','disabled').addClass('disabled');
+    }else{
+        btn.removeAttr('disabled').removeClass('disabled');
+    }
+}
 /**
  * 图片地址处理，用用逗号把图片地址切割成数组，并返回
  * @returns {pic} 给定数组

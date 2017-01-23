@@ -20,40 +20,13 @@ pageEncoding="utf-8"%>
         <img src="/img/weixin_logo.jpg" alt="">
     </div>
 </section>
-<%
-//返回码 100 成功，其他状态未失败
-	String result=request.getAttribute("result")+"";
-//返回描述
-	String resultDesc=request.getAttribute("resultDesc")+"";
-	//支付url，需要转换为二维码
-	String payUrl=request.getAttribute("payUrl")+"";
-	// 订单号
-	String logicOrderId=request.getAttribute("logicOrderId")+"";
-	//交易金额
-	String tradeAmount=request.getAttribute("tradeAmount")+"";
-%>
 <section class="weixin_cont">
-    <p><img src="<%= payUrl%>" alt="" width="257" height="257"></p>
+    <p id="qrcode"></p>
     <p class="p2"><img src="/img/weixin1.jpg" alt="" width="262" height="55"></p>
     <p class="p3">¥<label><%= tradeAmount%></label></p>
     <p class="p4">camplink.com</p>
     <p class="p5"><i></i>400-123-456</p>
 </section>
-<!-- <p>
-返回码<%= result%>
-</p>
-<p>
-返回描述<%= resultDesc%>
-</p>
-<p>
-支付url，转为二维码链接：<%= payUrl%>
-</p>
-<p>
-支付订单号：<%= logicOrderId%>
-</p>
-<p>
-支付金额:<%= tradeAmount%>
-</p> -->
 <section class="footer">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
@@ -67,22 +40,39 @@ pageEncoding="utf-8"%>
     </div>
 </section>
 <script src="/js/jquery-3.1.0.min.js"></script>
-<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/qrcode.min.js"></script>
 <script src="/js/public.js"></script>
 <script src="/js/user.js"></script>
 <script type="text/javascript">
+//返回码 100 成功，其他状态未失败
+var result= '<%=request.getAttribute("result")==null?"":request.getAttribute("result")%>';
+//返回描述
+var resultDesc= '<%=request.getAttribute("resultDesc")==null?"":request.getAttribute("resultDesc")%>';
+//支付url，需要转换为二维码
+var payUrl= '<%=request.getAttribute("payUrl")==null?"":request.getAttribute("payUrl")%>';
+// 订单号
+var logicOrderId= '<%=request.getAttribute("logicOrderId")==null?"":request.getAttribute("logicOrderId")%>';
+//交易金额
+var tradeAmount= '<%=request.getAttribute("tradeAmount")==null?"":request.getAttribute("tradeAmount")%>';
 $(function(){
-    setInterval(function(){
-        login_post('/pay/query.do','logicOrderId=<%= logicOrderId%>','',function(data){
-            data=JSON.parse(data);
-            success(data,function(){
-                window.location.href='/user_audit.html';
-            },function(){
-                window.location.href='/user.html';
-            })
-        })
-    },5000)    
+    if(result==100 && payUrl && logicOrderId){
+        var qrcode = new QRCode('qrcode');
+        qrcode.makeCode(payUrl);
+        setInterval(getInter,5000)
+    }else{
+        resultDesc && alert(resultDesc);
+    }
 })
+function getQueryState(){
+    login_post('/pay/query.do','logicOrderId='+logicOrderId,'',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            window.location.href='/user_audit.html';
+        },function(){
+            window.location.href='/user.html';
+        })
+    })
+}
 </script>
 </body>
 </html>

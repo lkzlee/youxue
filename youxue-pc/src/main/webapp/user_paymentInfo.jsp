@@ -169,7 +169,7 @@ function getPayInfo(){
 function renderOrderInfo(data){
     var arr=[];
     arr.push('<div class="div_cont_order">');
-    arr.push('<a href="/info.jsp?campusId='+data['campsId']+'" class="a1_order"><img src="'+handle_pic(data['realCampsImages'])[0]+'" alt=""><span class="span3">'+data['campsName']+'</span></a>');
+    arr.push('<a href="/info.jsp?campusId='+data['campsId']+'" class="a1_order"><img src="'+handle_pic(data['realCampsImages'])[0]+'" alt=""><span class="span3">'+data['campsTitle']+'</span></a>');
     arr.push('<span class="span4">'+data['payPrice']+'</span><span class="span5">'+data['totalCount']+'</span><span class="span6">'+data['totalPrice']+'</span>');
     arr.push('</div>');
     $('.j_order_list').append(arr.join(''));

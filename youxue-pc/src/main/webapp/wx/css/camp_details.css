@@ -2,7 +2,6 @@
 body{
     margin-bottom: 73px;
 }
-button.disabled{color:#666!important;background: #eee!important;}
 .fl{
     float: left;
 }
@@ -119,8 +118,7 @@ section{
     font-size: 16px;
     color: #FFFFFF;
 }
-
-#camp_trip{position:absolute;top:0;left:0;width:100%;min-height:100%;z-index:99999;background:#fff;display:none;}
+#camp_trip{overflow-y:scroll;position:fixed;top:0;bottom:0;left:0;width:100%;min-height:100%;z-index:99999;background:#fff;display:none;}
 #camp_trip .icon_close{position:fixed;top:10px;right:10px;width:30px;height:30px;background:url(../img/close.png) no-repeat;background-size:100% 100%;}
 #camp_trip header{
     background-color:#F5F5F5;

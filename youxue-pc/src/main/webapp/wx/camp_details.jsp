@@ -83,7 +83,7 @@
     <div class="fixed_button cf">
         <button class="fl j_customer">客服</button>
         <button class="fl j_addCar">加入购物车</button>
-        <button class="fl">¥ <span>36800</span>  立即购买</button>
+        <button class="fl j_immedAddCar">¥ <span>36800</span>立即购买</button>
     </div>
 </section>
 <div id="camp_trip">
@@ -102,9 +102,15 @@
 <script src="js/common.js"></script>
 <script>
 var campusId= '<%=request.getParameter("campusId")%>';
+var data_car={'campusId':campusId}
 $(function() {
     var isLogin=false;
-    load_render(data_car);
+    getLogin(function(data){
+        if(data.result==100){
+            isLogin=true;
+        }
+    })
+    load_render();
     FastClick.attach(document.body);
     //下拉显示
     $(".camp_details_items").on("click","li",function(){
@@ -125,48 +131,45 @@ $(function() {
         window.location.href='tel:4006666666';
     })
     $('.j_addCar').click(function(){
-        // isLoginFn(isLogin);
-        addCarFn($(this));
+        if(!isLogin){
+            window.location.href='/wx/login.html';
+        }else{
+            addCarFn($(this));
+        }
+    })
+    $('.j_immedAddCar').click(function(){
+        if(!isLogin){
+            window.location.href='/wx/login.html';
+        }else{
+          addCarFn($(this),true);
+        }
     })
 });
-function isLoginFn(isLogin){
-    if(!isLogin){
-        window.location.href='/wx/login.html';
-    }
-}
-function addCarFn(element){
-    setBtnDisabled(element,true)
-    data_car['num']=$('.signUp_number').val();
-    var message=car_message.find('.message');
-    var i=$('i',message);
-    var b=$('b',message);
-    login_post('/addCartItem.do',{'campusId':campusId},'',function(data){
+function addCarFn(element,location){
+    setBtnDisabled(element,false)
+    data_car['num']=1;
+    login_post('/addCartItem.do',data_car,'',function(data){
         data=JSON.parse(data);
         success(data,function(){
+            alertMesageAndHide('加入购物车成功')
             if(location){
-                window.location.href='/user_shoppingCar.html';
-            }else{
-                i.attr('class','i1');
-                b.html('商品已成功加入购物车');
-                car_message.show();
-                notLogin.fadeIn(300);
-                bg_showORhide();
-                setBtnDisabled(element,false)
+                window.location.href='/wx/shopping_cart.html';
             }
         },function(){
-            setBtnDisabled(element,false)
+            setBtnDisabled(element,true)
         })
     });
 }
+
 function load_render(data){
-    login_post('/campsDetail.do',data,'',function(data){
+    login_post('/campsDetail.do',data_car,'',function(data){
         data=JSON.parse(data);
         //虚拟数据
         data.realCampsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
-        // console.log(data);
+        console.log(data);
         success(data,function(){
-            $('.title').text(data.campsName);
+            $('.title').text(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(data.deadlineDate);

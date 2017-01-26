@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+    <title>我的消息</title>
     <meta charset="UTF-8">
     <!-- 设置 viewport -->
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
@@ -11,29 +12,128 @@
     <link rel="stylesheet" href="css/my_message.css"/>
 </head>
 <body>
-    <section>
-        <ul>
-            <li>
-                <img src="img/ic_messages_normal.png" alt=""/>
-                <div>
-                    <h2>系统消息</h2>
-                    <p>尊敬的顾客您好，为了您及时参与尊敬的顾客您好，为了您及时参与</p>
-                </div>
-            </li>
-            <li>
-                <img src="img/ic_messages_normal.png" alt=""/>
-                <div>
-                    <h2>系统消息</h2>
-                    <p>尊敬的顾客您好，为了您及时参与尊敬的顾客您好，为了您及时参与</p>
-                </div>
-            </li>
-            <li><img src="img/ic_messages_normal.png" alt=""/>
-                <div>
-                    <h2>系统消息</h2>
-                    <p>尊敬的顾客您好，为了您及时参与尊敬的顾客您好，为了您及时参与</p>
-                </div>
-            </li>
-        </ul>
-    </section>
+<section>
+    <ul>
+        
+    </ul>
+</section>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+var public_obj={},isOneLoadEvent=0,lock=true,is_trunPage = true,is_bottom=false,height = 0;
+$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">商品加载中<img src="/wx/img/load.gif" style="position:relative;margin-top:0;"/></p>');
+var load_message = $('#p-load');
+var load_height = load_message.height() * 2;
+$(function(){
+    getMessage();
+})
+//滑动加载数据
+$(window).on('scroll', function () {
+    var bottom = $(this).scrollTop();
+    if (bottom + load_height >= height && is_trunPage && !is_bottom) {//asyn start
+        is_trunPage = false;
+        public_obj['pageNo'] = public_obj['pageNo'] + 1;
+        if(isDownPage(public_obj)){
+            getMessage();
+        }else if(isLastPage(public_obj)){
+            alertMesageAndHide('没有了…');
+        }
+    }
+});
+function getMessage(){
+    login_post('/uc/usermessage.do','','',function(data){
+        data=JSON.parse(data);
+        user_success(data,function(){
+            renderMessage(data);
+        })
+    })
+}
+var temp=[];//测试数据
+function renderMessage(data){
+    load_message.show();
+    data={
+        pageNo:public_obj['pageNo'] || 1,
+        pageSize:10,
+        result:100,
+        resultDesc:"查询成功",
+        resultList:[
+            {
+                readStatus:0,
+                messageTitle:'标题1',
+                messageContent:'内容11'
+            },{
+                readStatus:1,
+                messageTitle:'标题2',
+                messageContent:'内容2'
+            },{
+                readStatus:0,
+                messageTitle:'标题3',
+                messageContent:'内容3'
+            },{
+                readStatus:1,
+                messageTitle:'标题4',
+                messageContent:'内容4'
+            },{
+                readStatus:0,
+                messageTitle:'标题5',
+                messageContent:'内容11'
+            },{
+                readStatus:1,
+                messageTitle:'标题6',
+                messageContent:'内容2'
+            },{
+                readStatus:0,
+                messageTitle:'标题7',
+                messageContent:'内容3'
+            },{
+                readStatus:1,
+                messageTitle:'标题8',
+                messageContent:'内容4'
+            },{
+                readStatus:0,
+                messageTitle:'标题9',
+                messageContent:'内容11'
+            },{
+                readStatus:1,
+                messageTitle:'标题10',
+                messageContent:'内容2'
+            }
+        ],
+        totalCount:30,
+        totalPage:3,
+        unReadCount:0
+    }
+    public_obj['pageNo']=data.pageNo;
+    public_obj['totalPage']=data.totalPage;
+    public_obj['totalCount']=data.totalCount;
+    // $('#message_num').text('(共'+data['totalCount']+'条，未读消息'+data['unReadCount']+'条)');
+    var resultList=data['resultList'];
+    var arr=[];
+    var len=resultList.length;
+    //测试数据START
+    if(len>0){
+        temp=resultList;
+    }
+    if(public_obj['pageNo']<5){
+        resultList=temp;
+    }
+    var len=resultList.length;
+    //测试数据END
+    if(len>0){
+        for(var i=0;i<len;i++){
+            var cName=resultList[i].readStatus==0?'weidu':'yidu';
+            arr.push('<li><img src="img/ic_messages_'+cName+'.png" alt=""/>');
+            arr.push('<div><h2>'+resultList[i]['messageTitle']+'</h2><p>'+resultList[i]['messageContent']+'</p></div></li>');
+        }
+        $('ul').append(arr.join(''));
+        load_message.fadeOut(600);
+        height = $(document).height() - $(window).height();
+    }else{
+        $('ul').html('<li style="margin:100px 0;text-align:center;">您目前没有任何消息</li>');
+    }
+    is_trunPage = true;
+}
+</script>
 </body>
 </html>

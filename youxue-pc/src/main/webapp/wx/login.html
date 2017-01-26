@@ -8,29 +8,21 @@
     <link rel="stylesheet" href="css/login.css"/>
 </head>
 <body>
-    <header class="ctf">
-        <p>欢迎进入 Camplink 官网！</p>
-    </header>
-    <section>
-        <form id="user_input" action="" method="">
-            <div class="get_check_number">获得验证码</div>
-            <input type="text" value="" placeholder="输入手机号" maxlength="11"/>
-            <input type="password" value="" placeholder="输入验证码"/>
-            <div><input type="submit" value="登陆"/></div>
-        </form>
-        <div class="sixty_send"><p>60s后从发</p></div>
-    </section>
+<header class="ctf">
+    <p>欢迎进入 Camplink 官网！</p>
+</header>
+<section>
+    <form id="user_input" action="" method="">
+        <button class="get_check_number" id="code">获得验证码</button>
+        <input type="text" value="18810497384" placeholder="输入手机号" maxlength="11" id="phone" class="input" />
+        <input type="number" value="" placeholder="输入验证码" id="codeInput" class="input codeInput" />
+        <div><button  disabled="" class="btn_login disabled">登陆</button></div>
+    </form>
+</section>
 
-    <script src="js/jquery-3.1.0.min.js"></script>
-    <script src="js/fastclick.js"></script>
-    <script>
-        $("#user_input").on("submit",function(e){
-            if (e && e.preventDefault) {//如果是FF下执行这个
-                e.preventDefault();
-            }else{
-                window.event.returnValue = false;//如果是IE下执行这个
-            }
-        });
-    </script>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
 </body>
 </html>

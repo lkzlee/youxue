@@ -16,18 +16,18 @@ header>p{
     color: #333333;
     text-align: center;
 }
-[type=text],[type=password]{
+.input{
     width:100%;
     padding: 15px 5.7%;
     font-size: 14px;
     color: #999999;
     height:55.5px;
 }
-[type=password]{
+.codeInput{
     border-top: 1px solid #F5F5F5;
     margin-bottom:10px;
 }
-[type=submit]{
+.btn_login{
     width:88.6%;
     height:44px;
     display: block;

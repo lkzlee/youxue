@@ -8,150 +8,146 @@
     <link rel="stylesheet" href="css/shopping_cart.css"/>
 </head>
 <body>
-    <header>
-        <p>您购买的营地我们会尽快确认，确认无误后订单状态为“待出行”，若确认购买失败，将会全额退还。咨询热线：<a href="tel:4008-517-517">4008-517-517</a></p>
-    </header>
-    <section>
-        <ul>
-            <li class="cf">
-                <div class="cf choice_goods">
-                    <p class="common_choice"><i></i></p>
-                    <div class="container">
-                        <div class="cf move_path">
-                            <img src="img/stu.png"/>
-                            <div class="js_calc_width">
-                                <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
-                                <p class="price">价格 ¥ <span>1799</span></p>
-                            </div>
-                            <button>删除</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="cf cart_edit">
-                    <p>数量  <span>1</span></p>
-                    <div class="cart_edit_number hidden_active">
-                        <span class="sub_button"></span><input type="text" value="1"><span class="sum_button"></span>
-                    </div>
-                    <div class="cart_edit_choice">
-                        编辑
-                    </div>
-                </div>
-            </li>
-            <li class="cf">
-                <div class="cf choice_goods">
-                    <p class="common_choice"><i></i></p>
-                    <div class="container">
-                        <div class="cf move_path">
-                            <img src="img/stu.png"/>
-                            <div class="js_calc_width">
-                                <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
-                                <p class="price">价格 ¥ <span>1799</span></p>
-                            </div>
-                            <button>删除</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="cf cart_edit">
-                    <p>数量  <span>1</span></p>
-                    <div class="cart_edit_number hidden_active">
-                        <span class="sub_button"></span><input type="text" value="1"><span class="sum_button"></span>
-                    </div>
-                    <div class="cart_edit_choice">
-                        编辑
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </section>
-    <footer class="cf">
-        <div class="fl all_choice"><p class="common_choice"><i></i></p> 全选 </div>
-        <button class="fr">结算</button>
-        <div class="fr shopping_total">合计：￥ <span></span></div>
-    </footer>
-    <script src="js/jquery-3.1.0.min.js"></script>
-    <script src="js/fastclick.js"></script>
-    <script src="js/zepto.js"></script>
-    <script src="js/touch.js"></script>
-    <script>
-        function sum_total(){ //        注意：此函数最后加载，否则可能总计钱数会出问题
-            var allPayNumber=$(".common_choice>i.active").parent().parent().siblings(".cart_edit").find(".cart_edit_number").find("input");
-            var everyPrice=$(".common_choice>i.active").parent().siblings(".container").find(".price").find("span");
-            for(var i= 0,sum=0;i<allPayNumber.length;i++){
-                sum+=parseInt($(allPayNumber[i]).val())*parseInt($(everyPrice[i]).html());
-            }
-            $(".shopping_total>span").html(sum);
-        };
-        function changeNumber(){
-            $(".sub_button").on("click",function(){
-                var temp=Math.round($(this).next().val()-1);
-                if(temp<1){
-                    return;
-                }else{
-                    $(this).next().val(temp);
-                    if($(this).parent().parent().siblings(".choice_goods").children(".common_choice").children("i").hasClass("active")){
-                        sum_total();
-                    }
-                }
-            })
-            $(".sum_button").on("click",function(){
-                    $(this).prev().val(Math.round(parseInt($(this).prev().val())+1));
-                    if($(this).parent().parent().siblings(".choice_goods").children(".common_choice").children("i").hasClass("active")){
-                        sum_total();
-                    }
-            })
+<header>
+    <p>您购买的营地我们会尽快确认，确认无误后订单状态为“待出行”，若确认购买失败，将会全额退还。咨询热线：<a href="tel:4008-517-517">4008-517-517</a></p>
+</header>
+<section>
+    <ul>
+    </ul>
+</section>
+<footer class="cf">
+    <div class="fl all_choice"><p class="common_choice"><i></i></p> 全选 </div>
+    <button class="fr">结算</button>
+    <div class="fr shopping_total">合计：￥ <span class="j_money_car">0</span></div>
+</footer>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/common.js"></script>
+<script>
+FastClick.attach(document.body);
+var dataObj=[];
+var ul=$('ul'),all_choice=$('.all_choice');
+$(function(){
+    getCar();
+})
+ul.on('click','.J_check',function(){
+    var index=$(this).index('.J_check')
+    var checkElem=$(this).children('i');
+    if(!elementIsCheck(checkElem)){
+        ChangeOjbCheck(index,true)
+    }else{
+        ChangeOjbCheck(index,false)
+    }
+    checkElem.toggleClass('active');
+    changeTotal();
+})
+//数量点击增加
+ul.on('click','.sum_button',function(){
+    var number=Number($(this).siblings('.j_number').val())+1;
+    $(this).siblings('.j_number').val(number);
+})
+//数量点击减少
+ul.on('click','.sub_button',function(){
+    var number=Number($(this).siblings('.j_number').val())-1;
+    $(this).siblings('.j_number').val(number || 1);
+})
+ul.on('click','.cart_edit_choice',function(){
+    var index=$(this).index('.cart_edit_choice');
+    var text=$(this).text();
+    var parent=$(this).parents('li.cf');
+    var sibligP=$(this).siblings('p');
+    var siblingVal=$(this).siblings('.cart_edit_number');
+    var check=parent.find('.J_check');
+    $(this).text(text=="编辑"?"保存":"编辑");
+    sibligP.toggleClass('hidden_active');
+    siblingVal.toggleClass('hidden_active');
+    if(text=="保存"){
+        dataObj[index]['num']=siblingVal.find('.j_number').val();
+        sibligP.find('span').text(dataObj[index]['num']);
+        changeTotal();
+    }
+})
+all_choice.on('click',function(){
+    var checkElem=$(this).find('i');
+    var isCheck=elementIsCheck(checkElem);
+    if(!isCheck){
+        $('.J_check').find('i').addClass('active');
+    }else{
+        $('.J_check').find('i').removeClass('active');
+    }
+    for(var i=0;i<dataObj.length;i++){
+        dataObj[i]['checked']=!isCheck;
+    }
+    changeTotal();
+});
+function changeTotal(){
+    var len=0,totalPrice=0;
+    for(var i=0;i<dataObj.length;i++){
+        if(dataObj[i]['checked']){
+            len++;
+            totalPrice=accAdd(dataObj[i]['price']*dataObj[i]['num'],totalPrice);
         }
-        $("section>ul .container").on("swipeLeft",".move_path",function(){
-            $(".move_path button").css({display:"block"});
-            $(this).addClass("show_delete_button");
-        }).on("swipeRight",".move_path",function(){
-            $(this).removeClass("show_delete_button");
-        });
-//        计算move_path等宽度
-        var container_width=$(".container").width();
-        $(".move_path").width(container_width+50);
-        $(".js_calc_width").width(container_width-120-26);
-        $(function(){
-            FastClick.attach(document.body);
-            changeNumber();
-            sum_total();
-            $(".cart_edit_number").on("blur","input",function(){
-                var temp=$(this).val();
-                if(/^\d+$/.test(Number(temp))&&(Number(temp)>=1)&&!(/\./g.test(temp))){
-                    sum_total();
-                }else{
-                    $(this).val(1);
-                    sum_total();
-                }
-            })
-            $(".cart_edit_choice").on("click",function(){
-               if($(this).prev().hasClass("hidden_active")){
-                   $(this).prevAll("p").addClass("hidden_active").next().removeClass("hidden_active").next().html("完成");
-               }else{
-                   $(this).parent().children("p:first-child").find("span").html($(this).siblings(".cart_edit_number").find("input").val());
-                   $(this).html("编辑").prev().addClass("hidden_active").prev().removeClass("hidden_active");
-               }
-            })
-            $("section>ul>li").on("click",".common_choice",function(){
-                $(this).children("i").toggleClass("active");
-                $(".shopping_total>span").html("");
-                sum_total();
-            })
-            $(".all_choice>.common_choice").on("click",function(){
-                if($(this).find("i").hasClass("active")){
-                    $(this).find("i").removeClass("active");
-                    $(".common_choice>i").removeClass("active");
-                    sum_total();
-                }else{
-                    $(this).find("i").addClass("active");
-                    $(".common_choice>i").addClass("active");
-                    sum_total();
-                }
-            });
-            $(".move_path>button").on("click",function(){
-                $(this).parent().parent().parent().parent().remove();
-                sum_total();
-            })
+    }
+    $('.j_money_car').text(totalPrice);
+    if(len==dataObj.length){
+        $('.all_choice').find('i').addClass('active');
+    }else{
+        $('.all_choice').find('i').removeClass('active');
+    }
+}
+function ChangeOjbCheck(index,bool){
+    dataObj[index]['checked']=bool;
+}
+function addChangeObj(index,disk){
+    dataObj[index]['num']=accAdd(dataObj[index]['num'],disk)
+}
+function subChangeObj(index,disk){
+    dataObj[index]['num']=accSub(dataObj[index]['num'],disk)
+}
+function elementIsCheck(checkElem){
+    if(checkElem.hasClass('active')){
+        return true;
+    }
+    return false;
+}
+function getCar(){
+    login_post('/shopCartDetailList.do','','',function(data){
+        data=JSON.parse(data);
+        user_success(data,function(){
+            renderCar(data);
         })
-    </script>
+    })
+}
+function renderCar(data){
+    var arr=[];
+    var source=data.shopCartList;
+    if(source.length<=0){
+        $('ul').html('<li class="noMessage_border">您的购物车还是空的，赶紧行动吧！</li>')
+    }else{
+        var price=0,count=0;
+        for(var i=0;i<source.length;i++){
+            // price+=source[i].totalPrice*source[i].cartBuyCount;
+            dataObj.push({
+                price:source[i].totalPrice,
+                num:source[i].cartBuyCount,
+                checked:false
+            })
+            arr.push('<li class="cf"><div class="cf choice_goods"><p class="common_choice J_check" data-price="'+source[i].totalPrice+'" data-count="'+source[i].cartBuyCount+'"><i></i></p>');
+            arr.push('<div class="container"><div class="cf move_path"><img src="'+handle_pic(source[i].campsImages)[0]+'"/><div class="js_calc_width">');
+            arr.push('<p>'+source[i].campsTitle+'</p><p class="price">价格 ¥ <span>'+source[i].totalPrice+'</span></p></div><button>删除</button></div></div></div>');
+            arr.push('<div class="cf cart_edit"><p>数量<span>'+source[i].cartBuyCount+'</span></p><div class="cart_edit_number hidden_active"><span class="sub_button"></span>');
+            arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice">编辑</div></div></li>');
+            
+
+            // arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');
+            // arr.push('<a class="yingdi_title" href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsTitle+'</span></a>');
+            // arr.push('<span class="span4">'+source[i].totalPrice+'</span><span class="span5 num_span_car">'+source[i].cartBuyCount+'</span><span class="span6 money_span_car">'+(source[i].totalPrice*source[i].cartBuyCount)+'</span><a href="javascript:void(0)" class="span7 child_del">删除</a></li>');
+        }
+        console.log(dataObj);
+        // arr.push('<input type="hidden" id="j_totalPrice" value="'+price+'"/>');
+        $('ul').html(arr.join(''));
+    }
+}
+</script>
 </body>
 </html>

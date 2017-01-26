@@ -8,25 +8,45 @@
     <link rel="stylesheet" href="css/personal_data.css"/>
 </head>
 <body>
-    <section>
-        <div>
-            <ul>
-                <li><i>头像</i><b><img src="img/head.png" style="width:46px;vertical-align: top;" alt=""/></b></li>
-                <li><i>昵称</i><b>粗腿小萝莉</b></li>
-                <li><i>性别</i><b>女</b></li>
-                <li><i>生日</i><b>1993-11-25</b></li>
-                <li><i>喜爱城市</i><b>加拿大</b></li>
-            </ul>
-        </div>
-        <div>
-            <ul>
-                <li><i>手机</i><b>13312343453</b></li>
-                <li><i>邮箱</i><b>123****34@qq.com</b></li>
-            </ul>
-        </div>
-    </section>
-    <footer>
-        <strong>注：修改个人信息，请前往Camplink官网！</strong>
-    </footer>
+<section>
+    <div>
+        <ul>
+            <li><i>头像</i><b><img src="" style="width:46px;vertical-align: top;" id="photoUrl"/></b></li>
+            <li><i>昵称</i><b id="nickName"></b></li>
+            <li><i>性别</i><b id="gender"></b></li>
+            <li><i>生日</i><b id="birthTime"></b></li>
+            <li><i>喜爱城市</i><b id="loveCity"></b></li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <li><i>手机</i><b id="mobile"></b></li>
+            <li><i>邮箱</i><b id="email"></b></li>
+        </ul>
+    </div>
+</section>
+<footer>
+    <strong>注：修改个人信息，请前往Camplink官网！</strong>
+</footer>
+  <script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/common.js"></script>
+<script type="text/javascript">
+$(function(){
+  getUserData(function(data){
+    renderUser(data);
+  })
+})
+function renderUser(data){
+  console.log(data); 
+  $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
+  $('#nickName').text(data.nickName);
+  $('#loveCity').text(data.loveCity);
+  $('#mobile').text(data.mobile);
+  $('#email').text(data.email);
+  $('#birthTime').text(formatDate(data.birthTime,0));
+  $('#gender').text(getSex(data.gender));
+}
+</script>
 </body>
 </html>

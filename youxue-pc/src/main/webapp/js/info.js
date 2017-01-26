@@ -42,7 +42,7 @@ function load_render(data){
         // data.realCampsImages='a,b,c,d';
         // console.log(data);
         success(data,function(){
-            $('.title').text(data.campsName);
+            $('.title').text(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(data.deadlineDate);

@@ -230,11 +230,11 @@
         var resultList=data['resultList'];
         var arr=[];
         var len=resultList.length;
-        var cName=resultList.readStatus==0?'weidu':'yidu';
         if(len<=0){
             arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
         }else{
             for(var i=0;i<len;i++){
+                var cName=resultList[i].readStatus==0?'weidu':'yidu';
                 arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['updateTime']+'</span></li>');
             }
         }

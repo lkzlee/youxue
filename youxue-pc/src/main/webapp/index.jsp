@@ -188,7 +188,7 @@ function CampsDetail(){
                 var li=[];
                 li.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
                 li.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
-                li.push('<span>'+val['campsTitle']+'</span><i>¥'+val['totalPrice']+'</i></div>');
+                li.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
                 li.push('<p>'+val['campsDesc']+'</p></a></li>');
                 hot_list.append(li.join(''));
             }

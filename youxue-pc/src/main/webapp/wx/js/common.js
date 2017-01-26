@@ -1,3 +1,9 @@
+var phoneReg=/^1[3|4|5|7|8][0-9]\d{4,8}$/;
+var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+var strReg=/[`~!@#$%^&*()_+=<>?:"{},.\/;'[\]]/im;//验证特殊字符
+var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
+var codeReg=/^\d{1,6}$/;
+var pwdReg=/^[a-zA-Z0-9]{0,4}$/;
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -13,12 +19,71 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+$.extend({
+    checkSpechars:function(input,isRequired){
+        var value=input.val();
+        return (!strReg.test(value)) && (value.length>1 || !isRequired);
+    },
+    checkPhone:function(input){
+        var value=input.val();
+        if(value.length==11 && phoneReg.test(value)){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    checkEmail:function (input){
+        var value=input.val();
+        if(value.length>5){
+            return true;
+        }else{
+            return false;
+        }
+    },
+    checkCode:function(input){
+        console.log(codeReg.test(input.val()))
+        if(codeReg.test(input.val())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+})
+function checkPhone(phone,succBack,errback){
+    if($.checkPhone(phone)){
+        succBack && succBack();
+        return phone;
+    }else{
+        errback && errback();
+        alertMesageAndHide('账号或密码不正确',4);
+        return false;
+    }
+}
+function checkCode(codeInput,succBack,errback){
+    if($.checkCode(codeInput)){
+        succBack && succBack();
+        return codeInput;
+    }else{
+        errback && errback();
+        alertMesageAndHide('短信验证码输入错误',4)
+        return false;
+    }
+}
 //判断用户是否登录
-function is_login(callback){
+function getLogin(callback){
     login_post('/uc/userinfo.do','','',function(data){
         data=JSON.parse(data);
         callback(data);
     })
+}
+//加载用户基本信息
+function getUserData(callback){
+  login_post('/uc/userinfo.do','','',function(data){
+      data=JSON.parse(data);
+      user_success(data,function(){
+          callback && callback(data)
+      });
+  });
 }
 //加载目的地 主题分类 时间周期 等
 function load_local(id,callback) {
@@ -32,6 +97,38 @@ function load_local(id,callback) {
             callback(con1);
         })
     });
+}
+//根据传入的数值，获取男或女
+function getSex(sex){
+    return sex==0?'男':'女';
+}
+//相减，为避免小数浮点数精准度
+function accSub(n1,n2){
+    if(!isNaN(n1) && !isNaN(n2)){
+        n1=n1*1000;
+        n2=n2*1000;
+        return (n1-n2)/1000;
+    }
+    return false;
+}
+//相加，为避免小数浮点数精准度
+function accAdd(n1,n2){
+    if(!isNaN(n1) && !isNaN(n2)){
+        n1=n1*1000;
+        n2=n2*1000;
+        return (n1+n2)/1000;
+    }
+    return false;
+}
+function isDownPage(public_obj){//是否可以分页
+    if(public_obj['pageNo']<=public_obj['totalPage']){
+        return true;
+    }
+}
+function isLastPage(public_obj){//是否最后一页 只有一页数据||没有了
+    if(public_obj['totalPage']==1 || public_obj['pageNo']>public_obj['totalPage']){
+        return true;
+    }
 }
 function auto_submit(address,obj,method){
     method=method || 'POST';
@@ -56,9 +153,7 @@ function login_post(address,data,method,successFn,errorFn,contentType){
         contentType:contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
         success:successFn,
         error:errorFn ||function(data,error){
-            alert('系统获取异常');
-            console.log(data);
-            console.log(error);
+            alertMesageAndHide('系统获取异常',4)
         }
     })
 }
@@ -67,17 +162,28 @@ function success(data,callback,errback){
         callback();
     }else{
         errback && errback();
-        alert(data.resultDesc);
+        alertMesageAndHide(data.resultDesc,4)
         return false;
     }
 }
-//设置按钮可点或不可点样式
+function user_success(data,callback){
+    if(data.result==100){
+        callback();
+    }else if(data.result==-2){
+        alertMesageAndHide(data.resultDesc,4)
+        window.location.href='/login.html';
+    }else{
+        alertMesageAndHide(data.resultDesc,4)
+    }
+}
+//设置按钮可点或不可点样式,默认bool为空，禁止点击
 function setBtnDisabled(btn,bool){
     if(bool){
-        btn.attr('disabled','disabled').addClass('disabled');
-    }else{
         btn.removeAttr('disabled').removeClass('disabled');
+    }else{
+        btn.attr('disabled','disabled').addClass('disabled');
     }
+    return btn;
 }
 /**
  * 图片地址处理，用用逗号把图片地址切割成数组，并返回
@@ -89,4 +195,57 @@ function handle_pic(pic){
         return picArr;
     }
     return [pic];
+}
+/**
+ * 消息弹出框-并且自动隐藏
+ * @returns
+ */
+function alertMesageAndHide(str,state){
+    var style=state==4?'iconError':'iconSuccess';
+    var elemnt=$('#alertMessage');
+    if(elemnt.length>0){
+        elemnt.show().find('p').text(str);
+    }else{
+        $('body').append('<div id="alertMessage"><div class="'+style+'"></div><p>'+str+'</p></div>');        
+    }
+    setTimeout(function(){
+        $('#alertMessage').hide();
+    },2000)
+}
+/**
+ * 时间数组转换成正常时间格式
+ * @param arrTime
+ * @returns {string}
+ */
+function formatDate(time,style){
+    var format='',str='';
+    var dateTime=new Date(time);
+    switch(style){
+        case 0:
+            format='-';
+            str=dateTime.getFullYear()+format+toDb(dateTime.getMonth()+1)+format+toDb(dateTime.getDate());
+            break;
+        case 1:
+            format=['年','月','日','时','分','秒'];
+            str=dateTime.getFullYear()+format[0]+toDb(dateTime.getMonth()+1)+format[1]+toDb(dateTime.getDate())+format[2];
+            break;
+        case 2:
+            str=toDb(dateTime.getDate())+'/'+toDb(dateTime.getMonth()+1)+'/'+dateTime.getFullYear();
+            break;
+        case 3:
+            str=dateTime.getFullYear()+'-'+toDb(dateTime.getMonth()+1)+'-'+toDb(dateTime.getDate())+' '+dateTime.getHours()+':'+dateTime.getMinutes()+':'+dateTime.getSeconds();
+            break;
+        default:
+            str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());
+            break;
+    }
+    return str;
+}
+/**
+ * 给日期的个位补0
+ * @param date
+ * @returns 如果10以内,补一个0,10及以上的数字,改成字符串格式输出
+ */
+function toDb(date){
+    return date<10?'0'+date:''+date;
 }

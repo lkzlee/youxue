@@ -49,6 +49,28 @@ $.extend({
         }
     }
 })
+function uploadImage(obj) {
+  if(validateImage(obj)) {
+      var data = new FormData();
+      data.append('uploadFile', obj.files[0]);
+      file_post('/img/userphoto/uploadImg.do',data,'',function(data){
+          data=JSON.parse(data);
+          data=JSON.parse(data);
+          imgUrl=data.url;
+          saveImage(imgUrl,function(){
+            $('#photoUrl').attr('src',imgUrl)
+          })
+      });
+  }
+}
+function saveImage(url,callback){
+    login_post('/uc/updatePhoto.do','userPhotoUrl='+url,'',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            callback && callback();
+        })
+    })
+}
 function checkPhone(phone,succBack,errback){
     if($.checkPhone(phone)){
         succBack && succBack();
@@ -157,6 +179,20 @@ function login_post(address,data,method,successFn,errorFn,contentType){
         }
     })
 }
+//提交图片
+function file_post(address,data,method,successFn,errorFn){
+    $.ajax({
+        url:address,
+        type:method || 'post',
+        data:data,
+        contentType: false,    //不可缺
+        processData: false,    //不可缺
+        success:successFn,
+        error:errorFn ||function(){
+            alert('系统获取异常');
+        }
+    })
+}
 function success(data,callback,errback){
     if(data.result==100){
         callback();
@@ -171,7 +207,7 @@ function user_success(data,callback){
         callback();
     }else if(data.result==-2){
         alertMesageAndHide(data.resultDesc,4)
-        window.location.href='/login.html';
+        window.location.href='/wx/login.html';
     }else{
         alertMesageAndHide(data.resultDesc,4)
     }
@@ -248,4 +284,29 @@ function formatDate(time,style){
  */
 function toDb(date){
     return date<10?'0'+date:''+date;
+}
+//校验图片格式及大小 Add Date 2012-6-14 LIUYI
+function validateImage(obj) {
+    var file = obj;
+    var tmpFileValue = file.value;
+    //校验图片格式
+    if(/^.*?\.(gif|png|jpg|jpeg|bmp)$/.test(tmpFileValue.toLowerCase())){
+        //校验图片大小,这段代码需调整浏览器安全级别(调到底级)和添加可信站点(将服务器站点添加到可信站点中)
+        var maxSize = 1024 * 1024 * 2; //最大2MB
+        if(file.value != ""){
+            var size=obj.files[0].size;
+            if(size<0 || size>maxSize){
+                alert("当前文件大小" + (size/1024/1024).toFixed(2) + "MB, 超出最大限制"+(maxSize/1024/1024)+"MB");
+                return false;
+            }else{
+                return true;
+            }
+        }else{
+            alert("请选择上传的文件!");
+            return false;
+        }
+    } else {
+        alert("只能上传jpg、jpeg、png、bmp或gif格式的图片!");
+        return false;
+    }
 }

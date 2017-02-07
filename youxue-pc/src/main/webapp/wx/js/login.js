@@ -42,7 +42,7 @@ function sendLogin(data,This){
     function successFn(json_data){
         var data=JSON.parse(json_data);
         success(data,function(){
-            window.location.href='/wx/personal.html';
+            window.location.href='/wx/user.html';
         },error)
     }
     function error(){

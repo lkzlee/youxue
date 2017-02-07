@@ -31,6 +31,7 @@ ul>li{
 section>ul>li{
     margin-top:11px;
     padding:10px 20px 0 20px;
+    text-align:center;
 }
 .common_choice{
     position: relative;

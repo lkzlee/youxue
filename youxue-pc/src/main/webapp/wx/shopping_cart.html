@@ -17,7 +17,7 @@
 </section>
 <footer class="cf">
     <div class="fl all_choice"><p class="common_choice"><i></i></p> 全选 </div>
-    <button class="fr">结算</button>
+    <button class="fr" id="j_btnCheck">结算</button>
     <div class="fr shopping_total">合计：￥ <span class="j_money_car">0</span></div>
 </footer>
 <script src="js/jquery-3.1.0.min.js"></script>
@@ -62,9 +62,13 @@ ul.on('click','.cart_edit_choice',function(){
     sibligP.toggleClass('hidden_active');
     siblingVal.toggleClass('hidden_active');
     if(text=="保存"){
+        var id=$(this).attr('data-id');
         dataObj[index]['num']=siblingVal.find('.j_number').val();
-        sibligP.find('span').text(dataObj[index]['num']);
-        changeTotal();
+        ajax_changeNum(id,dataObj[index]['num'],function(){
+            sibligP.find('span').text(dataObj[index]['num']);
+            changeTotal();
+        });
+        
     }
 })
 all_choice.on('click',function(){
@@ -80,6 +84,33 @@ all_choice.on('click',function(){
     }
     changeTotal();
 });
+$('#j_btnCheck').on('click',function(){
+    var checks=ul.find('i.active');
+    if(checks.length>0){
+        var arr=[];
+        arr.push($('.j_money_car').text());
+        checks.each(function(){
+            var parent=$(this).parents('li.cf');
+            var id=parent.find('.cart_edit_choice').attr('data-id');
+            var src=parent.find('img').attr('src');
+            var title=parent.find('.title').text();
+            var price=Number(parent.find('.j_price').text());
+            var num=Number(parent.find('.j_number').val());
+            var xj_price=price*num;
+            arr.push([id,src,title,price,num,xj_price].join('$$'));
+        });
+        auto_submit('/wx/check_order.jsp',{'orderList':arr},'post');
+    }
+    return false;
+})
+//删除购物车的列表后，改变元素
+function ajax_changeNum(id,num,callback){
+    login_post('/addCartItem.do','campusId='+id+'&num='+num,'',function(data){
+        success(JSON.parse(data),function(){
+            callback && callback();
+        })
+    })
+}
 function changeTotal(){
     var len=0,totalPrice=0;
     for(var i=0;i<dataObj.length;i++){
@@ -126,7 +157,6 @@ function renderCar(data){
     }else{
         var price=0,count=0;
         for(var i=0;i<source.length;i++){
-            // price+=source[i].totalPrice*source[i].cartBuyCount;
             dataObj.push({
                 price:source[i].totalPrice,
                 num:source[i].cartBuyCount,
@@ -134,17 +164,10 @@ function renderCar(data){
             })
             arr.push('<li class="cf"><div class="cf choice_goods"><p class="common_choice J_check" data-price="'+source[i].totalPrice+'" data-count="'+source[i].cartBuyCount+'"><i></i></p>');
             arr.push('<div class="container"><div class="cf move_path"><img src="'+handle_pic(source[i].campsImages)[0]+'"/><div class="js_calc_width">');
-            arr.push('<p>'+source[i].campsTitle+'</p><p class="price">价格 ¥ <span>'+source[i].totalPrice+'</span></p></div><button>删除</button></div></div></div>');
+            arr.push('<p class="title">'+source[i].campsTitle+'</p><p class="price">价格 ¥ <span class="j_price">'+source[i].totalPrice+'</span></p></div><button>删除</button></div></div></div>');
             arr.push('<div class="cf cart_edit"><p>数量<span>'+source[i].cartBuyCount+'</span></p><div class="cart_edit_number hidden_active"><span class="sub_button"></span>');
-            arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice">编辑</div></div></li>');
-            
-
-            // arr.push('<li><input type="checkbox" id="checked'+(source[i].campsId)+'" name="campusId" value="'+source[i].campsId+'"><label class="check_label" for="checked'+source[i].campsId+'"><div></div></label>');
-            // arr.push('<a class="yingdi_title" href="/info.jsp?campusId='+source[i].campsId+'"><img src="'+handle_pic(source[i].campsImages)[0]+'" alt=""><span class="span3">'+source[i].campsTitle+'</span></a>');
-            // arr.push('<span class="span4">'+source[i].totalPrice+'</span><span class="span5 num_span_car">'+source[i].cartBuyCount+'</span><span class="span6 money_span_car">'+(source[i].totalPrice*source[i].cartBuyCount)+'</span><a href="javascript:void(0)" class="span7 child_del">删除</a></li>');
+            arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice" data-id="'+source[i]['campsId']+'">编辑</div></div></li>');
         }
-        console.log(dataObj);
-        // arr.push('<input type="hidden" id="j_totalPrice" value="'+price+'"/>');
         $('ul').html(arr.join(''));
     }
 }

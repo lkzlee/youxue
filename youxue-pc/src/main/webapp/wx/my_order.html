@@ -8,66 +8,122 @@
     <link rel="stylesheet" href="css/my_order.css"/>
 </head>
 <body>
-    <header>
-        <ul class="cf">
-            <li class="active">全部订单</li>
-            <li>待付款</li>
-            <li>待确定</li>
-            <li>待出行</li>
-        </ul>
-    </header>
-    <section>
-        <ul>
-            <li class="cf order_item_style_cancel">
-                <div class="order_state cf">
-                    <p>订单编号：<span>2313123123</span></p>
-                    <p class="non_payment">待付款</p>
-                </div>
-                <div class="cf order_intr">
-                    <img src="img/stu.png"/>
-                    <div>
-                        <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
-                        <p class="order_number">数量 <span>1</span></p>
-                    </div>
-                </div>
-                <div class="order_pay_module cf">
-                    <i>合计: ¥<span>1799</span></i>
-                    <div class="order_pay_button cf">
-                        <button class="cancel_order_button">取消订单</button>
-                        <button class="pay_order_button">去支付</button>
-                    </div>
-                </div>
-            </li>
-            <li class="cf order_item_style_not_cancel">
-                <div class="order_state cf">
-                    <p class="not_travel">待出行</p>
-                </div>
-                <div class="cf order_intr">
-                    <img src="img/stu.png"/>
-                    <div>
-                        <p>暑假假期 美国贵族小学 亲子体验夏令营</p>
-                        <p class="order_number">数量 <span>1</span></p>
-                        <div class="position_money">¥<span>1799</span></div>
-                    </div>
-                </div>
-                <div class="order_pay_module cf">
-                    <i>合计: ¥<span>1799</span></i>
-                    <div class="order_pay_button cf">
-                        <button class="cancel_order_button">取消订单</button>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </section>
-    <script src="js/jquery-3.1.0.min.js"></script>
-    <script src="js/fastclick.js"></script>
-    <script>
-        $(function() {
-            FastClick.attach(document.body);
-            $("header>ul").on("click","li",function(){
-                $(this).addClass("active").siblings(".active").removeClass("active");
-            })
-        });
-    </script>
+<header style="overflow:hidden;" class="j_head">
+    <ul class="cf">
+        <li class="active">全部订单</li>
+        <li data-state="0">待付款</li>
+        <li data-state="1">待审核</li>
+        <li data-state="2">待出行</li>
+        <li data-state="3">已完成</li>
+        <li data-state="4">已取消</li>
+    </ul>
+    <i class="j_list iconOrder"></i>
+</header>
+<section>
+    <ul>
+        
+    </ul>
+</section>
+<script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/common.js"></script>
+<script>
+var public_obj={ 'orderType':0,'pageNo':1},is_trunPage = true,is_bottom=false,height = 0;
+$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">订单加载中<img src="/wx/img/load.gif" style="position:relative;margin-top:0;"/></p>');
+var load_message = $('#p-load');
+var load_height = load_message.height() * 2;
+$(function() {
+    FastClick.attach(document.body);
+    get_orderList();
+    $("header>ul").on("click","li:not('.active')",function(){
+        $('section ul').html('');
+        $(this).addClass("active").siblings(".active").removeClass("active");
+        var state=$(this).attr('data-state')?$(this).attr('data-state'):0;
+        public_obj['pageNo']=1;
+        public_obj['orderType']=state;
+        get_orderList();
+    })
+});
+$('.j_list').on('click',function(){
+    var j_head=$('.j_head');
+    var height=Number(j_head.height())>=80?45:88;
+    if(height==45){
+        $(this).css('background-image','url(img/ic_pulldown.png)');
+    }
+    if(height==88){
+        $(this).css('background-image','url(img/ic_up.png)');
+    }
+    j_head.animate({'height':height})
+})
+//滑动加载数据
+$(window).on('scroll', function () {
+    var bottom = $(this).scrollTop();
+    if (bottom + load_height >= height && is_trunPage && !is_bottom) {//asyn start
+        is_trunPage = false;
+        public_obj['pageNo'] = public_obj['pageNo'] + 1;
+        if(isDownPage(public_obj)){
+            get_orderList();
+        }else if(isLastPage(public_obj)){
+            alertMesageAndHide('没有了…');
+        }
+    }
+});
+//获取订单列表
+function get_orderList(){
+    load_message.show();
+    login_post('/uc/userorder.do',public_obj,'',function(data){
+        data=JSON.parse(data);
+        user_success(data,function(){
+            render_list(data);
+        })
+    });
+}
+//渲染消息列表
+function render_list(data){
+    console.log(data);
+    public_obj['pageNo']=data.pageNo;
+    public_obj['totalPage']=data.totalPage;
+    public_obj['totalCount']=data.totalCount;
+    var arr=[];
+    var result=data['resultList'];
+    var len=result.length;
+    if(len<=0){
+        arr.push('<li class="noMessage_border">没有记录</li>');
+    }else{
+        for(var i=0;i<len;i++){
+            arr.push('<li class="cf order_item_style_cancel">');
+            var orderList=result[i]['orderList'];
+            for(var j=0,jLen=orderList.length;j<jLen;j++){
+                arr.push('<a href="/wx/camp_details.jsp?campusId='+orderList[j]['campsId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
+                arr.push('<p class="non_payment">'+getState(orderList[j]['payStatus'])+'</p></div>');
+                arr.push('<div class="cf order_intr"><img src="img/stu.png"/><div>');
+                arr.push('<p>'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div></a>');
+                arr.push('<div class="order_pay_module cf"><i>费用: ¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
+                arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button></div></div>');
+            }
+            arr.push('</li>');
+        }
+        height = $(document).height() - $(window).height();
+    }
+    load_message.fadeOut(600);
+    $('section ul').append(arr.join(''));
+    is_trunPage = true;
+}
+function getState(state){
+    switch(state){
+        case 0:
+            return '待付款';
+        case 1:
+            return '待审核';
+        case 2:
+            return '待出行';
+        case 3:
+            return '已完成';
+        case 4:
+            return '已取消';
+    }
+}
+</script>
 </body>
 </html>

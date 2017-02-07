@@ -37,3 +37,4 @@ button.disabled{color:#666!important;background: #eee!important;border-color: #e
 .iconSuccess{background:url(../img/icon_success.png);}
 .iconError{background:url(../img/icon_error.png);}
 #alertMessage p{line-height:43px;text-align:center;color:#fff;font-family: "思源"}
+.noMessage_border{text-align:center;padding:10px 0;}

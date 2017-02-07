@@ -491,17 +491,17 @@ function validateImage(obj) {
         if(file.value != ""){
             var size=obj.files[0].size;
             if(size<0 || size>maxSize){
-                alert("当前文件大小" + (size/1024/1024).toFixed(2) + "MB, 超出最大限制"+(maxSize/1024/1024)+"MB");
+                alertMesageAndHide("超出最大限制",4);
                 return false;
             }else{
                 return true;
             }
         }else{
-            alert("请选择上传的文件!");
+            alertMesageAndHide("请选择文件!",4);
             return false;
         }
     } else {
-        alert("只能上传jpg、jpeg、png、bmp或gif格式的图片!");
+        alertMesageAndHide("图片格式有误!",4);
         return false;
     }
 }

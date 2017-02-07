@@ -23,6 +23,8 @@ header{
     margin-top:-32px;
 }
 .personal_head_part>i{
+    display:inline-block;
+    width:60px;height:60px;
     border-radius: 50%;
     overflow: hidden;
 }

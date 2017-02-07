@@ -2,6 +2,7 @@
 body{
     background-color:#F5F5F5;
 }
+p{color: #333333;}
 .fl{
     float: left;
 }
@@ -16,7 +17,7 @@ body{
 header{
     background-color: #fff;
     margin-top:11px;
-    padding:2px 20px 0px 20px;
+    padding-top:2px;
 }
 header .form>div{
     padding-left:0;padding-right:0;
@@ -29,16 +30,24 @@ header .form>div{
 .form li{
     border-top:1px solid #EEEEEE;
 }
+.padding20{
+    padding:0 20px;
+}
 .goods_message{
+    padding-bottom:10px;
     /*height:203px;*/
     border-bottom: 1px solid #F5F5F5;
 }
 .goods_message>div{
     line-height: 48px;
 }
+.bg_height10{height:10px;background:#f5f5f5;}
+p.head_p{
+    font-size: 16px;
+}
 .goods_message>div>p:last-child{
-    font-size: 13px;
-    color: #999999;
+    /*font-size: 13px;*/
+    /*color: #999999;*/
 }
 .goods_message>ul>li.cf{
     background-color: #F9F9F9;
@@ -109,11 +118,12 @@ header .form>div{
     margin-top:-3px;
     text-align: center;
 }
-header input,section input{
+header input,section input,header label,section label{
     float:right;
     text-align: right;
     color: #999999;
 }
+section{padding-bottom:62px;}
 section li{
     font-size: 14px;
 }
@@ -193,8 +203,8 @@ section li{
     background-color:#32AFE4;
 }
 footer{
+    position:fixed;bottom:0;left:0;width:100%;
     background-color: #fff;
-    margin-top:10px;
 }
 footer span{
     font-size: 16px;

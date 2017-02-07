@@ -133,13 +133,15 @@ $(function(){
         get_orderList(public_obj,render_list)
     });
     $('.ul_payment').on('click','.del_order',function(){
-        btn_disable($(this),true)
-        login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
-            data=JSON.parse(data);
-            user_success(data,function(){
-                get_orderList(public_obj,render_list)
-            })
-        });
+        if(window.confirm('是否确认删除订单？')){
+            btn_disable($(this),true)
+            login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    get_orderList(public_obj,render_list)
+                })
+            });
+        }
     })
 })
 //渲染消息列表

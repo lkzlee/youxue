@@ -6,6 +6,7 @@
     <title>my_order</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/my_order.css"/>
+    <script src="js/isLogin.js"></script>
 </head>
 <body>
 <header style="overflow:hidden;" class="j_head">
@@ -44,6 +45,46 @@ $(function() {
         get_orderList();
     })
 });
+$('ul').on('click','.del_order',function(){
+    if(window.confirm('是否确认删除订单？')){
+        setBtnDisabled($(this),false)
+        login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
+            data=JSON.parse(data);
+            console.log(data);
+            user_success(data,function(){
+                $('section ul').html('');
+                get_orderList()
+            })
+        });
+    }
+})
+$('ul').on('click','.pay_order',function(){
+    login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+        setBtnDisabled($(this),false)
+        data=JSON.parse(data);
+        user_success(data,function(){
+            if(data.payUrl){
+                window.location.href=data.payUrl
+            }
+        })
+    });
+})
+$('ul').on('click','.j_BtnCancel',function(){
+    if(window.confirm('是否确认取消订单？')){
+        setBtnDisabled($(this),false);
+        var That=$(this);
+        var orderId=That.attr('data-value');
+        login_post('/uc/cancelorder.do','orderId='+orderId,'',function(data){
+            data=JSON.parse(data);
+            success(data,function(){
+                alert('取消订单请联系客服：400-517-517，待与客服确认无误后，可在“已取消”订单中查看。');
+            })
+        })
+    }
+})
+$('ul').on('click','.again_pay',function(){
+    window.location.href='/wx/camp_details.jsp?campusId='+$(this).attr('data-id');
+})
 $('.j_list').on('click',function(){
     var j_head=$('.j_head');
     var height=Number(j_head.height())>=80?45:88;
@@ -94,13 +135,23 @@ function render_list(data){
             arr.push('<li class="cf order_item_style_cancel">');
             var orderList=result[i]['orderList'];
             for(var j=0,jLen=orderList.length;j<jLen;j++){
-                arr.push('<a href="/wx/camp_details.jsp?campusId='+orderList[j]['campsId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
-                arr.push('<p class="non_payment">'+getState(orderList[j]['payStatus'])+'</p></div>');
-                arr.push('<div class="cf order_intr"><img src="img/stu.png"/><div>');
+                arr.push('<a href="/wx/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
+                arr.push('<p class="non_payment" style="color:'+getState(orderList[j]['payStatus'])[1]+' !important;">'+getState(orderList[j]['payStatus'])[0]+'</p></div>');
+                arr.push('<div class="cf order_intr"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/><div>');
                 arr.push('<p>'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div></a>');
                 arr.push('<div class="order_pay_module cf"><i>费用: ¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
-                arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
-                arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button></div></div>');
+                if(orderList[j]['payStatus']==0){
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                    arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button>');
+                }else if(orderList[j]['payStatus']==2){
+                    arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">取消订单</button>');
+                }else if(orderList[j]['payStatus']==3){
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                    arr.push('<button class="pay_order_button again_pay" data-id="'+orderList[j]['campsId']+'">再次购买</button>');
+                }else if(orderList[j]['payStatus']==4){
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                }
+                arr.push('</div></div>');
             }
             arr.push('</li>');
         }
@@ -113,15 +164,15 @@ function render_list(data){
 function getState(state){
     switch(state){
         case 0:
-            return '待付款';
+            return ['待付款','red'];
         case 1:
-            return '待审核';
+            return ['待审核','red'];
         case 2:
-            return '待出行';
+            return ['待出行','blue'];
         case 3:
-            return '已完成';
+            return ['已完成','gray'];
         case 4:
-            return '已取消';
+            return ['已取消','gray'];
     }
 }
 </script>

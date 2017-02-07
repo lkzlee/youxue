@@ -310,3 +310,33 @@ function validateImage(obj) {
         return false;
     }
 }
+function touchSwiper(event,That,callback){
+    var initX = event.targetTouches[0].pageX;
+    var moveX=0;
+    var X = 0;
+    var objX = 0;
+    event.preventDefault();
+    // var obj = event.target.parentNode;
+    // if(obj.className == "list-li"){
+    //     initX = event.targetTouches[0].pageX;
+    //     objX =(obj.style.WebkitTransform.replace(/translateX\(/g,"").replace(/px\)/g,""))*1;
+    // }
+    // console.log(obj)
+    That.on('touchmove',function(event) {
+        event.preventDefault();
+        moveX = event.targetTouches[0].pageX;
+    })
+    That.on('touchend',function(event) {
+        That.unbind();
+        X = moveX - initX;
+        var str='';
+        if (X > 0) {
+            // console.log(moveX +'-'+ initX+'='+X+'右')
+            str='right';
+        }else{
+            // console.log(moveX +'-'+ initX+'='+X+'左')
+            str='left';
+        }
+        callback && callback(str);
+    })
+}

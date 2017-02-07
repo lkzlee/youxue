@@ -7,6 +7,7 @@
     <title>个人中心-结算订单_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/goods_details.css"/>
+    <script src="js/isLogin.js"></script>
 </head>
 <body>
     <header>
@@ -15,7 +16,7 @@
     <section>
         <form id="outher_form">
         <div class="form">
-            <div class="section2">
+            <div class="section2" style="margin-top:0;">
                 <p>联系人信息</p>
                 <ul>
                     <li><span>联系人姓名</span><input type="text" name="contactName" placeholder="真实姓名" class="require"/></li>
@@ -152,21 +153,21 @@
         });
         function render_orderInfo(obj){
             var arr=[];
-            arr.push('<div class="goods_message"><div class="cf"><p class="fl">订单信息</p></div>');
-            arr.push('<ul><li class="cf"><a href="/info.jsp?campusId='+obj['value']+'"><img src="'+obj['img']+'" alt=""/></a><div><p>'+obj['name']+'</p>');
-            arr.push('<p class="price">价格 ¥ <span>'+obj['unitPrice']+'</span></p></div></li></ul></div>');
+            arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');
+            arr.push('<ul><li class="cf"><a href="/wx/camp_details.jsp?campusId='+obj['value']+'"><img src="'+obj['img']+'" alt=""/><div><p>'+obj['name']+'</p>');
+            arr.push('<p class="price">价格 ¥ <span>'+obj['unitPrice']+'</span></p></div></a></li></ul></div><div class="bg_height10"></div>');
             return arr.join('')
         }
         function render_propleInfo(obj,num){
             var arr=[];
-            arr.push('<form class="person'+num+'">');
-            arr.push('<div class="form"><div class="section1"><p>出行人信息</p><ul>');
+            arr.push('<form class="person'+num+' padding20">');
+            arr.push('<div class="form"><div class="section1"><p class="head_p">出行人信息</p><ul>');
             arr.push('<li><span>出行人姓名</span><input type="text" class="require" name="personName" placeholder="真实姓名"/></li>');
             arr.push('<li><span>联系电话</span><input type="text" class="require" name="personPhone" placeholder="输入手机号"/></li>');
             arr.push('<li><span>身份证号</span><input type="text" class="require" name="personIdno" placeholder="点击输入"/></li>');
             arr.push('<li><span>联系地址</span><input type="text" class="require" name="personAddress" placeholder="点击输入"/></li>');
             arr.push('</ul></div></div><input type="hidden" name="campsId" value="'+obj['value']+'"/>');
-            arr.push('</form>');
+            arr.push('</form><div class="bg_height10"></div>');
             return arr.join('')
         }
         //根据输入优惠码，改变单选状态

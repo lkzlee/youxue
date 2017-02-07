@@ -133,8 +133,7 @@ $(function(){
         get_orderList(public_obj,render_list)
     });
     $('.ul_payment').on('click','.j_BtnCancel',function(){
-        // if(window.confirm('取消订单请联系客服：400-517-517，待与客服确认无误后，可在“已取消”订单中查看。您确定要取消吗？')){
-        if(window.confirm('您确定要取消吗？')){
+        if(window.confirm('是否确认取消订单？')){
             btn_disable($(this),true);
             cancelOrder($(this));
         }

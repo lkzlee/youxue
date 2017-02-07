@@ -1,7 +1,7 @@
 @charset "utf-8";
 html{
     -webkit-text-size-adjust:none;
-    font:16px PingFangSC-Regular,"思源黑体CN";
+    font:14px PingFangSC-Regular,"思源黑体CN";
     color: #333333;
 }
 body{

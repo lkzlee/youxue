@@ -250,17 +250,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <a href="user_shoppingCar.html" class="right">去购物车结算</a>
     </div>
 </div>
-<div id="right_float" style="display:none;">
-    <a href="javascript:void(0)" class="join_Car shoppingCar"><i></i><span>加入购物车</span></a>
-    <a href="javascript:void(0)" class="now_bug buyImmediately"><i></i><span>立即购买</span></a>
-    <a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a>
-    <a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a>
-</div>
+
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script src="js/info.js"></script>
 <script>
+floatRight('info');
 $(function(){
     info_loding();
     var frm_logo=$('#frm_logo');//表单
@@ -306,17 +302,7 @@ $(function(){
     $(document).click(function(ev){
         hideAlert(notLogin);
         ev.stopPropagation();
-    })
-    //当鼠标滚动，超过一屏，显示右侧浮动框
-    var client_height=$(window).height();
-    $(window).scroll(function(){
-        var scrollTop=$(window).scrollTop();
-        if(client_height/2 <= scrollTop){//开始添加样式
-            $('#right_float').fadeIn(500);
-        }else{
-            $('#right_float').hide();
-        }
-    })
+    })    
     function notLog_alert(element,location){
         if(!isLogin){
             frm_logo.show();

@@ -123,8 +123,9 @@ function logo_user(callback){
         login_post('login.do',data,'',successFn);
         function successFn(json_data){
             var data=JSON.parse(json_data);
+            console.log(data)
             if(data.result==100){
-                // callback && callback();
+                callback && callback();
             }else{
                 This.removeAttr('disabled','disabled').removeClass('disable');
                 alert(data.resultDesc);

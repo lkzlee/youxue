@@ -151,6 +151,11 @@ input.disabled,input.disabled:hover{background: #eee !important;color: #828282 !
 .head1 .tel span{padding-top:2px;font-size:18px;}
 .head_nav{margin-top:2px;width:100%;height:79px;background:rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=#dd283641,endColorStr=#dd283641);}
 .head_nav nav{float:right;margin-right:26px;}
+.head_nav nav div{position:relative;}
+.head_nav nav ul{position: absolute;z-index:99;padding-bottom:5px;top:79px;width:100%;background: rgba(0,0,0,0.5);}
+.head_nav nav ul li{text-align:center;}
+.head_nav nav ul li.loginDown{margin-top:3px;padding-top:3px;border-top:dashed 1px #fff;}
+.head_nav nav ul li a{display:inline-block;padding:0;line-height:38px;width:100% !important;font-size:12px;}
 .head_nav nav div{float:left;position:relative;margin-left:38px;}
 .head_nav nav div i{position:absolute;background:url("../img/index.png") no-repeat;transition:1s;}
 .head_nav nav div a{display:block;padding:39px 14px 0;line-height:40px;font-size:18px;color:#fff;}

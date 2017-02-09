@@ -63,7 +63,7 @@
     </div>
 </section>
 <!--关于Camplink-->
-<section class="about_camp">
+<section class="about_camp" onclick="window.location.href='/about.html'">
     <span>关于Camplink</span>
 </section>
 <!--热门特价-->

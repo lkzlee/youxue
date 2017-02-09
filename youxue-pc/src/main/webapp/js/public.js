@@ -45,6 +45,10 @@ $.extend({
     }
 })
 $(function(){
+    //加载导航下拉
+    nav_loginDown();
+    //鼠标经过，下拉显示
+    hoverShowDown();
     //鼠标经过导航，改变样式
     var nav_div=$("div",$("nav"));
     nav_div.hover(function(){
@@ -53,7 +57,76 @@ $(function(){
         $(this).removeClass('active');
     })
     new search();
+    floatRight();
 });
+//加载导航下拉
+function nav_loginDown(){
+    var str='<ul style="display:none;" class="login_down"><li><a href="/user.html">个人信息</a></li><li><a href="/user_payment.html">我的订单</a></li>';
+    str+='<li><a href="/user_shoppingCar.html">我的购物车</a></li>';
+    str+='</ul>';
+    $('.personal_icon').append(str);
+    is_login(function(data){
+        if(data.result==100){
+            $('.login_down').append('<li class="loginDown"><a href="javscript:void(0)" onclick="loginOut()">退出登录</a></li>');
+        }
+    })
+}
+//鼠标经过，下拉显示
+function hoverShowDown(){
+    $('.personal_icon').hover(function(){
+        $('.login_down').toggle();
+    })
+}
+//退出登录事件
+function loginOut(){
+}
+//定位居中
+function posMiddle(element){
+    element.css('margin-top',-element.height()/2);
+}
+//右侧浮动
+function floatRight(info){
+    createFloatRight();
+    EVscrollTop();
+    function createFloatRight(){
+        var tmp='<a href="javascript:void(0)" class="join_Car shoppingCar"><i></i><span>加入购物车</span></a><a href="javascript:void(0)" class="now_bug buyImmediately"><i></i><span>立即购买</span></a>';
+        var element='',right_float=$('#right_float');
+        if(right_float.length<=0){
+            element=$('<div id="right_float" style="display:none;"><a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a><a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a></div>');
+            $("body").append(element);
+        }else{
+            right_float.show()
+        }
+        if(info){
+            $('#right_float').prepend(tmp);
+        }
+        posMiddle($("#right_float"));
+    }
+    function EVscrollTop(){
+        //当鼠标滚动，超过一屏，显示右侧浮动框
+        var client_height=$(window).height();
+        $(window).scroll(function(){
+            var scrollTop=$(window).scrollTop();
+            if(client_height/2 <= scrollTop){//开始添加样式
+                $('#right_float').fadeIn(500);
+            }else{
+                $('#right_float').hide();
+            }
+        })
+    }
+}
+//返回顶部
+function backTop(){
+    $('body,html').animate({scrollTop:"0"},500);
+    return false;
+}
+//在线咨询-需要先申请qq在线客服：http://shang.qq.com/v3/widget.html
+function onlineQQ(){
+    var qq='1252610341';
+    var link = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes';
+    window.open(link,'_blank');
+    return false;
+}
 //判断用户是否登录
 function is_login(callback){
     login_post('/uc/userinfo.do','','',function(data){
@@ -244,7 +317,7 @@ function handle_pic(pic){
         picArr=pic.split(',');
         return picArr;
     }
-    return [];
+    return [pic];
 }
 /**
  * 获取给定日期的周一到周日某一天的时间戳

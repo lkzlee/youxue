@@ -232,18 +232,6 @@ function hideAlert(div,time,otherHide){
     }
     $('#divBG').hide();
 }
-//返回顶部
-function backTop(){
-    $('body,html').animate({scrollTop:"0"},500);
-    return false;
-}
-//在线咨询-需要先申请qq在线客服：http://shang.qq.com/v3/widget.html
-function onlineQQ(){
-    var qq='1252610341';
-    var link = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes';
-    window.open(link,'_blank');
-    return false;
-}
 //切换头部的三张图
 function tab_pic(){
     $('.img_list').on('click','img',function(){

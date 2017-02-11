@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<% 
+String path = request.getContextPath(); 
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
+%> 
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -13,10 +18,10 @@
     <p>欢迎进入 Camplink 官网！</p>
 </header>
 <section>
-    <form id="user_input" action="" method="">
+    <form id="user_input" action="/wx/bindphone.do" method="post">
         <button class="get_check_number" id="code">获得验证码</button>
-        <input type="text" value="18810497384" placeholder="输入手机号" maxlength="11" id="phone" class="input" />
-        <input type="number" value="" placeholder="输入验证码" id="codeInput" class="input codeInput" />
+        <input type="text" value="18810497384" name="mobile" placeholder="输入手机号" maxlength="11" id="phone" class="input" />
+        <input type="number" value="" name="phoneCode"  placeholder="输入验证码" id="codeInput" class="input codeInput" />
         <div><button  disabled="" class="btn_login disabled">登陆</button></div>
     </form>
 </section>

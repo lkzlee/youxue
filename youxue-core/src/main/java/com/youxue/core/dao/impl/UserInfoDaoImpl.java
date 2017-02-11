@@ -68,4 +68,10 @@ public class UserInfoDaoImpl extends BaseDao implements UserInfoDao
 		return getPageList(page, "com.youxue.core.dao.UserInfoDao.selectPageUserInfoListByInfo",
 				"com.youxue.core.dao.UserInfoDao.selectCountPageUserInfoListByInfo", param);
 	}
+
+	@Override
+	public UserInfoVo selectUserInfoByOpenId(String openId)
+	{
+		return sqlSessionTemplate.selectOne("com.youxue.core.dao.UserInfoDao.selectUserInfoByOpenId", openId);
+	}
 }

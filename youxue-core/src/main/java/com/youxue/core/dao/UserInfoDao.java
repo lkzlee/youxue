@@ -20,4 +20,6 @@ public interface UserInfoDao
 	UserInfoVo selectByEmail(String email);
 
 	Page<UserInfoVo> selectPageUserInfoListByInfo(Page<UserInfoVo> page, String accountId, String nickName);
+
+	UserInfoVo selectUserInfoByOpenId(String openId);
 }

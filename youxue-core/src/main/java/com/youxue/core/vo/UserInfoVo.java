@@ -42,6 +42,8 @@ public class UserInfoVo extends BaseResponseDto
 
 	private int unReads;
 
+	private String openId;
+
 	public String getAccountId()
 	{
 		return accountId;
@@ -192,6 +194,16 @@ public class UserInfoVo extends BaseResponseDto
 		this.unReads = unReads;
 	}
 
+	public String getOpenId()
+	{
+		return openId;
+	}
+
+	public void setOpenId(String openId)
+	{
+		this.openId = openId;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -199,6 +211,6 @@ public class UserInfoVo extends BaseResponseDto
 				+ ", emailActiveStatus=" + emailActiveStatus + ", mobile=" + mobile + ", gender=" + gender
 				+ ", createIp=" + createIp + ", createTime=" + createTime + ", birthTime=" + birthTime + ", credit="
 				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + ", ifPop=" + ifPop + ", loveCity="
-				+ loveCity + ", unReads=" + unReads + "]";
+				+ loveCity + ", unReads=" + unReads + ", openId=" + openId + "]";
 	}
 }

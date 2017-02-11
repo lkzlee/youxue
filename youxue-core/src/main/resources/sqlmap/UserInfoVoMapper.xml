@@ -15,10 +15,11 @@
     <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="love_city" property="loveCity" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     account_id, nick_name, email, email_active_status, mobile, gender, create_ip, create_time, 
-    birth_time, credit, photo_url, update_time,love_city
+    birth_time, credit, photo_url, update_time,love_city,open_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -31,6 +32,12 @@
     <include refid="Base_Column_List" />
     from tb_user_info
     where email = #{email,jdbcType=VARCHAR} and email_active_status=2 limit 0,1
+  </select>
+  <select id="selectUserInfoByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_info
+    where open_id = #{openId,jdbcType=VARCHAR}
   </select>
    <select id="selectPageUserInfoListByInfo" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
@@ -67,13 +74,13 @@
     insert into tb_user_info (account_id, nick_name, email, 
       email_active_status, mobile, gender, 
       create_ip, create_time, birth_time, 
-      credit, photo_url, update_time,love_city
+      credit, photo_url, update_time,love_city,open_id
       )
     values (#{accountId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{emailActiveStatus,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
       #{createIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{birthTime,jdbcType=TIMESTAMP}, 
       #{credit,jdbcType=DECIMAL}, #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{loveCity,jdbcType=VARCHAR}
+      #{loveCity,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.UserInfoVo" >
@@ -118,6 +125,9 @@
       <if test="loveCity != null" >
        love_city,
       </if>
+      <if test="openId != null" >
+       open_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="accountId != null" >
@@ -158,6 +168,9 @@
       </if>
       <if test="loveCity != null" >
         #{loveCity,jdbcType=VARCHAR},
+      </if>
+       <if test="openId != null" >
+       #{openId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -200,6 +213,9 @@
       <if test="loveCity != null" >
         love_city = #{loveCity,jdbcType=VARCHAR},
       </if>
+       <if test="openId != null" >
+       open_id = #{openId,jdbcType=VARCHAR},
+      </if>
     </set>
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
@@ -216,7 +232,8 @@
       credit = #{credit,jdbcType=DECIMAL},
       photo_url = #{photoUrl,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      love_city = #{loveCity,jdbcType=VARCHAR}
+      love_city = #{loveCity,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR}
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
 </mapper>

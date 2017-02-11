@@ -21,6 +21,7 @@ public class ControllerUtil
 	public static final String FREEMARKER_MAP = "freemarkerMap";
 	public static final String ACTIVITY_ID = "activityId";
 	private static final Log LOG = LogFactory.getLog(ControllerUtil.class);
+	private static final String SESSION_WX_OPEN_ID = "currentLoginUserWxOpenId";
 
 	/**
 	 * 获取当前请求url
@@ -86,5 +87,15 @@ public class ControllerUtil
 		{
 			return userName;
 		}
+	}
+
+	public static void setWxOpenId(HttpServletRequest request, String openId)
+	{
+		request.getSession().setAttribute(SESSION_WX_OPEN_ID, openId);
+	}
+
+	public static String getWxOpenId(HttpServletRequest request)
+	{
+		return (String) request.getSession().getAttribute(SESSION_WX_OPEN_ID);
 	}
 }

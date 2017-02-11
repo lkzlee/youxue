@@ -54,10 +54,10 @@ public class WxLoginController extends BaseController
 		if (userInfo != null)
 		{
 			ControllerUtil.setCurrentLoginUserName(request, userInfo.getAccountId());
-			return "/wx/index"; //跳转微信首页
+			return "wx/index"; //跳转微信首页
 		}
 		ControllerUtil.setWxOpenId(request, openId);
-		return "/wx/login"; //跳转微信绑定手机号登录页
+		return "wx/login"; //跳转微信绑定手机号登录页
 	}
 
 	/***

@@ -31,7 +31,7 @@ public class OrderVo implements Serializable
 	 */
 	public static final int CANCEL = 4;
 	/***
-	 * 已删除状态
+	 * 已删除状态,已取消 未支付订单
 	 */
 	public static final int DELETED = 5;
 	/***

@@ -29,4 +29,8 @@ public interface OrderDao
 
 	Page<OrderDetailVo> selectPageOrderListByInfo(Page<OrderDetailVo> page, int status, PayTypeEnum pType,
 			String orderId, String mobile, String campsName);
+
+	List<OrderVo> selectUnPayOrder();
+
+	List<OrderVo> selectUnfinishedOrder();
 }

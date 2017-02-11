@@ -23,7 +23,7 @@ public class ConstantMapUtil
 		orderStatusMap.put("" + OrderVo.APPLY_REFUND, "申请退款");
 		orderStatusMap.put("" + OrderVo.APPLY_FAILED, "退款失败");
 		orderStatusMap.put("" + OrderVo.CANCEL, "已取消,已退款");
-		orderStatusMap.put("" + OrderVo.DELETED, "已删除");
+		orderStatusMap.put("" + OrderVo.DELETED, "已删除，已取消（未支付订单）");
 		payTypeMap.put("0", "全部");
 		payTypeMap.put("" + PayTypeEnum.ALIPAY.getValue(), "支付宝支付");
 		payTypeMap.put("" + PayTypeEnum.WEIXIN_APY.getValue(), "微信支付");

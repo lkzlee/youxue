@@ -100,4 +100,16 @@ public class OrderDaoImpl extends BaseDao implements OrderDao
 		return getPageList(page, "com.youxue.core.dao.OrderDao.selectPageOrderListByInfo",
 				"com.youxue.core.dao.OrderDao.selectCountPageOrderListByInfo", param);
 	}
+
+	@Override
+	public List<OrderVo> selectUnPayOrder()
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.OrderDao.selectUnPayOrder");
+	}
+
+	@Override
+	public List<OrderVo> selectUnfinishedOrder()
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.OrderDao.selectUnfinishedOrder");
+	}
 }

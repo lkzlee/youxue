@@ -105,6 +105,23 @@
     	for update
     </if>
   </select>
+  <select id="selectUnPayOrder" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where order_id &lt;= DATE_FORMAT(SUBDATE(NOW(),interval 30 MINUTE),'%Y%m%d%H%i%s')
+    	 and order_id &gt;= DATE_FORMAT(SUBDATE(NOW(),interval 10 DAY),'%Y%m%d')
+   		 and status=0
+  </select>
+  <select id="selectUnfinishedOrder" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select t.*
+    from tb_order t,tb_camps c 
+    where  t.camps_id=c.camps_id 
+	    and c.start_date &lt;now()
+	    and t.order_id &lt;= DATE_FORMAT(SUBDATE(NOW(),interval 5 DAY),'%Y%m%d')
+    	 and t.order_id &gt;= DATE_FORMAT(SUBDATE(NOW(),interval 30 DAY),'%Y%m%d')
+   		 and t.status=2
+  </select>
   <select id="selectPageOrderListByType" resultMap="orderDetailVoMap" parameterType="java.util.Map" >
     select 
 	   t.*,tg.pay_status,tg.pay_type,c.camps_name,c.camps_title,c.camps_images,

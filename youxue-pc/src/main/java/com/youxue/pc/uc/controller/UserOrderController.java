@@ -63,7 +63,7 @@ public class UserOrderController extends BaseController
 	 * @param request
 	 * @param response
 	 * @param pageNo 页数默认第一页
-	 * @param orderType  订单类型，0 代表代付款订单 1代表待审核 2待出行订单 3已完成订单  4 代表已退款订单
+	 * @param orderType  订单类型，-1 全部订单 0 代表代付款订单 1代表待审核 2待出行订单 3已完成订单  4 代表已退款订单
 	 * @return
 	 */
 	@RequestMapping(path = "/uc/userorder.do")
@@ -75,7 +75,7 @@ public class UserOrderController extends BaseController
 		LOG.info("查询用户个人订单页，accountId=" + accountId + ",orderType=" + orderType);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		int status = 0;
+		int status = -1;
 		try
 		{
 			if (StringUtils.isNotBlank(orderType))

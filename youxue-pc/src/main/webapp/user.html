@@ -89,7 +89,7 @@
             </div>
             <div class="hiDiv">
                 <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
-                <span>你的积分，<label class="integral_lbl">0</label></span>
+                <span>你的积分，<label class="integral_lbl j_integral">0</label></span>
             </div>
         </div>
         <div class="right2">
@@ -241,6 +241,7 @@
         getUserData(function(data){
             render_alertANDuserinfo(data);
         })
+        $('.j_integral').click(function(){$('.alertMessage').show()})
         //个人首页，点击编辑，显示文本框，并自动保存提交
         edit_photo('/img/userphoto/uploadImg.do',sucessFn);
         function sucessFn(data){

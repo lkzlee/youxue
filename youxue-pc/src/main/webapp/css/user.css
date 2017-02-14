@@ -1,5 +1,7 @@
 span{font-family: "黑体";}
 i{font-family: "simsun";}
+.j_integral{cursor:pointer;}
+.j_integral:hover{color:#2aabe2;}
 #showImg{padding:10px;width:600px;height:500px;margin-left:-300px;margin-top:-250px;background:#eee;border-radius:10px;}
 #showImg>i{top:8px;right:8px;width:18px;height:18px;background: url(../img/user.png) -38px 0 no-repeat;}
 #showImg h2{font-size:18px;font-weight:700;text-align:center;line-height:40px;}

@@ -37,7 +37,7 @@ function userIndexList(){
 function render_alertANDuserinfo(data){
     renderUserInfo(data);
     var alertMessage=$('.alertMessage');
-    data.ifPop && alertMessage.show();
+    // data.ifPop && alertMessage.show();
     $('#phone').children('span').text(data.mobile);
     $('#email').children('span').text(data.email);
     $('#nickname').children('span').text(data.nickName);

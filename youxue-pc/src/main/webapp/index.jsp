@@ -161,7 +161,6 @@ function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
         success(data,function(){
-            console.log(data);
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
             if(data.hotCampsList.length>0){//热门

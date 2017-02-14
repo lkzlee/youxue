@@ -129,10 +129,10 @@ function onlineQQ(){
 }
 //判断用户是否登录
 function is_login(callback){
-    login_post('/uc/userinfo.do','','',function(data){
+    login_post('/uc/userinfo.do','','GET',function(data){
         data=JSON.parse(data);
         callback(data);
-    })
+    },1)
 }
 //加载目的地 主题分类 时间周期 等
 function load_local(id,callback) {
@@ -267,10 +267,12 @@ function login_post(address,data,method,successFn,errorFn,contentType){
         dataType:"json",
         contentType:contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
         success:successFn,
-        error:errorFn ||function(data,error){
-            alert('系统获取异常');
-            console.log(data);
-            console.log(error);
+        error:errorFn ||function(XMLHttpRequest, textStatus, errorThrown){
+            alert('login_post系统获取异常');
+            console.log(XMLHttpRequest.status);
+            console.log(XMLHttpRequest.readyState);
+            console.log(textStatus);
+            return false;
         }
     })
 }

@@ -11,7 +11,7 @@
 <body>
 <header style="overflow:hidden;" class="j_head">
     <ul class="cf">
-        <li class="active">全部订单</li>
+        <li data-state="-1" class="active">全部订单</li>
         <li data-state="0">待付款</li>
         <li data-state="1">待审核</li>
         <li data-state="2">待出行</li>
@@ -39,7 +39,7 @@ $(function() {
     $("header>ul").on("click","li:not('.active')",function(){
         $('section ul').html('');
         $(this).addClass("active").siblings(".active").removeClass("active");
-        var state=$(this).attr('data-state')?$(this).attr('data-state'):0;
+        var state=$(this).attr('data-state') || 0;
         public_obj['pageNo']=1;
         public_obj['orderType']=state;
         get_orderList();

@@ -233,6 +233,14 @@ public class CampsController extends AdminBaseController
 				camps.setDeadlineDate(DateUtil.formatToDate(deadlineDateStr, "yyyy-MM-dd"));
 			}
 			camps.setCampsId(commonDao.getIdByPrefix(CommonConstant.CAMPS_ID_PREFIX));
+			if (StringUtils.isNotBlank(camps.getCampsLocaleId()))
+			{
+				CategoryVo category = categoryDao.selectByPrimaryKey(camps.getCampsLocaleId());
+				if (category != null)
+				{
+					camps.setCampsLocale(category.getCategoryName());
+				}
+			}
 			camps.setCreateTime(new Date());
 			campsDao.insertSelective(camps);
 		}
@@ -281,6 +289,14 @@ public class CampsController extends AdminBaseController
 					|| StringUtils.isBlank(camps.getCampsTitle()) || StringUtils.isBlank(camps.getCampsId()))
 			{
 				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
+			}
+			if (StringUtils.isNotBlank(camps.getCampsLocaleId()))
+			{
+				CategoryVo category = categoryDao.selectByPrimaryKey(camps.getCampsLocaleId());
+				if (category != null)
+				{
+					camps.setCampsLocale(category.getCategoryName());
+				}
 			}
 			camps.setUpdateTime(new Date());
 			campsDao.updateByPrimaryKeySelective(camps);

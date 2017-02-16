@@ -102,14 +102,19 @@ public class CouponController
 		{
 			String cateIds = coupon.getCategoryIds();
 			if (StringUtils.isBlank(cateIds))
-				continue;
-			String[] categoryIds = cateIds.split(",");
-			String cateStrs = "";
-			for (String cateId : categoryIds)
 			{
-				cateStrs = cateStrs + (cateMap.get(cateId) == null ? "" : cateMap.get(cateId)) + " ";
+				coupon.setCategorys("全部分类");
 			}
-			coupon.setCategorys(cateStrs);
+			else
+			{
+				String[] categoryIds = cateIds.split(",");
+				String cateStrs = "";
+				for (String cateId : categoryIds)
+				{
+					cateStrs = cateStrs + (cateMap.get(cateId) == null ? "" : cateMap.get(cateId)) + " ";
+				}
+				coupon.setCategorys(cateStrs);
+			}
 		}
 		modelMap.put("couponPage", couponPage);
 		modelMap.put("couponName", StringUtils.isBlank(couponName) ? "" : couponName);

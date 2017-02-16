@@ -51,7 +51,7 @@
 							</td>
 						</tr>
 						<tr><th>优惠券编码:</th><td><input type="text" class="form-control" name="codeValue" id="codeValue" value="${coupon.codeValue}"/></td></tr>
-						<tr><th>优惠券金额:</th><td><input type="text" class="form-control" name="codeAmount" id="codeAmount" value="${coupon.codeAmount}"/></td></tr>
+						<tr><th>优惠券金额:</th><td><input type="number" class="form-control" name="codeAmount" id="codeAmount" value="${(coupon.codeAmount?c)!''}"/></td></tr>
 						<tr><th>有效开始时间:</th><td><input class="form-control form_datetime" name="startTime" id="startTime"
                                         type="text"  data-picker-position="top-right" value="${coupon.startTime?date}"/></td></tr>
                          <tr><th>有效截止时间:</th>               

@@ -49,7 +49,7 @@ public class CampsVo
 	private String traceDesc;
 	private String tracePhotos;
 	private String feeDesc;
-
+	private String questions;
 	private Integer status;
 	private Integer ifHot;
 	private Integer ifPrice;
@@ -491,6 +491,16 @@ public class CampsVo
 	public void setTracePhotos(String tracePhotos)
 	{
 		this.tracePhotos = tracePhotos;
+	}
+
+	public String getQuestions()
+	{
+		return questions;
+	}
+
+	public void setQuestions(String questions)
+	{
+		this.questions = questions;
 	}
 
 }

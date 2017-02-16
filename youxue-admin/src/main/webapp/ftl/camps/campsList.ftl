@@ -158,7 +158,7 @@
 									<tbody>
 										<#list campsList.resultList![] as adItem>
 										<tr class="<#if adItem_index%2 == 0>odd<#else>even</#if>">
-											<td>${adItem.campsName!""}</td>
+											<td>${adItem.campsTitle!""}</td>
 											<td>${adItem.categoryStrs!""}</td>
 											<td>${adItem.totalPrice}</td>
 											<td>${adItem.doneCount}</td>

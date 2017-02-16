@@ -180,7 +180,7 @@ $(function() {
 			error: function(ret) {
 				$trigger.removeClass('uploading');
 				console.log(ret);
-				alert('网络错误或后端返回的不是json, 错误信息请F12查看控制台');
+				alert('上传错误，请检查文件大小等');
 			}
 		});
 	}

@@ -147,8 +147,8 @@
                         <div class="form-group">
                             <label class="col-lg-2 control-label">产品金额：</label>
                             <div class="col-lg-6">
-                                <input class="form-control" name="totalPrice"  data-bv-notempty="true" value="${camps.totalPrice!""}"
-                                        type="text"/>
+                                <input class="form-control" name="totalPrice"  data-bv-notempty="true" value="${(camps.totalPrice?c)!''}"
+                                        type="number"/>
                             </div>
                         </div>
 						<div class="form-group">
@@ -250,6 +250,21 @@
                             <label class="col-lg-2 control-label">费用详情：</label>
                             <div class="col-lg-6">
                                <textarea class="form-control" name="feeDesc" >${camps.feeDesc}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">常见问题：</label>
+                            <div class="col-lg-8">
+								<script id="container" name="questions" type="text/plain">
+									${camps.questions!""}
+								</script>
+                                <!-- 编辑器源码文件 -->
+								<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
+								<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container');
+								</script>
                             </div>
                         </div>
                         <div class="form-group">

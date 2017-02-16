@@ -146,7 +146,7 @@
                             <label class="col-lg-2 control-label">产品金额：</label>
                             <div class="col-lg-6">
                                 <input class="form-control" name="totalPrice"  data-bv-notempty="true"
-                                        type="text"/>
+                                        type="number"/>
                             </div>
                         </div>
 						<div class="form-group">
@@ -248,10 +248,31 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-lg-2 control-label">常见问题：</label>
+                            <div class="col-lg-6">
+								<script id="container" name="questions" type="text/plain">
+								</script>
+        
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-lg-offset-4 col-lg-8">
                                 <button type="submit" class="btn btn-primary">提交</button>
                             </div>
                        </div>
+
                     </form>
                 </div>
             </div><!-- /.row-->

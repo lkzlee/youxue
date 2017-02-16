@@ -241,7 +241,7 @@ public class OrderController extends BaseController
 				}
 				if (!coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
 				{
-					throw new BusinessException("下单有误，改优惠券不适用于该营地，请检查");
+					throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
 				}
 				couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
 			}

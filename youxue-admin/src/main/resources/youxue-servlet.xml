@@ -68,10 +68,21 @@
 	<import resource="classpath:youxue-base.xml" />
 	<mvc:interceptors>
 
-		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <bean class="com.masterwind.admin.interceptor.LoginInterceptor"> 
-			<property name="allowUrls"> <list> <value>/login</value> <value>/doLogin</value> 
-			<value>/js</value> <value>/css</value> <value>/image</value> <value>/images</value> 
-			</list> </property> </bean> </mvc:interceptor> -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.youxue.admin.login.interceptor.LoginInterceptor">
+				<property name="allowUrls">
+					<list>
+						<value>/login</value>
+						<value>/doLogin</value>
+						<value>/js</value>
+						<value>/css</value>
+						<value>/image</value>
+						<value>/images</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor>
 
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -95,7 +106,8 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	 	<property name="maxUploadSize" value="500000"/>
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="500000" />
 	</bean>
 </beans>

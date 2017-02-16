@@ -60,6 +60,12 @@ public class LoginController
 		return "login";
 	}
 
+	@RequestMapping(value = "index.do")
+	public String index(HttpServletRequest request, HttpServletResponse response)
+	{
+		return "index";
+	}
+
 	/**
 	 * 执行登录
 	 * @param request

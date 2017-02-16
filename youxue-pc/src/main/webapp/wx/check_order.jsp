@@ -50,9 +50,10 @@
     <script src="js/common.js"></script>
     <script>
         var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
-        console.log(orderList);
+        // console.log(orderList);
         // FastClick.attach(document.body);
         $(function() {
+            var btn_order=$('#btn_order');
             var moneyTotal=0,len=0,orderObj=[];
             if(orderList){
                 var htmlArr=[],num=0;
@@ -83,25 +84,32 @@
             });
             $(".section4>ul").on("click",".common_choice",function(){
                 if($(this).prop("for")=="youhui"){
+                    setBtnDisabled(btn_order,false);
                     $(this).parent().find("[type=text]").show();
                 }else{
+                    $('input[name=codeId]').val('');
+                    $('.j_price').text(moneyTotal)
+                    setBtnDisabled(btn_order,true);
                     $(this).parent().next().find("[type=text]").hide();
                 }
             })
             //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
-            $('input[name=codeId]').blur(function () {
+            // $('input[name=codeId]').blur(function () {
+            $('input[name=codeId]').bind('input propertychange',function(){
                 var That=$(this);
                 if(changeRadio($(this)) && changeRadio($(this))!==1){
                     login_post('/coupon/getCouponByCode.do','codeId='+$(this).val(),'',function(data){
                         data=JSON.parse(data);
-                        success(data,function(){
+                        if(data.result==100){
+                            setBtnDisabled(btn_order,true);
                             discount=Number(data.codeAmount);
                             if(discount<moneyTotal){
                                 $('.j_price').text(accSub(moneyTotal,discount));
                             }
-                        },function(){
-                            That.val('');
-                        })
+                        }else{
+                            setBtnDisabled(btn_order,false);
+                            $('.j_price').text(moneyTotal)
+                        }
                     })
                 }
             })
@@ -179,7 +187,7 @@
                 }else{
                     bool=false;
                 }
-                return range_input(code,bool,'优惠码有误');
+                return bool;
             }
             return bool;
         }

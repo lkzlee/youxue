@@ -97,13 +97,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <div class="con2">
         <ul class="con2_head" id="YDnav">
-            <li class="tese li2 li2_ash active"><a href="#">特色亮点</a></li>
-            <li class="jieshao li2"><a href="#">营地介绍</a></li>
-            <li class="chizhu li2 li2_ash"><a href="#">营地吃住行</a></li>
-            <li class="huodong li2"><a href="#">营地课程&活动</a></li>
-            <li class="xingcheng li2 li2_ash"><a href="#">营地行程</a></li>
-            <li class="feiyong li2"><a href="#">费用详情</a></li>
-            <li class="wenti li2 li2_ash"><a href="#">常见问题</a></li>
+            <li class="tese li2 li2_ash active"><a href="javascript:void(0)">特色亮点</a></li>
+            <li class="jieshao li2"><a href="javascript:void(0)">营地介绍</a></li>
+            <li class="chizhu li2 li2_ash"><a href="javascript:void(0)">营地吃住行</a></li>
+            <li class="huodong li2"><a href="javascript:void(0)">营地课程&活动</a></li>
+            <li class="xingcheng li2 li2_ash"><a href="javascript:void(0)">营地行程</a></li>
+            <li class="feiyong li2"><a href="javascript:void(0)">费用详情</a></li>
+            <li class="wenti li2 li2_ash"><a href="javascript:void(0)">常见问题</a></li>
         </ul>
         <div class="con2_cont">
             <div class="div_con2_cont tese_div">
@@ -128,7 +128,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="right">
                     <dl>
                         <dt class="campsName"></dt>
-                        <dd>时间：<label class="departureDate"></label></dd>
+                        <dd>时间：<label class="createTime"></label></dd>
                         <dd>地点：<label class="campsLocale"></label></dd>
                         <dd>周期：<label class="durationTime"></label>天</dd>
                         <dd><span>简介：</span><span class="span1 campsDesc"></span></dd>

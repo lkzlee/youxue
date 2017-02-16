@@ -169,7 +169,7 @@ function load_render(data){
     login_post('/campsDetail.do',data,'',function(data){
         data=JSON.parse(data);
         //虚拟数据
-        data.realCampsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
+        data.campsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         // console.log(data);
         success(data,function(){
@@ -190,8 +190,8 @@ function load_render(data){
                 }
                 $('.serviceSupport').html(str);
             }
-            if(data.realCampsImages){
-                var arr=handle_pic(data.realCampsImages);
+            if(data.campsImages){
+                var arr=handle_pic(data.campsImages);
                 var str='';
                 for(var i=0;i<arr.length;i++){
                     str+='<div class="swiper-slide"><img src="'+arr[i]+'" style="width:100%;" alt=""/></div>';

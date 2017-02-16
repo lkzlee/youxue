@@ -315,7 +315,7 @@ function touchSwiper(event,That,callback){
     var moveX=0;
     var X = 0;
     var objX = 0;
-    event.preventDefault();
+    // event.preventDefault();
     // var obj = event.target.parentNode;
     // if(obj.className == "list-li"){
     //     initX = event.targetTouches[0].pageX;
@@ -330,12 +330,16 @@ function touchSwiper(event,That,callback){
         That.unbind();
         X = moveX - initX;
         var str='';
-        if (X > 0) {
-            // console.log(moveX +'-'+ initX+'='+X+'右')
-            str='right';
+        if(moveX==0){
+            console.log('alert');
         }else{
-            // console.log(moveX +'-'+ initX+'='+X+'左')
-            str='left';
+            if (X > 0) {
+                // console.log(moveX +'-'+ initX+'='+X+'右')
+                str='right';
+            }else{
+                // console.log(moveX +'-'+ initX+'='+X+'左')
+                str='left';
+            }
         }
         callback && callback(str);
     })

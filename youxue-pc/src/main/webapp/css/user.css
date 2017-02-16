@@ -50,11 +50,11 @@ i{font-family: "simsun";}
 .user_default .left>li.liActive a.li_aActive span{background-position:0 -11px;}
 .user_default .left>li a.li_aActive span{background-position:-20px -9px;}
 .right_default{float:left;width:945px;position:relative;}
-.right_default .alertMessage{position:absolute;top:146px;left:242px;width:472px;height:252px;box-shadow: 0 4px 29px -9px #221d1d;background:#fff;z-index:9999;color:#333;}
-.right_default .alertMessage i{float:right;width:31px;height:31px;line-height:31px;font-size:16px;font-weight:bold;text-align:center;background:#f1edec;cursor:pointer;}
-.right_default .alertMessage h2{float:left;padding:5px 0 0 88px;width:384px;height:74px;line-height:74px;font-size:30px;}
-.right_default .alertMessage div{padding:22px 0 0 86px;font-size:14px;}
-.right_default .alertMessage div span{display:block;line-height:29px;}
+.alertMessage{position:fixed;top: 50%; left: 50%;margin-left: -286px; margin-top: -126px;width:472px;height:252px;box-shadow: 0 4px 29px -9px #221d1d;background:#fff;z-index:9999;color:#333;}
+.alertMessage i{float:right;width:31px;height:31px;line-height:31px;font-size:16px;font-weight:bold;text-align:center;background:#f1edec;cursor:pointer;}
+.alertMessage h2{float:left;padding:5px 0 0 88px;width:384px;height:74px;line-height:74px;font-size:30px;}
+.alertMessage div{padding:22px 0 0 86px;font-size:14px;}
+.alertMessage div span{display:block;line-height:29px;}
 .right_default .right1{height:172px;}
 .right_default .bghui{height:47px;background:#f0edec;}
 .right_default .imgMessage{float:left;position:relative;margin-left:58px;margin-top:-33px;width:145px;height:145px;}
@@ -288,7 +288,7 @@ i{font-family: "simsun";}
 .order_info .contacts .cont_pay label span{padding-left:5px;}
 .order_info .contacts .cont_pay label img{padding-top:10px;}
 .order_info .right_cont_pay{padding-top:69px;float:right;width:353px;text-align:right;}
-.order_info .right_cont_pay .div1{height:31px;line-height:31px;font-size:14px;}
+.order_info .right_cont_pay .div1{line-height:31px;font-size:14px;}
 .order_info .right_cont_pay .div1 label *{vertical-align:middle;}
 .order_info .right_cont_pay .div1 input[type=text]{padding:0 5px;width:130px;height:29px;border:solid 1px #666;}
 .order_info .right_cont_pay .div2{padding-top:16px;font-size:16px;}

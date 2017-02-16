@@ -58,7 +58,7 @@
         <p class="p1">选择我的营地</p>
         <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="off"></div>
         <div class="div_input"><input type="text" id="wantDo" class="posElement2" placeholder="想做什么" autocomplete="off"></div>
-        <div class="div_input"><input type="text" class="color_blur startTime" placeholder="出发时间" autocomplete="off"></div>
+        <div class="div_input"><input type="text" class="startTime" placeholder="出发时间" autocomplete="off"></div>
         <a href="javascript:void(0)" id="search"><i></i></a>
     </div>
 </section>
@@ -115,6 +115,7 @@
 <script src="js/calendar_1.0.js"></script>
 <script>
 $(function(){
+    navScrollPosition({ 'element':$('.head_nav')});
     changeEvent($('.startTime'));
     //选择我的营地
     event_yingdi();
@@ -164,12 +165,18 @@ function CampsDetail(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
             if(data.hotCampsList.length>0){//热门
-                var val=data.hotCampsList[0];
-                str(val)
+                var arr=[];
+                for(var i=0,len=data.hotCampsList.length;i<len;i++){
+                    arr.push(str(data.hotCampsList[i]));
+                }
+                hot_list.append(arr.join(''))
             }
             if(data.priceCampsList.length>0){//特价
-                var val=data.priceCampsList[0];
-                str(val)
+                var arr=[];
+                for(var i=0,len=data.priceCampsList.length;i<len;i++){
+                    arr.push(str(data.priceCampsList[i]));
+                }
+                hot_list.append(arr.join(''))
             }
             if(data.subjectList.length>0){//主题分类
                 var obj=data.subjectList;
@@ -184,15 +191,56 @@ function CampsDetail(){
                 subject_list.append(li.join(''));
             }
             function str(val){
-                var li=[];
-                li.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
-                li.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
-                li.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
-                li.push('<p>'+val['campsDesc']+'</p></a></li>');
-                hot_list.append(li.join(''));
+                var arr=[];
+                arr.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
+                arr.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
+                arr.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
+                arr.push('<p>'+val['campsDesc']+'</p></a></li>');
+                return arr.join('');
+                // hot_list.append(li.join(''));
             }
+            loadSlide($('.hot_list'),2);
         })
     });
+}
+function loadSlide(slideElement,num){
+    num=num||3;
+    var biZhiDelayLoadImg = slideElement.children('li');
+    var biZhiDelayLoadImgLength = biZhiDelayLoadImg.length;
+    // var _focus_num = $(".smallUl > li").length;
+    var _focus_num = Math.ceil(biZhiDelayLoadImgLength/num);
+    var _focus_li_length = slideElement.width();
+    slideElement.css('width',_focus_num+'00%')
+    var _focus_direction = true;
+    var _focus_pos = 0;
+    var _focus_max_length = _focus_num * _focus_li_length;
+    var _focus_dsq = null;
+    var _focus_lock = true;
+    function autoExecAnimate() {
+        console.log(new Date().getSeconds())
+        var moveLen = _focus_pos * _focus_li_length;
+        slideElement.animate({
+                'margin-left': "-" + moveLen + "px"
+            },
+            3000);
+        if (_focus_pos == (_focus_num - 1)) {
+            _focus_direction = false
+        }
+        if (_focus_pos == 0) {
+            _focus_direction = true
+        }
+        if (_focus_direction) {
+            _focus_pos++
+        } else {
+            _focus_pos--
+        }
+    }
+    _focus_dsq = setInterval(autoExecAnimate, 6000);
+    slideElement.hover(function(){
+        clearInterval(_focus_dsq)
+    },function(){
+        _focus_dsq = setInterval(autoExecAnimate, 6000);
+    })    
 }
 </script>
 </body>

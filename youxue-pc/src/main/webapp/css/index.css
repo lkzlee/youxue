@@ -16,7 +16,7 @@
 .about_camp{margin-top:7px;height:231px;line-height:231px;background:url(../img/index1.jpg) center top no-repeat;text-align:center;color:#fff;font-size:40px;font-family:"微软雅黑";cursor:pointer;}
 /*热门特价*/
 .hot_camp{margin-top:7px;padding-top:70px;padding-bottom:77px;height:725px;background:url("../img/index2.png") center top no-repeat;}
-.hot_div{margin:0 auto;padding-left:55px;padding-right:56px;width:1069px;}
+.hot_div{margin:0 auto;width:1069px;overflow:hidden;}
 .border_hot{float:left;margin-top:34px;width:376px;height:3px;border:solid 1px #fff;}
 .div_p_hot{float:left;width:313px;text-align:center;color:#fff;font-size:34px;line-height:44px;}
 .div_p_hot .p1{line-height:48px;font-size:36px;}

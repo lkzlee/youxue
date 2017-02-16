@@ -45,21 +45,28 @@ $.extend({
     }
 })
 $(function(){
-    //加载导航下拉
     nav_loginDown();
-    //鼠标经过，下拉显示
     hoverShowDown();
-    //鼠标经过导航，改变样式
-    var nav_div=$("div",$("nav"));
-    nav_div.hover(function(){
-        $(this).addClass('active');
-    },function(){
-        $(this).removeClass('active');
-    })
+    hovChangeStyle();
     new search();
     floatRight();
 });
-//加载导航下拉
+//内容横向导航,滚动定位
+function navScrollPosition(obj){
+    var nav=obj.element;
+    var css=obj.css || {'width':nav.width()};
+    var YDheight=nav.height();
+    var pos_obj=nav.offset();//left和top
+    $(window).scroll(function(){
+        var scrollTop=$(window).scrollTop();
+        if(pos_obj.top <= scrollTop){//开始添加样式
+            nav.addClass('navActive').css(css);
+        }else{
+            nav.removeClass('navActive');
+        }
+    })
+}
+//个人中心的导航下拉
 function nav_loginDown(){
     var str='<ul style="display:none;" class="login_down"><li><a href="/user.html">个人信息</a></li><li><a href="/user_payment.html">我的订单</a></li>';
     str+='<li><a href="/user_shoppingCar.html">我的购物车</a></li>';
@@ -69,6 +76,16 @@ function nav_loginDown(){
         if(data.result==100){
             $('.login_down').append('<li class="loginDown"><a href="javscript:void(0)" onclick="loginOut()">退出登录</a></li>');
         }
+    })
+}
+//经过导航，改变样式
+function hovChangeStyle(){
+    $('#user_active').addClass('active');
+    var nav_div=$("div:not('.active')",$("nav"));
+    nav_div.hover(function(){
+        $(this).addClass('active');
+    },function(){
+        $(this).removeClass('active');
     })
 }
 //鼠标经过，下拉显示
@@ -95,7 +112,7 @@ function floatRight(info){
             element=$('<div id="right_float" style="display:none;"><a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a><a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a></div>');
             $("body").append(element);
         }else{
-            right_float.show()
+            // right_float.show()
         }
         if(info){
             $('#right_float').prepend(tmp);
@@ -122,7 +139,7 @@ function backTop(){
 }
 //在线咨询-需要先申请qq在线客服：http://shang.qq.com/v3/widget.html
 function onlineQQ(){
-    var qq='1252610341';
+    var qq='781581897';
     var link = 'http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yes';
     window.open(link,'_blank');
     return false;

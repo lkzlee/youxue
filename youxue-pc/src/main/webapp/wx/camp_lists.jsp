@@ -100,8 +100,8 @@ function search_sourch(){
             if(len>0){
 	            li.push('<ul>');
                 for(var i=0;i<len;i++){
-                	li.push('<li class="camp_lists_common" data-campusId='+obj[i]['campsId']+'><div class="cf"><img class="fl" src="'+handle_pic(obj[i]['campsImages'])[0]+'"/><div>');
-                	li.push('<p>'+obj[i]['campsTitle']+'</p><p>营地主题：<span>'+obj[i]['campsSubjectName']+'</span></p><p>出发时间：<span>'+obj[i]['departureDateStr']+'</span></p>');
+                    li.push('<li class="camp_lists_common" data-campusId="'+obj[i]['campsId']+'"><div class="cf"><div class="cl_img"><img class="fl" src="'+handle_pic(obj[i]['campsImages'])[0]+'"/></div>');
+                	li.push('<div class="cl_listInfo"><p>'+obj[i]['campsTitle']+'</p><p>营地主题：<span>'+obj[i]['campsSubjectName']+'</span></p><p>出发时间：<span>'+obj[i]['createTime']+'</span></p>');
                 	li.push('<p class="order_number"><span>'+obj[i]['totalPrice']+'</span>元/人起 </p></div></div></li>');
                 }
 	            li.push('</ul>');
@@ -145,8 +145,8 @@ function CampsDetail(section,index){
             // }
             function str(val,element){
                 var li=[];
-                li.push('<li class="camp_lists_common" data-campusId='+val['campsId']+'><div class="cf"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/><div>');
-            	li.push('<p>'+val['campsTitle']+'</p><p>营地主题：<span>'+val['campsSubjectName']+'</span></p><p>出发时间：<span>'+val['departureDateStr']+'</span></p>');
+                li.push('<li class="camp_lists_common" data-campusId="'+val['campsId']+'"><div class="cf"><div class="cl_img"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/></div>');
+            	li.push('<div class="cl_listInfo"><p>'+val['campsTitle']+'</p><p>营地主题：<span>'+val['campsSubjectName']+'</span></p><p>出发时间：<span>'+val['departureDateStr']+'</span></p>');
             	li.push('<p class="order_number"><span>'+val['totalPrice']+'</span>元/人起 </p></div></div></li>');
                 element.append(li.join(''));
             }

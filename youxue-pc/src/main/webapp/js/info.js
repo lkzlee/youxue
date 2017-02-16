@@ -3,6 +3,7 @@
  */
 //页面加载后执行
 function info_loding(){
+    navScrollPosition({'element':$('#YDnav')});
     //列表-鼠标经过改变颜色
     var li2=$('.li2');
     li2.hover(function(){
@@ -10,20 +11,10 @@ function info_loding(){
     },function(){
         $(this).removeClass('li2_hover');
     })
-    //内容横向导航,当鼠标滚动，给内容的横向导航添加定位样式
-    var YDnav=$('#YDnav');
-    var YDheight=YDnav.height();
-    var pos_obj=YDnav.offset();//left和top
-    $(window).scroll(function(){
-        var scrollTop=$(window).scrollTop();
-        if(pos_obj.top <= scrollTop){//开始添加样式
-            YDnav.addClass('navActive');
-        }else{
-            YDnav.removeClass('navActive');
-        }
-    })
     //点击内容横向导航，锚点指向到位置
+    var YDnav=$('#YDnav');
     var li=$('li',YDnav);
+    var YDheight=YDnav.height();
     var anchor=$('.div_con2_cont');
     li.click(function(){
         $(this).addClass('active').siblings('li').removeClass('active');
@@ -39,9 +30,11 @@ function info_loding(){
 function load_render(data){
     login_post('/campsDetail.do',data,'',function(data){
         data=JSON.parse(data);
-        // data.realCampsImages='a,b,c,d';
+        // data.campsImages='a,b,c,d';
         // console.log(data);
         success(data,function(){
+            console.log(data);
+            $('.createTime').text(data.createTime)
             $('.title').text(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
@@ -58,8 +51,8 @@ function load_render(data){
                 }
                 $('.serviceSupport').html(str);
             }
-            if(data.realCampsImages){
-                var arr=handle_pic(data.realCampsImages);
+            if(data.campsImages){
+                var arr=handle_pic(data.campsImages);
                 var str='';
                 for(var i=0;i<arr.length;i++){
                     str+='<li><a href="javascript:void(0)"><img src="'+arr[i]+'" data-src="'+arr[i]+'"></a></li>';
@@ -68,11 +61,11 @@ function load_render(data){
                 $('.img_list').html(str);
                 $('#yingdi_list').html(str);
             }
-            $('.campsLocale').val(data.campsLocale);
-            $('.campsDesc').val(data.campsDesc);
-            $('.courseDesc').val(data.courseDesc);
-            $('.activityDesc').val(data.activityDesc);
-            $('.campsFoodDesc').val(data.campsFoodDesc);
+            $('.campsLocale').text(data.campsLocale);
+            $('.campsDesc').text(data.campsDesc);
+            $('.courseDesc').text(data.courseDesc);
+            $('.activityDesc').text(data.activityDesc);
+            $('.campsFoodDesc').text(data.campsFoodDesc);
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
@@ -81,7 +74,7 @@ function load_render(data){
                 }
                 $('.campsFoodsPhotos').html(str);
             }
-            $('.campsHotelDesc').val(data.campsHotelDesc);
+            $('.campsHotelDesc').text(data.campsHotelDesc);
             if(data.campsHotelPhotos){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
@@ -99,7 +92,7 @@ function load_render(data){
                 }
                 $('.traces').html(arr.join(''));
             }
-            $('.feeDesc').val(data.feeDesc);
+            $('.feeDesc').text(data.feeDesc);
             yingdi_pic();
             tab_pic();
         })
@@ -185,15 +178,16 @@ function yingdi_pic(){
     //营地图片点击放大
     function enlargePic(src,div){
         var img=new Image();
+        var oWidth=$(window).width()*0.8,oHeight=$(window).height()*0.8;
         img.src=src;
         img.onload=function(){
             bg_showORhide();
             setTimeout(function(){
                 //弹出层
-                var width=img.width;
-                var height=img.height;
-                div.css({"width":width+'px',"height":height+'px',"margin-top":-height/2+'px',"margin-left":-width/2+'px'});
-                div.find('img').attr('src',src);
+                var width=img.width<oWidth?img.width:oWidth;
+                var height=img.height<oHeight?img.height:oHeight;
+                div.css({"width":width+'px',"height":height+'px',"margin-top":-height/2+'px',"margin-left":-width/2+'px','overflow':'hidden'});
+                div.find('img').attr('src',src).css({'max-width':'100%'});
                 div.fadeIn(500);
                 isClick=true;
             },300)

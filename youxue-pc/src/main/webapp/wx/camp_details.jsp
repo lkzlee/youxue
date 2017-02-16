@@ -26,7 +26,7 @@
     <div class="camp_details_generalize">
         <h2 class="title"></h2>
         <ul class="travel_feature">
-            <li>出发时间<span class="active departureDate"></span></li>
+            <li>出发时间<span class="active createTime"></span></li>
             <li>行程周期<span class="durationTime"></span>天</li>
             <li>产品特色<span class="feature"></span></li>
         </ul>
@@ -39,7 +39,7 @@
             <div>
                 <table style="width:100%;">
                     <caption style="text-align: left;padding-left:3px;">营地</caption>
-                    <tr><td>时间 :</td><td><label class="departureDate"></label></td></tr>
+                    <tr><td>时间 :</td><td><label class="createTime"></label></td></tr>
                     <tr><td>地点 :</td><td><label class="campsLocale"></label></td></tr>
                     <tr><td>周期 :</td><td><label class="durationTime"></lable>天</td></tr>
                     <tr><td>简介 :</td><td class="campsDesc"></td></tr>
@@ -165,11 +165,12 @@ function load_render(data){
     login_post('/campsDetail.do',data_car,'',function(data){
         data=JSON.parse(data);
         //虚拟数据
-        // data.realCampsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
+        // data.campsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         // data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         // console.log(data);
         success(data,function(){
             $('.title').text(data.campsTitle);
+            $('.createTime').text(data.createTime);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(data.deadlineDate);
@@ -186,8 +187,8 @@ function load_render(data){
                 }
                 $('.serviceSupport').html(str);
             }
-            if(data.realCampsImages){
-                var arr=handle_pic(data.realCampsImages);
+            if(data.campsImages){
+                var arr=handle_pic(data.campsImages);
                 var str='';
                 for(var i=0;i<arr.length;i++){
                     str+='<div class="swiper-slide"><img src="'+arr[i]+'" style="width:100%;" alt=""/></div>';
@@ -195,11 +196,11 @@ function load_render(data){
                 console.log(arr);
                 $('.yingdi_list').html(str);
             }
-            $('.campsLocale').val(data.campsLocale);
-            $('.campsDesc').val(data.campsDesc);
-            $('.courseDesc').val(data.courseDesc);
-            $('.activityDesc').val(data.activityDesc);
-            $('.campsFoodDesc').val(data.campsFoodDesc);
+            $('.campsLocale').text(data.campsLocale);
+            $('.campsDesc').text(data.campsDesc);
+            $('.courseDesc').text(data.courseDesc);
+            $('.activityDesc').text(data.activityDesc);
+            $('.campsFoodDesc').text(data.campsFoodDesc);
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
@@ -208,7 +209,7 @@ function load_render(data){
                 }
                 $('.campsFoodsPhotos').html(str);
             }
-            $('.campsHotelDesc').val(data.campsHotelDesc);
+            $('.campsHotelDesc').text(data.campsHotelDesc);
             if(data.campsHotelPhotos){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
@@ -227,7 +228,7 @@ function load_render(data){
                 }
                 $('.traces').html(arr.join(''));
             }
-            $('.feeDesc').val(data.feeDesc);
+            $('.feeDesc').text(data.feeDesc);
 
             load_carousel();
         })

@@ -72,19 +72,22 @@ header ul li.active{
 /*.order_item_style_not_cancel .order_pay_module i span{*/
     /*font-size: 12px;*/
 /*}*/
-
+.lImg{float: left; width: 39%; height: 94px; overflow: hidden;}
 .order_intr img{
-    float:left;
-    margin-bottom: 10px;
+    width:100%
+    /*float:left;*/
+    /*margin-bottom: 10px;*/
 }
-.order_intr>div{
+.order_intr .r_orderInfo{
+    width:60%;
     position:relative;
-    margin-left:120px;
+    float:left;
     padding:10px 9px 10px 10px;
     font-size: 13px;
     background-color: #F9F9F9;
     height:90px;
 }
+.order_intr .r_orderInfo .title { height: 30px; overflow: hidden; }
 .order_number{
     margin-top:17px;
     font-size: 12px;

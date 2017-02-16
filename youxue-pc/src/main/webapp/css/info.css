@@ -59,13 +59,13 @@
 .con1 .con1_info_d3 .right a{display:block;color:#fff;}
 .con1 .con1_info_d3 .right a:hover{box-shadow:inset 0px -6px 31px -14px #221d1d;}
 .con2{padding-top:35px;}
-.con2 .con2_head.navActive{position:fixed;top:0;width:1180px;z-index:99;}
+
 .con2 .con2_head{height:49px;line-height:49px;background:#eee;}
 .con2 .con2_head li{float:left;text-align:center;position:relative;margin-left:-13px;}
 .con2 .con2_head li:first-child{margin-left:0;}
 .con2 .con2_head li a{color:#fff;display:block;margin-left:13px;}
 .con2 .con2_head .li2{margin-top:7px;margin-bottom:7px;height:35px;}
-.con2 .con2_head .li2 a{height:35px;line-height:35px;background:#fff;color:#333;}
+.con2 .con2_head .li2 a{height:35px;line-height:35px;background:#fff;color:#333;font-size: 16px;}
 .con2 .con2_head .li2:before{content:"";
     display:block;
     position:absolute;
@@ -155,5 +155,5 @@
 .div_con2_cont.wenti_div .left{background-image:url("../img/itembg_19.jpg");}
 .div_con2_cont.wenti_div h3{line-height:180px;}
 .div_con2_cont.wenti_div .right{float:left;padding:47px 0 0 99px;width:760px;}
-
+.errorMessage{color:red;}
 

@@ -91,10 +91,11 @@
                 <div class="right_cont_pay">
                     <div class="div1">
                         <label>
-                            <input type="radio" class="codeId_radio">
+                            <input type="radio" class="codeId_radio" disabled="disabled">
                             <span>使用优惠码：</span>
                         </label>
                         <input type="text" name="codeId">
+                        <div class="errorMessage"></div>
                     </div>
                     <div class="div2">
                         实付款：<i class="moneyTotal">¥5000</i>元
@@ -151,25 +152,33 @@
 <script src="js/user_pay.js"></script>
 <script>
     var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
-    console.log(orderList);
     $(function(){
         var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0;
         var discount=0;
         //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
-        $('input[name=codeId]').blur(function () {
+        $('input[name=codeId]').bind(' input propertychange ',function(){
+            checkCode($(this));
+        })
+        function checkCode(This){
             if(changeRadio() && changeRadio()!==1){
-                login_post('/coupon/getCouponByCode.do','codeId='+$(this).val(),'',function(data){
+                login_post('/coupon/getCouponByCode.do','codeId='+$('input[name=codeId]').val(),'',function(data){
                     data=JSON.parse(data);
-                    console.log(data);
-                    success(data,function(){
+                    var bool=false;
+                    if(data.result==100){
+                        bool=true;
                         discount=data.codeAmount;
-                        $('.moneyTotal').text(moneyTotal-discount);
-                    },function(){
-                        $('.codeId_radio').prop('checked',false);
-                    })
+                        $('.errorMessage').text('');
+                    }else{
+                        bool=false;
+                        discount=0;
+                        $('.errorMessage').text(data.resultDesc);
+                    }
+                    $('.codeId_radio').prop('checked',bool);
+                    range_input(This,bool);
+                    $('.moneyTotal').text(moneyTotal-discount);
                 })
             }
-        })
+        }
         if(orderList){
             var arr=orderList.split(',');
             moneyTotal=arr[0];
@@ -200,8 +209,8 @@
             if(!auto_range()){
                 return false;
             }
-            if(!changeRadio()){
-                return false;
+            if(!$('.codeId_radio').prop('checked')){
+                $('input[name=codeId]').val('');
             }
             if(!$('.agree_check').prop('checked')){
                 alert('请勾选《用户购买协议》后提交')
@@ -235,12 +244,12 @@
             login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                 data=JSON.parse(data);
                 console.log(data);
-                success(data,function(){
-                    if(data.payUrl){
-                        console.log('window.location.href='+data.payUrl);
-                        window.location.href=data.payUrl
-                    }
-                })
+                // success(data,function(){
+                //     if(data.payUrl){
+                //         console.log('window.location.href='+data.payUrl);
+                //         window.location.href=data.payUrl
+                //     }
+                // })
             },'','application/json; charset=utf-8')
             return false;
         })
@@ -277,7 +286,6 @@
             }else{
                 bool=false;
             }
-            $('.codeId_radio').prop('checked',bool);
             return range_input(code,bool);
         }
         return bool;

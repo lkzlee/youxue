@@ -4,6 +4,13 @@
 $(function(){
     //个人首页的左侧导航列表
     userIndexList();
+    $('.j_integral').click(function(){$('.alertMessage').show()})
+    var alertMessage=$('.alertMessage');
+    // data.ifPop && alertMessage.show();
+    var close=$('.close',alertMessage);
+    close.click(function(){
+        alertMessage.hide(300);
+    })
 });
 //个人首页的左侧导航列表
 function userIndexList(){
@@ -36,18 +43,12 @@ function userIndexList(){
 //个人首页-渲染弹出框和页面上展示的用户信息
 function render_alertANDuserinfo(data){
     renderUserInfo(data);
-    var alertMessage=$('.alertMessage');
-    // data.ifPop && alertMessage.show();
     $('#phone').children('span').text(data.mobile);
     $('#email').children('span').text(data.email);
     $('#nickname').children('span').text(data.nickName);
     $('#sex').children('span').text(data.gender==0?'男':'女');
     $('#birthday').children('span').text(formatDate(new Date(data.birthTime),0));
     $('#loveCity').children('span').text(data.loveCity);
-    var close=$('.close',alertMessage);
-    close.click(function(){
-        alertMessage.hide(300);
-    })
 }
 //登录
 function logo_user(callback){

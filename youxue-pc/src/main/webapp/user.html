@@ -174,13 +174,6 @@
                 <a href="javascirpt:void(0)" class="saveButton j_edit_photo">保存</a>
             </div>
         </div>
-        <div class="alertMessage" style="display:none;">
-            <i class="close">×</i>
-            <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
-            <div>
-                <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
-            </div>
-        </div>
     </div>
 </section>
 <section class="footer">
@@ -195,6 +188,13 @@
         <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
     </div>
 </section>
+<div class="alertMessage" style="display:none;">
+    <i class="close">×</i>
+    <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+    <div>
+        <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
+    </div>
+</div>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/jquery.easing.min.js"></script>
 <!-- <script src="js/ajaxfileupload.js"></script> -->
@@ -216,7 +216,8 @@
         }
     }).use('trip-calendar', function(Y) {
         var oCal = new Y.TripCalendar({
-            triggerNode: '.startTime'
+            triggerNode: '.startTime',
+            'maxDate': new Date
         });
         //日期点击事件
         oCal.on('dateclick', function() {
@@ -241,7 +242,6 @@
         getUserData(function(data){
             render_alertANDuserinfo(data);
         })
-        $('.j_integral').click(function(){$('.alertMessage').show()})
         //个人首页，点击编辑，显示文本框，并自动保存提交
         edit_photo('/img/userphoto/uploadImg.do',sucessFn);
         function sucessFn(data){

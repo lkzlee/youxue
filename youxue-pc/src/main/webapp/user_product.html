@@ -80,16 +80,16 @@
             <div class="bghui"></div>
             <div class="imgMessage">
                 <div class="img">
-                    <img src="uploads/images/photo.jpg" alt="">
+                    <img src="" alt="" id="photo_img" style="display:none;">
                 </div>
-                <a class="message" href="#">
+                <a class="message" href="/user_message.html">
                     <i></i>
                     <span>6</span>
                 </a>
             </div>
             <div class="hiDiv">
-                <h2>Hi,Cindy!</h2>
-                <span>你的积分，200</span>
+                <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+                <span>你的积分，<label class="integral_lbl j_integral">0</label></span>
             </div>
         </div>
         <div class="right2 product">
@@ -148,12 +148,20 @@
         <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
     </div>
 </section>
+<div class="alertMessage" style="display:none;">
+    <i class="close">×</i>
+    <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
+    <div>
+        <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
+    </div>
+</div>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script type="text/javascript">
 $(function(){
+    getUserData(renderUserInfo);
     getProduct();
 })
 function getProduct(){

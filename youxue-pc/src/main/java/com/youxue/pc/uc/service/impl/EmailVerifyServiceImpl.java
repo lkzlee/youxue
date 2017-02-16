@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.lkzlee.pay.utils.MD5Utils;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.RedisConstant;
-import com.youxue.core.constant.UrlConstant;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.MailUtil;
 import com.youxue.core.util.PropertyUtils;
@@ -34,7 +33,9 @@ public class EmailVerifyServiceImpl implements EmailVerifyService
 
 	private String calcEmailVerifyUrl(String accountId)
 	{
-		StringBuffer sb = new StringBuffer(UrlConstant.EMAIL_VERIFY_URL);
+		//		StringBuffer sb = new StringBuffer(UrlConstant.EMAIL_VERIFY_URL);
+		StringBuffer sb = new StringBuffer(PropertyUtils.getProperty("pcDomain", "http://101.200.148.203:8100/")
+				+ "uc/verifyEmail.do");
 		String nonceStr = RandomStringUtils.random(12);
 		sb.append("?key=" + calcKeyByUserInfoSalt(accountId, nonceStr) + "&accountId=" + accountId);
 		/***

@@ -53,58 +53,6 @@ function getMessage(){
 var temp=[];//测试数据
 function renderMessage(data){
     load_message.show();
-    data={
-        pageNo:public_obj['pageNo'] || 1,
-        pageSize:10,
-        result:100,
-        resultDesc:"查询成功",
-        resultList:[
-            {
-                readStatus:0,
-                messageTitle:'标题1',
-                messageContent:'内容11'
-            },{
-                readStatus:1,
-                messageTitle:'标题2',
-                messageContent:'内容2'
-            },{
-                readStatus:0,
-                messageTitle:'标题3',
-                messageContent:'内容3'
-            },{
-                readStatus:1,
-                messageTitle:'标题4',
-                messageContent:'内容4'
-            },{
-                readStatus:0,
-                messageTitle:'标题5',
-                messageContent:'内容11'
-            },{
-                readStatus:1,
-                messageTitle:'标题6',
-                messageContent:'内容2'
-            },{
-                readStatus:0,
-                messageTitle:'标题7',
-                messageContent:'内容3'
-            },{
-                readStatus:1,
-                messageTitle:'标题8',
-                messageContent:'内容4'
-            },{
-                readStatus:0,
-                messageTitle:'标题9',
-                messageContent:'内容11'
-            },{
-                readStatus:1,
-                messageTitle:'标题10',
-                messageContent:'内容2'
-            }
-        ],
-        totalCount:30,
-        totalPage:3,
-        unReadCount:0
-    }
     public_obj['pageNo']=data.pageNo;
     public_obj['totalPage']=data.totalPage;
     public_obj['totalCount']=data.totalCount;
@@ -112,15 +60,6 @@ function renderMessage(data){
     var resultList=data['resultList'];
     var arr=[];
     var len=resultList.length;
-    //测试数据START
-    if(len>0){
-        temp=resultList;
-    }
-    if(public_obj['pageNo']<5){
-        resultList=temp;
-    }
-    var len=resultList.length;
-    //测试数据END
     if(len>0){
         for(var i=0;i<len;i++){
             var cName=resultList[i].readStatus==0?'weidu':'yidu';

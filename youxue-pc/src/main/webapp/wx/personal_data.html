@@ -39,14 +39,13 @@ $(function(){
     renderUser(data);
   })
 })
-$('#photoUrl').on('click',function(){
-  $('#xdaTanFileImg').click();
-})
-$('#xdaTanFileImg').on('change',function(){
-  uploadImage($(this)[0])
-})
+// $('#photoUrl').on('click',function(){
+//   $('#xdaTanFileImg').click();
+// })
+// $('#xdaTanFileImg').on('change',function(){
+//   uploadImage($(this)[0])
+// })
 function renderUser(data){
-  console.log(data); 
   $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
   $('#nickName').text(data.nickName);
   $('#loveCity').text(data.loveCity);

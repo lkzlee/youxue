@@ -243,13 +243,11 @@
             AllObj['payType']=outherObj['payType'];
             login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                 data=JSON.parse(data);
-                console.log(data);
-                // success(data,function(){
-                //     if(data.payUrl){
-                //         console.log('window.location.href='+data.payUrl);
-                //         window.location.href=data.payUrl
-                //     }
-                // })
+                success(data,function(){
+                    if(data.payUrl){
+                        window.location.href=data.payUrl
+                    }
+                })
             },'','application/json; charset=utf-8')
             return false;
         })
@@ -266,7 +264,7 @@
         var arr=[];
         arr.push('<form class="person'+num+'">');
         arr.push('<div class="width_content prople_info"><div class="head">出行人信息</div><ul class="cont"><li><span><i>*</i>出行人信息：</span>');
-        arr.push('<input type="text" class="input1 require" name="personName" required pattern="^\w.*$"></li><li><span><i>*</i>出行人性别：</span><label><input type="radio" name="personSex" value="0" checked>');
+        arr.push('<input type="text" class="input1 require" name="personName" required></li><li><span><i>*</i>出行人性别：</span><label><input type="radio" name="personSex" value="0" checked>');
         arr.push('<span>男</span></label><label><input type="radio" name="personSex" value="1"><span>女</span></label><span class="span3"><i>*</i>年龄：</span>');
         arr.push('<input type="text" class="input3 require" name="personAge"></li><li><span><i>*</i>联系电话：</span><input type="text" class="input4 require" name="personPhone">');
         arr.push('</li><li><span><i>*</i>身份证号码：</span><input type="text" class="input4 require" name="personIdno"></li><li><span><i>*</i>联系地址：</span>');
@@ -303,6 +301,8 @@
         var input=$('input.require');
         var bool=true;
         input.each(function(){
+            console.log($(this))
+            console.log($(this).val().length<2)
             if($(this).val().length<2){
                 bool=false;
                 return range_input($(this),false);

@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -102,7 +102,7 @@ public class OrderController extends BaseController
 		{
 			String ip = getCurrentLoginUserIp(request);
 			String accountId = getCurrentLoginUserName(request);
-			if (StringUtils.isEmpty(accountId))
+			if (StringUtils.isBlank(accountId))
 				throw new BusinessException("用户未登录，请检查");
 			BaseResponseDto responseDto = addOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId);
 			return JsonUtil.serialize(responseDto);
@@ -134,14 +134,14 @@ public class OrderController extends BaseController
 
 			String accountId = getCurrentLoginUserName(request);
 			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountI=" + accountId);
-			if (StringUtils.isEmpty(accountId))
+			if (StringUtils.isBlank(accountId))
 			{
 				modelMap.put("result", -2);
 				modelMap.put("resultDesc", "用户未登录，请检查");
 				return "/wxpay";
 			}
 			String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
-			if (StringUtils.isEmpty(payUrl))
+			if (StringUtils.isBlank(payUrl))
 			{
 				modelMap.put("result", -3);
 				modelMap.put("resultDesc", "您请求的链接不存在，请检查");
@@ -195,7 +195,7 @@ public class OrderController extends BaseController
 
 	private void checkIfParamValidAndFillBaseInfo(AddTradeOrderDto orderData, String accountId)
 	{
-		if (StringUtils.isEmpty(accountId))
+		if (StringUtils.isBlank(accountId))
 			throw new BusinessException("用户未登录，请检查");
 		if (orderData == null || orderData.getPayType() == null)
 			throw new BusinessException("参数非法");
@@ -232,14 +232,14 @@ public class OrderController extends BaseController
 
 			BigDecimal couponPrice = BigDecimal.ZERO;
 			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
-			if (!StringUtils.isEmpty(ote.getCodeId()))
+			if (!StringUtils.isBlank(ote.getCodeId()))
 			{
 				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
 				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
 				{
 					throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
 				}
-				if (!StringUtils.isEmpty(coupon.getCategoryIds())
+				if (!StringUtils.isNotBlank(coupon.getCategoryIds())
 						&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
 				{
 					throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");

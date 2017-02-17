@@ -146,7 +146,7 @@
 								<table class="table table-striped table-bordered table-hover" id="dataTables-example1">
 									<thead>
 										<tr>
-											<th>营地名称</th>
+											<th>营地标题</th>
 											<th>分组类别</th>
 											<th>订单价</th>
 											<th>已售数量</th>

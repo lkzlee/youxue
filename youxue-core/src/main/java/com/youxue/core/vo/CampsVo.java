@@ -24,11 +24,11 @@ public class CampsVo
 	private String campsLocale;
 	private String campsLocaleId;//目的地分类id
 	private String campsSubjectId;//主题类型id
+	private String campsSubjectName;//主题类型名称
 	private String campsDurationId;//持续时间类型id
 	private String campsDepartureId;//出发时间类型id
 	private String campsPriceId;//价格类型id
 
-	private String campsSubjectName;//主题类型名称
 	private String orientedPeople;
 
 	private String feature;

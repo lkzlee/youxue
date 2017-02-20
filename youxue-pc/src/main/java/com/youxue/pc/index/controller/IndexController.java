@@ -1,6 +1,8 @@
 package com.youxue.pc.index.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,14 +78,28 @@ public class IndexController extends BaseController
 	public String getIndexCampsDetail(HttpServletRequest request, HttpServletResponse response)
 	{
 		IndexCampsDetailsDto dto = new IndexCampsDetailsDto();
-		List<CampsVo> hotCampsList = campsDao.getHotCampusList(true);
-		dto.setHotCampsList(hotCampsList);
-		List<CampsVo> priceCampsList = campsDao.getPriceCampusList(true);
-		dto.setPriceCampsList(priceCampsList);
+
 		List<CategoryVo> categoryList = catetoryDao.selectByCategoryType(CategoryTypeEnum.SUBJECT.getValue());
 		dto.setSubjectList(categoryList);
+		Map<String, String> categoryMap = new HashMap<>();//cateid与categoryName对应关系
+		for (CategoryVo category : categoryList)
+		{
+			categoryMap.put(category.getCategoryId(), category.getCategoryName());
+		}
+		List<CampsVo> hotCampsList = campsDao.getHotCampusList(true);
+		dto.setHotCampsList(hotCampsList);
+		for (CampsVo camps : hotCampsList)
+		{
+			camps.setCampsSubjectName(categoryMap.get(camps.getCampsSubjectId()));
+		}
+		List<CampsVo> priceCampsList = campsDao.getPriceCampusList(true);
+		dto.setPriceCampsList(priceCampsList);
+		for (CampsVo camps : hotCampsList)
+		{
+			camps.setCampsSubjectName(categoryMap.get(camps.getCampsSubjectId()));
+		}
+
 		dto.setResult(100);
 		return JsonUtil.serialize(dto);
 	}
-
 }

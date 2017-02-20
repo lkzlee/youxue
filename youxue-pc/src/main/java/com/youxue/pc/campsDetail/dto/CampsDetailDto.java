@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
@@ -292,7 +291,7 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	}
 
 	private static final long serialVersionUID = 1L;
-	private List<CampsTraceVo> traces;
+	private List<String> traces;
 	private String campsId;
 
 	private String campsName;
@@ -350,12 +349,12 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	private Integer shopCartCount;
 	private String questions;
 
-	public List<CampsTraceVo> getTraces()
+	public List<String> getTraces()
 	{
 		return traces;
 	}
 
-	public void setTraces(List<CampsTraceVo> traces)
+	public void setTraces(List<String> traces)
 	{
 		this.traces = traces;
 	}

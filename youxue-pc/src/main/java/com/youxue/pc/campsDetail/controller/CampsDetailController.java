@@ -1,5 +1,6 @@
 package com.youxue.pc.campsDetail.controller;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,6 @@ import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.ReflectUtil;
-import com.youxue.core.vo.CampsTraceVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.pc.campsDetail.dto.CampsDetailDto;
 import com.youxue.pc.shopCart.dto.CampsListDto;
@@ -58,7 +58,7 @@ public class CampsDetailController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
 		}
-		List<CampsTraceVo> traces = campsTraceDao.selectByCampsId(campusId);
+		//		List<CampsTraceVo> traces = campsTraceDao.selectByCampsId(campusId);
 		CampsDetailDto campsDto = new CampsDetailDto();
 		try
 		{
@@ -78,7 +78,11 @@ public class CampsDetailController extends BaseController
 		{
 			campsDto.setShopCartCount(1);
 		}
-		campsDto.setTraces(traces);
+		if (StringUtils.isNotBlank(camps.getTraceDesc()))
+		{
+			String[] traceStrs = camps.getTraceDesc().split(";");
+			campsDto.setTraces(Arrays.asList(traceStrs));
+		}
 		campsDto.setResult(100);
 		/**设置当前商品在购物车中数量*/
 

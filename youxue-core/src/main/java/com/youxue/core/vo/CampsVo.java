@@ -48,6 +48,7 @@ public class CampsVo
 	private String campsHotelPhotos;
 	private String traceDesc;
 	private String tracePhotos;
+	private String traceTitle;
 	private String feeDesc;
 	private String questions;
 	private Integer status;
@@ -501,6 +502,16 @@ public class CampsVo
 	public void setQuestions(String questions)
 	{
 		this.questions = questions;
+	}
+
+	public String getTraceTitle()
+	{
+		return traceTitle;
+	}
+
+	public void setTraceTitle(String traceTitle)
+	{
+		this.traceTitle = traceTitle;
 	}
 
 }

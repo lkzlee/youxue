@@ -3,9 +3,11 @@ package com.youxue.pc.campsDetail.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
@@ -291,7 +293,7 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	}
 
 	private static final long serialVersionUID = 1L;
-	private List<String> traces;
+	private List<CampsTraceVo> traces = new LinkedList<>();
 	private String campsId;
 
 	private String campsName;
@@ -349,12 +351,12 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	private Integer shopCartCount;
 	private String questions;
 
-	public List<String> getTraces()
+	public List<CampsTraceVo> getTraces()
 	{
 		return traces;
 	}
 
-	public void setTraces(List<String> traces)
+	public void setTraces(List<CampsTraceVo> traces)
 	{
 		this.traces = traces;
 	}

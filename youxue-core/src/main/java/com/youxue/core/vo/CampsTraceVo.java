@@ -1,6 +1,5 @@
 package com.youxue.core.vo;
 
-
 public class CampsTraceVo
 {
 	private String traceId;
@@ -78,7 +77,7 @@ public class CampsTraceVo
 
 	public String getRealTracePhotos()
 	{
-		return tracePhotos;
+		return realTracePhotos;
 	}
 
 	public void setRealTracePhotos(String realTracePhotos)

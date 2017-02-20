@@ -235,8 +235,14 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 									value=(camps.campsHotelPhotos!'')?split(',')/>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">营地行程标题<br>(用;分割)：</label>
+                            <div class="col-lg-8">
+                               <textarea class="form-control" name="traceTitle" >${camps.traceTitle!""}</textarea>
+                            </div>
+                        </div>
 						<div class="form-group">
-                            <label class="col-lg-2 control-label">营地行程描述<br>(每日营地用;分割)：</label>
+                            <label class="col-lg-2 control-label">营地行程描述<br>(用;分割)：</label>
                             <div class="col-lg-8">
                                 <textarea class="form-control" name="traceDesc" >${camps.traceDesc!""}</textarea>
                             </div>

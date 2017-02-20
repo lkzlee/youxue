@@ -24,6 +24,7 @@ import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.ReflectUtil;
+import com.youxue.core.vo.CampsTraceVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.pc.campsDetail.dto.CampsDetailDto;
 import com.youxue.pc.shopCart.dto.CampsListDto;
@@ -58,7 +59,6 @@ public class CampsDetailController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
 		}
-		//		List<CampsTraceVo> traces = campsTraceDao.selectByCampsId(campusId);
 		CampsDetailDto campsDto = new CampsDetailDto();
 		try
 		{
@@ -78,15 +78,42 @@ public class CampsDetailController extends BaseController
 		{
 			campsDto.setShopCartCount(1);
 		}
-		if (StringUtils.isNotBlank(camps.getTraceDesc()))
+		if (StringUtils.isNotBlank(camps.getTraceDesc()) && StringUtils.isNotBlank(camps.getTracePhotos())
+				&& StringUtils.isNotBlank(camps.getTraceTitle()))
 		{
-			String[] traceStrs = camps.getTraceDesc().split(";");
-			campsDto.setTraces(Arrays.asList(traceStrs));
+			String[] traceDesc = camps.getTraceDesc().split(";|；");
+			String[] traceTitle = camps.getTraceTitle().split(";|；");
+			String[] tracePhoto = camps.getTracePhotos().split(",");
+			if (traceDesc.length == traceTitle.length && traceTitle.length == tracePhoto.length)
+			{
+				List<CampsTraceVo> traces = new LinkedList<>();
+				for (int i = 0; i < traceDesc.length; i++)
+				{
+					CampsTraceVo trace = new CampsTraceVo();
+					trace.setTraceName(traceTitle[i]);
+					trace.setTraceDesc(traceDesc[i]);
+					trace.setRealTracePhotos(tracePhoto[i]);
+					traces.add(trace);
+				}
+				campsDto.setTraces(traces);
+			}
+			else
+			{
+				LOG.error("错误的行程规则，请检查，traceDesc:" + camps.getTraceDesc() + ",traceTitle:" + camps.getTraceTitle()
+						+ ",tracePhoto:" + camps.getTracePhotos());
+			}
 		}
 		campsDto.setResult(100);
 		/**设置当前商品在购物车中数量*/
 
 		return JsonUtil.serialize(campsDto);
+	}
+
+	public static void main(String[] args)
+	{
+		String a = "aaa;bbb；ccc";
+		List<String> list = Arrays.asList(a.split(";|；"));
+		System.out.println(list.toString());
 	}
 
 	@RequestMapping("/getCampsListByCategory.do")

@@ -146,7 +146,7 @@ function CampsDetail(section,index){
             function str(val,element){
                 var li=[];
                 li.push('<li class="camp_lists_common" data-campusId="'+val['campsId']+'"><div class="cf"><div class="cl_img"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/></div>');
-            	li.push('<div class="cl_listInfo"><p>'+val['campsTitle']+'</p><p>营地主题：<span>'+val['campsSubjectName']+'</span></p><p>出发时间：<span>'+val['departureDateStr']+'</span></p>');
+            	li.push('<div class="cl_listInfo"><p>'+val['campsTitle']+'</p><p>营地主题：<span>'+val['campsSubjectName']+'</span></p><p>出发时间：<span>'+val['startDate']+'</span></p>');
             	li.push('<p class="order_number"><span>'+val['totalPrice']+'</span>元/人起 </p></div></div></li>');
                 element.append(li.join(''));
             }

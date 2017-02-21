@@ -87,12 +87,13 @@ function load_render(data){
             if(traces.length>0){
                 var arr=[];
                 for(i=0,len=traces.length;i<len;i++){
-                    arr.push('<li class="clear"><div class="li_left"><img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""></div>');
+                    arr.push('<li class="clear"><div class="li_left"><img src="'+handle_pic(traces[i]['realTracePhotos'])[0]+'" alt=""></div>');
                     arr.push('<div class="li_right"><span class="color_blur">'+traces[i]['traceName']+'</span><p class="p1_li_right">'+traces[i]['traceDesc']+'</p></div></li>');
                 }
                 $('.traces').html(arr.join(''));
             }
             $('.feeDesc').text(data.feeDesc);
+            $('.questions').html(data.questions);
             yingdi_pic();
             tab_pic();
         })

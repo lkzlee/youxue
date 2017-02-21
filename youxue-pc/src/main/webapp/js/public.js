@@ -96,6 +96,12 @@ function hoverShowDown(){
 }
 //退出登录事件
 function loginOut(){
+    login_post('/loginOut.do','','GET',function(data){
+        data=JSON.parse(data);
+        success(data,function(){
+            window.location.href='/login.html';
+        })
+    },1)
 }
 //定位居中
 function posMiddle(element){

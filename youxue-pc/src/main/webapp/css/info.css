@@ -139,7 +139,8 @@
 .div_con2_cont.xingcheng_div h3{line-height:648px;}
 .div_con2_cont.xingcheng_div ul{padding:5px 87px 0 15px;}
 .div_con2_cont.xingcheng_div li{padding:19px 0;border-bottom:solid 2px #ddd;}
-.div_con2_cont.xingcheng_div .li_left{float:left;border-style:solid;border-color:#ccc;border-width:4px 6px;width:222px;height:148px;}
+.div_con2_cont.xingcheng_div .li_left{float:left;border-style:solid;border-color:#ccc;border-width:4px 6px;width:222px;height:148px;overflow:hidden;text-align:center;}
+.div_con2_cont.xingcheng_div .li_left img{}
 .div_con2_cont.xingcheng_div .li_right{float:left;padding-left:18px;width:625px;}
 .div_con2_cont.xingcheng_div .color_blur{font-size:18px;}
 .div_con2_cont.xingcheng_div .p1_li_right{padding-top:10px;}
@@ -149,11 +150,10 @@
 /*费用详情*/
 .div_con2_cont.feiyong_div .left{background-image:url("../img/itembg_17.jpg");}
 .div_con2_cont.feiyong_div h3{line-height:180px;}
-.div_con2_cont.feiyong_div .right{padding-top:36px;}
 .div_con2_cont.feiyong_div p{font-size:16px;line-height:28px;color:#575757;padding-right:22px;}
 /*常见问题*/
 .div_con2_cont.wenti_div .left{background-image:url("../img/itembg_19.jpg");}
 .div_con2_cont.wenti_div h3{line-height:180px;}
-.div_con2_cont.wenti_div .right{float:left;padding:47px 0 0 99px;width:760px;}
+.div_con2_cont.feiyong_div .right,.div_con2_cont.wenti_div .right{padding-top: 36px; padding-right: 10px;width:970px; box-sizing: border-box;}
 .errorMessage{color:red;}
 

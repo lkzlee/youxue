@@ -187,8 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="left">
                     <h3>常见问题</h3>
                 </div>
-                <div class="right">
-                    <img src="img/wenti.jpg" alt="">
+                <div class="right questions">
                 </div>
             </div>
         </div>

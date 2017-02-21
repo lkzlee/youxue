@@ -118,6 +118,22 @@ public class LoginController extends BaseController
 		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("登录成功"));
 	}
 
+	@RequestMapping("/loginOut.do")
+	@ResponseBody
+	public String loginOut(HttpServletRequest request, HttpServletResponse response)
+	{
+		try
+		{
+			request.getSession().removeAttribute(ControllerUtil.SESSION_LOGIN_USER_KEY);
+			request.getSession().invalidate();
+		}
+		catch (Exception e)
+		{
+			LOG.error("loginOut()---error", e);
+		}
+		return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("退出登录成功"));
+	}
+
 	/**
 	 * @param request
 	 * @param response

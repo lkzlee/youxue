@@ -239,7 +239,8 @@ public class OrderController extends BaseController
 				{
 					throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
 				}
-				if (!StringUtils.isNotBlank(coupon.getCategoryIds())
+				LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
+				if (StringUtils.isNotBlank(coupon.getCategoryIds())
 						&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
 				{
 					throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");

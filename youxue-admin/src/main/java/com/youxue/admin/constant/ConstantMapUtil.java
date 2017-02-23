@@ -26,7 +26,8 @@ public class ConstantMapUtil
 		orderStatusMap.put("" + OrderVo.DELETED, "已删除，已取消（未支付订单）");
 		payTypeMap.put("0", "全部");
 		payTypeMap.put("" + PayTypeEnum.ALIPAY.getValue(), "支付宝支付");
-		payTypeMap.put("" + PayTypeEnum.WEIXIN_APY.getValue(), "微信支付");
+		payTypeMap.put("" + PayTypeEnum.WEIXIN_PAY.getValue(), "微信支付");
+		payTypeMap.put("" + PayTypeEnum.WEIXIN_JS_API.getValue(), "微信JSAPI支付");
 
 		productTypeMap.put("1", "签证服务");
 		productTypeMap.put("2", "接送机服务");

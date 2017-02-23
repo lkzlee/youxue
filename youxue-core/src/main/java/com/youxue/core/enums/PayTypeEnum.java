@@ -2,7 +2,7 @@ package com.youxue.core.enums;
 
 public enum PayTypeEnum
 {
-	UNKNOW_PAY(0, "未定义"), ALIPAY(1, "支付宝支付"), WEIXIN_APY(2, "微信支付");
+	UNKNOW_PAY(0, "未定义"), ALIPAY(1, "支付宝支付"), WEIXIN_PAY(2, "微信支付"), WEIXIN_JS_API(3, "微信Js支付");
 
 	private int value;
 	private String desc;

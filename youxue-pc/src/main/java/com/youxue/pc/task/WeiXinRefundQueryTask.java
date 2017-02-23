@@ -54,7 +54,7 @@ public class WeiXinRefundQueryTask
 			{
 				try
 				{
-					List<RefundVo> refundList = refundDao.selectInitRefundByPay(PayTypeEnum.WEIXIN_APY.getValue());
+					List<RefundVo> refundList = refundDao.selectInitRefundByPay(PayTypeEnum.WEIXIN_PAY.getValue());
 					if (CollectionUtils.isEmpty(refundList))
 					{
 						log.info("要进行退款的订单为空，额外休息20分钟.....");

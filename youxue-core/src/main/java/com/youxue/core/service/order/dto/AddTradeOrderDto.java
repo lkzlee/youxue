@@ -16,6 +16,7 @@ public class AddTradeOrderDto implements Serializable
 	 */
 	private static final long serialVersionUID = 1L;
 	private String payType = "0";
+	private String openId; //微信内嵌js支付时，该参数必填
 	private AddTradeItemDto[] orderList;
 
 	public String getPayType()
@@ -38,9 +39,20 @@ public class AddTradeOrderDto implements Serializable
 		this.orderList = orderList;
 	}
 
+	public String getOpenId()
+	{
+		return openId;
+	}
+
+	public void setOpenId(String openId)
+	{
+		this.openId = openId;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "AddTradeOrderDto [payType=" + payType + ", orderList=" + Arrays.toString(orderList) + "]";
+		return "AddTradeOrderDto [payType=" + payType + ", openId=" + openId + ", orderList="
+				+ Arrays.toString(orderList) + "]";
 	}
 }

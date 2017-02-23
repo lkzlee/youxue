@@ -1,4 +1,4 @@
-package com.youxue.pc.order.controller;
+package com.youxue.pc.weixin.controller;
 
 import java.math.BigDecimal;
 
@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +21,6 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.CommonUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
@@ -31,10 +29,10 @@ import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
+import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
-import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.pc.order.service.AddOrderPayService;
 
 /**
@@ -43,11 +41,11 @@ import com.youxue.pc.order.service.AddOrderPayService;
  *
  */
 @Controller
-public class OrderController extends BaseController
+public class WxOrderController extends BaseController
 {
-	protected final static Log log = LogFactory.getLog(OrderController.class);
-	@Resource(name = "pcAddOrderPayService")
-	private AddOrderPayService pcAddOrderPayService;
+	protected final static Log log = LogFactory.getLog(WxOrderController.class);
+	@Resource(name = "wapAddOrderPayService")
+	private AddOrderPayService wapAddOrderPayService;
 	@Resource
 	private CouponCodeDao couponCodeDao;
 	@Resource
@@ -63,7 +61,7 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(path = "/pay/addTradeOrder.do", method = RequestMethod.POST)
+	@RequestMapping(path = "/wxpay/addTradeOrder.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String addTrade(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody AddTradeOrderDto orderData)
@@ -72,8 +70,12 @@ public class OrderController extends BaseController
 		{
 			String ip = getCurrentLoginUserIp(request);
 			String accountId = getCurrentLoginUserName(request);
+			String openId = ControllerUtil.getWxOpenId(request);
+			if (StringUtils.isEmpty(openId))
+				throw new BusinessException("微信用户未登录，请退出重新进入");
+			orderData.setOpenId(openId);
 			checkIfParamValidAndFillBaseInfo(orderData, accountId);
-			BaseResponseDto responseDto = pcAddOrderPayService.addTradeOrderService(orderData, ip, accountId);
+			BaseResponseDto responseDto = wapAddOrderPayService.addTradeOrderService(orderData, ip, accountId);
 			return JsonUtil.serialize(responseDto);
 		}
 		catch (BusinessException e)
@@ -94,7 +96,7 @@ public class OrderController extends BaseController
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(path = "/pay/addTradeOrderById.do")
+	@RequestMapping(path = "/wxpay/addTradeOrderById.do")
 	@ResponseBody
 	public String addTrade(HttpServletRequest request, HttpServletResponse response, String logicOrderId)
 	{
@@ -104,7 +106,11 @@ public class OrderController extends BaseController
 			String accountId = getCurrentLoginUserName(request);
 			if (StringUtils.isBlank(accountId))
 				throw new BusinessException("用户未登录，请检查");
-			BaseResponseDto responseDto = pcAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId, null);
+			String openId = ControllerUtil.getWxOpenId(request);
+			if (StringUtils.isEmpty(openId))
+				throw new BusinessException("微信用户未登录，请退出重新进入");
+			BaseResponseDto responseDto = wapAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId,
+					openId);
 			return JsonUtil.serialize(responseDto);
 		}
 		catch (BusinessException e)
@@ -119,81 +125,7 @@ public class OrderController extends BaseController
 		}
 	}
 
-	/***
-	 * 下单接口
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(path = "/pay/wxpay.do", method = RequestMethod.GET)
-	public String wxPayPage(HttpServletRequest request, HttpServletResponse response, String logicOrderId,
-			ModelMap modelMap)
-	{
-		try
-		{
-
-			String accountId = getCurrentLoginUserName(request);
-			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountI=" + accountId);
-			if (StringUtils.isBlank(accountId))
-			{
-				modelMap.put("result", -2);
-				modelMap.put("resultDesc", "用户未登录，请检查");
-				return "/wxpay";
-			}
-			String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
-			if (StringUtils.isBlank(payUrl))
-			{
-				modelMap.put("result", -3);
-				modelMap.put("resultDesc", "您请求的链接不存在，请检查");
-				return "/wxpay";
-			}
-			modelMap.put("result", 100);
-			modelMap.put("resultDesc", "操作成功");
-			modelMap.put("payUrl", payUrl);
-			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
-			modelMap.put("logicOrderId", logicOrderId);
-			modelMap.put("tradeAmount", logicOrderVo.getTotalPayPrice());
-		}
-		catch (Exception e)
-		{
-			log.error("下单处理流程异常，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage(), e);
-			modelMap.put("result", -1);
-			modelMap.put("resultDesc", "系统繁忙，请稍后！");
-		}
-		return "/wxpay";
-	}
-
-	/***
-	 * 下单接口
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(path = "/pay/query.do")
-	@ResponseBody
-	public String wxPayQuery(HttpServletRequest request, HttpServletResponse response, String logicOrderId)
-	{
-		try
-		{
-
-			String accountId = getCurrentLoginUserName(request);
-			log.info("@@微信支付页面，logicOrderId=" + logicOrderId + ",accountId=" + accountId);
-
-			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
-			if (LogicOrderVo.UNPAY != logicOrderVo.getPayStatus())
-			{
-				return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("支付成功"));
-			}
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("未支付,继续轮询"));
-		}
-		catch (Exception e)
-		{
-			log.error("下单处理流程异常，logicOrderId=" + logicOrderId + ",msg:" + e.getMessage(), e);
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("系统异常，请检查"));
-		}
-	}
-
-	public void checkIfParamValidAndFillBaseInfo(AddTradeOrderDto orderData, String accountId)
+	private void checkIfParamValidAndFillBaseInfo(AddTradeOrderDto orderData, String accountId)
 	{
 		if (StringUtils.isBlank(accountId))
 			throw new BusinessException("用户未登录，请检查");
@@ -201,7 +133,7 @@ public class OrderController extends BaseController
 			throw new BusinessException("参数非法");
 		int pType = Integer.parseInt(orderData.getPayType().trim());
 		PayTypeEnum payType = PayTypeEnum.getByValue(pType);
-		if (payType != PayTypeEnum.ALIPAY && payType != PayTypeEnum.WEIXIN_PAY)
+		if (payType != PayTypeEnum.WEIXIN_JS_API)
 			throw new BusinessException("非法支付方式");
 		if (ArrayUtils.isEmpty(orderData.getOrderList()))
 			throw new BusinessException("无任何订单信息");

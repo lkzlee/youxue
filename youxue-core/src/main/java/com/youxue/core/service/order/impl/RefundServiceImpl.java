@@ -58,7 +58,8 @@ public class RefundServiceImpl implements RefundService
 			{
 				return new AliPayRefundRunnable(refund, aliPayService);
 			}
-			case WEIXIN_APY:
+			case WEIXIN_PAY:
+			case WEIXIN_JS_API:
 			{
 				return new WeiXinPayRefundRunnable(refund, logicOrder, weiXinPayService);
 			}

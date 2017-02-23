@@ -17,6 +17,8 @@ public class AddTradeResonseDto extends BaseResponseDto
 
 	private String payUrl;
 
+	private WxJsPayParamDto wxPayParam;
+
 	public String getPayUrl()
 	{
 		return payUrl;
@@ -27,9 +29,20 @@ public class AddTradeResonseDto extends BaseResponseDto
 		this.payUrl = payUrl;
 	}
 
+	public WxJsPayParamDto getWxPayParam()
+	{
+		return wxPayParam;
+	}
+
+	public void setWxPayParam(WxJsPayParamDto wxPayParam)
+	{
+		this.wxPayParam = wxPayParam;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "AddTradeResonseDto [payUrl=" + payUrl + "],super:" + super.toString();
+		return "AddTradeResonseDto [payUrl=" + payUrl + ", wxPayParam=" + wxPayParam + "],super=" + super.toString();
 	}
+
 }

@@ -4,15 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
 import com.lkzlee.pay.bean.WeiXinConfigBean;
@@ -22,12 +20,9 @@ import com.lkzlee.pay.service.PayService;
 import com.lkzlee.pay.third.alipay.dto.request.AliPayOrderDto;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
 import com.lkzlee.pay.third.weixin.dto.request.WeiXinOrderDto;
-import com.lkzlee.pay.third.weixin.dto.response.WeiXinOrderResultDto;
 import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.constant.CommonConstant;
-import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
@@ -35,30 +30,34 @@ import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
-import com.youxue.core.service.order.dto.AddTradeResonseDto;
-import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.pc.order.service.AddOrderPayService;
 
-@Service("addOrderPayService")
-public class AddOrderPayServiceImpl implements AddOrderPayService
+public abstract class AbstAddOrderPayService implements AddOrderPayService
 {
-	protected final static Log LOG = LogFactory.getLog(AddOrderPayServiceImpl.class);
+	protected final static Log LOG = LogFactory.getLog(AbstAddOrderPayService.class);
 	@Resource(name = "weiXinOrderPayService")
-	private PayService weiXinPayService;
+	protected PayService weiXinPayService;
 	@Resource(name = "aliPayOrderPayService")
-	private PayService aliPayService;
+	protected PayService aliPayService;
 	@Resource
-	private OrderService orderService;
+	protected OrderService orderService;
 	@Resource
-	private OrderDao orderDao;
+	protected OrderDao orderDao;
 	@Resource
-	private LogicOrderDao logicOrderDao;
+	protected LogicOrderDao logicOrderDao;
 	@Resource
-	private CampsDao campsDao;
+	protected CampsDao campsDao;
 	@Autowired
-	JedisProxy jedisProxy;
+	protected JedisProxy jedisProxy;
+
+	protected abstract BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId);
+
+	protected abstract AbstThirdPayDto buildThirdPayOrderByLogicOrderId(String logicOrderId, boolean isDel,
+			String openId);
+
+	protected abstract BaseResponseDto paramContinuePayPara(String accountId, String logicOrderId);
 
 	/***
 	 * 下单总体流程处理
@@ -76,7 +75,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			String logicOrderId = orderService.addOrder(orderData, ip, accountId);
 			int payType = Integer.parseInt(orderData.getPayType().trim());
 			PayService payService = getPayService(payType);
-			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, true);
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, true, orderData.getOpenId());
 			LOG.info("@@构造下单的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
 			/**
@@ -103,18 +102,18 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 	}
 
 	@Override
-	public BaseResponseDto addTradeOrderServiceById(String logicOrderId, String ip, String accountId)
+	public BaseResponseDto addTradeOrderServiceById(String logicOrderId, String ip, String accountId, String openId)
 	{
 		try
 		{
 			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			PayService payService = getPayService(logicOrderVo.getPayType());
-			if (PayTypeEnum.WEIXIN_APY.getValue() == logicOrderVo.getPayType())
+			if (PayTypeEnum.WEIXIN_JS_API.getValue() != logicOrderVo.getPayType())
 			{
-				return paramContinuePayPara(accountId, logicOrderId);
+				throw new BusinessException("支付方式不合法");
 			}
-			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, false);
+			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, false, openId);
 			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
 			/**
@@ -135,101 +134,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		}
 	}
 
-	private BaseResponseDto paramContinuePayPara(String accountId, String logicOrderId)
-	{
-		AddTradeResonseDto responseDto = new AddTradeResonseDto();
-		String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
-		if (StringUtils.isEmpty(payUrl))
-		{
-			responseDto.setResult(-3);
-			responseDto.setResultDesc("你需要支付的订单已过期，请重新支付");
-			return responseDto;
-		}
-		String wxOrderUrl = PropertyUtils
-				.getProperty(CommonConstant.WEI_XIN_ORDER_URL, "http://127.0.0.1/pay/wxpay.do");
-		responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
-		responseDto.setResult(100);
-		responseDto.setResultDesc("下单成功");
-		return responseDto;
-	}
-
-	private BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId)
-	{
-		if (param == null)
-			throw new BusinessException("param为空，下单错误");
-		AddTradeResonseDto responseDto = new AddTradeResonseDto();
-		if (param instanceof String)
-		{
-			String payUrl = (String) param;
-			responseDto.setPayUrl(payUrl);//支付宝直接跳转该连接进行支付
-		}
-		else if (param instanceof WeiXinOrderResultDto)
-		{
-			WeiXinOrderResultDto resultDto = (WeiXinOrderResultDto) param;
-			/**
-			 * 微信需要自己构造支付页面因此保存支付链接
-			 */
-			jedisProxy.setex(RedisConstant.getAddUserOrderKey(accountId, logicOrderId), resultDto.getCode_url(),
-					3 * 60 * 60);
-			String wxOrderUrl = PropertyUtils.getProperty(CommonConstant.WEI_XIN_ORDER_URL,
-					"http://127.0.0.1/pay/wxpay.do");
-			responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
-		}
-		else
-		{
-			LOG.fatal("下单返回类型错误，请检查，param=" + param);
-			throw new BusinessException("param类型错误，下单错误");
-		}
-		responseDto.setResult(100);
-		responseDto.setResultDesc("下单成功");
-		return responseDto;
-	}
-
-	private AbstThirdPayDto buildThirdPayOrderByLogicOrderId(String logicOrderId, boolean isDel)
-	{
-		LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
-		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, false);
-		if (logicOrderVo == null)
-			throw new BusinessException("查询订单不存在，请检查");
-		PayTypeEnum payTypeEnum = PayTypeEnum.getByValue(logicOrderVo.getPayType());
-		AbstThirdPayDto thirdPayDto = null;
-		switch (payTypeEnum)
-		{
-			case ALIPAY:
-			{
-				thirdPayDto = buildAliPayDto(logicOrderVo, orderList);
-				break;
-			}
-			case WEIXIN_APY:
-			{
-				thirdPayDto = buildWeiXinPayDto(logicOrderVo, orderList);
-				break;
-			}
-			default:
-			{
-				LOG.fatal("支付方式错误，请检查，payTypeEnum=" + payTypeEnum);
-				throw new BusinessException("支付方式错误，请检查，payTypeEnum=" + payTypeEnum + ",logicOrderId=" + logicOrderId);
-			}
-		}
-		if (isDel)
-		{
-			try
-			{
-				List<String> campsIdList = orderList.stream().map(t -> {
-					return t.getCampsId();
-				}).collect(Collectors.toList());
-				String[] ids = campsIdList.toArray(new String[0]);
-				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + logicOrderVo.getAccountId(), ids);
-			}
-			catch (Exception e)
-			{
-				LOG.fatal("删除用户购物车列表，异常", e);
-			}
-		}
-		return thirdPayDto;
-	}
-
-	private WeiXinOrderDto buildWeiXinPayDto(LogicOrderVo logicOrderVo, List<OrderVo> orderList)
+	protected WeiXinOrderDto buildWeiXinPayDto(LogicOrderVo logicOrderVo, List<OrderVo> orderList, String openId)
 	{
 		WeiXinOrderDto payResultDto = new WeiXinOrderDto();
 		//		payResultDto.setAttach(attach);
@@ -240,7 +145,7 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		//		payResultDto.setLimit_pay(limit_pay);
 		String notfiyUrl = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_PAY_NOTIFY_URL);
 		payResultDto.setNotify_url(notfiyUrl);
-		//		payResultDto.setOpenid(openid);
+
 		payResultDto.setOut_trade_no(logicOrderVo.getLogicOrderId());
 
 		payResultDto.setSpbill_create_ip(logicOrderVo.getOrderIp());
@@ -250,17 +155,26 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 		payResultDto.setTime_expire(DateUtil.formatDate(expireTime, "yyyyMMddHHmmss"));
 		int tradeAmount = logicOrderVo.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();
 		payResultDto.setTotal_fee(tradeAmount);
-		payResultDto.setTrade_type("NATIVE");
-		String subOrderId = "";
-		for (OrderVo order : orderList)
-		{
-			subOrderId += "|" + order.getOrderId();
-		}
-		payResultDto.setProduct_id(logicOrderVo.getLogicOrderId());
+		buildExtraParam(logicOrderVo.getLogicOrderId(), openId, payResultDto);
 		return payResultDto;
 	}
 
-	private AliPayOrderDto buildAliPayDto(LogicOrderVo logicOrderVo, List<OrderVo> orderList)
+	private void buildExtraParam(String wxProductId, String openId, WeiXinOrderDto payResultDto)
+	{
+		if (StringUtils.isNotBlank(openId))
+		{
+			payResultDto.setTrade_type("JSAPI");
+			payResultDto.setOpenid(openId);
+			return;
+		}
+		if (StringUtils.isNotBlank(wxProductId))
+		{
+			payResultDto.setTrade_type("NATIVE");
+			payResultDto.setProduct_id(wxProductId);
+		}
+	}
+
+	protected AliPayOrderDto buildAliPayDto(LogicOrderVo logicOrderVo, List<OrderVo> orderList)
 	{
 		AliPayOrderDto payResultDto = new AliPayOrderDto();
 		payResultDto.setExter_invoke_ip(logicOrderVo.getOrderIp());
@@ -281,4 +195,5 @@ public class AddOrderPayServiceImpl implements AddOrderPayService
 			return aliPayService;
 		return weiXinPayService;
 	}
+
 }

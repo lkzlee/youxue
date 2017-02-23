@@ -4,6 +4,10 @@ var strReg=/[`~!@#$%^&*()_+=<>?:"{},.\/;'[\]]/im;//验证特殊字符
 var dateReg = /^\d{4}-(0[1-9]|1[012])(-\d{2})*$/;
 var codeReg=/^\d{1,6}$/;
 var pwdReg=/^[a-zA-Z0-9]{0,4}$/;
+(function(){
+    // var tmp='<footer class="foot_nav"><a href="">aa</a><a href="">bb</a><a href="">cc</a></footer>'
+    // $('body').css('padding-bottom',35).append(tmp);
+})()
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -164,6 +168,14 @@ function auto_submit(address,obj,method){
         $('body').append(frm);
         frm.submit();
     }
+}
+//url格式化
+function urlFormatObj(obj){
+    var str='';
+    for(var item in obj){
+        str+=item+'='+obj[item]+'&';
+    }
+    return str;
 }
 //提交表单
 function login_post(address,data,method,successFn,errorFn,contentType){

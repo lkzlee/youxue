@@ -11,9 +11,9 @@
 <script src="js/common.js"></script>
 <script>
     var appId =  '<%=request.getParameter("appId")==null?"":request.getParameter("appId")%>';
-    var timeStamp = '<%=request.getParameter("timeStamp")==null?"":request.getParameter("timeStamp")%>';
+    var timeStamp = '<%=request.getParameter("timestamp")==null?"":request.getParameter("timestamp")%>';
     var nonceStr = '<%=request.getParameter("nonceStr")==null?"":request.getParameter("nonceStr")%>';
-    var pg = '<%=request.getParameter("pg")==null?"":request.getParameter("pg")%>';
+    var package = '<%=request.getParameter("package_")==null?"":request.getParameter("package_")%>';
     var signType = '<%=request.getParameter("signType")==null?"":request.getParameter("signType")%>';
     var paySign = '<%=request.getParameter("paySign")==null?"":request.getParameter("paySign")%>';
     function onBridgeReady(){
@@ -22,7 +22,7 @@
                 "appId" : appId, //公众号名称，由商户传入
                 "timeStamp": timeStamp, //时间戳，自1970年以来的秒数
                 "nonceStr" : nonceStr, //随机串
-                "package" : "prepay_id=" + pg,
+                "package" : package,
                 "signType" : signType, //微信签名方式:
                 "paySign" : paySign //微信签名
             },

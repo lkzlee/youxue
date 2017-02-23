@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <!-- 设置 viewport -->
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>camp_lists</title>
+    <title>全部营地_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/camp_lists.css"/>
 </head>

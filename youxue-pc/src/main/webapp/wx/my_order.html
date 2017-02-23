@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>my_order</title>
+    <title>我的订单_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/my_order.css"/>
     <script src="js/isLogin.js"></script>
@@ -62,8 +62,9 @@ $('ul').on('click','.pay_order',function(){
         setBtnDisabled($(this),false)
         data=JSON.parse(data);
         user_success(data,function(){
-            if(data.payUrl){
-                window.location.href=data.payUrl
+            if(data.wxPayParam){
+                window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
+                // window.location.href=data.payUrl
             }
         })
     });

@@ -27,7 +27,7 @@
             <div class="section3">
                 <p>付款方式</p>
                 <ul>
-                    <li><img src="img/ic_weixinpay.png" alt=""/><span>微信支付</span><label class="common_choice " for="pay_weixin"><input id="pay_weixin" type="radio" name="payType" checked value="2" style="display:none"/><i class="active"></i></label></li>
+                    <li><img src="img/ic_weixinpay.png" alt=""/><span>微信支付</span><label class="common_choice " for="pay_weixin"><input id="pay_weixin" type="radio" name="payType" checked value="3" style="display:none"/><i class="active"></i></label></li>
                     <!-- <li><img src="img/ic_alipay.png" alt=""/><span>支付宝</span><label class="common_choice"  for="pay_zhifubao"><input id="pay_zhifubao" type="radio" name="payType" value="2" style="display:none"/><i></i></label></li> -->
                 </ul>
             </div>
@@ -149,11 +149,9 @@
                 AllObj['payType']=outherObj['payType'];
                 login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                     data=JSON.parse(data);
-                    console.log(data);
                     success(data,function(){
-                        if(data.payUrl){
-                            // console.log('window.location.href='+data.payUrl);
-                            window.location.href=data.payUrl
+                        if(data.wxPayParam){
+                            window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
                         }
                     })
                 },'','application/json; charset=utf-8')

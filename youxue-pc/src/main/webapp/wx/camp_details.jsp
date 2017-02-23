@@ -4,7 +4,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>system_message</title>
+    <title>_Camplink</title>
     <link rel="stylesheet" href="css/swiper.min.css"/>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/camp_details.css"/>
@@ -75,9 +75,7 @@
         </li>
         <li>
             <p>常见问题</p>
-            <div>
-                <img src="/img/wenti.jpg" alt="" width="100%">
-            </div>
+            <div class="questions"></div>
         </li>
     </ul>
     <div class="fixed_button cf">
@@ -170,6 +168,7 @@ function load_render(data){
         // console.log(data);
         success(data,function(){
             $('.title').text(data.campsTitle);
+            $('title').prepend(data.campsTitle);
             $('.createTime').text(data.createTime);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
@@ -178,6 +177,7 @@ function load_render(data){
             $('.feature').text(data.feature);
             $('.shopCartCount').val(data.shopCartCount || 1);
             $('.doneCount').text(data.doneCount);
+            $('.questions').html(data.questions);
             if(data.serviceSupport){
                 var arr=handle_pic(data.serviceSupport);
                 var str='';

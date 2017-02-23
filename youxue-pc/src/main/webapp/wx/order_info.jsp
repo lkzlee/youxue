@@ -4,7 +4,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>个人中心-结算订单_Camplink</title>
+    <title>我的订单-订单详情_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/goods_details.css"/>
     <script src="js/isLogin.js"></script>

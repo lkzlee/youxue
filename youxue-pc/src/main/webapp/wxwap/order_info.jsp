@@ -77,7 +77,7 @@
     function renderOrderInfo(data){
         var arr=[];
         arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');
-        arr.push('<ul><li class="cf"><a href="/wx/camp_details.jsp?campusId='+data['campsId']+'"><img src="'+handle_pic(data['campsImages'])[0]+'" alt=""/><div><p>'+data['campsTitle']+'</p>');
+        arr.push('<ul><li class="cf"><a href="/wxwap/camp_details.jsp?campusId='+data['campsId']+'"><img src="'+handle_pic(data['campsImages'])[0]+'" alt=""/><div><p>'+data['campsTitle']+'</p>');
         arr.push('<p class="price">价格 ¥ <span>'+data['payPrice']+'</span></p></div></a></li></ul></div><div class="bg_height10"></div>');
         $('.div_head1').append(arr.join(''));
     }

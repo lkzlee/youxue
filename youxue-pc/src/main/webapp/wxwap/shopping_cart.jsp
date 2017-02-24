@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -120,7 +121,7 @@ $('#j_btnCheck').on('click',function(){
             var xj_price=price*num;
             arr.push([id,src,title,price,num,xj_price].join('$$'));
         });
-        auto_submit('/wx/check_order.jsp',{'orderList':arr},'post');
+        auto_submit('/wxwap/check_order.jsp',{'orderList':arr},'post');
     }
     return false;
 })

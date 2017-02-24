@@ -29,7 +29,6 @@ $(function(){
             var data={
                 'mobile':phone.val(),
                 'phoneCode':codeInput.val(),
-                'imgCode':6666,
                 'autoLog':true
             };
             sendLogin(data,This);
@@ -38,11 +37,11 @@ $(function(){
     });
 })
 function sendLogin(data,This){
-    login_post('/login.do',data,'',successFn);
+    login_post('/bindphone.do',data,'',successFn);
     function successFn(json_data){
         var data=JSON.parse(json_data);
         success(data,function(){
-            window.location.href='/wx/user.html';
+            window.location.href='/wxwap/user.jsp';
         },error)
     }
     function error(){

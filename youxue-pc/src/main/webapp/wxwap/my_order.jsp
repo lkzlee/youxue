@@ -30,7 +30,7 @@
 <script src="js/common.js"></script>
 <script>
 var public_obj={ 'orderType':-1,'pageNo':1},is_trunPage = true,is_bottom=false,height = 0;
-$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">订单加载中<img src="/wx/img/load.gif" style="position:relative;margin-top:0;"/></p>');
+$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">订单加载中<img src="/wxwap/img/load.gif" style="position:relative;margin-top:0;"/></p>');
 var load_message = $('#p-load');
 var load_height = load_message.height() * 2;
 $(function() {
@@ -83,7 +83,7 @@ $('ul').on('click','.j_BtnCancel',function(){
     }
 })
 $('ul').on('click','.again_pay',function(){
-    window.location.href='/wx/camp_details.jsp?campusId='+$(this).attr('data-id');
+    window.location.href='/wxwap/camp_details.jsp?campusId='+$(this).attr('data-id');
 })
 $('.j_list').on('click',function(){
     var j_head=$('.j_head');
@@ -135,7 +135,7 @@ function render_list(data){
             arr.push('<li class="cf order_item_style_cancel">');
             var orderList=result[i]['orderList'];
             for(var j=0,jLen=orderList.length;j<jLen;j++){
-                arr.push('<a href="/wx/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
+                arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
                 arr.push('<p class="non_payment" style="costatuslor:'+getState(orderList[j]['payStatus'])[1]+' !important;">'+getState(orderList[j]['payStatus'])[0]+'</p></div>');
                 arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
                 arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div></a>');

@@ -130,14 +130,14 @@ $(function() {
     })
     $('.j_addCar').click(function(){
         if(!isLogin){
-            window.location.href='/wx/login.html';
+            window.location.href='/wxwap/login.jsp';
         }else{
             addCarFn($(this));
         }
     })
     $('.j_immedAddCar').click(function(){
         if(!isLogin){
-            window.location.href='/wx/login.html';
+            window.location.href='/wxwap/login.jsp';
         }else{
           addCarFn($(this),true);
         }
@@ -151,7 +151,7 @@ function addCarFn(element,location){
         success(data,function(){
             alertMesageAndHide('加入购物车成功')
             if(location){
-                window.location.href='/wx/shopping_cart.html';
+                window.location.href='/wxwap/shopping_cart.jsp';
             }
         },function(){
             setBtnDisabled(element,true)

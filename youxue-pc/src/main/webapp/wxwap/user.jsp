@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -23,14 +24,14 @@
   <section>
      <div>
          <ul>
-             <li><a href="personal_data.html"><i>个人资料</i></a></li>
-             <li><a href="my_message.html" class="cf"><i class="fl">我的消息</i><b class="fr" id="unReads" style="display:none"></b></a></li>
+             <li><a href="personal_data.jsp"><i>个人资料</i></a></li>
+             <li><a href="my_message.jsp" class="cf"><i class="fl">我的消息</i><b class="fr" id="unReads" style="display:none"></b></a></li>
          </ul>
      </div>
      <div>
          <ul>
-             <li><a href="my_order.html"><i>我的订单</i></a></li>
-             <li><a href="shopping_cart.html"><i>我的购物车</i></a></li>
+             <li><a href="my_order.jsp"><i>我的订单</i></a></li>
+             <li><a href="shopping_cart.jsp"><i>我的购物车</i></a></li>
          </ul>
      </div>
   </section>

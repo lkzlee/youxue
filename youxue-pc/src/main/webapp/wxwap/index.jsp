@@ -100,7 +100,7 @@ $(function() {
                 obj[$(this).attr('data-param')]=$(this).attr('data-value');
             }
         })
-        auto_submit('/wxwap/camp_lists.jsp',$.param(obj),'get');
+        auto_submit('camp_lists.jsp',$.param(obj),'get');
         // window.location.href="camp_lists.html";
     })
 });

@@ -219,7 +219,7 @@ function user_success(data,callback){
         callback();
     }else if(data.result==-2){
         alertMesageAndHide(data.resultDesc,4)
-        window.location.href='/wx/login.html';
+        window.location.href='/wxwap/login.jsp';
     }else{
         alertMesageAndHide(data.resultDesc,4)
     }

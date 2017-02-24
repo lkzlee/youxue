@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -22,7 +23,7 @@
 <script src="js/common.js"></script>
 <script type="text/javascript">
 var public_obj={},isOneLoadEvent=0,lock=true,is_trunPage = true,is_bottom=false,height = 0;
-$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">消息加载中<img src="/wx/img/load.gif" style="position:relative;margin-top:0;"/></p>');
+$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">消息加载中<img src="/wxwap/img/load.gif" style="position:relative;margin-top:0;"/></p>');
 var load_message = $('#p-load');
 var load_height = load_message.height() * 2;
 $(function(){

@@ -14,9 +14,9 @@
             // iHtml.style.display='block';
             var data=JSON.parse(JSON.parse(response));
             if(data.result==100 && isLoginHtml()){
-                window.location.href='/wx/user.html';
+                window.location.href='/wxwap/user.jsp';
             }else if(data.result==-2  && !isLoginHtml()){
-                window.location.href='/wx/login.html';
+                window.location.href='/wxwap/login.jsp';
             }else{
                 iHtml.style.display='block';
             }
@@ -29,7 +29,7 @@
 })()
 function isLoginHtml(){
     var add=window.location.pathname;
-    if(add.indexOf('login.html')!=-1){
+    if(add.indexOf('login.jsp')!=-1){
         return true;
     }
     return false;

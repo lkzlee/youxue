@@ -160,7 +160,7 @@
         function render_orderInfo(obj){
             var arr=[];
             arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');
-            arr.push('<ul><li class="cf"><a href="/wx/camp_details.jsp?campusId='+obj['value']+'"><img src="'+obj['img']+'" alt=""/><div><p>'+obj['name']+'</p>');
+            arr.push('<ul><li class="cf"><a href="/wxwap/camp_details.jsp?campusId='+obj['value']+'"><img src="'+obj['img']+'" alt=""/><div><p>'+obj['name']+'</p>');
             arr.push('<p class="price">价格 ¥ <span>'+obj['unitPrice']+'</span></p></div></a></li></ul></div><div class="bg_height10"></div>');
             return arr.join('')
         }

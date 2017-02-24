@@ -50,6 +50,10 @@ public class WxLoginController extends BaseController
 		log.info("微信授权登录code=" + code);
 		String openId = WeixinOauthHelper.oauthAndLogin(code);
 		log.info("微信授权登录的用户openId=" + openId);
+		if (StringUtils.isEmpty(openId))
+		{
+			return "wx/login"; //跳转微信绑定手机号登录页
+		}
 		UserInfoVo userInfo = userInfoDao.selectUserInfoByOpenId(openId);
 		if (userInfo != null)
 		{

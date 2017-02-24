@@ -52,16 +52,16 @@ public class WxLoginController extends BaseController
 		log.info("微信授权登录的用户openId=" + openId);
 		if (StringUtils.isEmpty(openId))
 		{
-			return "wx/login"; //跳转微信绑定手机号登录页
+			return "wxwap/login"; //跳转微信绑定手机号登录页
 		}
 		UserInfoVo userInfo = userInfoDao.selectUserInfoByOpenId(openId);
 		if (userInfo != null)
 		{
 			ControllerUtil.setCurrentLoginUserName(request, userInfo.getAccountId());
-			return "wx/index"; //跳转微信首页
+			return "wxwap/index"; //跳转微信首页
 		}
 		ControllerUtil.setWxOpenId(request, openId);
-		return "wx/login"; //跳转微信绑定手机号登录页
+		return "wxwap/login"; //跳转微信绑定手机号登录页
 	}
 
 	/***

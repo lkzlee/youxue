@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>æçè®¢å_Camplink</title>
+    <title>订单列表</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/my_order.css"/>
     <script src="js/isLogin.js"></script>
@@ -141,20 +141,21 @@ function render_list(data){
             arr.push('<li class="cf order_item_style_cancel">');
             var orderList=result[i]['orderList'];
             for(var j=0,jLen=orderList.length;j<jLen;j++){
-                arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>è®¢åç¼å·ï¼<span>'+orderList[j]['orderId']+'</span></p>');
-                arr.push('<p class="non_payment" style="costatuslor:'+getState(orderList[j]['payStatus'])[1]+' !important;">'+getState(orderList[j]['payStatus'])[0]+'</p></div>');
+                console.log(orderList[j]['status'])
+                arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
+                arr.push('<p class="non_payment" style="costatuslor:'+getState(orderList[j]['status'])[1]+' !important;">'+getState(orderList[j]['status'])[0]+'</p></div>');
                 arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
                 arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">æ°é <span>1</span></p></div></div></a>');
                 arr.push('<div class="order_pay_module cf"><i>è´¹ç¨: Â¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
-                if(orderList[j]['payStatus']==0){
+                if(orderList[j]['status']==0){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
                     arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">å»æ¯ä»</button>');
-                }else if(orderList[j]['payStatus']==2){
+                }else if(orderList[j]['status']==2){
                     arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">åæ¶è®¢å</button>');
-                }else if(orderList[j]['payStatus']==3){
+                }else if(orderList[j]['status']==3){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
                     arr.push('<button class="pay_order_button again_pay" data-id="'+orderList[j]['campsId']+'">åæ¬¡è´­ä¹°</button>');
-                }else if(orderList[j]['payStatus']==4){
+                }else if(orderList[j]['status']==4){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
                 }
                 arr.push('</div></div>');
@@ -174,11 +175,15 @@ function getState(state){
         case 1:
             return ['å¾å®¡æ ¸','red'];
         case 2:
-            return ['å¾åºè¡','blue'];
+            return ['待出行','red'];
         case 3:
-            return ['å·²å®æ','gray'];
-        case 4:
-            return ['å·²åæ¶','gray'];
+            return ['交易成功','red'];
+        case 6:
+            return ['申请退款','red'];
+        case 7:
+            return ['退款未通过','red'];
+        default:
+            return ['交易关闭','red'];
     }
 }
 </script>

@@ -74,7 +74,7 @@ public class WxLoginController extends BaseController
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/wx/bindphone.do")
+	@RequestMapping(value = "/bindphone.do")
 	@ResponseBody
 	public String wxBindPhone(HttpServletRequest request, HttpServletResponse response, String mobile,
 			String phoneCode, String autoLog) throws IOException

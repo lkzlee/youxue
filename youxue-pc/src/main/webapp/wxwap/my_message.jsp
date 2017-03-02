@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<% 
+String path = request.getContextPath(); 
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/wxwap/"; 
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
+	<base href="<%=basePath%>"></base>
     <title>我的消息_Camplink</title>
     <meta charset="UTF-8">
     <!-- 设置 viewport -->

@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<% 
+String path = request.getContextPath(); 
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/wxwap/"; 
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>

@@ -28,6 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </header>
 <section>
     <ul>
+        
     </ul>
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
@@ -78,7 +79,7 @@ $('ul').on('click','.j_BtnCancel',function(){
     if(window.confirm('是否确认取消订单？')){
         setBtnDisabled($(this),false);
         var That=$(this);
-        var orderId=That.attr('data-value');
+        var orderId=That.attr('data-id');
         login_post('/uc/cancelorder.do','orderId='+orderId,'',function(data){
             data=JSON.parse(data);
             success(data,function(){
@@ -149,12 +150,16 @@ function render_list(data){
                 if(orderList[j]['status']==0){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
                     arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button>');
-                }else if(orderList[j]['status']==2){
-                    arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">取消订单</button>');
+                }else if(orderList[j]['status']==2||orderList[j]['status']==6||orderList[j]['status']==7){
+                    if(orderList[j]['status']==6||orderList[j]['status']==7){
+                        arr.push('<button class="disabled pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'" disabled="disabled">取消订单</button>');
+                    }else{
+                        arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">取消订单</button>');
+                    }                    
                 }else if(orderList[j]['status']==3){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
                     arr.push('<button class="pay_order_button again_pay" data-id="'+orderList[j]['campsId']+'">再次购买</button>');
-                }else if(orderList[j]['status']==4){
+                }else if(orderList[j]['status']==4||orderList[j]['status']==5){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
                 }
                 arr.push('</div></div>');
@@ -174,15 +179,13 @@ function getState(state){
         case 1:
             return ['待审核','red'];
         case 2:
+        case 6:
+        case 7:
             return ['待出行','red'];
         case 3:
             return ['交易成功','red'];
-        case 6:
-            return ['申请退款','red'];
-        case 7:
-            return ['退款未通过','red'];
         default:
-            return ['交易关闭','red'];
+            return ['已取消','red'];
     }
 }
 </script>

@@ -152,7 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
                 AllObj['orderList']=infoArr;
                 AllObj['payType']=outherObj['payType'];
-                login_post('/pay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
+                login_post('/wxpay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                     data=JSON.parse(data);
                     success(data,function(){
                         if(data.wxPayParam){

@@ -57,6 +57,7 @@ public class WxLoginController extends BaseController
 		UserInfoVo userInfo = userInfoDao.selectUserInfoByOpenId(openId);
 		if (userInfo != null)
 		{
+			ControllerUtil.setWxOpenId(request, openId);
 			ControllerUtil.setCurrentLoginUserName(request, userInfo.getAccountId());
 			return "wxwap/index"; //跳转微信首页
 		}

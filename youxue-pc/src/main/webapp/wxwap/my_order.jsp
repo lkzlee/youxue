@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>订单列表</title>
+    <title>我的订单_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/my_order.css"/>
     <script src="js/isLogin.js"></script>
@@ -17,18 +17,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <header style="overflow:hidden;" class="j_head">
     <ul class="cf">
-        <li data-state="-1" class="active">å¨é¨è®¢å</li>
-        <li data-state="0">å¾ä»æ¬¾</li>
-        <li data-state="1">å¾å®¡æ ¸</li>
-        <li data-state="2">å¾åºè¡</li>
-        <li data-state="3">å·²å®æ</li>
-        <li data-state="4">å·²åæ¶</li>
+        <li data-state="-1" class="active">全部订单</li>
+        <li data-state="0">待付款</li>
+        <li data-state="1">待审核</li>
+        <li data-state="2">待出行</li>
+        <li data-state="3">已完成</li>
+        <li data-state="4">已取消</li>
     </ul>
     <i class="j_list iconOrder"></i>
 </header>
 <section>
     <ul>
-        
     </ul>
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
@@ -36,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script src="js/common.js"></script>
 <script>
 var public_obj={ 'orderType':-1,'pageNo':1},is_trunPage = true,is_bottom=false,height = 0;
-$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">è®¢åå è½½ä¸­<img src="/wxwap/img/load.gif" style="position:relative;margin-top:0;"/></p>');
+$('body').after('<p id="p-load" style="position:fixed;bottom:0;left:0;width:100%;display:none;text-align:center;line-height:50px;z-index:99999;">订单加载中<img src="/wxwap/img/load.gif" style="position:relative;margin-top:0;"/></p>');
 var load_message = $('#p-load');
 var load_height = load_message.height() * 2;
 $(function() {
@@ -52,7 +51,7 @@ $(function() {
     })
 });
 $('ul').on('click','.del_order',function(){
-    if(window.confirm('æ¯å¦ç¡®è®¤å é¤è®¢åï¼')){
+    if(window.confirm('是否确认删除订单？')){
         setBtnDisabled($(this),false)
         login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
             data=JSON.parse(data);
@@ -76,14 +75,14 @@ $('ul').on('click','.pay_order',function(){
     });
 })
 $('ul').on('click','.j_BtnCancel',function(){
-    if(window.confirm('æ¯å¦ç¡®è®¤åæ¶è®¢åï¼')){
+    if(window.confirm('是否确认取消订单？')){
         setBtnDisabled($(this),false);
         var That=$(this);
         var orderId=That.attr('data-value');
         login_post('/uc/cancelorder.do','orderId='+orderId,'',function(data){
             data=JSON.parse(data);
             success(data,function(){
-                alert('åæ¶è®¢åè¯·èç³»å®¢æï¼400-517-517ï¼å¾ä¸å®¢æç¡®è®¤æ è¯¯åï¼å¯å¨âå·²åæ¶âè®¢åä¸­æ¥çã');
+                alert('取消订单请联系客服：400-517-517，待与客服确认无误后，可在“已取消”订单中查看。');
             })
         })
     }
@@ -102,7 +101,7 @@ $('.j_list').on('click',function(){
     }
     j_head.animate({'height':height})
 })
-//æ»å¨å è½½æ°æ®
+//滑动加载数据
 $(window).on('scroll', function () {
     var bottom = $(this).scrollTop();
     if (bottom + load_height >= height && is_trunPage && !is_bottom) {//asyn start
@@ -111,11 +110,11 @@ $(window).on('scroll', function () {
         if(isDownPage(public_obj)){
             get_orderList();
         }else if(isLastPage(public_obj)){
-            alertMesageAndHide('æ²¡æäºâ¦');
+            alertMesageAndHide('没有了…');
         }
     }
 });
-//è·åè®¢ååè¡¨
+//获取订单列表
 function get_orderList(){
     load_message.show();
     login_post('/uc/userorder.do',public_obj,'',function(data){
@@ -125,7 +124,7 @@ function get_orderList(){
         })
     });
 }
-//æ¸²ææ¶æ¯åè¡¨
+//渲染消息列表
 function render_list(data){
     console.log(data)
     public_obj['pageNo']=data.pageNo;
@@ -135,7 +134,7 @@ function render_list(data){
     var result=data['resultList'];
     var len=result.length;
     if(len<=0){
-        arr.push('<li class="noMessage_border">æ²¡æè®°å½</li>');
+        arr.push('<li class="noMessage_border">没有记录</li>');
     }else{
         for(var i=0;i<len;i++){
             arr.push('<li class="cf order_item_style_cancel">');
@@ -145,18 +144,18 @@ function render_list(data){
                 arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'"><div class="order_state cf"><p>订单编号：<span>'+orderList[j]['orderId']+'</span></p>');
                 arr.push('<p class="non_payment" style="costatuslor:'+getState(orderList[j]['status'])[1]+' !important;">'+getState(orderList[j]['status'])[0]+'</p></div>');
                 arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
-                arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">æ°é <span>1</span></p></div></div></a>');
-                arr.push('<div class="order_pay_module cf"><i>è´¹ç¨: Â¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
+                arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div></a>');
+                arr.push('<div class="order_pay_module cf"><i>费用: ¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
                 if(orderList[j]['status']==0){
-                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
-                    arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">å»æ¯ä»</button>');
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                    arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button>');
                 }else if(orderList[j]['status']==2){
-                    arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">åæ¶è®¢å</button>');
+                    arr.push('<button class="pay_order_button j_BtnCancel" data-id="'+orderList[j]['orderId']+'">取消订单</button>');
                 }else if(orderList[j]['status']==3){
-                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
-                    arr.push('<button class="pay_order_button again_pay" data-id="'+orderList[j]['campsId']+'">åæ¬¡è´­ä¹°</button>');
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
+                    arr.push('<button class="pay_order_button again_pay" data-id="'+orderList[j]['campsId']+'">再次购买</button>');
                 }else if(orderList[j]['status']==4){
-                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">å é¤è®°å½</button>');
+                    arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
                 }
                 arr.push('</div></div>');
             }
@@ -171,9 +170,9 @@ function render_list(data){
 function getState(state){
     switch(state){
         case 0:
-            return ['å¾ä»æ¬¾','red'];
+            return ['待付款','red'];
         case 1:
-            return ['å¾å®¡æ ¸','red'];
+            return ['待审核','red'];
         case 2:
             return ['待出行','red'];
         case 3:

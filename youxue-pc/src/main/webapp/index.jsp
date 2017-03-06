@@ -182,10 +182,11 @@ function CampsDetail(){
                 var obj=data.subjectList;
                 var li=[];
                 for(var i=0,len=obj.length;i<len;i++){
-                    if(i==5){
+                    var liNo=(i+1)%3==0?'li3':'';
+                    if(i==len-1){
                         li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
                     }else{
-                        li.push('<li><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
+                        li.push('<li class="'+liNo+'"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }
                 }
                 subject_list.append(li.join(''));
@@ -204,11 +205,16 @@ function CampsDetail(){
     });
 }
 function loadSlide(slideElement,num){
-    num=num||3;
+    num=num||2;
     var biZhiDelayLoadImg = slideElement.children('li');
     var biZhiDelayLoadImgLength = biZhiDelayLoadImg.length;
     // var _focus_num = $(".smallUl > li").length;
+    if(biZhiDelayLoadImgLength<=num){
+        return false;
+    }
+    console.log(2)
     var _focus_num = Math.ceil(biZhiDelayLoadImgLength/num);
+    console.log()
     var _focus_li_length = slideElement.width();
     slideElement.css('width',_focus_num+'00%')
     var _focus_direction = true;
@@ -217,7 +223,7 @@ function loadSlide(slideElement,num){
     var _focus_dsq = null;
     var _focus_lock = true;
     function autoExecAnimate() {
-        console.log(new Date().getSeconds())
+        // console.log(new Date().getSeconds())
         var moveLen = _focus_pos * _focus_li_length;
         slideElement.animate({
                 'margin-left': "-" + moveLen + "px"

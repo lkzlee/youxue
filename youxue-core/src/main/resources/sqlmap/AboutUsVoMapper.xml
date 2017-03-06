@@ -14,21 +14,21 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from tb_aboutUs
+    from tb_about_us
     where type = #{type,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from tb_aboutUs
+    delete from tb_about_us
     where type = #{type,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.AboutUsVo" >
-    insert into tb_aboutUs (type, imgUrl, descs, 
+    insert into tb_about_us (type, imgUrl, descs, 
       create_time, update_time)
     values (#{type,jdbcType=VARCHAR}, #{imgurl,jdbcType=VARCHAR}, #{descs,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.AboutUsVo" >
-    insert into tb_aboutUs
+    insert into tb_about_us
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="type != null" >
         type,
@@ -65,7 +65,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.AboutUsVo" >
-    update tb_aboutUs
+    update tb_about_us
     <set >
       <if test="imgurl != null" >
         imgUrl = #{imgurl,jdbcType=VARCHAR},
@@ -83,7 +83,7 @@
     where type = #{type,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.AboutUsVo" >
-    update tb_aboutUs
+    update tb_about_us
     set imgUrl = #{imgurl,jdbcType=VARCHAR},
       descs = #{descs,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

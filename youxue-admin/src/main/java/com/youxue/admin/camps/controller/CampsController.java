@@ -228,9 +228,27 @@ public class CampsController extends AdminBaseController
 			{
 				camps.setStartDate(DateUtil.formatToDate(startDateStr, "yyyy-MM-dd"));
 			}
+			else
+			{
+				LOG.error("营地开始时间为空,请检查");
+				modelMap.put("msg", "营地开始时间为空,请检查");
+				return "redirect:/addCampsIndex.do";
+			}
 			if (StringUtils.isNotBlank(deadlineDateStr))
 			{
 				camps.setDeadlineDate(DateUtil.formatToDate(deadlineDateStr, "yyyy-MM-dd"));
+			}
+			else
+			{
+				LOG.error("营地截止时间为空,请检查");
+				modelMap.put("msg", "营地截止时间为空,请检查");
+				return "redirect:/addCampsIndex.do";
+			}
+			if (camps.getDeadlineDate().after(camps.getStartDate()))
+			{
+				LOG.error("营地截止时间晚于开始时间,请检查");
+				modelMap.put("msg", "营地截止时间晚于开始时间,请检查");
+				return "redirect:/addCampsIndex.do";
 			}
 			camps.setCampsId(commonDao.getIdByPrefix(CommonConstant.CAMPS_ID_PREFIX));
 			if (StringUtils.isNotBlank(camps.getCampsLocaleId()))
@@ -297,6 +315,12 @@ public class CampsController extends AdminBaseController
 				{
 					camps.setCampsLocale(category.getCategoryName());
 				}
+			}
+			if (camps.getDeadlineDate().after(camps.getStartDate()))
+			{
+				LOG.error("营地截止时间晚于开始时间,请检查");
+				modelMap.put("msg", "营地截止时间晚于开始时间,请检查");
+				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
 			}
 			camps.setUpdateTime(new Date());
 			campsDao.updateByPrimaryKeySelective(camps);

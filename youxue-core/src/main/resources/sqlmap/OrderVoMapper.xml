@@ -131,10 +131,13 @@
 	    t.logic_order_id=tg.logic_order_id 
 	    and c.camps_id=t.camps_id
 	    and t.account_id = #{accountId,jdbcType=VARCHAR} 
-	    <if test="status!=-1">
-	    	and t.status=#{status,jdbcType=INTEGER}
+	    <if test="statusList !=null">
+	    	and t.status in
+	    	<foreach collection="statusList" close=")" open="(" item="st" separator=",">
+	    	#{st,jdbcType=INTEGER}
+	    	</foreach>
 	    </if>
-	    order by t.order_id desc
+	    order by t.creat_time desc
   </select>
   
   <select id="selectPageOrderListByInfo" resultMap="orderDetailForAdminVoMap" parameterType="java.util.Map" >
@@ -190,11 +193,14 @@ select
   <select id="selectCountPageOrderListByType" resultType="java.lang.Integer" parameterType="java.util.Map" >
     select 
  	count(*)
-    from tb_order
-    where account_id = #{accountId,jdbcType=VARCHAR}
-     <if test="status!=-1">
-	    	and status=#{status,jdbcType=INTEGER}
-	 </if>
+    from tb_order t
+    where t.account_id = #{accountId,jdbcType=VARCHAR}
+      <if test="statusList !=null">
+	    	and t.status in
+	    	<foreach collection="statusList" close=")" open="(" item="st" separator=",">
+	    	#{st,jdbcType=INTEGER}
+	    	</foreach>
+	  </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from tb_order

@@ -69,9 +69,14 @@ public class BaseRedisSentinel
 		}
 		if (null == redisPool)
 		{
-			//			redisSentinelPool = new JedisSentinelPool(masterName, sentinelsSet, config, Integer.valueOf(timeout),
-			//					password);
-			redisPool = new JedisPool(config, server, Integer.valueOf(port), Integer.valueOf(timeout), password);
+			if (StringUtils.isNotBlank(password))
+			{
+				redisPool = new JedisPool(config, server, Integer.valueOf(port), Integer.valueOf(timeout), password);
+			}
+			else
+			{
+				redisPool = new JedisPool(config, server, Integer.valueOf(port), Integer.valueOf(timeout));
+			}
 		}
 		/**添加日志用于判断*/
 		String curDate = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss").format(new Date());//DateUtil.formatDate(new Date(),"yyyy-MM-ddHH：mm：ss");

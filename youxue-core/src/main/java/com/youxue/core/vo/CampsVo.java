@@ -3,6 +3,8 @@ package com.youxue.core.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.youxue.core.util.DateUtil;
 
 public class CampsVo
@@ -78,7 +80,10 @@ public class CampsVo
 
 	public String getDeadlineDateStr()
 	{
-		return DateUtil.formatDate(deadlineDate, "yyyy-MM-dd");
+		if (StringUtils.isNotBlank(deadlineDateStr))
+			return deadlineDateStr;
+		else
+			return DateUtil.formatDate(deadlineDate, "yyyy-MM-dd");
 	}
 
 	public void setDeadlineDateStr(String deadlineDateStr)
@@ -88,7 +93,10 @@ public class CampsVo
 
 	public String getDepartureDateStr()
 	{
-		return DateUtil.formatDate(departureDate, "yyyy-MM-dd");
+		if (StringUtils.isNotBlank(departureDateStr))
+			return departureDateStr;
+		else
+			return DateUtil.formatDate(departureDate, "yyyy-MM-dd");
 	}
 
 	public void setDepartureDateStr(String departureDateStr)
@@ -98,7 +106,10 @@ public class CampsVo
 
 	public String getStartDateStr()
 	{
-		return DateUtil.formatDate(startDate, "yyyy-MM-dd");
+		if (StringUtils.isNotBlank(startDateStr))
+			return startDateStr;
+		else
+			return DateUtil.formatDate(startDate, "yyyy-MM-dd");
 	}
 
 	public void setStartDateStr(String startDateStr)

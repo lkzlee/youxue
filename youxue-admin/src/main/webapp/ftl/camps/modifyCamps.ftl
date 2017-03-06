@@ -62,7 +62,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <div class="col-lg-8">
                                 <select class="form-control" name="campsLocaleId">
 									  <#list localeCategoryList as t>
-										<option value='${t.categoryId}' <#if camps.campsLocaleId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
+										<option value='${t.categoryId}' <#if (camps.campsLocaleId!'')==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
 									  </#list>
 								</select>
                             </div>
@@ -72,7 +72,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <div class="col-lg-8">
                                 <select class="form-control" name="campsSubjectId">
 									  <#list subjectCategoryList as t>
-										<option value='${t.categoryId}' <#if camps.campsSubjectId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
+										<option value='${t.categoryId}' <#if (camps.campsSubjectId!'')==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
 									  </#list>
 								</select>
                             </div>
@@ -82,7 +82,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <div class="col-lg-8">
                                 <select class="form-control" name="campsDurationId">
 									  <#list durationCategoryList as t>
-										<option value='${t.categoryId}' <#if camps.campsDurationId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
+										<option value='${t.categoryId}' <#if (camps.campsDurationId!'')==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
 									  </#list>
 								</select>
                             </div>
@@ -92,7 +92,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <div class="col-lg-8">
                                 <select class="form-control" name="campsPriceId" >
 									  <#list priceCategoryList as t>
-										<option value='${t.categoryId}' <#if camps.campsPriceId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
+										<option value='${t.categoryId}' <#if (camps.campsPriceId!'')==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
 									  </#list>
 								</select>
                             </div>
@@ -102,7 +102,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <div class="col-lg-8">
                                 <select class="form-control" name="campsDepartureId">
 									  <#list depatureCategoryList as t>
-										<option value='${t.categoryId}' <#if camps.campsDepartureId==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
+										<option value='${t.categoryId}' <#if (camps.campsDepartureId!'')==t.categoryId> selected="selected"</#if>>${t.categoryName}</option>
 									  </#list>
 								</select>
                             </div>

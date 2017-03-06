@@ -316,6 +316,26 @@ public class CampsController extends AdminBaseController
 					camps.setCampsLocale(category.getCategoryName());
 				}
 			}
+			if (StringUtils.isNotBlank(camps.getStartDateStr()))
+			{
+				camps.setStartDate(DateUtil.formatToDate(camps.getStartDateStr(), "yyyy-MM-dd"));
+			}
+			else
+			{
+				LOG.error("营地开始时间为空,请检查");
+				modelMap.put("msg", "营地开始时间为空,请检查");
+				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
+			}
+			if (StringUtils.isNotBlank(camps.getDeadlineDateStr()))
+			{
+				camps.setDeadlineDate(DateUtil.formatToDate(camps.getDeadlineDateStr(), "yyyy-MM-dd"));
+			}
+			else
+			{
+				LOG.error("营地截止时间为空,请检查");
+				modelMap.put("msg", "营地截止时间为空,请检查");
+				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
+			}
 			if (camps.getDeadlineDate().after(camps.getStartDate()))
 			{
 				LOG.error("营地截止时间晚于开始时间,请检查");

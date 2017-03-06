@@ -88,7 +88,7 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >输入关于创始人内容描述</textarea>
+                               <textarea class="form-control" name="descs" >输入合作伙伴描述</textarea>
                                 <input type="hidden"  name="type" data-bv-notempty="true"  value="creator"/>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >输入关于主营产品内容描述</textarea>
+                               <textarea class="form-control" name="descs" >输入常见问题描述</textarea>
                                 <input type="hidden"  name="type" data-bv-notempty="true"  value="mainProduct"/>
                             </div>
                         </div>

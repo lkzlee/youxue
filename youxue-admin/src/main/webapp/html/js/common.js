@@ -180,7 +180,7 @@ $(function() {
 			error: function(ret) {
 				$trigger.removeClass('uploading');
 				console.log(ret);
-				alert('上传错误，请检查文件大小等');
+				alert('上传出现异常，请检查后台日志');
 			}
 		});
 	}

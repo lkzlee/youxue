@@ -25,7 +25,7 @@ public interface OrderDao
 
 	List<OrderVo> selectOrderByLogicOrderId(String logicOrderId, boolean lock);
 
-	Page<OrderDetailVo> selectPageOrderListByType(Page<OrderDetailVo> page, int orderType, String accountId);
+	Page<OrderDetailVo> selectPageOrderListByType(Page<OrderDetailVo> page, List<Integer> statusList, String accountId);
 
 	Page<OrderDetailVo> selectPageOrderListByInfo(Page<OrderDetailVo> page, int status, PayTypeEnum pType,
 			String orderId, String mobile, String campsName);

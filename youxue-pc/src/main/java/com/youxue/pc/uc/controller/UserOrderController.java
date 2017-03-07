@@ -75,12 +75,28 @@ public class UserOrderController extends BaseController
 		LOG.info("查询用户个人订单页，accountId=" + accountId + ",orderType=" + orderType);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		int status = -1;
+		List<Integer> statusList = Lists.newArrayList();
 		try
 		{
+			int status = -1;
 			if (StringUtils.isNotBlank(orderType))
 			{
 				status = Integer.parseInt(orderType);
+			}
+			if (status == OrderVo.DELETED)
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
+			}
+
+			if (status == OrderVo.TO_OUT)
+			{
+				statusList.add(OrderVo.TO_OUT);
+				statusList.add(OrderVo.APPLY_REFUND);
+				statusList.add(OrderVo.APPLY_FAILED);
+			}
+			else if (status != -1)
+			{
+				statusList.add(status);
 			}
 		}
 		catch (Exception e)
@@ -88,7 +104,7 @@ public class UserOrderController extends BaseController
 		}
 		int pNum = Page.getPageNo(pageNo);
 		Page<OrderDetailVo> page = new Page<OrderDetailVo>(pNum, Page.DEFAULT_PAGESIZE);
-		page = orderDao.selectPageOrderListByType(page, status, accountId);
+		page = orderDao.selectPageOrderListByType(page, statusList, accountId);
 		Page<OrderItemDto> resultPage = new Page<OrderItemDto>(pNum, Page.DEFAULT_PAGESIZE);
 		List<OrderItemDto> resultList = translatePageList(page);
 		resultPage.setTotalCount((int) page.getTotalCount());

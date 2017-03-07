@@ -37,7 +37,7 @@ $(function(){
     });
 })
 function sendLogin(data,This){
-    login_post('/wx/bindphone.do',data,'',successFn);
+    login_post('/bindphone.do',data,'',successFn);
     function successFn(json_data){
         var data=JSON.parse(json_data);
         success(data,function(){

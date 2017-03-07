@@ -1,5 +1,7 @@
 package com.youxue.core.dao;
 
+import java.util.List;
+
 import com.youxue.core.vo.AboutUsVo;
 
 public interface AboutUsDao
@@ -15,4 +17,6 @@ public interface AboutUsDao
 	int updateByPrimaryKeySelective(AboutUsVo record);
 
 	int updateByPrimaryKey(AboutUsVo record);
+
+	List<AboutUsVo> selectAll();
 }

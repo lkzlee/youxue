@@ -1,5 +1,7 @@
 package com.youxue.core.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.AboutUsDao;
@@ -44,6 +46,12 @@ public class AboutUsDaoImpl extends BaseDao implements AboutUsDao
 	public int updateByPrimaryKey(AboutUsVo record)
 	{
 		return sqlSessionTemplate.update("com.youxue.core.dao.AboutUsDao.updateByPrimaryKey", record);
+	}
+
+	@Override
+	public List<AboutUsVo> selectAll()
+	{
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.AboutUsDao.selectAll");
 	}
 
 }

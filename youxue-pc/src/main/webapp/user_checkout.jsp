@@ -175,7 +175,7 @@
                     }
                     $('.codeId_radio').prop('checked',bool);
                     range_input(This,bool);
-                    $('.moneyTotal').text(moneyTotal-discount);
+                    $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
                 })
             }
         }

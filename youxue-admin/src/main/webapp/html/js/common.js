@@ -1,7 +1,33 @@
 $(function() {
 	//表单校验
 	$('form[data-validate=true]').bootstrapValidator({
-		excluded: [':disabled']
+		excluded: [':disabled'],
+		fields: {
+			startDateStr: {
+				validators: {
+					// integer: {},
+					callback: {
+						message: '行程开始时间不能小于报名截止时间',
+						callback:function(value, validator,$field,options){
+							var end = $('input[name="deadlineDateStr"]').val();
+							return formatDate(value)>formatDate(end);
+						}
+					}
+				}
+			},
+			deadlineDateStr: {
+				validators: {
+					// integer: {},
+					callback: {
+						message: '报名截止时间不能大于行程开始时间',
+						callback:function(value, validator,$field,options){
+							var begin = $('input[name="startDateStr"]').val();
+							return formatDate(value)<formatDate(begin);
+						}
+					}
+				}
+			}
+		}
 	});
 
 	//日期组件
@@ -13,7 +39,6 @@ $(function() {
 		   
 		$input.change(function() {//解决【因日期未输入导致校验失败，然后输入日期但input框状态不改变】的问题
 			$input.trigger('input').trigger('keyup');
-
 		}).datetimepicker({
 			language:  'zh-CN',
 			weekStart: 1,
@@ -311,3 +336,6 @@ $(function() {
     /*=======================select框级联控制(完)=============================*/
 
 });
+function formatDate(date){
+	return date.split('-').join('');
+}

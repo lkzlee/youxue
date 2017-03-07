@@ -132,8 +132,8 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                         <div class="form-group">
                             <label class="col-lg-2 control-label">行程开始时间：</label>
                             <div class="col-lg-8">
-                               <input class="form-control" name="startDateStr" value="${camps.startDateStr!""}"
-                                        type="date"/>
+                               <input class="form-control form_datetime" name="startDateStr" value="${camps.startDateStr!""}"
+                                        type="text" data-bv-notempty="true" data-picker-position="top-right"/>
                             </div>
                         </div>
 						<div class="form-group">
@@ -147,8 +147,8 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 						<div class="form-group">
                             <label class="col-lg-2 control-label">报名截止时间：</label>
                             <div class="col-lg-8">
-                                <input class="form-control" name="deadlineDateStr" value="${camps.deadlineDateStr!""}"
-                                        type="date"/>
+                                <input class="form-control form_datetime" name="deadlineDateStr" value="${camps.deadlineDateStr!""}"
+                                        type="text" data-bv-notempty="true" data-picker-position="top-right"/>
                             </div>
                         </div>
                   

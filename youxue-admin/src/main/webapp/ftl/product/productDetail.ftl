@@ -69,7 +69,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="weixinQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
-                                    value="(product1.weixinQrcodeUrl!'')?split(',')"/>
+                                    value=(product1.weixinQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
                         <div class="form-group">
@@ -82,7 +82,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="alipayQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
-                                    value="(product1.alipayQrcodeUrl!'')?split(',')" />
+                                    value=(product1.alipayQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
                         <div class="form-group">
@@ -144,7 +144,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="weixinQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
-                                    value="(product2.weixinQrcodeUrl!'')?split(',')"/>
+                                    value=(product2.weixinQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
                         <div class="form-group">
@@ -157,7 +157,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="alipayQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
-                                    value="(product2.alipayQrcodeUrl!'')?split(',')" />
+                                    value=(product2.alipayQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
                         <div class="form-group">

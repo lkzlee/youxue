@@ -58,8 +58,8 @@ i{font-family: "simsun";}
 .right_default .right1{height:172px;}
 .right_default .bghui{height:47px;background:#f0edec;}
 .right_default .imgMessage{float:left;position:relative;margin-left:58px;margin-top:-33px;width:145px;height:145px;}
-.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;background-image:url('../img/user_pic.jpg');background-size:100%;}
-.right_default .imgMessage .img img{width:100%;}
+.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;line-height: 125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;background-image:url('../img/user_pic.jpg');background-size:100%;}
+.right_default .imgMessage .img img{width:100%;vertical-align: middle;}
 .right_default .imgMessage .message{position:absolute;top:113px;left:92px;width:44px;height:32px;display:none;}
 .right_default .imgMessage .message i{display:block;margin-top:7px;width:36px;height:25px;background:url("../img/user.png") -95px 0 no-repeat;z-index:999;}
 .right_default .imgMessage .message span{position:absolute;top:0;left:25px;width:19px;height:19px;line-height:19px;border-radius:5px;text-align:center;background:#ff0000;color:#fff;}

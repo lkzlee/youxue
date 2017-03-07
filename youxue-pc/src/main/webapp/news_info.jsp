@@ -32,7 +32,7 @@
         <div class="width_content">
             <nav>
                 <div class="index_icon">
-                    <a href="index.html"><i></i>首页</a>
+                    <a href="index.jsp"><i></i>首页</a>
                 </div>
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>
@@ -53,7 +53,7 @@
 <section class="content width_content clear">
     <section class="left">
         <div><a href="javascript:void(0)">Camaplink资讯<span></span><i></i></a></div>
-        <p><a href="javascript:void(0)">行业新闻</a></p>
+        <p><a href="news.html">行业新闻</a></p>
     </section>
     <section class="right">
         <!-- <div class="top_img">

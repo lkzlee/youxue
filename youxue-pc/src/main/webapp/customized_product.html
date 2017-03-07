@@ -31,7 +31,7 @@
         <div class="width_content">
             <nav>
                 <div class="index_icon">
-                    <a href="index.html"><i></i>首页</a>
+                    <a href="index.jsp"><i></i>首页</a>
                 </div>
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>
@@ -85,14 +85,14 @@ function load_case(){
         data=JSON.parse(data);
         success(data,function(){
             var productList=data.productList;
-            // console.log(productList);
+            console.log(productList);
             var len=productList.length;
             var list=['暂无数据'];
             if(len>0){
                 list=[];
                 for(var i=0;i<len;i++){
                     var first_class=(i!=len-1)?'visa_pro':'';
-                    list.push('<div class="div_pro '+first_class+' clear"><h3><i></i><span>'+productList[i]['productName']+'</span></h3><div class="cont_prot">');
+                    list.push('<div class="div_pro '+first_class+' clear"><h3><i></i><span>'+(productList[i].type==1?'签证服务':'接送机服务')+'</span></h3><div class="cont_prot">');
                     list.push(productList[i]['productDesc']);
                     list.push('</div><div class="bottom_prot"><span>费用：<i>¥'+productList[i]['productPrice']+'</i></span>');
                     list.push('<img src="'+productList[i]['alipayQrcodeUrl']+'"><img src="'+productList[i]['weixinQrcodeUrl']+'"></div></div>');

@@ -11,7 +11,7 @@
 .content .left p a:hover{border-color:#21a8e2;}
 /*.content .left p.active a{color:#29abe2;font-weight:700;}*/
 .content .left i{position:absolute;top:11px;right:0;width: 14px;height: 24px;border-radius: 13px 0 0 13px;background: #eaedf0;}
-.content .right{width:887px;height:505px;padding:12px 26px 0 31px;background:#eee;}
+.content .right{width:887px;min-height:505px;padding:12px 26px 0 31px;background:#eee;}
 .top_img{padding-left:3px;}
 .bottom_content{padding-top:5px;}
 .bottom_content h2{padding-left:39px;line-height:48px;font-size:28px;color:#20a8e2;border-bottom:solid 3px #20a8e2;}

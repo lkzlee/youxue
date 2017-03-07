@@ -1,6 +1,7 @@
 package com.youxue.admin.aboutUs.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,11 @@ public class AboutUsController
 	@RequestMapping("/aboutUs.do")
 	public String aboutUs(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) throws Exception
 	{
+		List<AboutUsVo> list = aboutUsDao.selectAll();
+		for (AboutUsVo vo : list)
+		{
+			modelMap.put(vo.getType(), vo);
+		}
 		return "aboutUs/aboutUs";
 	}
 
@@ -59,6 +65,6 @@ public class AboutUsController
 		{
 			log.error("error in doModifyAboutUs", e);
 		}
-		return "aboutUs/aboutUs";
+		return "redirect:/aboutUs.do";
 	}
 }

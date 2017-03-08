@@ -20,7 +20,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                 <h4 class="text-center">修改定制案例</h4>
                 <h5 class="text-center" style="color:red">${msg!''}</h5>
                 <div class="col-lg-12">
-                    <form class="form-horizontal" id="form" action="/doModifyPersonalCase.do" data-validate="true">
+                    <form class="form-horizontal" id="form" action="/doModifyPersonalCase.do" data-validate="true"  method="post">
                     <table class="table table-striped table-bordered table-hover" id="dataTables-example1">
 						<div class="form-group">
                             <label class="col-lg-2 control-label">案例标题：</label>

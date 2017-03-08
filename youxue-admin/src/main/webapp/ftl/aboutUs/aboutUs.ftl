@@ -4,6 +4,12 @@
 <#setting date_format="yyyy-MM-dd">
 <#-- html文档头部 -->
 <@docHead title="关于我们"/>
+<script>
+	window.UEDITOR_HOME_URL = "/ueditor/";
+</script>
+<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../ueditor/lang/zh-cn/zh-cn.js"></script>
 <#-- 正文 -->
     <div id="wrapper">
     	<#-- 页头和导航 文件地址："../common/header.ftl"-->
@@ -31,8 +37,23 @@
 						<div class="form-group row">
                             <label class="col-lg-2 control-label">关于我们描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >${aboutUs.descs!""}</textarea>
-                                <input type="hidden"  name="type" data-bv-notempty="true"  value="aboutUs"/>
+                            	<input type="hidden"  name="type" data-bv-notempty="true"  value="aboutUs"/>
+								<script id="container1" name="descs" type="text/plain">
+									${aboutUs.descs!""}
+								</script>
+								
+                          		<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container1');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
                         <div class="form-group">
@@ -62,8 +83,22 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">青古内容描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >${qinggu.descs!""}</textarea>
-                                <input type="hidden"  name="type" data-bv-notempty="true"  value="qinggu"/>
+                            	<input type="hidden"  name="type" data-bv-notempty="true"  value="qinggu"/>
+								<script id="container2" name="descs" type="text/plain">
+									${qinggu.descs!""}
+								</script>
+                               <!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container2');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,8 +129,22 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">合作伙伴描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >${creator.descs!""}</textarea>
-                                <input type="hidden"  name="type" data-bv-notempty="true"  value="creator"/>
+                            	<input type="hidden"  name="type" data-bv-notempty="true"  value="creator"/>
+								<script id="container3" name="descs" type="text/plain">
+									${creator.descs!""}
+								</script>
+                                <!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container3');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
                         <div class="form-group">
@@ -126,8 +175,22 @@
 						<div class="form-group">
                             <label class="col-lg-2 control-label">常见问题描述：</label>
                             <div class="col-lg-6">
-                               <textarea class="form-control" name="descs" >${mainProduct.descs!""}</textarea>
-                                <input type="hidden"  name="type" data-bv-notempty="true"  value="mainProduct"/>
+                            	<input type="hidden"  name="type" data-bv-notempty="true"  value="mainProduct"/>
+								<script id="container4" name="descs" type="text/plain">
+									${mainProduct.descs!""}
+								</script>
+                                <!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container4');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
                         <div class="form-group">

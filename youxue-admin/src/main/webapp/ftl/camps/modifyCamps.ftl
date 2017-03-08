@@ -182,25 +182,81 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地介绍：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="campsDesc" >${camps.campsDesc!""}</textarea>
+                            	<script id="container1" name="campsDesc" type="text/plain">
+                            		${camps.campsDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container1');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地课程内容：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="courseDesc" >${camps.courseDesc!""}</textarea>
+                            	<script id="container2" name="courseDesc" type="text/plain">
+                            		${camps.courseDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container2');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地活动内容：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="activityDesc" >${camps.activityDesc!""}</textarea>
+                            	<script id="container3" name="activityDesc" type="text/plain">
+                            		${camps.activityDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container3');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地伙食描述：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="campsFoodDesc">${camps.campsFoodDesc!""}</textarea>
+                            	<script id="container4" name="campsFoodDesc" type="text/plain">
+                            		${camps.campsFoodDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container4');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
 						<div class="form-group">
@@ -219,7 +275,21 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地住宿描述：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="campsHotelDesc" >${camps.campsHotelDesc!""}</textarea>
+                            	<script id="container5" name="campsHotelDesc" type="text/plain">
+                            		${camps.campsHotelDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container5');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
 						<div class="form-group">
@@ -263,21 +333,40 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 						<div class="form-group">
                             <label class="col-lg-2 control-label">费用详情：</label>
                             <div class="col-lg-8">
-                               <textarea class="form-control" name="feeDesc" >${camps.feeDesc}</textarea>
+                            	<script id="container6" name="feeDesc" type="text/plain">
+                            		${camps.feeDesc!""}
+								</script>
+								<!-- 实例化编辑器 -->
+								<script type="text/javascript">
+									var ue = UE.getEditor('container6');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
+								</script>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">常见问题：</label>
                             <div class="col-lg-8">
-								<script id="container" name="questions" type="text/plain">
+								<script id="container7" name="questions" type="text/plain">
 									${camps.questions!""}
 								</script>
-                                <!-- 编辑器源码文件 -->
-								<script type="text/javascript" src="../../ueditor/ueditor.config.js"></script>
-								<script type="text/javascript" src="../../ueditor/ueditor.all.js"></script>
-								<!-- 实例化编辑器 -->
+                                <!-- 实例化编辑器 -->
 								<script type="text/javascript">
-									var ue = UE.getEditor('container');
+									var ue = UE.getEditor('container7');
+									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
+									UE.Editor.prototype.getActionUrl = function(action) {  
+										if (action == 'uploadimage' || action == 'uploadfile') {  
+											return '/img/uploadUEDitorImage.do?action=uploadImage';  
+										} else {  
+											return this._bkGetActionUrl.call(this, action);  
+										}  
+									};
 								</script>
                             </div>
                         </div>

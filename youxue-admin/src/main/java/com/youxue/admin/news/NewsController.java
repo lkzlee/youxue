@@ -118,7 +118,7 @@ public class NewsController extends AdminBaseController
 			}
 			newsDao.updateByPrimaryKeySelective(news);
 			modelMap.put("msg", "修改新闻成功");
-			logger.info("修改分类成功,id:" + news.getNewsId() + ",current user:" + getCurrentAdminLoginUserName(request));
+			logger.info("修改news成功,id:" + news.getNewsId() + ",current user:" + getCurrentAdminLoginUserName(request));
 			return "redirect:/news.do";
 		}
 		catch (Exception e)

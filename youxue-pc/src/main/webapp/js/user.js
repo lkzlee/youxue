@@ -47,7 +47,9 @@ function render_alertANDuserinfo(data){
     $('#email').children('span').text(data.email);
     $('#nickname').children('span').text(data.nickName);
     $('#sex').children('span').text(data.gender==0?'男':'女');
-    $('#birthday').children('span').text(formatDate(new Date(data.birthTime),0));
+    if(data.birthTime){
+        $('#birthday').children('span').text(formatDate(new Date(data.birthTime),0));        
+    }
     $('#loveCity').children('span').text(data.loveCity);
 }
 //登录

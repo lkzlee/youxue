@@ -13,6 +13,8 @@ public class RedisConstant
 	public static final String SHOP_CART_KEY = "S_CART_";
 	/**购物车*/
 	public static final String ADD_USER_ORDER_KEY = "add_user_order_key_";
+	/**购物车*/
+	public static final String ADD_USER_ORDER_KEY_JS_API = "add_order_wxjs_api_";
 
 	public static final String USER_IF_POP_CREDIT_TIP_KEY = "user_if_pop_credit_tips_";
 
@@ -29,5 +31,10 @@ public class RedisConstant
 	public static String getUserOrderIfPopCreditKey(String accountId)
 	{
 		return USER_IF_POP_CREDIT_TIP_KEY + accountId;
+	}
+
+	public static String getAddUserOrderKeyWXJSAPI(String accountId, String logicOrderId)
+	{
+		return ADD_USER_ORDER_KEY_JS_API + accountId + "_" + logicOrderId;
 	}
 }

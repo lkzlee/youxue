@@ -109,10 +109,11 @@ public abstract class AbstAddOrderPayService implements AddOrderPayService
 			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			PayService payService = getPayService(logicOrderVo.getPayType());
-			//			if (PayTypeEnum.WEIXIN_JS_API.getValue() != logicOrderVo.getPayType())
-			//			{
-			//				throw new BusinessException("支付方式不合法");
-			//			}
+			if (PayTypeEnum.WEIXIN_PAY.getValue() == logicOrderVo.getPayType()
+					|| PayTypeEnum.WEIXIN_JS_API.getValue() == logicOrderVo.getPayType())
+			{
+				return paramContinuePayPara(accountId, logicOrderId);
+			}
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, false, openId);
 			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
@@ -155,7 +156,7 @@ public abstract class AbstAddOrderPayService implements AddOrderPayService
 
 		payResultDto.setSpbill_create_ip(logicOrderVo.getOrderIp());
 
-		Date expireTime = DateUtil.getIntervalSeconds(logicOrderVo.getCreateTime(), 7200);
+		Date expireTime = DateUtil.getIntervalSeconds(DateUtil.getCurrentTimestamp(), 7200);
 		payResultDto.setTime_start(DateUtil.formatDate(logicOrderVo.getCreateTime(), "yyyyMMddHHmmss"));
 		payResultDto.setTime_expire(DateUtil.formatDate(expireTime, "yyyyMMddHHmmss"));
 		int tradeAmount = logicOrderVo.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();

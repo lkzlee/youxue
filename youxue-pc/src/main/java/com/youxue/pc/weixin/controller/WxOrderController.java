@@ -33,6 +33,7 @@ import com.youxue.core.util.ControllerUtil;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
+import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.pc.order.service.AddOrderPayService;
 
 /**
@@ -109,6 +110,12 @@ public class WxOrderController extends BaseController
 			String openId = ControllerUtil.getWxOpenId(request);
 			if (StringUtils.isEmpty(openId))
 				throw new BusinessException("微信用户未登录，请退出重新进入");
+			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
+			if (PayTypeEnum.WEIXIN_PAY.getValue() == logicOrderVo.getPayType()
+					|| PayTypeEnum.ALIPAY.getValue() == logicOrderVo.getPayType())
+			{
+				throw new BusinessException("请在PC端完成支付");
+			}
 			BaseResponseDto responseDto = wapAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId,
 					openId);
 			return JsonUtil.serialize(responseDto);

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.lkzlee.pay.bean.WeiXinConfigBean;
 import com.lkzlee.pay.constant.ConfigConstant;
@@ -16,12 +16,10 @@ import com.lkzlee.pay.third.weixin.dto.response.WeiXinOrderResultDto;
 import com.lkzlee.pay.utils.RandomUtil;
 import com.lkzlee.pay.utils.TreeMapUtil;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.dto.AddTradeResonseDto;
 import com.youxue.core.service.order.dto.WxJsPayParamDto;
-import com.youxue.core.util.PropertyUtils;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderVo;
 
@@ -40,6 +38,7 @@ public class WapAddOrderPayServiceImpl extends AbstAddOrderPayService
 			WeiXinOrderResultDto resultDto = (WeiXinOrderResultDto) param;
 			// 参数
 			String prePayId = resultDto.getPrepay_id();
+			jedisProxy.setex(RedisConstant.getAddUserOrderKeyWXJSAPI(accountId, logicOrderId), prePayId, 3 * 60 * 60);
 			WxJsPayParamDto wxPayParam = buidlWxJsPayParam(prePayId);
 			responseDto.setWxPayParam(wxPayParam);
 		}
@@ -122,20 +121,18 @@ public class WapAddOrderPayServiceImpl extends AbstAddOrderPayService
 	@Override
 	protected BaseResponseDto paramContinuePayPara(String accountId, String logicOrderId)
 	{
+
 		AddTradeResonseDto responseDto = new AddTradeResonseDto();
-		String payUrl = (String) jedisProxy.get(RedisConstant.getAddUserOrderKey(accountId, logicOrderId));
-		if (StringUtils.isEmpty(payUrl))
+		// 参数
+		String prePayId = (String) jedisProxy.get(RedisConstant.getAddUserOrderKeyWXJSAPI(accountId, logicOrderId));
+		if (StringUtils.isEmpty(prePayId))
 		{
-			responseDto.setResult(-3);
-			responseDto.setResultDesc("你需要支付的订单已过期，请重新支付");
-			return responseDto;
+			throw new BusinessException("系统繁忙，请稍后再试");
 		}
-		String wxOrderUrl = PropertyUtils
-				.getProperty(CommonConstant.WEI_XIN_ORDER_URL, "http://127.0.0.1/pay/wxpay.do");
-		responseDto.setPayUrl(wxOrderUrl + "?logicOrderId=" + logicOrderId);
+		WxJsPayParamDto wxPayParam = buidlWxJsPayParam(prePayId);
+		responseDto.setWxPayParam(wxPayParam);
 		responseDto.setResult(100);
 		responseDto.setResultDesc("下单成功");
 		return responseDto;
 	}
-
 }

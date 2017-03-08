@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +20,12 @@ import com.lkzlee.pay.third.weixin.dto.response.WeiXinPayNotifyResultDto;
 import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.utils.IOStreamTools;
 import com.lkzlee.pay.utils.XstreamUtil;
+import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.LogicOrderDao;
+import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.OrderService;
+import com.youxue.core.vo.LogicOrderVo;
 
 @Controller
 public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
@@ -28,6 +34,10 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 
 	@Resource
 	private OrderService orderService;
+	@Resource
+	private LogicOrderDao logicOrderDao;
+	@Autowired
+	private JedisProxy jedisProxy;
 
 	public static void main(String[] args)
 	{
@@ -95,6 +105,15 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		Date notifyTime = DateUtil.getCurrentTimestamp();
 		Date payTime = DateUtil.formatToDate(wxPayNotfiyDto.getTime_end(), DateUtil.DATE_FORMAT_YYYYMMDDHHMMSS);
 		orderService.doPayNotify(logicOrderId, platformTradeId, notifyTime, payTime);
+		LogicOrderVo order = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
+		if (order.getPayType() == PayTypeEnum.WEIXIN_PAY.getValue())
+		{
+			jedisProxy.del(RedisConstant.getAddUserOrderKey(order.getAccountId(), logicOrderId));
+		}
+		else if (order.getPayType() == PayTypeEnum.WEIXIN_JS_API.getValue())
+		{
+			jedisProxy.del(RedisConstant.getAddUserOrderKeyWXJSAPI(order.getAccountId(), logicOrderId));
+		}
 	}
 
 }

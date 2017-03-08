@@ -104,7 +104,13 @@ public class OrderController extends BaseController
 			String accountId = getCurrentLoginUserName(request);
 			if (StringUtils.isBlank(accountId))
 				throw new BusinessException("用户未登录，请检查");
-			BaseResponseDto responseDto = pcAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId, null);
+			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
+			if (PayTypeEnum.WEIXIN_JS_API.getValue() == logicOrderVo.getPayType())
+			{
+				throw new BusinessException("请在微信端完成支付");
+			}
+			BaseResponseDto responseDto = pcAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId,
+					null);
 			return JsonUtil.serialize(responseDto);
 		}
 		catch (BusinessException e)

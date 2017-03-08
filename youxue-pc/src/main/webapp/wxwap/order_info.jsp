@@ -99,6 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    data.payType==2 && $('.j_wxPay').addClass('active');
 	    if(data.codeId){
 	    	$('.section4 li').eq(1).find('i').addClass('active')
+	    	$('.section4 li').eq(0).find('i').removeClass('active');
 	        $('.codeId').val(data.codeId).show()
 	    }
 	    $('.j_price').text(data.payPrice);

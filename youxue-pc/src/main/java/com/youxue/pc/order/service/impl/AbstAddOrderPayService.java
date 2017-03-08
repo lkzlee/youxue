@@ -109,10 +109,10 @@ public abstract class AbstAddOrderPayService implements AddOrderPayService
 			LOG.info("@@支付购买，参数accountId=" + accountId + ",ip=" + ip + ",logicOrderId=" + logicOrderId);
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			PayService payService = getPayService(logicOrderVo.getPayType());
-			if (PayTypeEnum.WEIXIN_JS_API.getValue() != logicOrderVo.getPayType())
-			{
-				throw new BusinessException("支付方式不合法");
-			}
+			//			if (PayTypeEnum.WEIXIN_JS_API.getValue() != logicOrderVo.getPayType())
+			//			{
+			//				throw new BusinessException("支付方式不合法");
+			//			}
 			AbstThirdPayDto thirdPayDto = buildThirdPayOrderByLogicOrderId(logicOrderId, false, openId);
 			LOG.info("@@支付购买的参数为：logicOrderId=" + logicOrderId + ",thirdPayDto=" + thirdPayDto);
 
@@ -126,6 +126,11 @@ public abstract class AbstAddOrderPayService implements AddOrderPayService
 			BaseResponseDto responseDto = parseOrderParam(param, accountId, logicOrderId);
 			LOG.info("@@支付购买，下单返回，logicOrderId=" + logicOrderId + ",responseDto=" + responseDto);
 			return responseDto;
+		}
+		catch (BusinessException e)
+		{
+			LOG.fatal("系统执行出现错误，请检查，msg：" + e.getMessage(), e);
+			return BaseResponseDto.errorDto().setDesc(e.getMessage());
 		}
 		catch (Exception e)
 		{

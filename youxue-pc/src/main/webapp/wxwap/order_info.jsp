@@ -43,8 +43,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="section3">
             <p>付款方式</p>
             <ul>
-	            <li><img src="img/ic_alipay.png" alt=""/><span>支付宝</span><label class="common_choice"  for="pay_zhifubao"><input id="pay_zhifubao" type="radio" name="payType" value="1" style="display:none"/><i></i></label></li>
-                <li><img src="img/ic_weixinpay.png" alt=""/><span>微信支付</span><label class="common_choice " for="pay_weixin"><input id="pay_weixin" type="radio" name="payType" value="2" style="display:none"/><i></i></label></li>
+	            <!-- <li><img src="img/ic_alipay.png" alt=""/><span>支付宝</span><label class="common_choice"  for="pay_zhifubao"><input id="pay_zhifubao" type="radio" name="payType" value="1" style="display:none"/><i></i></label></li> -->
+                <li><img src="img/ic_weixinpay.png" alt=""/><span>微信支付</span><label class="common_choice " for="pay_weixin"><input id="pay_weixin" type="radio" name="payType" value="2" style="display:none"/><i class="j_wxPay"></i></label></li>
             </ul>
         </div>
         <div class="section4">
@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function getPayInfo(){
 	    login_post('/uc/orderdetail.do','orderId='+orderId,'',function(data){
 	        data=JSON.parse(data);
-	        console.log(data)
+	        // console.log(data)
 	        renderOrderInfo(data);
 	        renderPersonInfo(data.orderPersonList[0]);
 	        renderContactInfoAndOther(data);
@@ -96,7 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    $('.contactName').text(data.contactName);
 	    $('.contactPhone').text(data.contactPhone);
 	    $('.contactEmail').text(data.contactEmail);
-	    $('.section3 li').eq(data.payType-1).find('i').addClass('active');
+	    data.payType==2 && $('.j_wxPay').addClass('active');
 	    if(data.codeId){
 	    	$('.section4 li').eq(1).find('i').addClass('active')
 	        $('.codeId').val(data.codeId).show()

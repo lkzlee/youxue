@@ -146,7 +146,7 @@ function render_list(data){
                 arr.push('<p class="non_payment" style="costatuslor:'+getState(orderList[j]['status'])[1]+' !important;">'+getState(orderList[j]['status'])[0]+'</p></div>');
                 arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
                 arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div></a>');
-                arr.push('<div class="order_pay_module cf"><i>费用: ¥<span>'+orderList[j]['totalPrice']+'</span></i><div class="order_pay_button cf">');
+                arr.push('<div class="order_pay_module cf"><i>费用: ¥<span>'+orderList[j]['payPrice']+'</span></i><div class="order_pay_button cf">');
                 if(orderList[j]['status']==0){
                     arr.push('<button class="cancel_order_button del_order" data-id="'+orderList[j]['orderId']+'">删除记录</button>');
                     arr.push('<button class="pay_order_button pay_order" data-id="'+orderList[j]['logicOrderId']+'">去支付</button>');

@@ -72,7 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
         </li>
         <li>
-            <p class="no_arrow_down"><a href="javascript:void(0)" style="display: block;height:100%;" id="j_tripEvent">营地行程（跳转页面）</a></p>
+            <p class="no_arrow_down"><a href="javascript:void(0)" style="display: block;height:100%;" id="j_tripEvent">营地行程</a></p>
         </li>
         <li>
             <p>费用</p>

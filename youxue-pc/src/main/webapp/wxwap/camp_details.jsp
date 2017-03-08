@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="camp_details_generalize">
         <h2 class="title"></h2>
         <ul class="travel_feature">
-            <li>出发时间<span class="active createTime"></span></li>
+            <li>出发时间<span class="active startDate"></span></li>
             <li>行程周期<span class="durationTime"></span>天</li>
             <li>产品特色<span class="feature"></span></li>
         </ul>
@@ -44,7 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div>
                 <table style="width:100%;">
                     <caption style="text-align: left;padding-left:3px;">营地</caption>
-                    <tr><td>时间 :</td><td><label class="createTime"></label></td></tr>
+                    <tr><td>时间 :</td><td><label class="startDate"></label></td></tr>
                     <tr><td>地点 :</td><td><label class="campsLocale"></label></td></tr>
                     <tr><td>周期 :</td><td><label class="durationTime"></lable>天</td></tr>
                     <tr><td>简介 :</td><td class="campsDesc"></td></tr>
@@ -86,7 +86,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="fixed_button cf">
         <button class="fl j_customer">客服</button>
         <button class="fl j_addCar">加入购物车</button>
-        <button class="fl j_immedAddCar">¥ <span>36800</span>立即购买</button>
+        <button class="fl j_immedAddCar">¥ <span class="j_price"></span>立即购买</button>
     </div>
 </section>
 <div id="camp_trip">
@@ -170,11 +170,12 @@ function load_render(data){
         //虚拟数据
         // data.campsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         // data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
-        // console.log(data);
+        console.log(data);
         success(data,function(){
             $('.title').text(data.campsTitle);
             $('title').prepend(data.campsTitle);
             $('.createTime').text(data.createTime);
+            $('.startDate').text(formatDate(data.startDate,0));
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(data.deadlineDate);
@@ -234,7 +235,7 @@ function load_render(data){
                 $('.traces').html(arr.join(''));
             }
             $('.feeDesc').text(data.feeDesc);
-
+            $('.j_price').text(data.totalPrice)
             load_carousel();
         })
     })

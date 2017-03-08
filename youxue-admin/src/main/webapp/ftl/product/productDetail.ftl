@@ -95,7 +95,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
             </div><!-- /.row-->
             <hr/>
             <div class="row">
-                <h4 class="text-center">接送机服务服务</h4>
+                <h4 class="text-center">接送机服务</h4>
                 <h5 class="text-center" style="color:red">${msg2!''}</h5>
                 <div class="col-lg-offset-2 col-lg-8">
                     <form class="form-horizontal" id="Form" method="POST" action="/admin/addProduct.do" data-validate="true">

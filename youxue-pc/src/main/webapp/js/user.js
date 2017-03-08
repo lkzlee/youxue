@@ -298,7 +298,7 @@ function see_photo(data){
 
     function changeEl(element,src){
         var bi=$('i',element).hide();
-        $('img',element).attr({'src':src,'display':'inline-block'});
+        $('img',element).attr('src',src).css('display','inline-block');
     }
 }
 //获取订单列表

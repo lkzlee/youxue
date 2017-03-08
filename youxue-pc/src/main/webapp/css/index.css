@@ -32,7 +32,7 @@
 .subject_div{margin:0 auto;padding-left:55px;padding-right:56px;width:1069px;}
 .subject_div .border_hot{border-color:#52bbe8;}
 .subject_div .div_p_hot{color:#52bbe8;}
-.subject_list{padding-top:4px;background:#fff;}
+.subject_list{padding-top:4px;}
 .subject_list li{float:left;margin-right:39px;margin-top:39px;width:330px;height:326px;box-shadow: 0px 4px 29px -9px #221d1d;}
 .subject_list li a{display:block;}
 .subject_list .li3,.subject_list .li6{margin-right:0;}

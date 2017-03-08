@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/calendar_1.0.css"/>
+    <base target='_blank'>
 </head>
 <body>
 <section class="header">
@@ -34,7 +35,7 @@
         <div class="width_content">
             <nav>
                 <div class="index_icon" id="user_active">
-                    <a href="index.html"><i></i>首页</a>
+                    <a href="index.jsp"><i></i>首页</a>
                 </div>
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>
@@ -59,11 +60,11 @@
         <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="off"></div>
         <div class="div_input"><input type="text" id="wantDo" class="posElement2" placeholder="想做什么" autocomplete="off"></div>
         <div class="div_input"><input type="text" class="startTime" placeholder="出发时间" autocomplete="off"></div>
-        <a href="javascript:void(0)" id="search"><i></i></a>
+        <a href="javascipt:void(0)" id="search"><i></i></a>
     </div>
 </section>
 <!--关于Camplink-->
-<section class="about_camp" onclick="window.location.href='/about.html'">
+<section class="about_camp" onclick="window.open('/about.html')">
     <span>关于Camplink</span>
 </section>
 <!--热门特价-->
@@ -156,6 +157,7 @@ function event_yingdi(){
             'enddate':enddate
         };
         auto_submit('/search.jsp',$.param(obj),'get')
+        return false;
     })
 }
 function CampsDetail(){
@@ -184,7 +186,7 @@ function CampsDetail(){
                 for(var i=0,len=obj.length;i<len;i++){
                     var liNo=(i+1)%3==0?'li3':'';
                     if(i==len-1){
-                        li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
+                        li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="/search.jsp">更多More</a></div></li>');
                     }else{
                         li.push('<li class="'+liNo+'"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }

@@ -16,7 +16,7 @@
             if(data.result==100 && isLoginHtml()){
                 window.location.href='user.html';
             }else if(data.result==-2  && !isLoginHtml()){
-                window.location.href='/login.html';
+                window.location.href='login.html';
             }else{
                 iHtml.style.display='block';
             }

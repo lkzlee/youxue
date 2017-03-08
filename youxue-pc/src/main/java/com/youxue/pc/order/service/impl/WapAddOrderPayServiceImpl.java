@@ -33,7 +33,7 @@ public class WapAddOrderPayServiceImpl extends AbstAddOrderPayService
 	protected BaseResponseDto parseOrderParam(Object param, String accountId, String logicOrderId)
 	{
 		if (param == null)
-			throw new BusinessException("param为空，下单错误");
+			throw new BusinessException("系统繁忙，请稍后再试");
 		AddTradeResonseDto responseDto = new AddTradeResonseDto();
 		if (param instanceof WeiXinOrderResultDto)
 		{

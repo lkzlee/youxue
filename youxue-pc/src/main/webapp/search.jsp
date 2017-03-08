@@ -37,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="width_content">
             <nav>
                 <div class="index_icon">
-                    <a href="index.html"><i></i>首页</a>
+                    <a href="index.jsp"><i></i>首页</a>
                 </div>
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>
@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </section>
 <section class="search_head">
     <div class="width_content">
-        <a href="index.html">首页</a>
+        <a href="index.jsp">首页</a>
         <label id="position"><a href="javascript:void(0)"><i>></i>搜索</a></label>
     </div>
 </section>

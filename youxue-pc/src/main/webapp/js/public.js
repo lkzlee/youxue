@@ -115,7 +115,7 @@ function floatRight(info){
         var tmp='<a href="javascript:void(0)" class="join_Car shoppingCar"><i></i><span>加入购物车</span></a><a href="javascript:void(0)" class="now_bug buyImmediately"><i></i><span>立即购买</span></a>';
         var element='',right_float=$('#right_float');
         if(right_float.length<=0){
-            element=$('<div id="right_float" style="display:none;"><a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice"><i></i><span>在线咨询</span></a><a href="javascript:void(0)" class="back_top" onclick="backTop()"><i></i><span>返回顶部</span></a></div>');
+            element=$('<div id="right_float" style="display:none;"><a href="javascript:void(0)" onclick="onlineQQ()" class="online_advice" target="_self"><i></i><span>在线咨询</span></a><a href="javascript:void(0)" class="back_top" onclick="backTop()" target="_self"><i></i><span>返回顶部</span></a></div>');
             $("body").append(element);
         }else{
             // right_float.show()

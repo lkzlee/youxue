@@ -35,7 +35,7 @@ pageEncoding="utf-8"%>
         <div class="width_content">
             <nav>
                 <div class="index_icon">
-                    <a href="index.html"><i></i>首页</a>
+                    <a href="index.jsp"><i></i>首页</a>
                 </div>
                 <div class="about_icon ">
                     <a href="about.html"><i></i>关于我们</a>

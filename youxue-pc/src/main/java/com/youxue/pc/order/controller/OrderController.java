@@ -107,7 +107,7 @@ public class OrderController extends BaseController
 			LogicOrderVo logicOrderVo = logicOrderDao.selectByPrimaryKey(logicOrderId, false);
 			if (PayTypeEnum.WEIXIN_JS_API.getValue() == logicOrderVo.getPayType())
 			{
-				throw new BusinessException("请在微信端完成支付");
+				throw new BusinessException("请在微信端内完成支付");
 			}
 			BaseResponseDto responseDto = pcAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId,
 					null);

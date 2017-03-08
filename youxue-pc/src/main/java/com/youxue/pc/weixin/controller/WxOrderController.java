@@ -114,7 +114,7 @@ public class WxOrderController extends BaseController
 			if (PayTypeEnum.WEIXIN_PAY.getValue() == logicOrderVo.getPayType()
 					|| PayTypeEnum.ALIPAY.getValue() == logicOrderVo.getPayType())
 			{
-				throw new BusinessException("请在PC端完成支付");
+				throw new BusinessException("微信端仅支持微信支付，请选择微信支付或前往官网进行支付");
 			}
 			BaseResponseDto responseDto = wapAddOrderPayService.addTradeOrderServiceById(logicOrderId, ip, accountId,
 					openId);

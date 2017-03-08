@@ -213,26 +213,26 @@ public class UserCenterController extends BaseController
 			LOG.info("--参数：accountId=" + accountId + ",key=" + key);
 			if (StringUtils.isBlank(accountId) || StringUtils.isBlank(key))
 			{
-				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接非法", "utf-8"));
+				response.sendRedirect("/index.do?msg=" + URLEncoder.encode("链接非法", "utf-8"));
 				return;
 			}
 			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(accountId);
 			if (userInfo == null)
 			{
-				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("用户不存在", "utf-8"));
+				response.sendRedirect("/index.do?msg=" + URLEncoder.encode("用户不存在", "utf-8"));
 				return;
 			}
 			boolean isValid = emailVerifyService.isValidActiveAccountUrl(accountId, key);
 			if (!isValid)
 			{
-				response.sendRedirect("/index.html?msg=" + URLEncoder.encode("链接过期失效，请重新激活", "utf-8"));
+				response.sendRedirect("/index.do?msg=" + URLEncoder.encode("链接过期失效，请重新激活", "utf-8"));
 				return;
 			}
 			userInfo.setEmailActiveStatus(EmailActiveStatusConstant.ACTIVED);
 			userInfo.setUpdateTime(DateUtil.getCurrentTimestamp());
 			userInfoDao.updateByPrimaryKeySelective(userInfo);
 			jedisProxy.del(RedisConstant.getEmailVerifyKey(accountId));
-			response.sendRedirect("/index.html");
+			response.sendRedirect("/index.do");
 		}
 		catch (Exception e)
 		{

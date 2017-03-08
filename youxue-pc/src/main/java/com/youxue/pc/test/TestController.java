@@ -1,5 +1,7 @@
 package com.youxue.pc.test;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lkzlee.pay.wx.helper.MenuOperationHelper;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.util.JsonUtil;
 
 /**
  * @author Masterwind
@@ -59,5 +63,38 @@ public class TestController extends BaseController
 			return "error";
 		}
 		return "success";
+	}
+
+	@RequestMapping("/testMenu.do")
+	@ResponseBody
+	public String testMenu(HttpServletRequest request, HttpServletResponse response, String type)
+	{
+		try
+		{
+			if ("create".equals(type))
+			{
+				boolean result = MenuOperationHelper.createMenuByConfig();
+				LOG.info("创建菜单result=" + result);
+				return "100";
+			}
+			else if ("delete".equals(type))
+			{
+				boolean result = MenuOperationHelper.deleteMenuByConfig();
+				LOG.info("删除菜单result=" + result);
+				return "100";
+			}
+			else
+			{
+				Map<String, Object> result = MenuOperationHelper.getMenuInfoByConfig();
+				LOG.info("查询菜单结果：" + result);
+				return JsonUtil.serialize(result);
+			}
+
+		}
+		catch (Exception e)
+		{
+			LOG.info("错误", e);
+			return "-1";
+		}
 	}
 }

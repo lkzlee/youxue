@@ -109,41 +109,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	btn_order.attr('disabled','disabled');
 	    }
 	}
-	$('footer').on('click','.del_order',function(){
-	    if(window.confirm('是否确认删除订单？')){
-	        setBtnDisabled($(this),false)
-	        login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
-	            data=JSON.parse(data);
-	            user_success(data,function(){
-	            	alertMesageAndHide('订单删除成功')
-            		setTimeout(history.go(-1),600)
-	            })
-	        });
-	    }
-	})
-	$('footer').on('click','.pay_order',function(){
-	    login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+	$('#btn_order').on('click',function(){
+	    login_post('/wxpay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
 	        setBtnDisabled($(this),false)
 	        data=JSON.parse(data);
 	        user_success(data,function(){
-	            if(data.payUrl){
-	                window.location.href=data.payUrl
+	            if(data.wxPayParam){
+	                window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
 	            }
 	        })
 	    });
-	})
-	$('footer').on('click','.j_BtnCancel',function(){
-	    if(window.confirm('是否确认取消订单？')){
-	        setBtnDisabled($(this),false);
-	        var That=$(this);
-	        var orderId=That.attr('data-value');
-	        login_post('/uc/cancelorder.do','orderId='+orderId,'',function(data){
-	            data=JSON.parse(data);
-	            success(data,function(){
-	                alert('取消订单请联系客服：400-517-517，待与客服确认无误后，可在“已取消”订单中查看。');
-	            })
-	        })
-	    }
 	})
 	function getState(state){
 	    switch(state){

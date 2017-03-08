@@ -64,7 +64,7 @@ $('ul').on('click','.del_order',function(){
     }
 })
 $('ul').on('click','.pay_order',function(){
-    login_post('/pay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+    login_post('/wxpay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
         setBtnDisabled($(this),false)
         data=JSON.parse(data);
         user_success(data,function(){

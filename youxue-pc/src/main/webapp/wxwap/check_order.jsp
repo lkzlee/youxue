@@ -154,6 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 AllObj['payType']=outherObj['payType'];
                 login_post('/wxpay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                     data=JSON.parse(data);
+                    console.log(data)
                     success(data,function(){
                         if(data.wxPayParam){
                             window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);

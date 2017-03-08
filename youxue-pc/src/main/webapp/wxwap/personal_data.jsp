@@ -57,7 +57,9 @@ function renderUser(data){
   $('#loveCity').text(data.loveCity);
   $('#mobile').text(data.mobile);
   $('#email').text(data.email);
-  $('#birthTime').text(formatDate(data.birthTime,0));
+  if(data.birthTime){
+    $('#birthTime').text(formatDate(data.birthTime,0));
+  }
   $('#gender').text(getSex(data.gender));
 }
 </script>

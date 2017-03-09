@@ -131,6 +131,7 @@
 	    t.logic_order_id=tg.logic_order_id 
 	    and c.camps_id=t.camps_id
 	    and t.account_id = #{accountId,jdbcType=VARCHAR} 
+	    and t.status !=5
 	    <if test="statusList !=null">
 	    	and t.status in
 	    	<foreach collection="statusList" close=")" open="(" item="st" separator=",">
@@ -195,6 +196,7 @@ select
  	count(*)
     from tb_order t
     where t.account_id = #{accountId,jdbcType=VARCHAR}
+   		 and t.status !=5
       <if test="statusList !=null">
 	    	and t.status in
 	    	<foreach collection="statusList" close=")" open="(" item="st" separator=",">

@@ -98,7 +98,7 @@ function load_aboutInfo(type){
     login_post('/aboutUs.do','type='+(type || 'aboutUs'),'',function(data){
         data=JSON.parse(data);
         if(data.descs){
-            $('.j_img').attr('src',data.imgurl);
+            $('.j_img').attr('src',handle_pic(data.imgurl)[0]);
             $('.j_content').html(data.descs)
         }            
     })

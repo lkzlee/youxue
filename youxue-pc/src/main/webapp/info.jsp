@@ -150,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="div_con2_cont huodong_div">
                 <div class="left">
-                    <h3>营地吃住行<br/>安全</h3>
+                    <h3>营地吃住行<p>安全</p></h3>
                 </div>
                 <div class="right">
                     <dl>
@@ -195,14 +195,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </section>
 <section class="footer">
     <div class="div1_foot">
-        <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
-        <span class="span2">加入我们：hr@123123123.com</span>
-        <span class="span1">客服电话：400-755-2255</span>
-        <span class="span2">公司邮箱：gongsi@123123123.com</span>
+        <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
+        <span class="span2">加入我们：hr@chingoo.cn</span>
+        <span class="span1">客服电话：010-59460305</span>
+        <span class="span2">公司邮箱：chingoo@chingoo.cn</span>
     </div>
     <div class="div2_foot">
-        <p class="p1_foot">青古留学 版权所有</p>
-        <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
+        <p class="p1_foot">营联天下 版权所有</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
     </div>
 </section>
 <div id="showImg">

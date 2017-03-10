@@ -1,6 +1,5 @@
 package com.youxue.core.service.order;
 
-
 /***
  * 退款业务处理
  * @author lkzlee
@@ -9,4 +8,6 @@ package com.youxue.core.service.order;
 public interface RefundService
 {
 	void addRefund(String orderId);
+
+	void refundRequest(String refundId);
 }

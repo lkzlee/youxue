@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.bean.AlipayConfigBean;
@@ -17,6 +18,7 @@ import com.lkzlee.pay.third.alipay.dto.request.AliPayRefundOrderDto;
 import com.lkzlee.pay.third.weixin.dto.request.WeiXinRefundOrderDto;
 import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
+import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.RefundDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
@@ -31,6 +33,8 @@ public class RefundServiceImpl implements RefundService
 	private final static Log log = LogFactory.getLog(RefundServiceImpl.class);
 	@Resource
 	private OrderService orderService;
+	@Autowired
+	private LogicOrderDao logicOrderDao;
 	@Resource
 	private RefundDao refundDao;
 	@Resource(name = "aliPayOrderPayService")
@@ -160,6 +164,18 @@ public class RefundServiceImpl implements RefundService
 				log.fatal("微信执行退款异常，请检查,refundDto=" + refundDto + ",msg:" + e.getMessage(), e);
 			}
 		}
+
+	}
+
+	@Override
+	public void refundRequest(String orderId)
+	{
+		log.info("-----@@进入退款，orderId=" + orderId);
+		RefundVo refund = refundDao.selectByPrimaryKey(orderId);
+		LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(refund.getLogicOrderId(), false);
+		Runnable r = getExecRunnable(refund, logicOrder);
+		ThreadPoolUtil.exec(r);
+		log.info("-----@@退款已进入队列执行，orderId=" + orderId);
 
 	}
 }

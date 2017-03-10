@@ -10,8 +10,10 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.lkzlee.pay.third.weixin.dto.request.WeiXinQueryRefundDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinQueryRefundResultDto;
 import com.lkzlee.pay.third.weixin.service.WeiXinOrderPayService;
@@ -22,6 +24,8 @@ import com.youxue.core.service.order.RefundService;
 import com.youxue.core.vo.RefundVo;
 
 @Service
+@DependsOn(value =
+{ "aliPayConfigBean", "weiXinConfigBean" })
 public class WeiXinRefundQueryTask
 {
 	private final static Log log = LogFactory.getLog(WeiXinRefundQueryTask.class);
@@ -55,14 +59,25 @@ public class WeiXinRefundQueryTask
 				try
 				{
 					List<RefundVo> refundList = refundDao.selectInitRefundByPay(PayTypeEnum.WEIXIN_PAY.getValue());
-					if (CollectionUtils.isEmpty(refundList))
+					List<RefundVo> refundList1 = refundDao.selectInitRefundByPay(PayTypeEnum.WEIXIN_JS_API.getValue());
+
+					if (CollectionUtils.isEmpty(refundList) && CollectionUtils.isEmpty(refundList1))
 					{
 						log.info("要进行退款的订单为空，额外休息20分钟.....");
 						Thread.sleep(20l * 60 * 1000); //休息20分钟
 					}
 					else
 					{
-						for (RefundVo r : refundList)
+						List<RefundVo> refunds = Lists.newArrayList();
+						if (CollectionUtils.isNotEmpty(refundList))
+						{
+							refunds.addAll(refundList);
+						}
+						if (CollectionUtils.isNotEmpty(refundList1))
+						{
+							refunds.addAll(refundList1);
+						}
+						for (RefundVo r : refunds)
 						{
 							WeiXinQueryRefundDto refundDto = new WeiXinQueryRefundDto();
 							refundDto.setOut_refund_no(r.getOrderId());

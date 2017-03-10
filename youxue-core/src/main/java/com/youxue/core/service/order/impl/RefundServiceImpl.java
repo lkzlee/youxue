@@ -59,7 +59,7 @@ public class RefundServiceImpl implements RefundService
 		{
 			case ALIPAY:
 			{
-				return alipayRefundRequest(refund);
+				return alipayRefundRequest(refund, logicOrder);
 			}
 			case WEIXIN_PAY:
 			case WEIXIN_JS_API:
@@ -81,13 +81,13 @@ public class RefundServiceImpl implements RefundService
 	 *
 	 */
 
-	public Object alipayRefundRequest(RefundVo refund)
+	public Object alipayRefundRequest(RefundVo refund, LogicOrderVo logicOrder)
 	{
 		AliPayRefundOrderDto refundDto = new AliPayRefundOrderDto();
 		refundDto.setBatch_no(refund.getOrderId());
 		refundDto.setBatch_num(1 + "");
-		refundDto.setDetail_data(refund.getLogicOrderId() + "^" + CommonUtil.formatBigDecimal(refund.getRefundAmount())
-				+ "^用户取消订单");
+		refundDto.setDetail_data(logicOrder.getPlatformOrderId() + "^"
+				+ CommonUtil.formatBigDecimal(refund.getRefundAmount()) + "^用户取消订单");
 		String notifyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_REFUND_URL,
 				"http://127.0.0.1:8080/notify/refund.do");
 		refundDto.setNotify_url(notifyUrl);

@@ -89,6 +89,30 @@ public class UserOrderController extends BaseController
 
 	}
 
+	@RequestMapping(path = "/admin/refundOrder.do")
+	public String auditOrder(HttpServletRequest request, HttpServletResponse response, String orderId, ModelMap modelMap)
+	{
+		LOG.info("查询用户个人订单页 ,orderId=" + orderId);
+		if (StringUtils.isBlank(orderId))
+		{
+			modelMap.put("errorMessage", "订单Id不能为空");
+			return "/error";
+		}
+		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+		if (order.getStatus() != OrderVo.CANCEL)
+		{
+			modelMap.put("errorMessage", "订单状态不正确，不能退款");
+			return "/error";
+		}
+		Object result = refundService.refundRequest(orderId);
+		if (result instanceof String)
+		{
+			return "redirect:" + result;
+		}
+		return "redirect:/admin/userorder.do";
+
+	}
+
 	@RequestMapping(path = "/admin/auditOrder.do")
 	public String auditOrder(HttpServletRequest request, HttpServletResponse response, String type, String orderId,
 			ModelMap modelMap)
@@ -116,7 +140,11 @@ public class UserOrderController extends BaseController
 		}
 		if (OrderVo.CANCEL == order.getStatus())
 		{
-			refundService.addRefund(orderId);
+			Object result = refundService.addRefund(orderId);
+			if (result instanceof String)
+			{
+				return "redirect:" + result;
+			}
 		}
 		else
 		{

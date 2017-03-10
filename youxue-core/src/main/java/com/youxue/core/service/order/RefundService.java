@@ -7,7 +7,7 @@ package com.youxue.core.service.order;
  */
 public interface RefundService
 {
-	void addRefund(String orderId);
+	Object addRefund(String orderId);
 
-	void refundRequest(String refundId);
+	Object refundRequest(String refundId);
 }

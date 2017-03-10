@@ -32,6 +32,8 @@ public class OrderDetailVo extends OrderVo
 
 	private String codeName; //优惠券标题描述
 
+	private Integer isRefund; //null 表示无退款 ，1表示 已退款，0表示未退款
+
 	public String getCampsName()
 	{
 		return campsName;
@@ -142,12 +144,23 @@ public class OrderDetailVo extends OrderVo
 		this.codeName = codeName;
 	}
 
+	public Integer getIsRefund()
+	{
+		return isRefund;
+	}
+
+	public void setIsRefund(Integer isRefund)
+	{
+		this.isRefund = isRefund;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "OrderDetailVo [campsName=" + campsName + ", campsImages=" + campsImages + ", realCampsImages="
 				+ realCampsImages + ", campsTitle=" + campsTitle + ", deadlineDate=" + deadlineDate
 				+ ", departureDate=" + departureDate + ", startDate=" + startDate + ", durationTime=" + durationTime
-				+ ", payStatus=" + payStatus + ", payType=" + payType + ", codeName=" + codeName + "]";
+				+ ", payStatus=" + payStatus + ", payType=" + payType + ", codeName=" + codeName + ", isRefund="
+				+ isRefund + "]";
 	}
 }

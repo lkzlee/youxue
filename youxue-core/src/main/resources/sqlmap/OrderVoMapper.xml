@@ -81,6 +81,7 @@
     <result column="duration_time" property="durationTime" jdbcType="INTEGER" />
     <!-- code -->
     <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+    <result column="is_refund" property="isRefund" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     order_id, account_id, logic_order_id, code_id, status, creat_time, update_time, camps_id, 
@@ -144,10 +145,11 @@
   <select id="selectPageOrderListByInfo" resultMap="orderDetailForAdminVoMap" parameterType="java.util.Map" >
 select 
 	   t.*,tg.pay_status,tg.pay_type,tc.code_name,c.camps_name,c.camps_title,c.camps_images,
-	   c.deadline_date,c.departure_date,c.start_date,c.duration_time
+	   c.deadline_date,c.departure_date,c.start_date,c.duration_time,r.status as is_refund
     from tb_order t inner join tb_logic_order tg on t.logic_order_id=tg.logic_order_id 
     		inner join tb_camps c on t.camps_id=c.camps_id 
     		left join tb_coupon_code tc on tc.code_value=t.code_id
+    		left join tb_refund r on t.order_id=r.order_id
     <where> 
 	    <if test="accountId!=null">
 	     and t.account_id = #{accountId,jdbcType=VARCHAR} 

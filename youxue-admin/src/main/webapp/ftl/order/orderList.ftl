@@ -101,6 +101,8 @@
 											<#elseif adItem.status=2> 
 											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(已完成)</span></a> | 
 											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(申请退款)</span></a>
+											<#elseif adItem.status=4 &&adItem.isRefund=0>
+											<a href="/admin/refundOrder.do?&orderId=${adItem.orderId}"><span>执行退款</span></a><p>注意：用户迟迟未退款时调用该接口进行退款操作</p>
 											<#elseif adItem.status=6>
 											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(已取消，已退款)</span></a> | 
 											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(退款失败，不通过)</span></a>

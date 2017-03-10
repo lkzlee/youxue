@@ -23,7 +23,6 @@ import com.youxue.core.dao.RefundDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.RefundService;
-import com.youxue.core.util.ThreadPoolUtil;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.RefundVo;
 
@@ -43,29 +42,29 @@ public class RefundServiceImpl implements RefundService
 	private PayService weiXinPayService;
 
 	@Override
-	public void addRefund(String orderId)
+	public Object addRefund(String orderId)
 	{
 		log.info("-----@@进入退款，orderId=" + orderId);
 		LogicOrderVo logicOrder = orderService.refundOrder(orderId);
 		RefundVo refund = refundDao.selectByPrimaryKey(orderId);
-		Runnable r = getExecRunnable(refund, logicOrder);
-		ThreadPoolUtil.exec(r);
-		log.info("-----@@退款已进入队列执行，orderId=" + orderId);
+		Object result = execRefundRequest(refund, logicOrder);
+		log.info("-----@@退款已进入队列执行，result=" + result);
+		return result;
 	}
 
-	private Runnable getExecRunnable(RefundVo refund, LogicOrderVo logicOrder)
+	private Object execRefundRequest(RefundVo refund, LogicOrderVo logicOrder)
 	{
 		PayTypeEnum payType = PayTypeEnum.getByValue(refund.getPayType());
 		switch (payType)
 		{
 			case ALIPAY:
 			{
-				return new AliPayRefundRunnable(refund, aliPayService);
+				return alipayRefundRequest(refund);
 			}
 			case WEIXIN_PAY:
 			case WEIXIN_JS_API:
 			{
-				return new WeiXinPayRefundRunnable(refund, logicOrder, weiXinPayService);
+				return wxpayRefundRequest(refund, logicOrder);
 			}
 			default:
 			{
@@ -81,45 +80,32 @@ public class RefundServiceImpl implements RefundService
 	 * @author lkzlee
 	 *
 	 */
-	class AliPayRefundRunnable implements Runnable
+
+	public Object alipayRefundRequest(RefundVo refund)
 	{
-		private RefundVo refund;
-		private PayService payService;
+		AliPayRefundOrderDto refundDto = new AliPayRefundOrderDto();
+		refundDto.setBatch_no(refund.getOrderId());
+		refundDto.setBatch_num(1 + "");
+		refundDto.setDetail_data(refund.getLogicOrderId() + "^" + CommonUtil.formatBigDecimal(refund.getRefundAmount())
+				+ "^用户取消订单");
+		String notifyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_REFUND_URL,
+				"http://127.0.0.1:8080/notify/refund.do");
+		refundDto.setNotify_url(notifyUrl);
+		String refundDate = DateUtil.formatDate(DateUtil.getCurrentTimestamp(), DateUtil.DATE_FORMAT_YYYYMMDD_HHMMSS);
+		refundDto.setRefund_date(refundDate);
 
-		public AliPayRefundRunnable(RefundVo refund, PayService payService)
+		try
 		{
-			super();
-			this.refund = refund;
-			this.payService = payService;
+			log.info("@@支付宝退款请求参数，refundDto=" + refundDto);
+			Object result = aliPayService.refundToPayService(refundDto);
+			log.info("@@支付宝退款执行结果，result=" + result);
+			return result;
 		}
-
-		@Override
-		public void run()
+		catch (Exception e)
 		{
-			AliPayRefundOrderDto refundDto = new AliPayRefundOrderDto();
-			refundDto.setBatch_no(refund.getOrderId());
-			refundDto.setBatch_num(1 + "");
-			refundDto.setDetail_data(refund.getLogicOrderId() + "^"
-					+ CommonUtil.formatBigDecimal(refund.getRefundAmount()) + "^用户取消订单");
-			String notifyUrl = AlipayConfigBean.getPayConfigValue(ConfigConstant.ALIPAY_REFUND_URL,
-					"http://127.0.0.1:8080/notify/refund.do");
-			refundDto.setNotify_url(notifyUrl);
-			String refundDate = DateUtil.formatDate(DateUtil.getCurrentTimestamp(),
-					DateUtil.DATE_FORMAT_YYYYMMDD_HHMMSS);
-			refundDto.setRefund_date(refundDate);
-
-			try
-			{
-				log.info("@@支付宝退款请求参数，refundDto=" + refundDto);
-				Object result = payService.refundToPayService(refundDto);
-				log.info("@@支付宝退款执行结果，result=" + result);
-			}
-			catch (Exception e)
-			{
-				log.fatal("支付宝执行退款异常，请检查,refundDto=" + refundDto + ",msg:" + e.getMessage(), e);
-			}
-
+			log.fatal("支付宝执行退款异常，请检查,refundDto=" + refundDto + ",msg:" + e.getMessage(), e);
 		}
+		return null;
 	}
 
 	/***
@@ -127,55 +113,41 @@ public class RefundServiceImpl implements RefundService
 	 * @author lkzlee
 	 *
 	 */
-	class WeiXinPayRefundRunnable implements Runnable
+
+	public Object wxpayRefundRequest(RefundVo refund, LogicOrderVo logicOrder)
 	{
-		private RefundVo refund;
-		private PayService payService;
-		private LogicOrderVo logicOrder;
-
-		public WeiXinPayRefundRunnable(RefundVo refund, LogicOrderVo logicOrder, PayService payService)
+		WeiXinRefundOrderDto refundDto = new WeiXinRefundOrderDto();
+		refundDto.setOut_trade_no(refund.getLogicOrderId());
+		refundDto.setOut_refund_no(refund.getOrderId());
+		int refundFee = refund.getRefundAmount().multiply(new BigDecimal(100)).intValue();
+		refundDto.setRefund_fee(refundFee);
+		refundDto.setRefund_fee_type("CNY");
+		int totalFee = logicOrder.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();
+		refundDto.setTotal_fee(totalFee);
+		refundDto.setOp_user_id(WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MCH_ID));
+		try
 		{
-			super();
-			this.refund = refund;
-			this.logicOrder = logicOrder;
-			this.payService = payService;
+			log.info("@@微信退款请求参数，refundDto=" + refundDto);
+			Object result = weiXinPayService.refundToPayService(refundDto);
+			log.info("@@微信退款执行结果，result=" + result);
+			return result;
 		}
-
-		@Override
-		public void run()
+		catch (Exception e)
 		{
-			WeiXinRefundOrderDto refundDto = new WeiXinRefundOrderDto();
-			refundDto.setOut_trade_no(refund.getLogicOrderId());
-			refundDto.setOut_refund_no(refund.getOrderId());
-			int refundFee = refund.getRefundAmount().multiply(new BigDecimal(100)).intValue();
-			refundDto.setRefund_fee(refundFee);
-			refundDto.setRefund_fee_type("CNY");
-			int totalFee = logicOrder.getTotalPayPrice().multiply(new BigDecimal(100)).intValue();
-			refundDto.setTotal_fee(totalFee);
-			refundDto.setOp_user_id(WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MCH_ID));
-			try
-			{
-				log.info("@@微信退款请求参数，refundDto=" + refundDto);
-				Object result = payService.refundToPayService(refundDto);
-				log.info("@@微信退款执行结果，result=" + result);
-			}
-			catch (Exception e)
-			{
-				log.fatal("微信执行退款异常，请检查,refundDto=" + refundDto + ",msg:" + e.getMessage(), e);
-			}
+			log.fatal("微信执行退款异常，请检查,refundDto=" + refundDto + ",msg:" + e.getMessage(), e);
 		}
-
+		return null;
 	}
 
 	@Override
-	public void refundRequest(String orderId)
+	public Object refundRequest(String orderId)
 	{
 		log.info("-----@@进入退款，orderId=" + orderId);
 		RefundVo refund = refundDao.selectByPrimaryKey(orderId);
 		LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(refund.getLogicOrderId(), false);
-		Runnable r = getExecRunnable(refund, logicOrder);
-		ThreadPoolUtil.exec(r);
-		log.info("-----@@退款已进入队列执行，orderId=" + orderId);
+		Object result = execRefundRequest(refund, logicOrder);
+		log.info("-----@@退款已进入队列执行，result=" + result);
+		return result;
 
 	}
 }

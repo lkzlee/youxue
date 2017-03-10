@@ -86,8 +86,8 @@
 .con2 .feiyong{width:195px;}
 .con2 .wenti{width:160px;}
 .con2_cont{padding-top:4px;}
-.div_con2_cont{margin-top:12px;background:#eee;}
-.div_con2_cont .left{width:148px;padding:0 13px;text-align:center;background-size:100% 100%;background-repeat:no-repeat;}
+.div_con2_cont{position:relative;padding-left:174px;margin-top:12px;background:#eee;}
+.div_con2_cont .left{position:absolute;left:0;width:148px;height:100%;line-height:100%;padding:0 13px;text-align:center;background-size:100% 100%;background-repeat:no-repeat;}
 .div_con2_cont .left h3{font-size:20px;color:#fff;}
 .div_con2_cont .right{margin-left:22px;width:980px;position:relative;overflow: hidden;}
 .con2 .con2_head .li2_hover{background:#29abe2;}
@@ -98,9 +98,9 @@
 .con2 .con2_head .li2.active a{background:#29abe2;color:#fff;height:49px;line-height:49px;}
 .div_con2_cont.tese_div{padding-bottom: 2px;}
 .div_con2_cont.tese_div .left{background-image:url("../img/itembg_03.jpg");}
-.div_con2_cont.tese_div h3{line-height:148px;}
+.div_con2_cont h3{position: absolute;left:0;width: 100%; text-align: center; top: 50%; margin-top: -12px;}
 .div_con2_cont.tese_div .right{float: left;width: 955px;}
-.div_con2_cont.tese_div .right ul{height:119px;padding:11px 0 9px;overflow:hidden;width: 1000%;
+.div_con2_cont.tese_div .right ul{padding:11px 0 9px;overflow:hidden;width: 1000%;
     transition:1s;
 }
 .div_con2_cont.tese_div .right li{width:191px;height:128px;float:left;}
@@ -114,11 +114,12 @@
 .jiantou_right i{background-position:-12px 0;}
 
 /*营地介绍 和 营地课程互动*/
+.div_con2_cont.jieshao_div{min-height:254px;}
 .div_con2_cont.jieshao_div .left{background-image:url("../img/itembg_07.jpg");}
 .div_con2_cont.chizhu_div .left{background-image:url("../img/itembg_10.jpg");}
-.div_con2_cont.jieshao_div h3,.div_con2_cont.chizhu_div h3{line-height:254px;}
-.div_con2_cont.jieshao_div dl{padding:5px 47px 0 7px;}
-.div_con2_cont.chizhu_div dl{padding:7px 20px 0 7px;}
+/*.div_con2_cont.jieshao_div h3,.div_con2_cont.chizhu_div h3{line-height:254px;}*/
+.div_con2_cont.jieshao_div dl{padding:5px 47px 7px 7px;}
+.div_con2_cont.chizhu_div dl{padding:7px 20px 7px 7px;}
 .div_con2_cont.chizhu_div .dt1{padding-top:23px;}
 .div_con2_cont.jieshao_div dt,.div_con2_cont.chizhu_div dt{font-size:18px;line-height:36px;}
 .div_con2_cont.jieshao_div dd,.div_con2_cont.chizhu_div dd{font-size:16px;line-height:28px;}
@@ -128,15 +129,16 @@
 
 /*营地吃住行安全*/
 .div_con2_cont.huodong_div .left{background-image:url("../img/itembg_13.jpg");}
-.div_con2_cont.huodong_div h3{padding-top:207px;height:257px;}
-.div_con2_cont.huodong_div dl{padding:5px 0px 0 10px;}
+.div_con2_cont.huodong_div h3{/*padding-top:207px;height:257px;*/line-height: 26px;}
+.div_con2_cont.huodong_div dl{padding:7px 0px 7px 10px;}
 .div_con2_cont.huodong_div dt{font-size:18px;line-height:36px;}
 .div_con2_cont.huodong_div dd{font-size:16px;line-height:28px;}
 .div_con2_cont.huodong_div dd.dd_img{padding-top:2px;font-size:0;}
 .div_con2_cont.huodong_div dd.dd_img img{width:194px;height:130px;}
 /*营地行程*/
+.div_con2_cont.xingcheng_div{min-height:648px;}
 .div_con2_cont.xingcheng_div .left{background-image:url("../img/itembg_15.jpg");}
-.div_con2_cont.xingcheng_div h3{line-height:648px;}
+/*.div_con2_cont.xingcheng_div h3{line-height:648px;}*/
 .div_con2_cont.xingcheng_div ul{padding:5px 87px 0 15px;}
 .div_con2_cont.xingcheng_div li{padding:19px 0;border-bottom:solid 2px #ddd;}
 .div_con2_cont.xingcheng_div .li_left{float:left;border-style:solid;border-color:#ccc;border-width:4px 6px;width:222px;height:148px;overflow:hidden;text-align:center;}
@@ -148,12 +150,14 @@
 .div_con2_cont.xingcheng_div .p1_right{font-size:16px;line-height:34px;text-align:center;}
 
 /*费用详情*/
+.div_con2_cont.feiyong_div{min-height:180px;}
 .div_con2_cont.feiyong_div .left{background-image:url("../img/itembg_17.jpg");}
-.div_con2_cont.feiyong_div h3{line-height:180px;}
+/*.div_con2_cont.feiyong_div h3{line-height:180px;}*/
 .div_con2_cont.feiyong_div p{font-size:16px;line-height:28px;color:#575757;padding-right:22px;}
 /*常见问题*/
+.div_con2_cont.wenti_div{min-height:180px;}
 .div_con2_cont.wenti_div .left{background-image:url("../img/itembg_19.jpg");}
-.div_con2_cont.wenti_div h3{line-height:180px;}
-.div_con2_cont.feiyong_div .right,.div_con2_cont.wenti_div .right{padding-top: 36px; padding-right: 10px;width:970px; box-sizing: border-box;}
+/*.div_con2_cont.wenti_div h3{line-height:180px;}*/
+.div_con2_cont.feiyong_div .right,.div_con2_cont.wenti_div .right{padding-top: 36px;padding-bottom: 36px;padding-right: 10px;width:970px; box-sizing: border-box;}
 .errorMessage{color:red;}
 

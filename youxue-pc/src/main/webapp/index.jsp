@@ -101,14 +101,14 @@
 </section>
 <section class="footer">
     <div class="div1_foot">
-        <span class="span1">公司地址：北京市西城区裕民路18号北环中心801</span>
-        <span class="span2">加入我们：hr@123123123.com</span>
-        <span class="span1">客服电话：400-755-2255</span>
-        <span class="span2">公司邮箱：gongsi@123123123.com</span>
+        <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
+        <span class="span2">加入我们：hr@chingoo.cn</span>
+        <span class="span1">客服电话：010-59460305</span>
+        <span class="span2">公司邮箱：chingoo@chingoo.cn</span>
     </div>
     <div class="div2_foot">
-        <p class="p1_foot">青古留学 版权所有</p>
-        <p class="p2_foot">copyright 2015-2016,Complink.com.ALL Rights Reserved.</p>
+        <p class="p1_foot">营联天下 版权所有</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
     </div>
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
@@ -163,6 +163,7 @@ function event_yingdi(){
 function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
+        console.log(data)
         success(data,function(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
@@ -198,7 +199,7 @@ function CampsDetail(){
                 arr.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
                 arr.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
                 arr.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
-                arr.push('<p>'+val['campsDesc']+'</p></a></li>');
+                arr.push('<p>'+cutstr(setContent(val['campsDesc']),100)+'</p></a></li>');
                 return arr.join('');
                 // hot_list.append(li.join(''));
             }

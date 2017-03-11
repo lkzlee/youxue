@@ -88,8 +88,8 @@
 											<td>${adItem.statusStr!""}</td>
 											<td><a href="/modifyCouponIndex.do?couponId=${adItem.codeId}"><span>修改</span></a></td>
 											<td>
-											<a href="javascript:void(0)" onclick="downOrUpCoupon(${adItem.codeId},0)"><span>下架</span></a>
-											<a href="javascript:void(0)" onclick="downOrUpCoupon(${adItem.codeId},1)"><span>上架</span></a>
+											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}',0)"><span>下架</span></a>
+											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}',1)"><span>上架</span></a>
 											</td>
 										</tr>
 										</#list>

@@ -318,7 +318,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             </div>
                         </div>
 						<div class="form-group">
-                            <label class="col-lg-2 control-label">营地行程图片：</label>
+                            <label class="col-lg-2 control-label">营地行程图片(行程标题、描述、图片数请保持一致)：</label>
                             <div class="col-lg-8 clearfix">
                                 <@fileUpload
                                 	notEmpty="false"

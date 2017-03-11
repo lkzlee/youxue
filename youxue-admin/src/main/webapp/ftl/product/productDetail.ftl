@@ -23,7 +23,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                 <h4 class="text-center">签证服务</h4>
                 <h5 class="text-center" style="color:red">${msg1!''}</h5>
                 <div class="col-lg-offset-2 col-lg-8">
-                    <form class="form-horizontal" id="Form" method="POST" action="/admin/addProduct.do" data-validate="true">
+                    <form class="form-horizontal" id="Form" method="POST" action="/admin/addProduct.do">
                        
                         
 						<div class="form-group">
@@ -55,8 +55,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                         <div class="form-group">
                             <label class="col-lg-2 control-label">费用：</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" name="productPrice"
-                                        data-bv-notempty="true" value="${product1.productPrice!''}" />
+                                <input type="number" class="form-control" name="productPrice"  value="${(product1.productPrice?c)!''}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -98,7 +97,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                 <h4 class="text-center">接送机服务</h4>
                 <h5 class="text-center" style="color:red">${msg2!''}</h5>
                 <div class="col-lg-offset-2 col-lg-8">
-                    <form class="form-horizontal" id="Form" method="POST" action="/admin/addProduct.do" data-validate="true">
+                    <form class="form-horizontal" id="Form" method="POST" action="/admin/addProduct.do">
                        
                         
 						<div class="form-group">
@@ -130,8 +129,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                         <div class="form-group">
                             <label class="col-lg-2 control-label">费用：</label>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" name="productPrice"
-                                        data-bv-notempty="true" value="${product2.productPrice!''}" />
+                                <input type="number" class="form-control" name="productPrice"  value="${(product2.productPrice?c)!''}"  />
                             </div>
                         </div>
                         <div class="form-group">

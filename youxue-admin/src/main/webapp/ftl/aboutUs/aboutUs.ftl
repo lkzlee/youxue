@@ -31,6 +31,7 @@
                                     name="imgurl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="1"
                                     value=(aboutUs.imgurl!'')?split(',') />
                             </div>
                         </div>
@@ -77,6 +78,7 @@
                                     name="imgurl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="2"
                                     value=(qinggu.imgurl!'')?split(',') />
                             </div>
                         </div>
@@ -123,6 +125,7 @@
                                     name="imgurl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="3"
                                     value=(creator.imgurl!'')?split(',')/>
                             </div>
                         </div>
@@ -169,6 +172,7 @@
                                     name="imgurl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="4"
                                     value=(mainProduct.imgurl!'')?split(',') />
                             </div>
                         </div>

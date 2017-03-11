@@ -211,7 +211,8 @@
 		maxsize=1073741824 
 		name="" 
 		ext="" 
-		path="">
+		path=""
+		group="">
     <div class="upload-wrapper" 
             data-maxnum="${maxnum}"
             data-maxsize="${maxsize}"
@@ -226,14 +227,14 @@
 	            <#local dotArr = url?split('.') />
 	            <#local ext = dotArr[dotArr?size - 1] />
 	            <div class="upload-preview" data-url="${url}">
-	                <div title="删除" class="preview-del" data-hidden="#uploadHidden${url_index}">X</div>
+	                <div title="删除" class="preview-del" data-hidden="#${group}_uploadHidden${url_index}">X</div>
 	        		<#if ext == 'jpg' || ext == 'jpeg' || ext == 'png' || ext == 'gif'>
 	                	<img title="点击查看大图" src="${url}" />
 	       		 	<#else>
 	                	<p title="点击查看文件" class="preview-ext">${ext?upper_case}</p>
 	        		</#if>
 	            </div>
-	            <input type="hidden" id="uploadHidden${url_index}" value="${url}" name="${name}" />
+	            <input type="hidden" id="${group}_uploadHidden${url_index}" value="${url}" name="${name}" />
             </#if>
         </#list>
 

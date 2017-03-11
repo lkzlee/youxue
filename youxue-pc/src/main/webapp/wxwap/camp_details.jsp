@@ -203,10 +203,10 @@ function load_render(data){
                 $('.yingdi_list').html(str);
             }
             $('.campsLocale').text(data.campsLocale);
-            $('.campsDesc').text(data.campsDesc);
-            $('.courseDesc').text(data.courseDesc);
-            $('.activityDesc').text(data.activityDesc);
-            $('.campsFoodDesc').text(data.campsFoodDesc);
+            $('.campsDesc').html(data.campsDesc);
+            $('.courseDesc').html(data.courseDesc);
+            $('.activityDesc').html(data.activityDesc);
+            $('.campsFoodDesc').html(data.campsFoodDesc);
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
@@ -215,7 +215,7 @@ function load_render(data){
                 }
                 $('.campsFoodsPhotos').html(str);
             }
-            $('.campsHotelDesc').text(data.campsHotelDesc);
+            $('.campsHotelDesc').html(data.campsHotelDesc);
             if(data.campsHotelPhotos){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
@@ -234,7 +234,7 @@ function load_render(data){
                 }
                 $('.traces').html(arr.join(''));
             }
-            $('.feeDesc').text(data.feeDesc);
+            $('.feeDesc').html(data.feeDesc);
             $('.j_price').text(data.totalPrice)
             load_carousel();
         })

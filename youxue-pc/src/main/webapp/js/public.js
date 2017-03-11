@@ -74,7 +74,7 @@ function nav_loginDown(){
     $('.personal_icon').append(str);
     is_login(function(data){
         if(data.result==100){
-            $('.login_down').append('<li class="loginDown"><a href="javscript:void(0)" onclick="loginOut()">退出登录</a></li>');
+            $('.login_down').append('<li class="loginDown"><a href="javascript:void(0)" onclick="loginOut()">退出登录</a></li>');
         }
     })
 }

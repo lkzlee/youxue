@@ -215,9 +215,7 @@ function loadSlide(slideElement,num){
     if(biZhiDelayLoadImgLength<=num){
         return false;
     }
-    console.log(2)
     var _focus_num = Math.ceil(biZhiDelayLoadImgLength/num);
-    console.log()
     var _focus_li_length = slideElement.width();
     slideElement.css('width',_focus_num+'00%')
     var _focus_direction = true;
@@ -225,6 +223,7 @@ function loadSlide(slideElement,num){
     var _focus_max_length = _focus_num * _focus_li_length;
     var _focus_dsq = null;
     var _focus_lock = true;
+    autoExecAnimate();
     function autoExecAnimate() {
         // console.log(new Date().getSeconds())
         var moveLen = _focus_pos * _focus_li_length;
@@ -244,7 +243,7 @@ function loadSlide(slideElement,num){
             _focus_pos--
         }
     }
-    _focus_dsq = setInterval(autoExecAnimate, 6000);
+    _focus_dsq = setInterval(autoExecAnimate, 5000);
     slideElement.hover(function(){
         clearInterval(_focus_dsq)
     },function(){

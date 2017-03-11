@@ -39,7 +39,7 @@ function load_render(data){
             $('title').append(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
-            $('.deadlineDate').text(data.deadlineDate);
+            $('.deadlineDate').text(formatDate(data.deadlineDate,0));
             $('.totalPrice').text(data.totalPrice);
             $('.feature').text(data.feature);
             $('.shopCartCount').val(data.shopCartCount || 1);

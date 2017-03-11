@@ -177,6 +177,14 @@
                     range_input(This,bool);
                     $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
                 })
+            }else{
+                console.log(This.val().length<=0)
+                if(This.val().length<=0){
+                    $('.codeId_radio').prop('checked',false);
+                    This.removeAttr('style');
+                    $('.errorMessage').text('');
+                    $('.moneyTotal').text((moneyTotal-0).toFixed(2));
+                }
             }
         }
         if(orderList){

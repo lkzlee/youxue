@@ -81,8 +81,8 @@ public class CampsDetailController extends BaseController
 		if (StringUtils.isNotBlank(camps.getTraceDesc()) && StringUtils.isNotBlank(camps.getTracePhotos())
 				&& StringUtils.isNotBlank(camps.getTraceTitle()))
 		{
-			String[] traceDesc = camps.getTraceDesc().split(";|；");
-			String[] traceTitle = camps.getTraceTitle().split(";|；");
+			String[] traceDesc = camps.getTraceDesc().split("#_#");
+			String[] traceTitle = camps.getTraceTitle().split("#_#");
 			String[] tracePhoto = camps.getTracePhotos().split(",");
 			if (traceDesc.length == traceTitle.length && traceTitle.length == tracePhoto.length)
 			{
@@ -111,8 +111,8 @@ public class CampsDetailController extends BaseController
 
 	public static void main(String[] args)
 	{
-		String a = "aaa;bbb；ccc";
-		List<String> list = Arrays.asList(a.split(";|；"));
+		String a = "aaa#_#bbb#_#ccc";
+		List<String> list = Arrays.asList(a.split("#_#"));
 		System.out.println(list.toString());
 	}
 

@@ -216,6 +216,8 @@ public class OrderController extends BaseController
 		/***
 		 * 校验下单的人数和 出行人人数，校验手机号、email合法性，校验支付方式，校验优惠券合法性
 		 */
+		boolean isUsed = false;
+		String codeId = null;
 		AddTradeItemDto orderItemList[] = orderData.getOrderList();
 		for (AddTradeItemDto ote : orderItemList)
 		{
@@ -248,6 +250,7 @@ public class OrderController extends BaseController
 			}
 			BigDecimal couponPrice = BigDecimal.ZERO;
 			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
+			codeId = ote.getCodeId();
 			if (!StringUtils.isBlank(ote.getCodeId()))
 			{
 				try
@@ -264,6 +267,7 @@ public class OrderController extends BaseController
 						throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
 					}
 					couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+					isUsed = true;
 				}
 				catch (Exception e)
 				{
@@ -277,6 +281,9 @@ public class OrderController extends BaseController
 			ote.setTotalPrice(totalPrice);
 			ote.setCodePrice(couponPrice);
 		}
-
+		if (!StringUtils.isBlank(codeId) && !isUsed)
+		{
+			throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
+		}
 	}
 }

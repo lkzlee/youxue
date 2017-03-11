@@ -132,7 +132,8 @@ public class UserOrderController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
 		}
-		if (order.getStatus() != OrderVo.UNPAY)
+		if (order.getStatus() != OrderVo.UNPAY && order.getStatus() != OrderVo.DELETED
+				&& order.getStatus() != OrderVo.DONE)
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能删除该订单"));
 		}

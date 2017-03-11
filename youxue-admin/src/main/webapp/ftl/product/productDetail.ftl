@@ -68,6 +68,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="weixinQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="1"
                                     value=(product1.weixinQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
@@ -81,6 +82,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="alipayQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="1"
                                     value=(product1.alipayQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
@@ -142,6 +144,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="weixinQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="2"
                                     value=(product2.weixinQrcodeUrl!'')?split(',') />
                             </div>
                         </div>
@@ -155,6 +158,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="alipayQrcodeUrl"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10"
+									group="2"
                                     value=(product2.alipayQrcodeUrl!'')?split(',') />
                             </div>
                         </div>

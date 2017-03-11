@@ -1,6 +1,7 @@
 package com.youxue.pc.order.controller;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.CommonUtil;
+import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
@@ -235,7 +237,15 @@ public class OrderController extends BaseController
 			{
 				throw new BusinessException("下单有误，对应的营地不存在或者营地未开放");
 			}
-
+			if (camps.getDeadlineDate().before(new Date()))
+			{
+				throw new BusinessException("营地报名截止时间已过,截止时间:"
+						+ DateUtil.formatDate(camps.getDeadlineDate(), "yyyy-MM-dd"));
+			}
+			if (camps.getStartDate().before(new Date()))
+			{
+				throw new BusinessException("营地已经开始,开始时间:" + DateUtil.formatDate(camps.getStartDate(), "yyyy-MM-dd"));
+			}
 			BigDecimal couponPrice = BigDecimal.ZERO;
 			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
 			if (!StringUtils.isBlank(ote.getCodeId()))

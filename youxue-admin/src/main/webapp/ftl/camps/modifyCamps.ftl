@@ -176,6 +176,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="campsImages"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="1"
 									value=(camps.campsImages!'')?split(',')/>
                             </div>
                         </div>
@@ -269,6 +270,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="campsFoodsPhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="2"
 									value=(camps.campsFoodsPhotos!'')?split(',')/>
                             </div>
                         </div>
@@ -302,6 +304,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="campsHotelPhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="3"
 									value=(camps.campsHotelPhotos!'')?split(',')/>
                             </div>
                         </div>
@@ -327,6 +330,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     name="tracePhotos"
                                     ext="png,jpg,jpeg,gif"
                                     maxnum="10" 
+									group="4"
 									value=(camps.tracePhotos!'')?split(',')/>
                             </div>
                         </div>

@@ -172,6 +172,10 @@ public class UserOrderController extends BaseController
 			if (success == 1)
 				return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("取消成功，等待审核退款"));
 		}
+		else if (order.getStatus() == OrderVo.APPLY_REFUND)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单已经取消，请耐心等待审核退款"));
+		}
 		else
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能取消该订单"));

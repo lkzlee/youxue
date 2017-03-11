@@ -69,6 +69,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="camp_eat_live_safe">
                 <p class="campsFoodDesc"></p>
                 <p class="campsFoodsPhotos"></p>
+                <p style="padding-top:10px;"></p>
+                <p class="campsHotelDesc"></p>
+                <p class="campsHotelPhotos"></p>
             </div>
         </li>
         <li>
@@ -228,7 +231,7 @@ function load_render(data){
             if(traces.length>0){
                 var arr=[];
                 for(i=0,len=traces.length;i<len;i++){
-                    arr.push('<li class="cf"><div class="item_left fl"><span>'+(i+1)+'</span> DAY</div><div class="item_right">')
+                    arr.push('<li class="cf"><div class="item_left fl">Part <span>'+(i+1)+'</span></div><div class="item_right">')
                     arr.push('<h2>'+traces[i]['traceName']+'</h2><p>'+traces[i]['traceDesc']+'</p><p>')
                     arr.push('<img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""/></p></div></li>');
                 }

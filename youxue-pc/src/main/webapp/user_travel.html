@@ -177,9 +177,12 @@ function render_list(data){
             arr.push('<li class="clear">');
             var orderList=result[i]['orderList'];
             for(var j=0,jLen=orderList.length;j<jLen;j++){
-                arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'" class="aLeft_user"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'">');
-                arr.push('<dl><dt>'+orderList[j]['campsTitle']+'</dt><dd>订单号：'+orderList[j]['orderId']+'</dd><dd>出发日期：'+formatDate(orderList[j]['startDate'],0)+'</dd>');
-                arr.push('<dd>预定日期：'+orderList[j]['creatTime']+'</dd></dl></a><div class="divRight_user"><span>订单金额：¥'+orderList[j]['payPrice']);
+                arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'"></a>');
+                arr.push('<dl><dt><a href="/info.jsp?campusId='+orderList[j]['campsId']+'">'+orderList[j]['campsTitle']+'</a></dt>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">出发日期：'+formatDate(orderList[j]['startDate'],0)+'</a></dd>');
+                arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">预定日期：'+orderList[j]['creatTime']+'</a></dd></dl>');
+                arr.push('<div class="divRight_user"><span>订单金额：¥'+orderList[j]['payPrice']);
                 arr.push('</span><input type="button" name="" value="取消订单" class="right_margin0 j_BtnCancel" data-value="'+orderList[j]['orderId']+'"></div></div>');
                 // arr.push('<input type="button" name="" value="审核订单" class="right_margin0">');
                 // arr.push('<div><span>费用：<b>¥</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');

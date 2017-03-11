@@ -1,6 +1,7 @@
 package com.youxue.pc.weixin.controller;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.CommonUtil;
+import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.CampsDao;
@@ -147,6 +149,8 @@ public class WxOrderController extends BaseController
 		/***
 		 * 校验下单的人数和 出行人人数，校验手机号、email合法性，校验支付方式，校验优惠券合法性
 		 */
+		boolean isUsed = false;
+		String codeId = null;
 		AddTradeItemDto orderItemList[] = orderData.getOrderList();
 		for (AddTradeItemDto ote : orderItemList)
 		{
@@ -168,23 +172,40 @@ public class WxOrderController extends BaseController
 			{
 				throw new BusinessException("下单有误，对应的营地不存在或者营地未开放");
 			}
-
+			if (camps.getDeadlineDate().before(new Date()))
+			{
+				throw new BusinessException("营地报名截止时间已过,截止时间:"
+						+ DateUtil.formatDate(camps.getDeadlineDate(), "yyyy-MM-dd"));
+			}
+			if (camps.getStartDate().before(new Date()))
+			{
+				throw new BusinessException("营地已经开始,开始时间:" + DateUtil.formatDate(camps.getStartDate(), "yyyy-MM-dd"));
+			}
 			BigDecimal couponPrice = BigDecimal.ZERO;
 			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
 			if (!StringUtils.isBlank(ote.getCodeId()))
 			{
-				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
-				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+				try
 				{
-					throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+
+					CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
+					if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+					{
+						throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+					}
+					LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
+					if (StringUtils.isNotBlank(coupon.getCategoryIds())
+							&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
+					{
+						throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
+					}
+					couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+					isUsed = true;
 				}
-				LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
-				if (StringUtils.isNotBlank(coupon.getCategoryIds())
-						&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
+				catch (Exception e)
 				{
-					throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
+					couponPrice = BigDecimal.ZERO;
 				}
-				couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
 			}
 			BigDecimal totalPayPrice = totalPrice.subtract(couponPrice);
 			if (BigDecimal.ZERO.compareTo(totalPayPrice) > 0)
@@ -193,6 +214,9 @@ public class WxOrderController extends BaseController
 			ote.setTotalPrice(totalPrice);
 			ote.setCodePrice(couponPrice);
 		}
-
+		if (!StringUtils.isBlank(codeId) && !isUsed)
+		{
+			throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
+		}
 	}
 }

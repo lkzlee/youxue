@@ -132,11 +132,11 @@ public class UserOrderController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
 		}
-		if (order.getStatus() != OrderVo.UNPAY && order.getStatus() != OrderVo.DELETED
-				&& order.getStatus() != OrderVo.DONE)
-		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能删除该订单"));
-		}
+		//		if (order.getStatus() != OrderVo.UNPAY && order.getStatus() != OrderVo.DELETED
+		//				&& order.getStatus() != OrderVo.DONE)
+		//		{
+		//			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能删除该订单"));
+		//		}
 		order.setStatus(OrderVo.DELETED);
 		order.setUpdateTime(DateUtil.getCurrentTimestamp());
 		int success = orderDao.updateByPrimaryKeySelective(order);
@@ -163,15 +163,23 @@ public class UserOrderController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
 		}
-		if (order.getStatus() != OrderVo.TO_OUT)
+		if (order.getStatus() == OrderVo.PAY || order.getStatus() == OrderVo.TO_OUT
+				|| order.getStatus() == OrderVo.APPLY_FAILED)
 		{
-			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能对订单进行取消"));
+			order.setStatus(OrderVo.APPLY_REFUND);
+			order.setUpdateTime(DateUtil.getCurrentTimestamp());
+			int success = orderDao.updateByPrimaryKeySelective(order);
+			if (success == 1)
+				return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("取消成功，等待审核退款"));
 		}
-		order.setStatus(OrderVo.APPLY_REFUND);
-		order.setUpdateTime(DateUtil.getCurrentTimestamp());
-		int success = orderDao.updateByPrimaryKeySelective(order);
-		if (success == 1)
-			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("取消成功，等待审核退款"));
+		else if (order.getStatus() == OrderVo.APPLY_REFUND)
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单已经取消，请耐心等待审核退款"));
+		}
+		else
+		{
+			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能取消该订单"));
+		}
 		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("取消订单失败,请重新操作"));
 
 	}

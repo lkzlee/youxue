@@ -308,14 +308,16 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 									value=(camps.campsHotelPhotos!'')?split(',')/>
                             </div>
                         </div>
+						<!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">营地行程标题<br>(用#_#分割,行程标题、描述、图片数请保持一致)：</label>
                             <div class="col-lg-8">
                                <textarea class="form-control" name="traceTitle" >${camps.traceTitle!""}</textarea>
                             </div>
                         </div>
+						-->
 						<div class="form-group">
-                            <label class="col-lg-2 control-label">营地行程描述<br>(用#_#分割,行程标题、描述、图片数请保持一致)：</label>
+                            <label class="col-lg-2 control-label">营地行程：</label>
                             <div class="col-lg-8">
 								<script id="container16" name="traceDesc" type="text/plain">
                             		${camps.traceDesc!""}
@@ -335,6 +337,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                              
                             </div>
                         </div>
+						<!--
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地行程图片(行程标题、描述、图片数请保持一致)：</label>
                             <div class="col-lg-8 clearfix">
@@ -349,6 +352,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 									value=(camps.tracePhotos!'')?split(',')/>
                             </div>
                         </div>
+						-->
 						<div class="form-group">
                             <label class="col-lg-2 control-label">费用详情：</label>
                             <div class="col-lg-8">

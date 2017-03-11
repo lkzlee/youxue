@@ -295,14 +295,16 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     maxnum="10" />
                             </div>
                         </div>
+						<!--
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地行程标题<br>(用#_#分割,行程标题、描述、图片数请保持一致)：</label>
                             <div class="col-lg-8">
                                 <textarea class="form-control" name="traceTitle" ></textarea>
                             </div>
-                        </div>
+                        </div> 
+						-->
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">营地行程描述<br>(用#_#分割,行程标题、描述、图片数请保持一致)：</label>
+                            <label class="col-lg-2 control-label">营地行程：</label>
                             <div class="col-lg-8">
 								<script id="container16" name="traceDesc" type="text/plain">
 								</script>
@@ -320,6 +322,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 								</script>
                             </div>
                         </div>
+						<!--
 						<div class="form-group">
                             <label class="col-lg-2 control-label">营地行程图片<br>(行程标题、描述、图片数请保持一致)：</label>
                             <div class="col-lg-8 clearfix">
@@ -332,6 +335,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                     maxnum="10" />
                             </div>
                         </div>
+						-->
 						<div class="form-group">
                             <label class="col-lg-2 control-label">费用详情：</label>
                             <div class="col-lg-8">

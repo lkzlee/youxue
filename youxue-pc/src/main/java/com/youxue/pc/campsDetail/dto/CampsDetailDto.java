@@ -294,6 +294,7 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 
 	private static final long serialVersionUID = 1L;
 	private List<CampsTraceVo> traces = new LinkedList<>();
+	private String traceDesc;
 	private String campsId;
 
 	private String campsName;
@@ -399,6 +400,16 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setQuestions(String questions)
 	{
 		this.questions = questions;
+	}
+
+	public String getTraceDesc()
+	{
+		return traceDesc;
+	}
+
+	public void setTraceDesc(String traceDesc)
+	{
+		this.traceDesc = traceDesc;
 	}
 
 }

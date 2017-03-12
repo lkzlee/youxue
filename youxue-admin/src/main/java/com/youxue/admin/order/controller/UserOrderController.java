@@ -191,6 +191,7 @@ public class UserOrderController extends BaseController
 			else if (OrderVo.APPLY_REFUND == order.getStatus())
 			{
 				order.setStatus(OrderVo.CANCEL);
+				messageService.addOrderMessage(MessageEnum.REFUNDED, order.getAccountId(), order.getOrderId());
 			}
 			/***
 			 * 退款失败---->申请退款
@@ -213,6 +214,7 @@ public class UserOrderController extends BaseController
 			if (OrderVo.PAY == order.getStatus() || OrderVo.TO_OUT == order.getStatus())
 			{
 				order.setStatus(OrderVo.APPLY_REFUND);
+				messageService.addOrderMessage(MessageEnum.AUDIT_FAILED, order.getAccountId(), order.getOrderId());
 			}
 			/***
 			 * 申请退款-->不通过，退款失败,

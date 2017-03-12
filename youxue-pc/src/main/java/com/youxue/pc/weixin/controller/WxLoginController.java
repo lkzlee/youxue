@@ -108,11 +108,15 @@ public class WxLoginController extends BaseController
 			userInfoDao.insert(newUser);
 			LOG.info("create user:" + mobile);
 		}
-		else
+		else if (StringUtils.isNotBlank(openId))
 		{
 			user.setOpenId(openId);
 			user.setUpdateTime(DateUtil.getCurrentTimestamp());
 			userInfoDao.updateByPrimaryKeySelective(user);
+		}
+		if (StringUtils.isNotBlank(user.getOpenId()) && StringUtils.isBlank(openId))
+		{
+			ControllerUtil.setWxOpenId(request, user.getOpenId());
 		}
 		jedisProxy.del(RedisConstant.MOBILE_LOGIN_PHONE_SECCODE + mobile);
 		ControllerUtil.setCurrentLoginUserName(request, mobile);

@@ -7,25 +7,34 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSONObject;
+import com.lkzlee.pay.bean.WeiXinConfigBean;
+import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.notify.controller.WeiXinPayNotfiyController;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinOrderResultDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinPayNotifyResultDto;
+import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.utils.IOStreamTools;
 import com.lkzlee.pay.utils.XstreamUtil;
+import com.lkzlee.pay.wx.bean.TemplateMsgDataDto;
+import com.lkzlee.pay.wx.helper.MessageHelper;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.LogicOrderDao;
+import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.vo.LogicOrderVo;
+import com.youxue.core.vo.UserInfoVo;
 
 @Controller
 public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
@@ -36,6 +45,8 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 	private OrderService orderService;
 	@Resource
 	private LogicOrderDao logicOrderDao;
+	@Resource
+	private UserInfoDao userInfoDao;
 	@Autowired
 	private JedisProxy jedisProxy;
 
@@ -114,6 +125,30 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		{
 			jedisProxy.del(RedisConstant.getAddUserOrderKeyWXJSAPI(order.getAccountId(), logicOrderId));
 		}
-	}
 
+		try
+		{
+			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(order.getAccountId());
+			if (userInfo != null && StringUtils.isNotBlank(userInfo.getOpenId()))
+			{
+				String openId = userInfo.getOpenId();
+				String templateId = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MSG_TEMPLATE_ID);
+				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
+						"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
+				data.push("first", "尊敬的客户");
+				data.push("orderNo", order.getLogicOrderId());
+				data.push("orderStatus", "待审核");
+				data.push("time", DateUtil.formatDate(order.getPayTime(), DateUtil.DATE_FORMAT_YYYYMMDD_HHMMSS));
+				data.push("money", CommonUtil.formatBigDecimal(order.getTotalPayPrice()));
+				data.push("remark", "我们已收到您的订单，请耐心等待审核");
+				JSONObject result = MessageHelper.templateSend(data);
+				LOG.info("【wx push msg】推送微信消息结果 result=" + result);
+			}
+
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("微信发送消息失败，请检查，msg:" + e.getMessage(), e);
+		}
+	}
 }

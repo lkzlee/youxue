@@ -65,7 +65,7 @@ public class CouponController extends BaseController
 			if (campsIdArr.length != totalsArr.length)
 				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("选择的营地与出行人数不对应"));
 			BigDecimal codeAmount = BigDecimal.ZERO;
-			BigDecimal payAmount = BigDecimal.ZERO;
+			BigDecimal totalAmount = BigDecimal.ZERO;
 			if (StringUtils.isBlank(codeId))
 			{
 				for (int i = 0; i < campsIdArr.length; i++)
@@ -73,7 +73,7 @@ public class CouponController extends BaseController
 					String campsId = campsIdArr[i];
 					String totalPerson = totalsArr[i].trim();
 					CampsVo campsVo = campsDao.selectByPrimaryKey(campsId);
-					payAmount = payAmount.add(campsVo.getTotalPrice().multiply(new BigDecimal(totalPerson)));
+					totalAmount = totalAmount.add(campsVo.getTotalPrice().multiply(new BigDecimal(totalPerson)));
 				}
 			}
 			else
@@ -85,6 +85,7 @@ public class CouponController extends BaseController
 					String totalPerson = totalsArr[i].trim();
 					CampsVo campsVo = campsDao.selectByPrimaryKey(campsId);
 					BigDecimal perTotalAmount = campsVo.getTotalPrice().multiply(new BigDecimal(totalPerson));
+					totalAmount = totalAmount.add(perTotalAmount);
 					BigDecimal couponPrice = BigDecimal.ZERO;
 					try
 					{
@@ -97,7 +98,6 @@ public class CouponController extends BaseController
 						if (couponService.isUseableForCamps(codeId, campsId))
 						{
 							couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
-							codeAmount = codeAmount.add(couponPrice);
 							isUsed = true;
 						}
 					}
@@ -105,8 +105,13 @@ public class CouponController extends BaseController
 					{
 						couponPrice = BigDecimal.ZERO;
 					}
-					payAmount = payAmount.add(perTotalAmount.subtract(couponPrice));
+					codeAmount = codeAmount.add(couponPrice);
 				}
+			}
+			BigDecimal payAmount = totalAmount.subtract(codeAmount);
+			if (BigDecimal.ZERO.compareTo(payAmount) > 0)
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("优惠券优惠金额大于总支付金额，有误，请检查"));
 			}
 			CalcPayAmountDto calcDto = new CalcPayAmountDto();
 			calcDto.setResult(100);

@@ -28,6 +28,7 @@ import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.coupon.CouponService;
 import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
@@ -51,6 +52,8 @@ public class WxOrderController extends BaseController
 	private AddOrderPayService wapAddOrderPayService;
 	@Resource
 	private CouponCodeDao couponCodeDao;
+	@Resource
+	private CouponService couponService;
 	@Resource
 	private CampsDao campsDao;
 	@Autowired
@@ -188,17 +191,13 @@ public class WxOrderController extends BaseController
 				try
 				{
 
-					CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
-					if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+					if (couponService.isUseableForCamps(ote.getCodeId(), ote.getCampsId()))
 					{
-						throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
-					}
-					LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
-					if (StringUtils.isNotBlank(coupon.getCategoryIds())
-							&& coupon.getCategoryIds().contains(camps.getCampsSubjectId())
-							|| StringUtils.isNotBlank(coupon.getCategoryIds())
-							&& coupon.getCategoryIds().contains(camps.getCampsLocaleId()))
-					{
+						CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
+						if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+						{
+							throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+						}
 						couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
 						isUsed = true;
 					}

@@ -75,7 +75,7 @@ public class MailUtil
 			message.setFrom(new InternetAddress(from, emailTitle));
 
 			message.setSubject(subject);
-			message.setText("激活账号系统", chargeSet);
+			message.setText("系统邮件", chargeSet);
 			message.setContent(content, "text/html; charset=" + chargeSet);
 			message.setSentDate(new Date());
 			message.saveChanges();

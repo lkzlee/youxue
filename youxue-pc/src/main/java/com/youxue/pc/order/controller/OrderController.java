@@ -262,12 +262,13 @@ public class OrderController extends BaseController
 					}
 					LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
 					if (StringUtils.isNotBlank(coupon.getCategoryIds())
-							&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
+							&& coupon.getCategoryIds().contains(camps.getCampsSubjectId())
+							|| StringUtils.isNotBlank(coupon.getCategoryIds())
+							&& coupon.getCategoryIds().contains(camps.getCampsLocaleId()))
 					{
-						throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
+						couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+						isUsed = true;
 					}
-					couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
-					isUsed = true;
 				}
 				catch (Exception e)
 				{

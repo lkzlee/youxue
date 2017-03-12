@@ -23,7 +23,9 @@ import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.RefundDao;
+import com.youxue.core.enums.MessageEnum;
 import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.service.message.MessageService;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
@@ -49,6 +51,9 @@ public class OrderServiceImpl implements OrderService
 	private RefundDao refundDao;
 	@Resource
 	private CommonDao commonDao;
+	@Resource
+	private MessageService messageService;
+
 	private final static Log log = LogFactory.getLog(OrderServiceImpl.class);
 
 	/***
@@ -183,6 +188,9 @@ public class OrderServiceImpl implements OrderService
 		logicOrderVo.setPayStatus(LogicOrderVo.PAY);
 		logicOrderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		logicOrderDao.updateByPrimaryKeySelective(logicOrderVo);
+
+		//TODO起异步线程发微信消息
+
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
 		for (OrderVo order : orderList)
 		{
@@ -202,7 +210,9 @@ public class OrderServiceImpl implements OrderService
 			order.setUpdateTime(DateUtil.getCurrentTimestamp());
 			order.setStatus(OrderVo.PAY);
 			orderDao.updateByPrimaryKeySelective(order);
+			messageService.addOrderMessage(MessageEnum.WAIT_AUDIT, order.getAccountId(), order.getOrderId());
 		}
+
 	}
 
 	@Override

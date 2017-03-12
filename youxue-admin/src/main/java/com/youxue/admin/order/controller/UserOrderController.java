@@ -16,9 +16,13 @@ import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.constant.ConstantMapUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.dao.UserInfoDao;
+import com.youxue.core.enums.MessageEnum;
 import com.youxue.core.enums.PayTypeEnum;
+import com.youxue.core.service.message.MessageService;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.RefundService;
+import com.youxue.core.util.MailUtil;
 import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
@@ -38,6 +42,12 @@ public class UserOrderController extends BaseController
 	private OrderService orderService;
 	@Resource
 	private RefundService refundService;
+	@Resource
+	private MessageService messageService;
+	@Resource
+	private MailUtil mailUtil;
+	@Resource
+	private UserInfoDao userInfoDao;
 
 	/***
 	 *  用户个人订单信息查询
@@ -164,6 +174,9 @@ public class UserOrderController extends BaseController
 			if (OrderVo.PAY == order.getStatus())
 			{
 				order.setStatus(OrderVo.TO_OUT);
+				messageService.addOrderMessage(MessageEnum.WAIT_DEPARTURE, order.getAccountId(), order.getOrderId());
+				mailUtil.init(order.getContactEmail(), null);
+				mailUtil.sendEmail("【营联天下】您有一条待出行订单", "【营联天下】您有一条待出行订单", "展示订单详情页面，点击营地图片可以跳转进入官网营地详情页。", "UTF-8");
 			}
 			/***
 			 * 待出行---> 已完成

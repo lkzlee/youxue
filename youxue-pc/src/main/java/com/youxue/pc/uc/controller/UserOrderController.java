@@ -1,8 +1,9 @@
 package com.youxue.pc.uc.controller;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -281,13 +282,20 @@ public class UserOrderController extends BaseController
 					map.put(ov.getLogicOrderId(), list);
 				}
 			}
-			for (Entry<String, List<OrderDetailVo>> en : map.entrySet())
+			for (OrderDetailVo ov : page.getResultList())
 			{
 				OrderItemDto orderItemDto = new OrderItemDto();
-				OrderDetailVo orderVo = en.getValue().get(0);
-				orderItemDto.setLogicOrderId(orderVo.getLogicOrderId());
-				orderItemDto.setPayStatus(orderVo.getPayStatus());
-				orderItemDto.setOrderList(en.getValue());
+				orderItemDto.setLogicOrderId(ov.getLogicOrderId());
+				orderItemDto.setPayStatus(ov.getPayStatus());
+				List<OrderDetailVo> list = map.get(ov.getLogicOrderId());
+				Collections.sort(list, new Comparator<OrderDetailVo>() {
+					@Override
+					public int compare(OrderDetailVo o1, OrderDetailVo o2)
+					{
+						return o2.getCreatTime().compareTo(o1.getCreatTime());
+					}
+				});
+				orderItemDto.setOrderList(list);
 				resultList.add(orderItemDto);
 			}
 		}

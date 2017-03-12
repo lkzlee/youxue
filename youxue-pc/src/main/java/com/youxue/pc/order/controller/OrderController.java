@@ -30,6 +30,7 @@ import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
+import com.youxue.core.service.coupon.CouponService;
 import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
@@ -52,6 +53,8 @@ public class OrderController extends BaseController
 	private AddOrderPayService pcAddOrderPayService;
 	@Resource
 	private CouponCodeDao couponCodeDao;
+	@Resource
+	private CouponService couponService;
 	@Resource
 	private CampsDao campsDao;
 	@Autowired
@@ -255,19 +258,16 @@ public class OrderController extends BaseController
 			{
 				try
 				{
-					CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
-					if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+					if (couponService.isUseableForCamps(ote.getCodeId(), ote.getCampsId()))
 					{
-						throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+						CouponCodeVo coupon = couponCodeDao.selectCouponByCode(ote.getCodeId(), false);
+						if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+						{
+							throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+						}
+						couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
+						isUsed = true;
 					}
-					LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
-					if (StringUtils.isNotBlank(coupon.getCategoryIds())
-							&& !coupon.getCategoryIds().contains(camps.getCampsSubjectId()))
-					{
-						throw new BusinessException("下单有误，该优惠券不适用于该营地，请检查");
-					}
-					couponPrice = coupon.getCodeAmount().multiply(new BigDecimal(totalPerson));
-					isUsed = true;
 				}
 				catch (Exception e)
 				{

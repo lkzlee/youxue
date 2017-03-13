@@ -88,8 +88,8 @@
 											<td>${adItem.statusStr!""}</td>
 											<td><a href="/modifyCouponIndex.do?couponId=${adItem.codeId}"><span>修改</span></a></td>
 											<td>
-											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}',0)"><span>下架</span></a>
-											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}',1)"><span>上架</span></a>
+											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}','${adItem.codeName}',0)"><span>下架</span></a>
+											<a href="javascript:void(0)" onclick="downOrUpCoupon('${adItem.codeId}','${adItem.codeName}',1)"><span>上架</span></a>
 											</td>
 										</tr>
 										</#list>
@@ -173,12 +173,12 @@ function query(){
 }
 
 
-    function downOrUpCoupon(codeId,status){
+    function downOrUpCoupon(codeId,codeName,status){
 	    var op='上架';
 	    if(status==0){
 	    	op="下架";
 	    }
-    	if(confirm('您确认'+op+'优惠券'+codeId+'吗?')){
+    	if(confirm('您确认'+op+'优惠券'+codeName+'吗?')){
     		$.getJSON("/downOrUpCoupon.do", 
 						{couponId:codeId,
 						status:status}, 

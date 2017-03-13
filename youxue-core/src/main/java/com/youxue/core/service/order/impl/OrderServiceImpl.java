@@ -189,8 +189,6 @@ public class OrderServiceImpl implements OrderService
 		logicOrderVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 		logicOrderDao.updateByPrimaryKeySelective(logicOrderVo);
 
-		//TODO起异步线程发微信消息
-
 		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, true);
 		for (OrderVo order : orderList)
 		{

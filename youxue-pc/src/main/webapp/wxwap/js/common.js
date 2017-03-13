@@ -62,10 +62,27 @@ function uploadImage(obj) {
           data=JSON.parse(data);
           imgUrl=data.url;
           saveImage(imgUrl,function(){
-            $('#photoUrl').attr('src',imgUrl)
+            // $('#photoUrl').attr('src',imgUrl)
+            // $('#photoUrl').css('background-image','url("'+imgUrl+'")')
+            imgCenter($('#photoUrl'),imgUrl)
           })
       });
   }
+}
+function imgCenter(element,src){
+    var img=new Image();
+    img.src=src;
+    img.onload=function(){
+        var width=$(this)[0].width;
+        var height=$(this)[0].height;
+        var obj={'background-image':'url("'+src+'")'};
+        if(width>height){
+            obj['background-size']="auto 100%";
+        }else{
+            obj['background-size']='100% auto';
+        }
+        element.css(obj);
+    }
 }
 function saveImage(url,callback){
     login_post('/uc/updatePhoto.do','userPhotoUrl='+url,'',function(data){

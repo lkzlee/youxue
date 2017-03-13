@@ -58,7 +58,7 @@ i{font-family: "simsun";}
 .right_default .right1{height:172px;}
 .right_default .bghui{height:47px;background:#f0edec;}
 .right_default .imgMessage{float:left;position:relative;margin-left:58px;margin-top:-33px;width:145px;height:145px;}
-.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;line-height: 125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;background-image:url('../img/user_pic.jpg');background-size:100%;}
+.right_default .imgMessage .img{border:solid 10px #fff;width:125px;height:125px;line-height: 125px;overflow:hidden;border-radius:50%;box-shadow: 0 4px 29px -9px #221d1d;background-image:url('../img/user_pic.jpg');background-size:100%;background-repeat:no-repeat;background-position:center center;}
 .right_default .imgMessage .img img{width:100%;vertical-align: middle;}
 .right_default .imgMessage .message{position:absolute;top:113px;left:92px;width:44px;height:32px;display:none;}
 .right_default .imgMessage .message i{display:block;margin-top:7px;width:36px;height:25px;background:url("../img/user.png") -95px 0 no-repeat;z-index:999;}
@@ -159,7 +159,7 @@ i{font-family: "simsun";}
 .right_message  .li_border label{padding-left:14px;margin-left:5px;width:105px;vertical-align: middle;}
 .right_message  .li_border label,.right_message  .li_border span{position:relative;display:inline-block;}
 .right_message  .li_border input{position:absolute;top:14px;left:0;vertical-align: middle;}
-.right_message  .li_border .cont_span{width:621px;text-align:center; vertical-align: middle;line-height: 22px;}
+.right_message  .li_border .cont_span{width:621px;text-align:center; vertical-align: middle;line-height: 22px;cursor:pointer;}
 .right_message  .li_border .time_span{width:139px;text-align:center;}
 .right_message  .cont_border{height:auto;line-height:46px;background: #fff;color:#797979;border-bottom:solid 1px #b3b3b3;}
 .right_message  a{color:#656565;}
@@ -193,8 +193,8 @@ i{font-family: "simsun";}
 .right_payment .ul_payment dt{font-size:14px;margin-bottom:12px;}
 .right_payment .ul_payment a{color: #666;}
 .right_payment .ul_payment dd{line-height:22px;}
-.right_payment .ul_payment .list_li div{float:right;padding-top:17px;}
-.right_payment .ul_payment span{padding-bottom:8px;display:block;text-align:right;}
+.right_payment .ul_payment .list_li div{float:right;width:260px;padding-top:32px;}
+.right_payment .ul_payment span{padding-bottom:8px;height:25px;display:block;text-align:right;}
 .right_payment .ul_payment b{font-size:22px;color:#29abe2;}
 .right_payment .ul_payment .list_li div input{margin-right:10px;display:inline-block;width:120px;height:28px;line-height:28px;border:solid 1px #666;text-align:center;color:#666;cursor:pointer;}
 .right_payment .ul_payment .list_li div input.a2_payment,.right_payment .ul_payment .list_li div input:hover{background:#29abe2;color:#fff;border-color:#29abe2;}

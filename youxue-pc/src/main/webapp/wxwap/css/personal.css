@@ -27,6 +27,7 @@ header{
     width:60px;height:60px;
     border-radius: 50%;
     overflow: hidden;
+    background-size:100%;background-repeat:no-repeat;background-position:center center;
 }
 .personal_head_part_message{
     margin-left:22px;

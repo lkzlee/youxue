@@ -79,8 +79,8 @@
         <div class="right1">
             <div class="bghui"></div>
             <div class="imgMessage">
-                <div class="img">
-                    <img src="" alt="" id="photo_img" style="display:none;">
+                <div class="img" id="photo_img">
+                    <!-- <img src="" alt="" id="photo_img" style="display:none;"> -->
                 </div>
                 <a class="message" href="/user_message.html">
                     <i></i>
@@ -239,6 +239,7 @@
                 .render();
     });
     $(function(){
+        // console.log(isWidtImg(img))
         getUserData(function(data){
             render_alertANDuserinfo(data);
         })

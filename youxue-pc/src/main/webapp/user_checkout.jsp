@@ -153,7 +153,7 @@
 <script>
     var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
     $(function(){
-        var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0;
+        var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0,campsIds=[],totalPersons=[];
         var discount=0;
         //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
         $('input[name=codeId]').bind(' input propertychange ',function(){
@@ -161,7 +161,12 @@
         })
         function checkCode(This){
             if(changeRadio() && changeRadio()!==1){
-                login_post('/coupon/getCouponByCode.do','codeId='+$('input[name=codeId]').val(),'',function(data){
+                var obj={
+                    'codeId':$('input[name=codeId]').val(),
+                    'campsIds':campsIds.join(','),
+                    'totalPersons':totalPersons.join(',')
+                }
+                login_post('/coupon/getCouponByCode.do',obj,'',function(data){
                     data=JSON.parse(data);
                     var bool=false;
                     if(data.result==100){
@@ -178,7 +183,6 @@
                     $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
                 })
             }else{
-                console.log(This.val().length<=0)
                 if(This.val().length<=0){
                     $('.codeId_radio').prop('checked',false);
                     This.removeAttr('style');
@@ -202,6 +206,8 @@
                     'numCar':orderArr[4],
                     'money':orderArr[5]
                 }
+                campsIds.push(orderArr[0])
+                totalPersons.push(orderArr[4])
                 for(var j=0;j<orderObj[i]['numCar'];j++){
                     num++;
                     htmlArr.push(render_orderInfo(orderObj[i],i+''+j));

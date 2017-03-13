@@ -190,6 +190,17 @@
                 })
             })
         })
+        $('#message_ul').on('click','.j_title',function(){
+            var That=$(this);
+            var messageId=$(this).siblings('label').children('input').attr('value');
+            login_post('/uc/markmessage.do','messageId='+messageId,'',function(data){
+                data=JSON.parse(data);
+                user_success(data,function(){
+                    That.parent().removeClass('weidu').addClass('yidu');
+                    // $('#message_ul input:checked').prop({'checked':false}).closest('.cont_border').removeClass('weidu').addClass('yidu');
+                })
+            })
+        })
         $('#date_select').change(function(){//下拉根据日期-加载消息列表及分页
             var vals=$(this).val();
 //            var dataObj={};
@@ -197,6 +208,8 @@
                 public_obj={
                     'startDate':vals==0?getWeek():getMonth(vals)
                 }
+            }else{
+                public_obj={};
             }
 //            console.log(public_obj);
             dyna_list();
@@ -235,7 +248,7 @@
         }else{
             for(var i=0;i<len;i++){
                 var cName=resultList[i].readStatus==0?'weidu':'yidu';
-                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['updateTime']+'</span></li>');
+                arr.push('<li class="cont_border li_border '+cName+'"><label><input name="messageId" type="checkbox" value="'+resultList[i]['messageId']+'">'+resultList[i]['messageTitle']+'</label><span class="cont_span j_title">'+resultList[i]['messageContent']+'</span><span class="time_span">'+resultList[i]['updateTime']+'</span></li>');
             }
         }
         $('.page').html(pageSet(public_obj).join(''));

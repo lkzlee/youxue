@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <img src="img/personal.png" style="width:100%" alt=""/>
       <input type="file" accept="image/*" id="xdaTanFileImg" style="opacity:0; background: red;"/>
       <div class="cf personal_head_part">
-          <i class="fl"><img src="" alt="" id="photoUrl" width="100%" /></i>
+          <i class="fl" id="photoUrl"></i>
           <div class="fl personal_head_part_message">
               <p id="nickName"></p>
               <p><span id="credit"></span> 积分</p>
@@ -57,7 +57,19 @@ $('#xdaTanFileImg').on('change',function(){
 })
 function renderUser(data){
   // console.log(data); 
-  $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
+  // $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
+  imgCenter($('#photoUrl'),handle_pic(data.photoUrl)[0]);
+  img.onload=function(){
+      var width=$(this)[0].width;
+      var height=$(this)[0].height;
+      var obj={'background-image':'url("'+data.photoUrl+'")'};
+      if(width>height){
+          obj['background-size']="auto 100%";
+      }else{
+          obj['background-size']='100% auto';
+      }
+      $('#photo_img').css(obj);
+  }
   $('#nickName').text(data.nickName);
   $('#credit').text(data.credit);
   data.unReads && $('#unReads').text(data.unReads).show();

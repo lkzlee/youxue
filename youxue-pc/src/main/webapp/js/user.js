@@ -165,7 +165,8 @@ function renderUserInfo(data){
         $('.message').show().children('span').text(data.unReads);
     }
     if(data.photoUrl){
-        $('#photo_img').attr('src',data.photoUrl).show();
+        // $('#photo_img').attr('src',data.photoUrl).show();
+        imgCenter($('#photo_img'),data.photoUrl)
     }
 }
 //首页基础信息编辑
@@ -249,7 +250,8 @@ function edit_photo(url,successFn,errorFn){
         if($(this).html()=="保存"){
             if(imgUrl){
                 save_photo(imgUrl,function(){
-                    $('#photo_img').attr('src',imgUrl).show();
+                    // $('#photo_img').attr('src',imgUrl).show();
+                    imgCenter($('#photo_img'),imgUrl)
                     $(this).html("编辑");
                     photoDiv.fadeOut(300);
                 })
@@ -507,5 +509,21 @@ function validateImage(obj) {
     } else {
         alertMesageAndHide("图片格式有误!",4);
         return false;
+    }
+}
+//图片居中
+function imgCenter(element,src){
+    var img=new Image();
+    img.src=src;
+    img.onload=function(){
+        var width=$(this)[0].width;
+        var height=$(this)[0].height;
+        var obj={'background-image':'url("'+src+'")'};
+        if(width>height){
+            obj['background-size']="auto 100%";
+        }else{
+            obj['background-size']='100% auto';
+        }
+        element.css(obj);
     }
 }

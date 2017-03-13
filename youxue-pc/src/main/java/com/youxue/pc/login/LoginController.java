@@ -126,6 +126,20 @@ public class LoginController extends BaseController
 		{
 			request.getSession().removeAttribute(ControllerUtil.SESSION_LOGIN_USER_KEY);
 			request.getSession().invalidate();
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null)
+			{
+				for (Cookie c : cookies)
+				{
+					if (CommonConstant.AUTO_LOGIN_COOKIE.equalsIgnoreCase(c.getName())
+							|| "jsessionid".equalsIgnoreCase(c.getName()))
+					{
+						c.setMaxAge(0);
+						c.setPath("/");
+						response.addCookie(c);
+					}
+				}
+			}
 		}
 		catch (Exception e)
 		{

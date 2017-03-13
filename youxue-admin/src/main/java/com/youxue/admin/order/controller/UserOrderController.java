@@ -26,6 +26,7 @@ import com.youxue.core.util.MailUtil;
 import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
+import com.youxue.core.vo.UserInfoVo;
 
 /***
  * 用户个人订单页
@@ -175,12 +176,16 @@ public class UserOrderController extends BaseController
 			{
 				order.setStatus(OrderVo.TO_OUT);
 				messageService.addOrderMessage(MessageEnum.WAIT_DEPARTURE, order.getAccountId(), order.getOrderId());
-				mailUtil.init(order.getContactEmail(), null);
-				mailUtil.sendEmail(
-						"【营联天下】您有一条待出行订单",
-						"【营联天下】您有一条待出行订单",
-						"您有一条待出行订单，订单详情请查看：http://qg.igalaxy.com.cn/user_paymentInfo.jsp?orderId=" + order.getOrderId(),
-						"UTF-8");
+				UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(order.getAccountId());
+				if (userInfo != null && StringUtils.isNotBlank(userInfo.getEmail()))
+				{
+					mailUtil.init(userInfo.getEmail(), null);
+					mailUtil.sendEmail(
+							"【营联天下】您有一条待出行订单",
+							"【营联天下】您有一条待出行订单",
+							"您有一条待出行订单，订单详情请查看：http://qg.igalaxy.com.cn/user_paymentInfo.jsp?orderId="
+									+ order.getOrderId(), "UTF-8");
+				}
 			}
 			/***
 			 * 待出行---> 已完成

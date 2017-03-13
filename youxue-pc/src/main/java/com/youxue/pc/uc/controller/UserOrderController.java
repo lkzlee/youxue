@@ -2,8 +2,10 @@ package com.youxue.pc.uc.controller;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -282,9 +284,14 @@ public class UserOrderController extends BaseController
 					map.put(ov.getLogicOrderId(), list);
 				}
 			}
+			Set<String> logicOrderIdSet = new HashSet<String>();
 			for (OrderDetailVo ov : page.getResultList())
 			{
+				//去重
+				if (logicOrderIdSet.contains(ov.getLogicOrderId()))
+					continue;
 				OrderItemDto orderItemDto = new OrderItemDto();
+
 				orderItemDto.setLogicOrderId(ov.getLogicOrderId());
 				orderItemDto.setPayStatus(ov.getPayStatus());
 				List<OrderDetailVo> list = map.get(ov.getLogicOrderId());
@@ -297,6 +304,7 @@ public class UserOrderController extends BaseController
 				});
 				orderItemDto.setOrderList(list);
 				resultList.add(orderItemDto);
+				logicOrderIdSet.add(ov.getLogicOrderId());
 			}
 		}
 		return resultList;

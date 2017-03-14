@@ -20,7 +20,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 		<#-- 主体内容 -->
 				<!-- /.col-lg-12 -->
 			<div class="row">
-                <h4 class="text-center">新增营地</h4>
+                <h4 class="text-center">新增资讯</h4>
                 <h5 class="text-center" style="color:red">${msg!''}</h5>
                 <div class="col-lg-offset-2 col-lg-8">
                     <form class="form-horizontal" id="Form" method="POST" action="doAddNews.do" data-validate="true">
@@ -49,14 +49,6 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 								<!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>

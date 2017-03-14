@@ -46,14 +46,6 @@
                           		<!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container1');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>
@@ -92,14 +84,6 @@
                                <!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container2');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>
@@ -139,14 +123,6 @@
                                 <!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container3');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>
@@ -186,14 +162,6 @@
                                 <!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container4');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>

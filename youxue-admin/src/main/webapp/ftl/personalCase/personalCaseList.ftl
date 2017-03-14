@@ -84,15 +84,6 @@ window.UEDITOR_HOME_URL = "/ueditor/";
 								<!-- 实例化编辑器 -->
 								<script type="text/javascript">
 									var ue = UE.getEditor('container');
-									UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;  
-									UE.Editor.prototype.getActionUrl = function(action) {  
-										if (action == 'uploadimage' || action == 'uploadfile') {  
-											var id = $('#carInfoId').val();  
-											return '/img/uploadUEDitorImage.do?action=uploadImage';  
-										} else {  
-											return this._bkGetActionUrl.call(this, action);  
-										}  
-									};
 								</script>
                             </div>
                         </div>

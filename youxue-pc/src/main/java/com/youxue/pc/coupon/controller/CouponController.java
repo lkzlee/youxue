@@ -78,6 +78,11 @@ public class CouponController extends BaseController
 			}
 			else
 			{
+				CouponCodeVo coupon = couponCodeDao.selectCouponByCode(codeId, false);
+				if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
+				{
+					throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
+				}
 				boolean isUsed = false;
 				for (int i = 0; i < campsIdArr.length; i++)
 				{
@@ -89,11 +94,6 @@ public class CouponController extends BaseController
 					BigDecimal couponPrice = BigDecimal.ZERO;
 					try
 					{
-						CouponCodeVo coupon = couponCodeDao.selectCouponByCode(codeId, false);
-						if (coupon == null || coupon.getStatus() != CouponCodeVo.NORMAL)
-						{
-							throw new BusinessException("优惠券使用有误，对应的优惠券不存在");
-						}
 						LOG.info("coupon categoryIds:" + coupon.getCategoryIds());
 						if (couponService.isUseableForCamps(codeId, campsId))
 						{
@@ -106,6 +106,10 @@ public class CouponController extends BaseController
 						couponPrice = BigDecimal.ZERO;
 					}
 					codeAmount = codeAmount.add(couponPrice);
+				}
+				if (!isUsed)
+				{
+					throw new BusinessException("优惠券使用有误，优惠券不适用所有营地");
 				}
 			}
 			BigDecimal payAmount = totalAmount.subtract(codeAmount);

@@ -120,30 +120,39 @@ public class UserOrderController extends BaseController
 
 	@RequestMapping(path = "/uc/deleteorder.do")
 	@ResponseBody
-	public String deleteOrderInfo(HttpServletRequest request, HttpServletResponse response, String orderId)
+	public String deleteOrderInfo(HttpServletRequest request, HttpServletResponse response, String logicOrderId)
 	{
 		String accountId = getCurrentLoginUserName(request);
-		LOG.info("删除订单，accountId=" + accountId + ",orderId=" + orderId);
+		LOG.info("删除订单，accountId=" + accountId + ",logicOrderId=" + logicOrderId);
 		if (StringUtils.isBlank(accountId))
 			return JsonUtil.serialize(BaseResponseDto.notLoginDto());
-		if (StringUtils.isBlank(orderId))
+		if (StringUtils.isBlank(logicOrderId))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
 		}
-		OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
-		if (order == null || !accountId.equals(order.getAccountId()))
+		List<OrderVo> orderList = orderDao.selectOrderByLogicOrderId(logicOrderId, false);
+		if (orderList == null || CollectionUtils.isEmpty(orderList))
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+		}
+		int success = 0;
+		for (OrderVo order : orderList)
+		{
+			if (!order.getAccountId().equalsIgnoreCase(accountId))
+			{
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单不存在"));
+			}
+			order.setStatus(OrderVo.DELETED);
+			order.setUpdateTime(DateUtil.getCurrentTimestamp());
+			success += orderDao.updateByPrimaryKeySelective(order);
 		}
 		//		if (order.getStatus() != OrderVo.UNPAY && order.getStatus() != OrderVo.DELETED
 		//				&& order.getStatus() != OrderVo.DONE)
 		//		{
 		//			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("订单状态不正确，不能删除该订单"));
 		//		}
-		order.setStatus(OrderVo.DELETED);
-		order.setUpdateTime(DateUtil.getCurrentTimestamp());
-		int success = orderDao.updateByPrimaryKeySelective(order);
-		if (success == 1)
+
+		if (success > 0)
 			return JsonUtil.serialize(BaseResponseDto.successDto().setDesc("删除成功"));
 		return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("删除失败"));
 

@@ -22,7 +22,7 @@
 .div_p_hot .p1{line-height:48px;font-size:36px;}
 .hot_list{padding-top:58px;height:575px;}
 .hot_list li{float:left;width:520px;height:575px;background:#fff;}
-.hot_list li:first-child{margin-right:29px;}
+.hot_list li:nth-child(odd){margin-right:29px;}
 .hot_list li img{width:520px;height:415px;}
 .hot_list li span{float:left;padding-left:35px;width:230px;height:78px;line-height:78px;font-size:30px;color:#262626;overflow:hidden;}
 .hot_list li i{float:left;padding-left:21px;width:233px;height:73px;line-height:73px;font-size:38px;font-weight:bold;color:#41b8e2;overflow:hidden;}

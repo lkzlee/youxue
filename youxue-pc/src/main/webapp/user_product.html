@@ -79,9 +79,7 @@
         <div class="right1">
             <div class="bghui"></div>
             <div class="imgMessage">
-                <div class="img">
-                    <img src="" alt="" id="photo_img" style="display:none;">
-                </div>
+                <div class="img" id="photo_img"></div>
                 <a class="message" href="/user_message.html">
                     <i></i>
                     <span>6</span>
@@ -167,6 +165,7 @@ $(function(){
 function getProduct(){
     login_post('/productOrderList.do','','',function(data){
         data=JSON.parse(data);
+        console.log(data)
         success(data,function(){
             renderProduct(data['productOrderList1'],$('#j_qzfw'))
             renderProduct(data['productOrderList2'],$('#j_jsjfw'))
@@ -179,7 +178,7 @@ function renderProduct(list,element){
     if(len>0){
         arr=[];
         for(var i=0;i<len;i++){
-            arr.push('<tr><td>'+(i+1)+'</td> <td>'+list[i]['accountId']+'</td><td>'+formatDate(list[i]['buyTime']['time'],3)+'</td><td>'+list[i]['content']+'</td><td>'+verif_payType(list[i]['payType'])+'</td><td>'+list[i]['price']+'</td></tr>');
+            arr.push('<tr><td>'+(i+1)+'</td> <td>'+list[i]['orderId']+'</td><td>'+formatDate(list[i]['buyTime']['time'],3)+'</td><td>'+list[i]['content']+'</td><td>'+verif_payType(list[i]['payType'])+'</td><td>'+list[i]['price']+'</td></tr>');
         }
     }
     element.append(arr.join(''));

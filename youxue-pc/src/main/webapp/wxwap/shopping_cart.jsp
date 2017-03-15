@@ -72,7 +72,8 @@ ul.on('click','.cart_edit_choice',function(){
         var id=$(this).attr('data-id');
         dataObj[index]['num']=siblingVal.find('.j_number').val();
         ajax_changeNum(id,dataObj[index]['num'],function(){
-            sibligP.find('span').text(dataObj[index]['num']);
+            // sibligP.find('span').text(dataObj[index]['num']);
+            sibligP.find('.j_numberSpan').text(dataObj[index]['num'])
             changeTotal();
         });
         
@@ -122,7 +123,7 @@ $('#j_btnCheck').on('click',function(){
             var src=parent.find('img').attr('src');
             var title=parent.find('.title').text();
             var price=Number(parent.find('.j_price').text());
-            var num=Number(parent.find('.j_number').val());
+            var num=Number(parent.find('.j_numberSpan').text());
             var xj_price=price*num;
             arr.push([id,src,title,price,num,xj_price].join('$$'));
         });
@@ -195,7 +196,7 @@ function renderCar(data){
             arr.push('<div class="lImg"><img src="'+handle_pic(source[i].campsImages)[0]+'"/></div><div class="js_calc_width"><p class="title">'+source[i].campsTitle+'</p><p class="price">价格 ¥ <span class="j_price">'+source[i].totalPrice+'</span></p></div>');
             // arr.push('</a>');
             arr.push('<button class="child_del" data-id="'+source[i].campsId+'">删除</button></div></div></div>');
-            arr.push('<div class="cf cart_edit"><p>数量<span>'+source[i].cartBuyCount+'</span></p><div class="cart_edit_number hidden_active"><span class="sub_button"></span>');
+            arr.push('<div class="cf cart_edit"><p>数量<span class="j_numberSpan">'+source[i].cartBuyCount+'</span></p><div class="cart_edit_number hidden_active"><span class="sub_button"></span>');
             arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice" data-id="'+source[i]['campsId']+'">编辑</div></div></li>');
         }
         $('ul').html(arr.join(''));

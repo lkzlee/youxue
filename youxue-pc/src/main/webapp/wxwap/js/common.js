@@ -180,9 +180,10 @@ function auto_submit(address,obj,method){
     }else{
         var frm=$('<form action='+address+' method="post">');
         for(var key in obj){
-            frm.append('<input type="text" name="'+key+'" value="'+obj[key]+'">');
+            frm.append('<input type="hidden" name="'+key+'" value="'+obj[key]+'">');
         }
         $('body').append(frm);
+        
         frm.submit();
     }
 }

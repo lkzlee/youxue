@@ -173,7 +173,7 @@ section li{
     line-height: 50px;
 }
 .section4 input{
-    margin-top:17px;
+    margin-top:17px;width: 150px;
 }
 .section4 .common_choice{
     position: relative;

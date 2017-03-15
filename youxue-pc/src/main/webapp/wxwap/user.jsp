@@ -59,17 +59,6 @@ function renderUser(data){
   // console.log(data); 
   // $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
   imgCenter($('#photoUrl'),handle_pic(data.photoUrl)[0]);
-  img.onload=function(){
-      var width=$(this)[0].width;
-      var height=$(this)[0].height;
-      var obj={'background-image':'url("'+data.photoUrl+'")'};
-      if(width>height){
-          obj['background-size']="auto 100%";
-      }else{
-          obj['background-size']='100% auto';
-      }
-      $('#photo_img').css(obj);
-  }
   $('#nickName').text(data.nickName);
   $('#credit').text(data.credit);
   data.unReads && $('#unReads').text(data.unReads).show();

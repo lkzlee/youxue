@@ -22,6 +22,8 @@ body{
 section{
     padding:10px 20px 0 20px;
 }
+.traces{width: 100%; padding-bottom: 15px; overflow: hidden;}
+.traces img{max-width:100%;}
 .camp_details_generalize>ul>li:first-child>span{
     display: inline-block;
     border:1px solid #999;
@@ -72,7 +74,9 @@ section{
 }
 .camp_details_items table td{
     vertical-align: top;
-    width:19px;
+}
+.camp_details_items table td:nth-child(1){
+    width:50px;
 }
 .camp_eat_live_safe img{
     margin:6px 1% 0 1%;

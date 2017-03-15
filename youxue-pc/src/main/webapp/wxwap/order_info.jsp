@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>我的订单-订单详情_Camplink</title>
+    <title>_订单详情_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/goods_details.css"/>
     <script src="js/isLogin.js"></script>
@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </section>
 <footer class="cf">
     <p>合计：¥ <span class="j_price"></span></p>
-    <button id="btn_order">去支付</button>
+    <button id="btn_order" onclick="history.go(-1)">返回订单</button>
 </footer>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/fastclick.js"></script>
@@ -80,6 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    })
 	}
     function renderOrderInfo(data){
+    	$('title').prepend(data.campsTitle)
         var arr=[];
         arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');
         arr.push('<ul><li class="cf" onclick=javascript:location.href="/wxwap/camp_details.jsp?campusId='+data['campsId']+'"><a href="/wxwap/camp_details.jsp?campusId='+data['campsId']+'"><img src="'+handle_pic(data['campsImages'])[0]+'" alt=""/><div><p>'+data['campsTitle']+'</p>');
@@ -103,24 +104,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        $('.codeId').val(data.codeId).show()
 	    }
 	    $('.j_price').text(data.payPrice);
-	    var arr=getState(data.payStatus);
-	    var btn_order=$('#btn_order');
-	    btn_order.text(arr[0]).addClass(arr[1]).attr('data-id',data.orderId).attr('data-value',data.logicOrderId)
-	    if(data.payStatus==1){
-	    	btn_order.attr('disabled','disabled');
-	    }
+	    // var arr=getState(data.payStatus);
+	    // var btn_order=$('#btn_order');
+	    // btn_order.text(arr[0]).addClass(arr[1]).attr('data-id',data.orderId).attr('data-value',data.logicOrderId)
+	    // if(data.payStatus==1){
+	    // 	btn_order.attr('disabled','disabled');
+	    // }
 	}
-	$('#btn_order').on('click',function(){
-	    login_post('/wxpay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
-	        setBtnDisabled($(this),false)
-	        data=JSON.parse(data);
-	        user_success(data,function(){
-	            if(data.wxPayParam){
-	                window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
-	            }
-	        })
-	    });
-	})
+	// $('#btn_order').on('click',function(){
+	//     login_post('/wxpay/addTradeOrderById.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+	//         setBtnDisabled($(this),false)
+	//         data=JSON.parse(data);
+	//         user_success(data,function(){
+	//             if(data.wxPayParam){
+	//                 window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
+	//             }
+	//         })
+	//     });
+	// })
 	function getState(state){
 	    switch(state){
 	        case 0:

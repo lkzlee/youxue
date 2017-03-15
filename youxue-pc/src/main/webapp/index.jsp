@@ -243,7 +243,7 @@ function loadSlide(slideElement,num){
             _focus_pos--
         }
     }
-    _focus_dsq = setInterval(autoExecAnimate, 5000);
+    _focus_dsq = setInterval(autoExecAnimate, 6000);
     slideElement.hover(function(){
         clearInterval(_focus_dsq)
     },function(){

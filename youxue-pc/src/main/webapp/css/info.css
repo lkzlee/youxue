@@ -1,3 +1,4 @@
+img{max-width:100%;}
 .content{padding-top:27px;}
 .con1{height:458px;}
 .con1 .con1_left{width:586px;}
@@ -139,7 +140,7 @@
 .div_con2_cont.xingcheng_div{min-height:648px;}
 .div_con2_cont.xingcheng_div .left{background-image:url("../img/itembg_15.jpg");}
 /*.div_con2_cont.xingcheng_div h3{line-height:648px;}*/
-.div_con2_cont.xingcheng_div ul{padding:5px 87px 0 15px;}
+.div_con2_cont.xingcheng_div ul{padding:5px 40px 0 10px;}
 .div_con2_cont.xingcheng_div li{padding:19px 0;border-bottom:solid 2px #ddd;}
 .div_con2_cont.xingcheng_div .li_left{float:left;border-style:solid;border-color:#ccc;border-width:4px 6px;width:222px;height:148px;overflow:hidden;text-align:center;}
 .div_con2_cont.xingcheng_div .li_left img{}

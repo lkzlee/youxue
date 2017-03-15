@@ -36,7 +36,7 @@ function load_render(data){
             console.log(data);
             $('.createTime').text(data.createTime)
             $('.title').text(data.campsTitle);
-            $('title').append(data.campsTitle);
+            $('title').prepend(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(formatDate(data.deadlineDate,0));

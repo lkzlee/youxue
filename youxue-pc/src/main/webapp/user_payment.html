@@ -79,12 +79,10 @@
         <div class="right1">
             <div class="bghui"></div>
             <div class="imgMessage">
-                <div class="img">
-                    <img src="" alt="" id="photo_img" style="display:none;">
-                </div>
+                <div class="img" id="photo_img"></div>
                 <a class="message" href="/user_message.html">
                     <i></i>
-                    <span>6</span>
+                    <span>0</span>
                 </a>
             </div>
             <div class="hiDiv">
@@ -141,7 +139,7 @@ $(function(){
     $('.ul_payment').on('click','.del_order',function(){
         if(window.confirm('是否确认删除订单？')){
             btn_disable($(this),true)
-            login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
+            login_post('/uc/deleteorder.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
                 data=JSON.parse(data);
                 user_success(data,function(){
                     get_orderList(public_obj,render_list)
@@ -193,8 +191,8 @@ function render_list(data){
                 }else{
                     arr.push('<span></span>')
                 }
-                arr.push('<input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
                 if(j+1==jLen){
+                    arr.push('<input type="button" class="del_order" data-id="'+orderList[j]['logicOrderId']+'" value="删除记录"/>');
                     arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/>')
                 }
                 arr.push('</div></div>');

@@ -4,7 +4,7 @@ pageEncoding="utf-8"%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>个人中心-结算订单_Camplink</title>
+    <title>_订单详情_Camplink</title>
     <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
@@ -130,7 +130,6 @@ pageEncoding="utf-8"%>
                         实付款：<i class="moneyTotal">¥<label class="payPrice"></label></i>元
                     </div>
                     <div class="div4">
-                        <!-- <a href="javascript:void(0)" onclick="history.go(-1)"> <<返回订单 </a> -->
                         <input type="button" value="返回订单" onclick="history.go(-1)">
                     </div>
                 </div>
@@ -152,7 +151,6 @@ pageEncoding="utf-8"%>
 </section>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/public.js"></script>
-<script src="js/user_pay.js"></script>
 <script>
 var orderId= '<%=request.getParameter("orderId")==null?"":request.getParameter("orderId")%>';
 $(function(){
@@ -167,6 +165,7 @@ function getPayInfo(){
     })
 }
 function renderOrderInfo(data){
+    $('title').prepend(data.campsTitle)
     var arr=[];
     arr.push('<div class="div_cont_order">');
     arr.push('<a href="/info.jsp?campusId='+data['campsId']+'" class="a1_order"><img src="'+handle_pic(data['campsImages'])[0]+'" alt=""><span class="span3">'+data['campsTitle']+'</span></a>');

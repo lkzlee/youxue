@@ -99,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <p>免费咨询电话：<a href="tel:4008537517">4008-537-517</a></p>
     </header>
     <section>
-        <ul class="traces"></ul>
+        <div class="traces"></div>
     </section>
 </div>
 <script src="js/jquery-3.1.0.min.js"></script>
@@ -227,16 +227,17 @@ function load_render(data){
                 }
                 $('.campsHotelPhotos').html(str);
             }
-            var traces=data.traces;
-            if(traces.length>0){
-                var arr=[];
-                for(i=0,len=traces.length;i<len;i++){
-                    arr.push('<li class="cf"><div class="item_left fl">Part <span>'+(i+1)+'</span></div><div class="item_right">')
-                    arr.push('<h2>'+traces[i]['traceName']+'</h2><p>'+traces[i]['traceDesc']+'</p><p>')
-                    arr.push('<img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""/></p></div></li>');
-                }
-                $('.traces').html(arr.join(''));
-            }
+            $('.traces').html(data.traceDesc);
+            // var traces=data.traces;
+            // if(traces.length>0){
+            //     var arr=[];
+            //     for(i=0,len=traces.length;i<len;i++){
+            //         arr.push('<li class="cf"><div class="item_left fl">Part <span>'+(i+1)+'</span></div><div class="item_right">')
+            //         arr.push('<h2>'+traces[i]['traceName']+'</h2><p>'+traces[i]['traceDesc']+'</p><p>')
+            //         arr.push('<img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""/></p></div></li>');
+            //     }
+            //     $('.traces').html(arr.join(''));
+            // }
             $('.feeDesc').html(data.feeDesc);
             $('.j_price').text(data.totalPrice)
             load_carousel();

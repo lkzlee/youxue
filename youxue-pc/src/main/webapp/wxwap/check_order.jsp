@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         // FastClick.attach(document.body);
         $(function() {
             var btn_order=$('#btn_order');
-            var moneyTotal=0,len=0,orderObj=[];
+            var moneyTotal=0,len=0,orderObj=[],campsIds=[],totalPersons=[];
             if(orderList){
                 var htmlArr=[],num=0;
                 var arr=orderList.split(',');
@@ -76,6 +76,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         'numCar':orderArr[4],
                         'money':orderArr[5]
                     }
+                    campsIds.push(orderArr[0])
+                    totalPersons.push(orderArr[4])
                     for(var j=0;j<orderObj[i]['numCar'];j++){
                         num++;
                         htmlArr.push(render_orderInfo(orderObj[i],i+''+j));
@@ -103,19 +105,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             $('input[name=codeId]').bind('input propertychange',function(){
                 var That=$(this);
                 if(changeRadio($(this)) && changeRadio($(this))!==1){
-                    login_post('/coupon/getCouponByCode.do','codeId='+$(this).val(),'',function(data){
+                    var obj={
+                        'codeId':$(this).val(),
+                        'campsIds':campsIds.join(','),
+                        'totalPersons':totalPersons.join(',')
+                    }
+                    login_post('/coupon/getCouponByCode.do',obj,'',function(data){
                         data=JSON.parse(data);
                         if(data.result==100){
                             setBtnDisabled(btn_order,true);
-                            discount=Number(data.codeAmount);
+                            discount=Number(data.codeAmount);//优惠金额
                             if(discount<moneyTotal){
-                                $('.j_price').text(accSub(moneyTotal,discount));
+                                // $('.j_price').text(accSub(moneyTotal,discount));
+                                $('.j_price').text(data.payAmount);
                             }
                         }else{
                             setBtnDisabled(btn_order,false);
                             $('.j_price').text(moneyTotal)
                         }
                     })
+                }else{
+                    setBtnDisabled(btn_order,false);
+                    $('.j_price').text(moneyTotal)
                 }
             })
             $("#btn_order").on("click",function(){

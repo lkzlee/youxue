@@ -154,7 +154,7 @@
     var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
     $(function(){
         var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0,campsIds=[],totalPersons=[];
-        var discount=0;
+        var discount=0;//优惠金额
         //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
         $('input[name=codeId]').bind(' input propertychange ',function(){
             checkCode($(this));
@@ -180,7 +180,8 @@
                     }
                     $('.codeId_radio').prop('checked',bool);
                     range_input(This,bool);
-                    $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
+                    // $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
+                    $('.moneyTotal').text(data.payAmount);
                 })
             }else{
                 if(This.val().length<=0){
@@ -230,6 +231,7 @@
                 alert('请勾选《用户购买协议》后提交')
                 return false;
             }
+            btn_disable($(this),true);
             var AllObj={},infoArr=[];
             var outherObj=$('#outher_form').serializeObject();
             for(var i=1;i<len;i++){
@@ -315,8 +317,6 @@
         var input=$('input.require');
         var bool=true;
         input.each(function(){
-            console.log($(this))
-            console.log($(this).val().length<2)
             if($(this).val().length<2){
                 bool=false;
                 return range_input($(this),false);

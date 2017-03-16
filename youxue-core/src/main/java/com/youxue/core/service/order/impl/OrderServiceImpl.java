@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.constant.CommonConstant;
+import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CommonDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
@@ -30,6 +31,7 @@ import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
+import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
@@ -47,6 +49,8 @@ public class OrderServiceImpl implements OrderService
 	private OrderPersonDao orderPersonDao;
 	@Resource
 	private CouponCodeDao couponCodeDao;
+	@Resource
+	private CampsDao campsDao;
 	@Resource
 	private RefundDao refundDao;
 	@Resource
@@ -209,6 +213,11 @@ public class OrderServiceImpl implements OrderService
 			order.setStatus(OrderVo.PAY);
 			orderDao.updateByPrimaryKeySelective(order);
 			messageService.addOrderMessage(MessageEnum.WAIT_AUDIT, order.getAccountId(), order.getOrderId());
+			CampsVo campsVo = campsDao.selectByPrimaryKey(order.getCampsId());
+			long totalCount = campsVo.getDoneCount() + order.getTotalCount();
+			campsVo.setDoneCount(totalCount);
+			campsVo.setUpdateTime(DateUtil.getCurrentTimestamp());
+			campsDao.updateByPrimaryKeySelective(campsVo);
 		}
 
 	}

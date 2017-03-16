@@ -3,7 +3,7 @@
 <#include "../common/core.ftl">
 <#setting date_format="yyyy-MM-dd">
 
-<@docHead title="新增营地"/>
+<@docHead title="周边产品"/>
 <!-- 编辑器源码文件 -->
 <script>
 window.UEDITOR_HOME_URL = "/ueditor/";

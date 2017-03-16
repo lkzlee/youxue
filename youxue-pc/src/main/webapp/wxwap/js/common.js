@@ -286,6 +286,8 @@ function alertMesageAndHide(str,state){
 function formatDate(time,style){
     var format='',str='';
     var dateTime=new Date(time);
+    //兼容IOS高版本
+    dateTime = dateTime.getFullYear() > 0 ? dateTime : new Date(Date.parse(time.replace(/-/g, "/")));
     switch(style){
         case 0:
             format='-';

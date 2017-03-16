@@ -182,7 +182,6 @@ function render_list(data){
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">预定日期：'+orderList[j]['creatTime']+'</a></dd></dl>');
                 arr.push('<div class="divRight_user"><span>订单金额：¥'+orderList[j]['payPrice']);
                 arr.push('</span><input type="button" name="" value="取消订单" class="right_margin0 j_BtnCancel" data-value="'+orderList[j]['orderId']+'"></div></div>');
-                // arr.push('<input type="button" name="" value="审核订单" class="right_margin0">');
                 // arr.push('<div><span>费用：<b>¥</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
                 // arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
             }

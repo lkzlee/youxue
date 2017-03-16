@@ -64,15 +64,15 @@
                 <ul class="cont">
                     <li>
                         <span><i>*</i>联系人姓名：</span>
-                        <input type="text" class="input1 require" name="contactName">
+                        <input type="text" class="input1 require j_defaultValue" name="contactName">
                     </li>
                     <li>
                         <span><i>*</i>联系人电话：</span>
-                        <input type="text" class="input4 require" name="contactPhone">
+                        <input type="text" class="input4 require j_defaultValue" name="contactPhone">
                     </li>
                     <li>
                         <span><i>*</i>电子邮箱：</span>
-                        <input type="text" class="input4 require" name="contactEmail">
+                        <input type="text" class="input4 require j_defaultValue" name="contactEmail">
                     </li>
                 </ul>
             </div>
@@ -215,6 +215,7 @@
                     htmlArr.push(render_propleInfo(orderObj[i],i+''+j));
                 }
             }
+            renderAccount();//渲染联系人信息(默认值)
         }
         $('#order_list').html(htmlArr);
         setTimeout(function(){
@@ -268,6 +269,48 @@
             return false;
         })
     })
+    window.onload=function(){
+        $('input[name=contactName]').focus(function(){
+            if($(this).val()===accountInfo.nickName){
+                $(this).val('')
+            }
+        })
+        $('input[name=contactPhone]').focus(function(){
+            if($(this).val()===accountInfo.accountId){
+                $(this).val('')
+            }
+        })
+        $('input[name=contactEmail]').focus(function(){
+            if($(this).val()===accountInfo.email){
+                $(this).val('')
+            }
+        })
+        $('input[name=contactName]').blur(function(){
+            if($(this).val()==''){
+                $(this).val(accountInfo.nickName)
+            }
+        })
+        $('input[name=contactPhone]').blur(function(){
+            if($(this).val()==''){
+                $(this).val(accountInfo.accountId)
+            }
+        })
+        $('input[name=contactEmail]').blur(function(){
+            if($(this).val()==''){
+                $(this).val(accountInfo.email)
+            }
+        })
+    }
+    function renderAccount(){
+        if(typeof(accountInfo)!=='object'){
+            setTimeout(renderAccount,100)
+        }else{
+            $('input[name=contactName]').val(accountInfo.nickName);
+            $('input[name=contactPhone]').val(accountInfo.accountId);
+            $('input[name=contactEmail]').val(accountInfo.email);
+        }
+        
+    }
     function render_orderInfo(obj){
         var arr=[];
         arr.push('<div class="width_content"><div class="head">订单信息</div></div><div class="width_content cont_order"><div class="div_order clear">');

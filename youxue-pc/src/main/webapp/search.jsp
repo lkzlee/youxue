@@ -279,7 +279,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
                         li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'">'+obj[i]['campsTitle']+'</a></h2>')
                         li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
-                        li.push('<p>'+obj[i]['campsDesc']+'</p></div>')
+                        li.push('<div style="height:auto;line-height:22px;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
                         li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'">点击查看</a></div></li>')
                     }
                 }else{

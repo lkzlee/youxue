@@ -161,15 +161,11 @@ $(function(){
 })
 //渲染消息列表
 function render_list(data){
-    console.log(data)
-    //data.totalPage=10;
-    //data.totalCount=100;
     public_obj['pageNo']=data.pageNo;
     public_obj['totalPage']=data.totalPage;
     public_obj['totalCount']=data.totalCount;
     var arr=[];
     var result=data['resultList'];
-    // console.log(JSON.stringify(data));
     var len=result.length;
     if(len<=0){
         arr.push('<li class="noMessage_border">您目前没有任何消息</li>');

@@ -205,7 +205,12 @@ public class OrderServiceImpl implements OrderService
 					throw new BusinessException("支付异常，对应的红包状态错误，或者不存在,logicOrderId=" + logicOrderId + ",orderId="
 							+ order.getOrderId());
 				}
-				coupon.setUseCount(coupon.getUseCount() + order.getTotalCount());
+				Integer doneCount = 0;
+				if (coupon.getUseCount() != null)
+				{
+					doneCount = coupon.getUseCount();
+				}
+				coupon.setUseCount(doneCount + order.getTotalCount());
 				couponCodeDao.updateByPrimaryKeySelective(coupon);
 			}
 			order.setCodeStatus(OrderVo.PAY);
@@ -214,7 +219,12 @@ public class OrderServiceImpl implements OrderService
 			orderDao.updateByPrimaryKeySelective(order);
 			messageService.addOrderMessage(MessageEnum.WAIT_AUDIT, order.getAccountId(), order.getOrderId());
 			CampsVo campsVo = campsDao.selectByPrimaryKey(order.getCampsId());
-			long totalCount = campsVo.getDoneCount() + order.getTotalCount();
+			long campsDoneCount = 0;
+			if (campsVo.getDoneCount() != null)
+			{
+				campsDoneCount = campsVo.getDoneCount();
+			}
+			long totalCount = campsDoneCount + order.getTotalCount();
 			campsVo.setDoneCount(totalCount);
 			campsVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 			campsDao.updateByPrimaryKeySelective(campsVo);

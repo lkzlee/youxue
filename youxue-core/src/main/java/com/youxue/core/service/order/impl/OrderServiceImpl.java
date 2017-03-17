@@ -13,9 +13,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.lkzlee.pay.bean.WeiXinConfigBean;
+import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.exceptions.BusinessException;
 import com.lkzlee.pay.utils.DateUtil;
+import com.lkzlee.pay.wx.bean.TemplateMsgDataDto;
+import com.lkzlee.pay.wx.helper.MessageHelper;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CommonDao;
@@ -24,6 +29,7 @@ import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.RefundDao;
+import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.MessageEnum;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.service.message.MessageService;
@@ -37,6 +43,7 @@ import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.RefundVo;
+import com.youxue.core.vo.UserInfoVo;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService
@@ -53,6 +60,8 @@ public class OrderServiceImpl implements OrderService
 	private CampsDao campsDao;
 	@Resource
 	private RefundDao refundDao;
+	@Resource
+	private UserInfoDao userInfoDao;
 	@Resource
 	private CommonDao commonDao;
 	@Resource
@@ -228,6 +237,41 @@ public class OrderServiceImpl implements OrderService
 			campsVo.setDoneCount(totalCount);
 			campsVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 			campsDao.updateByPrimaryKeySelective(campsVo);
+		}
+		pushMsg(logicOrderVo);
+	}
+
+	private void pushMsg(LogicOrderVo logicOrderVo)
+	{
+		try
+		{
+			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(logicOrderVo.getAccountId());
+			if (userInfo != null && StringUtils.isNotBlank(userInfo.getOpenId()))
+			{
+				String openId = userInfo.getOpenId();
+				String templateId = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MSG_TEMPLATE_ID);
+				String[] templates = templateId.split(";");
+				for (String t : templates)
+				{
+					if (t.indexOf("audit_msg") >= 0)
+					{
+						templateId = t.split(":")[1];
+					}
+				}
+				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
+						"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
+				data.push("first", "我们已收到您的订单 ，请耐心等待审核！");
+				data.push("keyword1", "订单提交成功");
+				data.push("keyword2", "等待审核中");
+				data.push("remark", "如有问题咨询，可致电400-755-2255");
+				JSONObject result = MessageHelper.templateSend(data);
+				log.info("【wx push 支付消息】推送微信消息结果 result=" + result);
+			}
+
+		}
+		catch (Exception e)
+		{
+			log.fatal("【wx push 支付消息】推送微信消息异常 logicOrderVo=" + logicOrderVo, e);
 		}
 
 	}

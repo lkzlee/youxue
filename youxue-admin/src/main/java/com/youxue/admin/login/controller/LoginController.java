@@ -1,6 +1,7 @@
 package com.youxue.admin.login.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.common.collect.Lists;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.admin.constant.AdminConstant;
 import com.youxue.admin.login.service.SysUserLoginLogService;
 import com.youxue.admin.login.service.SysUserService;
 import com.youxue.admin.power.constant.PowerConstant;
+import com.youxue.admin.power.enums.PowerTypeEnum;
+import com.youxue.admin.power.vo.MenuShow;
 import com.youxue.core.util.NetUtil;
 import com.youxue.core.vo.SysUser;
 import com.youxue.core.vo.SysUserLoginLog;
@@ -120,7 +124,10 @@ public class LoginController
 			sysUserLoginLogService.createLoginLog(loginLog);
 			request.getSession().setAttribute(AdminConstant.CURRENT_USER, su);
 			request.getSession().setAttribute(AdminConstant.CURRENT_USER_NAME, su.getLoginName());
-			request.getSession().setAttribute(AdminConstant.MENU_LIST, PowerConstant.menuMap.get(su.getRoleId()));
+			List<MenuShow> menuList = Lists.newLinkedList();
+			menuList.addAll(PowerConstant.menuMap.get(su.getRoleId()));
+			menuList.addAll(PowerConstant.menuMap.get(PowerTypeEnum.MODIFY.getValue()));
+			request.getSession().setAttribute(AdminConstant.MENU_LIST, menuList);
 		}
 		catch (Exception e)
 		{

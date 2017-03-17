@@ -11,10 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.alibaba.fastjson.JSONObject;
+import com.lkzlee.pay.bean.WeiXinConfigBean;
+import com.lkzlee.pay.constant.ConfigConstant;
 import com.lkzlee.pay.exceptions.BusinessException;
+import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
+import com.lkzlee.pay.wx.bean.TemplateMsgDataDto;
+import com.lkzlee.pay.wx.helper.MessageHelper;
 import com.youxue.admin.constant.ConstantMapUtil;
 import com.youxue.core.common.BaseController;
+import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.MessageEnum;
@@ -23,6 +30,7 @@ import com.youxue.core.service.message.MessageService;
 import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.RefundService;
 import com.youxue.core.util.MailUtil;
+import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.OrderDetailVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
@@ -41,6 +49,8 @@ public class UserOrderController extends BaseController
 	private OrderDao orderDao;
 	@Resource
 	private OrderService orderService;
+	@Resource
+	private CampsDao campsDao;
 	@Resource
 	private RefundService refundService;
 	@Resource
@@ -185,7 +195,10 @@ public class UserOrderController extends BaseController
 							"【营联天下】您有一条待出行订单",
 							"您有一条待出行订单，订单详情请查看：http://qg.igalaxy.com.cn/user_paymentInfo.jsp?orderId="
 									+ order.getOrderId(), "UTF-8");
+
 				}
+				pushWxMsg(order, userInfo);
+
 			}
 			/***
 			 * 待出行---> 已完成
@@ -236,6 +249,41 @@ public class UserOrderController extends BaseController
 			{
 				throw new BusinessException("订单状态在该流程中非法：status=" + order.getStatus());
 			}
+		}
+	}
+
+	private void pushWxMsg(OrderVo order, UserInfoVo userInfo)
+	{
+		try
+		{
+			if (userInfo != null && StringUtils.isNotBlank(userInfo.getOpenId()))
+			{
+				String openId = userInfo.getOpenId();
+				String templateId = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MSG_TEMPLATE_ID);
+				String[] templates = templateId.split(";");
+				for (String t : templates)
+				{
+					if (t.indexOf("noitfy_msg") >= 0)
+					{
+						templateId = t.split(":")[1];
+					}
+				}
+				CampsVo campsVo = campsDao.selectByPrimaryKey(order.getCampsId());
+				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
+						"http://qg.igalaxy.com.cn/wxwap/order_info.jsp?orderId=" + order.getOrderId());
+				data.push("first", "尊敬的用户，您的订单已经支付成功");
+				data.push("orderId", order.getOrderId());
+				data.push("orderPrice", CommonUtil.formatBigDecimal(order.getPayPrice()));
+				data.push("orderStatus", "待出行");
+				data.push("productName", campsVo.getCampsName());
+				data.push("remark", "如有疑问，请拨打咨询热线123323");
+				JSONObject result = MessageHelper.templateSend(data);
+				LOG.info("【wx push msg】推送微信消息结果 result=" + result);
+			}
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("【wx push msg审核消息】推送微信消息异常 order=" + order, e);
 		}
 	}
 }

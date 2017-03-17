@@ -64,9 +64,9 @@
 											</td>
 											<td>${adItem.nickName!""}</td>
 											<td>0</td>
-											<td>${adItem.credit!""}</td>
+											<td>${adItem.credit!"0"}</td>
 											<td>${adItem.loveCity!"无"}</td>
-											<td>${adItem.creatTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+											<td>${adItem.createTime?string("yyyy-MM-dd HH:mm:ss")}</td>
 										</tr>
 										</#list>
 									</tbody>

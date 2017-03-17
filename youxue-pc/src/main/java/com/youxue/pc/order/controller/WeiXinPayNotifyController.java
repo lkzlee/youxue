@@ -2,7 +2,6 @@ package com.youxue.pc.order.controller;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +21,6 @@ import com.lkzlee.pay.notify.controller.WeiXinPayNotfiyController;
 import com.lkzlee.pay.third.dto.AbstThirdPayDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinOrderResultDto;
 import com.lkzlee.pay.third.weixin.dto.response.WeiXinPayNotifyResultDto;
-import com.lkzlee.pay.utils.CommonUtil;
 import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.utils.IOStreamTools;
 import com.lkzlee.pay.utils.XstreamUtil;
@@ -36,9 +34,7 @@ import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.OrderService;
-import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.LogicOrderVo;
-import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.UserInfoVo;
 
 @Controller
@@ -134,7 +130,6 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 		{
 			jedisProxy.del(RedisConstant.getAddUserOrderKeyWXJSAPI(order.getAccountId(), logicOrderId));
 		}
-
 		try
 		{
 			UserInfoVo userInfo = userInfoDao.selectByPrimaryKey(order.getAccountId());
@@ -145,40 +140,26 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 				String[] templates = templateId.split(";");
 				for (String t : templates)
 				{
-					if (t.indexOf("noitfy_msg") >= 0)
+					if (t.indexOf("audit_msg") >= 0)
 					{
 						templateId = t.split(":")[1];
 					}
 				}
-				List<OrderVo> list = orderDao.selectOrderByLogicOrderId(order.getLogicOrderId(), false);
-				for (OrderVo o : list)
-				{
-					try
-					{
-						CampsVo campsVo = campsDao.selectByPrimaryKey(o.getCampsId());
-						TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
-								"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
-						data.push("first", "尊敬的客户 " + o.getAccountId());
-						data.push("orderId", o.getOrderId());
-						data.push("orderPrice", CommonUtil.formatBigDecimal(o.getPayPrice()));
-						data.push("orderStatus", "待审核");
-						data.push("productName", campsVo.getCampsName());
-						data.push("remark", "我们已收到您的订单，请耐心等待审核");
-						JSONObject result = MessageHelper.templateSend(data);
-						LOG.info("【wx push msg】推送微信消息结果 result=" + result);
-					}
-					catch (Exception e)
-					{
-						LOG.fatal("【wx push msg】推送微信消息异常 o=" + o, e);
-					}
-				}
-
+				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
+						"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
+				data.push("first", "我们已收到您的订单 ，请耐心等待审核！");
+				data.push("keyword1", "订单提交成功");
+				data.push("keyword2", "等待审核中");
+				data.push("remark", "如有问题咨询，可致电400-755-2255");
+				JSONObject result = MessageHelper.templateSend(data);
+				LOG.info("【wx push 支付消息】推送微信消息结果 result=" + result);
 			}
 
 		}
 		catch (Exception e)
 		{
-			LOG.fatal("微信发送消息失败，请检查，msg:" + e.getMessage(), e);
+			LOG.fatal("【wx push 支付消息】推送微信消息异常 order=" + order, e);
 		}
+
 	}
 }

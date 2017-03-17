@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>微信支付_Camplink</title>
 </head>
 <body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>

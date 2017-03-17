@@ -33,6 +33,22 @@ var load_message = $('#p-load');
 var load_height = load_message.height() * 2;
 $(function(){
     getMessage();
+    $('ul').on('click','li',function(){
+        var That=$(this);
+        var style=That.attr('class');
+        if(style=='weidu'){
+            login_post('/uc/markmessage.do','messageId='+That.attr('data-id'),'',function(data){
+                data=JSON.parse(data);
+                console.log(data);
+                user_success(data,function(){
+                    That.attr('class','yidu').find('p').css('white-space','normal');
+                    That.find('img').attr('src','img/ic_messages_yidu.png')
+                })
+            })
+        }else{
+            That.find('p').css('white-space','normal');
+        }
+    })
 })
 //滑动加载数据
 $(window).on('scroll', function () {
@@ -68,7 +84,7 @@ function renderMessage(data){
     if(len>0){
         for(var i=0;i<len;i++){
             var cName=resultList[i].readStatus==0?'weidu':'yidu';
-            arr.push('<li><img src="img/ic_messages_'+cName+'.png" alt=""/>');
+            arr.push('<li class="'+cName+'" data-id="'+resultList[i]['messageId']+'"><img src="img/ic_messages_'+cName+'.png" alt=""/>');
             arr.push('<div><h2>'+resultList[i]['messageTitle']+'</h2><p>'+resultList[i]['messageContent']+'</p></div></li>');
         }
         $('ul').append(arr.join(''));

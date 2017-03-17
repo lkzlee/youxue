@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div>
         <input type="file" accept="image/*" id="xdaTanFileImg" style="opacity:0; background: red;"/>
         <ul>
-            <li><i>头像</i><b><img src="" style="width:46px;vertical-align: top;" id="photoUrl"/></b></li>
+            <li><i>头像</i><b id="photoUrl"></b></li>
             <li><i>昵称</i><b id="nickName"></b></li>
             <li><i>性别</i><b id="gender"></b></li>
             <li><i>生日</i><b id="birthTime"></b></li>
@@ -52,7 +52,8 @@ $(function(){
 //   uploadImage($(this)[0])
 // })
 function renderUser(data){
-  $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
+  // $('#photoUrl').attr('src',handle_pic(data.photoUrl)[0]);
+  imgCenter($('#photoUrl'),handle_pic(data.photoUrl)[0]);
   $('#nickName').text(data.nickName);
   $('#loveCity').text(data.loveCity);
   $('#mobile').text(data.mobile);

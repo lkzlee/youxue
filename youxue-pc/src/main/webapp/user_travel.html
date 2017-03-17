@@ -172,9 +172,9 @@ function render_list(data){
         arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
     }else{
         for(var i=0;i<len;i++){
-            arr.push('<li class="clear">');
             var orderList=result[i]['orderList'];
             for(var j=0,jLen=orderList.length;j<jLen;j++){
+                arr.push('<li class="clear">');
                 arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'"></a>');
                 arr.push('<dl><dt><a href="/info.jsp?campusId='+orderList[j]['campsId']+'">'+orderList[j]['campsTitle']+'</a></dt>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
@@ -184,8 +184,8 @@ function render_list(data){
                 arr.push('</span><input type="button" name="" value="取消订单" class="right_margin0 j_BtnCancel" data-value="'+orderList[j]['orderId']+'"></div></div>');
                 // arr.push('<div><span>费用：<b>¥</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
                 // arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')
+                arr.push('</li>');
             }
-            arr.push('</li>');
         }
     }
     $('.ul_payment').html(arr.join(''));

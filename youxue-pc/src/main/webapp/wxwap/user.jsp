@@ -17,7 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
   <header>
       <img src="img/personal.png" style="width:100%" alt=""/>
-      <input type="file" accept="image/*" id="xdaTanFileImg" style="opacity:0; background: red;"/>
+      <input type="file" accept="image/*" id="xdaTanFileImg" style="float:left;opacity:0; background: red;height:0;"/>
       <div class="cf personal_head_part">
           <i class="fl" id="photoUrl"></i>
           <div class="fl personal_head_part_message">

@@ -322,7 +322,7 @@
     function render_propleInfo(obj,num){
         var arr=[];
         arr.push('<form class="person'+num+'">');
-        arr.push('<div class="width_content prople_info"><div class="head">出行人信息</div><ul class="cont"><li><span><i>*</i>出行人信息：</span>');
+        arr.push('<div class="width_content prople_info"><div class="head">出行人信息</div><ul class="cont"><li><span><i>*</i>出行人姓名：</span>');
         arr.push('<input type="text" class="input1 require" name="personName" required></li><li><span><i>*</i>出行人性别：</span><label><input type="radio" name="personSex" value="0" checked>');
         arr.push('<span>男</span></label><label><input type="radio" name="personSex" value="1"><span>女</span></label><span class="span3"><i>*</i>年龄：</span>');
         arr.push('<input type="text" class="input3 require" name="personAge"></li><li><span><i>*</i>联系电话：</span><input type="text" class="input4 require" name="personPhone">');

@@ -70,11 +70,7 @@ function uploadImage(obj) {
   }
 }
 function imgCenter(element,src){
-    var img=new Image();
-    img.src=src;
-    img.onload=function(){
-        var width=$(this)[0].width;
-        var height=$(this)[0].height;
+    imgWidthAndHeight(src,function(width,height){
         var obj={'background-image':'url("'+src+'")'};
         if(width>height){
             obj['background-size']="auto 100%";
@@ -82,6 +78,22 @@ function imgCenter(element,src){
             obj['background-size']='100% auto';
         }
         element.css(obj);
+    })
+}
+function imgAutoFull(element,src){
+    imgWidthAndHeight(src,function(width,height){
+        if(width<height){
+            element.css({'width':'100%','height':'auto'});
+        }
+    })
+}
+function imgWidthAndHeight(src,callback){
+    var img=new Image();
+    img.src=src;
+    img.onload=function(){
+        var width=$(this)[0].width;
+        var height=$(this)[0].height;
+        callback && callback(width,height);
     }
 }
 function saveImage(url,callback){

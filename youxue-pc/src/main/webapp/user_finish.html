@@ -140,7 +140,7 @@ $(function(){
     $('.ul_payment').on('click','.del_order',function(){
         if(window.confirm('是否确认删除订单？')){
             btn_disable($(this),true)
-            login_post('/uc/deleteorder.do','logicOrderId='+$(this).attr('data-id')+'','',function(data){
+            login_post('/uc/deleteorder.do','orderId='+$(this).attr('data-id')+'','',function(data){
                 data=JSON.parse(data);
                 user_success(data,function(){
                     get_orderList(public_obj,render_list)
@@ -166,27 +166,27 @@ function render_list(data){
         arr.push('<li class="noMessage_border">您目前没有任何消息</li>');
     }else{
         for(var i=0;i<len;i++){
-            arr.push('<li class="clear">');
             var orderList=result[i]['orderList'];
-            var price=0;
+            // var price=0;
             for(var j=0,jLen=orderList.length;j<jLen;j++){
-                price+=Number(orderList[j]['payPrice']);
+                arr.push('<li class="clear">');
+                // price+=Number(orderList[j]['payPrice']);
                 arr.push('<div class="list_li"><a href="/info.jsp?campusId='+orderList[j]['campsId']+'"><img src="'+handle_pic(orderList[j]['campsImages'])[0]+'"></a>');
                 arr.push('<dl><dt><a href="/info.jsp?campusId='+orderList[j]['campsId']+'">'+orderList[j]['campsTitle']+'</a></dt>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">出发日期：'+formatDate(orderList[j]['startDate'],0)+'</a></dd>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">预定日期：'+orderList[j]['creatTime']+'</a></dd></dl>');
                 arr.push('<div class="divRight_user">')
-                if(j+1==jLen){
-                    arr.push('<span>订单金额：¥'+price+'</span>')
-                    arr.push('<input type="button" name="" value="删除记录" class="del_order" data-id="'+orderList[j]['logicOrderId']+'">')
-                }else{
-                    arr.push('<span></span>')
-                }
+                // if(j+1==jLen){
+                    arr.push('<span>订单金额：¥'+orderList[j]['payPrice']+'</span>')
+                    arr.push('<input type="button" name="" value="删除记录" class="del_order" data-id="'+orderList[j]['orderId']+'">')
+                // }else{
+                    // arr.push('<span></span>')
+                // }
                 arr.push('<input type="button" value="再次购买" class="a2_payment again_pay" style="margin-right:0;" data-id="'+orderList[j]['campsId']+'">');
                 arr.push('</div></div>');
+                arr.push('</li>');
             }
-            arr.push('</li>');
         }
     }
     $('.ul_payment').html(arr.join(''));

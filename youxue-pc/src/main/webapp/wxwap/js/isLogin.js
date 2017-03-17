@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2016/12/20.
  */
+var accountInfo='';
 (function(){
     var iHtml=document.getElementsByTagName('html')[0];
     iHtml.style.display='none';
@@ -13,6 +14,7 @@
             // 此处放成功后执行的代码
             // iHtml.style.display='block';
             var data=JSON.parse(JSON.parse(response));
+            accountInfo=data;
             if(data.result==100 && isLoginHtml()){
                 window.location.href='/wxwap/user.jsp';
             }else if(data.result==-2  && !isLoginHtml()){

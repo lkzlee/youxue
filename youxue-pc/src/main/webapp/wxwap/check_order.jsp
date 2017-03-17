@@ -24,9 +24,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="section2" style="margin-top:0;">
                 <p>联系人信息</p>
                 <ul>
-                    <li><span>联系人姓名</span><input type="text" name="contactName" placeholder="真实姓名" class="require"/></li>
-                    <li><span>联系电话</span><input type="text" name="contactPhone" placeholder="输入手机号" class="require"/></li>
-                    <li><span>邮箱地址</span><input type="text" name="contactEmail" placeholder="点击输入" class="require"/></li>
+                    <li><span>联系人姓名</span><input type="text" name="contactName" placeholder="" class="require"/></li>
+                    <li><span>联系电话</span><input type="text" name="contactPhone" placeholder="" class="require"/></li>
+                    <li><span>邮箱地址</span><input type="text" name="contactEmail" placeholder="" class="require"/></li>
                 </ul>
             </div>
             <div class="section3">
@@ -85,6 +85,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                 }
                 $('header').html(htmlArr);
+                renderAccount();
+            }else{
+                return;
             }
             $(".section3>ul,.section4>ul").on("click",".common_choice",function(){
                 $(this).children("i").addClass("active").parent().parent().siblings("li").find("i").removeClass("active");
@@ -174,6 +177,48 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 },'','application/json; charset=utf-8')
             });
         });
+        window.onload=function(){
+            $('input[name=contactName]').focus(function(){
+                if($(this).val()===accountInfo.nickName){
+                    $(this).val('')
+                }
+            })
+            $('input[name=contactPhone]').focus(function(){
+                if($(this).val()===accountInfo.accountId){
+                    $(this).val('')
+                }
+            })
+            $('input[name=contactEmail]').focus(function(){
+                if($(this).val()===accountInfo.email){
+                    $(this).val('')
+                }
+            })
+            $('input[name=contactName]').blur(function(){
+                if($(this).val()==''){
+                    $(this).val(accountInfo.nickName)
+                }
+            })
+            $('input[name=contactPhone]').blur(function(){
+                if($(this).val()==''){
+                    $(this).val(accountInfo.accountId)
+                }
+            })
+            $('input[name=contactEmail]').blur(function(){
+                if($(this).val()==''){
+                    $(this).val(accountInfo.email)
+                }
+            })
+        }
+        function renderAccount(){
+            if(typeof(accountInfo)!=='object'){
+                setTimeout(renderAccount,100)
+            }else{
+                $('input[name=contactName]').val(accountInfo.nickName);
+                $('input[name=contactPhone]').val(accountInfo.accountId);
+                $('input[name=contactEmail]').val(accountInfo.email);
+            }
+            
+        }
         function render_orderInfo(obj){
             var arr=[];
             arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');

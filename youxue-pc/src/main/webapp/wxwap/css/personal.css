@@ -28,12 +28,13 @@ header{
     border-radius: 50%;
     overflow: hidden;
     background-size:100%;background-repeat:no-repeat;background-position:center center;
+    border: solid 2px rgba(255,255,255,0.5);
 }
 .personal_head_part_message{
     margin-left:22px;
     font-size: 18px;
     color: #FFFFFF;
-    margin-top:4px;
+    padding-top:10px;
 }
 .personal_head_part_message>p:last-child{
     font-size: 13px;

@@ -53,9 +53,13 @@ public class PowerConstant
 
 		MenuShow htxtGLMenu = new MenuShow(PowerTypeEnum.HTXTGL.getDesc(), "");
 		htxtGLMenu.getSonList().add(new MenuShow("管理员管理", "/sysUserList.do"));
-		htxtGLMenu.getSonList().add(new MenuShow("账户修改", "/sysUserModify.do"));
 		menuMap.put(PowerTypeEnum.HTXTGL.getValue(), Lists.newArrayList(htxtGLMenu));
 		allMenuList.add(htxtGLMenu);
+
+		MenuShow modifyMenu = new MenuShow(PowerTypeEnum.MODIFY.getDesc(), "");
+		modifyMenu.getSonList().add(new MenuShow("账户修改", "/sysUserModify.do"));
+		menuMap.put(PowerTypeEnum.MODIFY.getValue(), Lists.newArrayList(modifyMenu));
+		//		allMenuList.add(htxtGLMenu);
 
 		menuMap.put(PowerTypeEnum.ALL.getValue(), allMenuList);
 	}

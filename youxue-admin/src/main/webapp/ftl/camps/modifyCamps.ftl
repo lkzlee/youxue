@@ -111,10 +111,10 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <label class="col-lg-2 control-label">是否热门：</label>
                             <div class="col-lg-8">
                                 <label class="radio-inline">
-									<input type="radio" name="ifHot" value="0" <#if camps.ifHot== 0> selected="selected"</#if>/>否
+									<input type="radio" name="ifHot" value="0" <#if camps.ifHot== 0> checked</#if>/>否
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="ifHot" value="1" <#if camps.ifHot== 1> selected="selected"</#if>/>是
+									<input type="radio" name="ifHot" value="1" <#if camps.ifHot== 1> checked</#if>/>是
 								</label>
                             </div>
                         </div>
@@ -122,10 +122,10 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             <label class="col-lg-2 control-label">是否特价：</label>
                             <div class="col-lg-8">
                                 <label class="radio-inline">
-									<input type="radio" name="ifPrice" value="0" <#if camps.ifPrice== 0> selected="selected"</#if>/>否
+									<input type="radio" name="ifPrice" value="0" <#if camps.ifPrice== 0> checked</#if>/>否
 								</label>
 								<label class="radio-inline">
-									<input type="radio" name="ifPrice" value="1" <#if camps.ifPrice== 1> selected="selected"</#if>/>是
+									<input type="radio" name="ifPrice" value="1" <#if camps.ifPrice== 1> checked</#if>/>是
 								</label>
                             </div>
                         </div>

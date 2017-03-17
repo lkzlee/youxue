@@ -80,11 +80,12 @@ public class MailUtil
 			message.setSentDate(new Date());
 			message.saveChanges();
 			Transport.send(message);
+			log.info("send email successfully,emailTitle:" + emailTitle);
 
 		}
 		catch (Exception e)
 		{
-			log.error(e.getMessage(), e);
+			log.error("error during send email", e);
 		}
 	}
 

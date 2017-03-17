@@ -2,6 +2,7 @@ package com.youxue.pc.order.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +29,16 @@ import com.lkzlee.pay.utils.XstreamUtil;
 import com.lkzlee.pay.wx.bean.TemplateMsgDataDto;
 import com.lkzlee.pay.wx.helper.MessageHelper;
 import com.youxue.core.constant.RedisConstant;
+import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.LogicOrderDao;
+import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.PayTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.service.order.OrderService;
+import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.LogicOrderVo;
+import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.UserInfoVo;
 
 @Controller
@@ -45,6 +50,10 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 	private OrderService orderService;
 	@Resource
 	private LogicOrderDao logicOrderDao;
+	@Resource
+	private OrderDao orderDao;
+	@Resource
+	private CampsDao campsDao;
 	@Resource
 	private UserInfoDao userInfoDao;
 	@Autowired
@@ -133,16 +142,37 @@ public class WeiXinPayNotifyController extends WeiXinPayNotfiyController
 			{
 				String openId = userInfo.getOpenId();
 				String templateId = WeiXinConfigBean.getPayConfigValue(ConfigConstant.WEIXIN_MSG_TEMPLATE_ID);
-				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
-						"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
-				data.push("first", "尊敬的客户");
-				data.push("orderNo", order.getLogicOrderId());
-				data.push("orderStatus", "待审核");
-				data.push("time", DateUtil.formatDate(order.getPayTime(), DateUtil.DATE_FORMAT_YYYYMMDD_HHMMSS));
-				data.push("money", CommonUtil.formatBigDecimal(order.getTotalPayPrice()));
-				data.push("remark", "我们已收到您的订单，请耐心等待审核");
-				JSONObject result = MessageHelper.templateSend(data);
-				LOG.info("【wx push msg】推送微信消息结果 result=" + result);
+				String[] templates = templateId.split(";");
+				for (String t : templates)
+				{
+					if (t.indexOf("noitfy_msg") >= 0)
+					{
+						templateId = t.split(":")[1];
+					}
+				}
+				List<OrderVo> list = orderDao.selectOrderByLogicOrderId(order.getLogicOrderId(), false);
+				for (OrderVo o : list)
+				{
+					try
+					{
+						CampsVo campsVo = campsDao.selectByPrimaryKey(o.getCampsId());
+						TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
+								"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
+						data.push("first", "尊敬的客户 " + o.getAccountId());
+						data.push("orderId", o.getOrderId());
+						data.push("orderPrice", CommonUtil.formatBigDecimal(o.getPayPrice()));
+						data.push("orderStatus", "待审核");
+						data.push("productName", campsVo.getCampsName());
+						data.push("remark", "我们已收到您的订单，请耐心等待审核");
+						JSONObject result = MessageHelper.templateSend(data);
+						LOG.info("【wx push msg】推送微信消息结果 result=" + result);
+					}
+					catch (Exception e)
+					{
+						LOG.fatal("【wx push msg】推送微信消息异常 o=" + o, e);
+					}
+				}
+
 			}
 
 		}

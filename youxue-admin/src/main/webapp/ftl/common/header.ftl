@@ -13,7 +13,7 @@
 	<ul class="nav navbar-top-links navbar-right">
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-				<i class="fa fa-user fa-fw"></i> ${adminName!""}  <i class="fa fa-caret-down"></i>
+				<i class="fa fa-user fa-fw"></i> ${currentAdminUserName!""}  <i class="fa fa-caret-down"></i>
 			</a>
 			<ul class="dropdown-menu">
 				<li>

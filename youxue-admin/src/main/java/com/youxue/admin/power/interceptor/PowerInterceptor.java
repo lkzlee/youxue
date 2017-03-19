@@ -44,6 +44,7 @@ public class PowerInterceptor extends HandlerInterceptorAdapter
 			if (annotation == null)
 			{
 				//没有添加权限标示的方法 ,直接不做权限校验拦截
+				//现在系统没有添加注解，所以在这里直接返回
 				return true;
 			}
 			HttpSession session = request.getSession();
@@ -55,28 +56,32 @@ public class PowerInterceptor extends HandlerInterceptorAdapter
 				return false;
 			}
 			SysUser user = (SysUser) sysUser;
-			if (user.getRoleId() == PowerTypeEnum.ALL.getValue())
+			String[] roles = user.getRoleId().split(",");
+			for (String role : roles)
 			{
-				//超级管理员不做权限校验
-				return true;
-			}
-			if (menuList == null)
-			{
-				//				LOG.info("no login,adminName:" + adminName + ",menuList:" + menuList + ",powerIds:" + powerIds);
-				request.setAttribute(PowerConstant.ERROR_MSG, "您没有该操作的权限,请联系相应的人员");
-				request.getRequestDispatcher("/noPower.do").forward(request, response);
-				return false;
-			}
+				if (Integer.valueOf(role) == PowerTypeEnum.ALL.getValue())
+				{
+					//超级管理员不做权限校验
+					return true;
+				}
+				if (menuList == null)
+				{
+					//				LOG.info("no login,adminName:" + adminName + ",menuList:" + menuList + ",powerIds:" + powerIds);
+					request.setAttribute(PowerConstant.ERROR_MSG, "您没有该操作的权限,请联系相应的人员");
+					request.getRequestDispatcher("/noPower.do").forward(request, response);
+					return false;
+				}
 
-			if (user.getRoleId() == annotation.powerType())
-			{
-				return true;
-			}
-			else
-			{
-				request.setAttribute(PowerConstant.ERROR_MSG, "您没有该操作的权限,请联系相应的人员");
-				request.getRequestDispatcher("/noPower.do").forward(request, response);
-				return false;
+				if (Integer.valueOf(role) == annotation.powerType())
+				{
+					return true;
+				}
+				else
+				{
+					request.setAttribute(PowerConstant.ERROR_MSG, "您没有该操作的权限,请联系相应的人员");
+					request.getRequestDispatcher("/noPower.do").forward(request, response);
+					return false;
+				}
 			}
 		}
 		return false;

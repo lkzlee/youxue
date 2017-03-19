@@ -33,7 +33,7 @@ public class SysUser implements Serializable
 	/**手机号*/
 	private String tel;
 	/**角色ID*/
-	private int roleId;
+	private String roleId;//改为可以为多个角色， 如 ： 1,2,3
 
 	public int getUserId()
 	{
@@ -135,12 +135,12 @@ public class SysUser implements Serializable
 		this.tel = tel;
 	}
 
-	public int getRoleId()
+	public String getRoleId()
 	{
 		return roleId;
 	}
 
-	public void setRoleId(int roleId)
+	public void setRoleId(String roleId)
 	{
 		this.roleId = roleId;
 	}

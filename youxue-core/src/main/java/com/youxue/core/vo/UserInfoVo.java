@@ -44,6 +44,8 @@ public class UserInfoVo extends BaseResponseDto
 
 	private String openId;
 
+	private BigDecimal spend;
+
 	public String getAccountId()
 	{
 		return accountId;
@@ -212,5 +214,15 @@ public class UserInfoVo extends BaseResponseDto
 				+ ", createIp=" + createIp + ", createTime=" + createTime + ", birthTime=" + birthTime + ", credit="
 				+ credit + ", photoUrl=" + photoUrl + ", updateTime=" + updateTime + ", ifPop=" + ifPop + ", loveCity="
 				+ loveCity + ", unReads=" + unReads + ", openId=" + openId + "]";
+	}
+
+	public BigDecimal getSpend()
+	{
+		return spend;
+	}
+
+	public void setSpend(BigDecimal spend)
+	{
+		this.spend = spend;
 	}
 }

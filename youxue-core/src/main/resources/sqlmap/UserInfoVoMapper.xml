@@ -12,6 +12,7 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="birth_time" property="birthTime" jdbcType="TIMESTAMP" />
     <result column="credit" property="credit" jdbcType="DECIMAL" />
+    <result column="spend" property="spend" jdbcType="DECIMAL" />
     <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="love_city" property="loveCity" jdbcType="VARCHAR" />
@@ -19,7 +20,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     account_id, nick_name, email, email_active_status, mobile, gender, create_ip, create_time, 
-    birth_time, credit, photo_url, update_time,love_city,open_id
+    birth_time, credit, photo_url, update_time,love_city,open_id,spend
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -74,13 +75,14 @@
     insert into tb_user_info (account_id, nick_name, email, 
       email_active_status, mobile, gender, 
       create_ip, create_time, birth_time, 
-      credit, photo_url, update_time,love_city,open_id
+      credit, photo_url, update_time,love_city,open_id,spend
       )
     values (#{accountId,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{emailActiveStatus,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
       #{createIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{birthTime,jdbcType=TIMESTAMP}, 
       #{credit,jdbcType=DECIMAL}, #{photoUrl,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{loveCity,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}
+      #{loveCity,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
+      #{spend,jdbcType=DECIMAL}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.UserInfoVo" >
@@ -128,6 +130,9 @@
       <if test="openId != null" >
        open_id,
       </if>
+      <if test="spend != null" >
+       spend,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="accountId != null" >
@@ -171,6 +176,9 @@
       </if>
        <if test="openId != null" >
        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="spend != null" >
+       #{spend,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -216,6 +224,9 @@
        <if test="openId != null" >
        open_id = #{openId,jdbcType=VARCHAR},
       </if>
+      <if test="spend != null" >
+       #{spend,jdbcType=DECIMAL},
+      </if>
     </set>
     where account_id = #{accountId,jdbcType=VARCHAR}
   </update>
@@ -230,6 +241,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       birth_time = #{birthTime,jdbcType=TIMESTAMP},
       credit = #{credit,jdbcType=DECIMAL},
+      spend = #{spend,jdbcType=DECIMAL},
       photo_url = #{photoUrl,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       love_city = #{loveCity,jdbcType=VARCHAR},

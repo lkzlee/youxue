@@ -59,7 +59,7 @@ public class PowerConstant
 		MenuShow modifyMenu = new MenuShow(PowerTypeEnum.MODIFY.getDesc(), "");
 		modifyMenu.getSonList().add(new MenuShow("账户修改", "/sysUserModify.do"));
 		menuMap.put(PowerTypeEnum.MODIFY.getValue(), Lists.newArrayList(modifyMenu));
-		//		allMenuList.add(htxtGLMenu);
+		allMenuList.add(modifyMenu);
 
 		menuMap.put(PowerTypeEnum.ALL.getValue(), allMenuList);
 	}

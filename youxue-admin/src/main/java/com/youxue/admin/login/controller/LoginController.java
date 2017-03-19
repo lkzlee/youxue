@@ -20,7 +20,6 @@ import com.youxue.admin.constant.AdminConstant;
 import com.youxue.admin.login.service.SysUserLoginLogService;
 import com.youxue.admin.login.service.SysUserService;
 import com.youxue.admin.power.constant.PowerConstant;
-import com.youxue.admin.power.enums.PowerTypeEnum;
 import com.youxue.admin.power.vo.MenuShow;
 import com.youxue.core.util.NetUtil;
 import com.youxue.core.vo.SysUser;
@@ -125,8 +124,12 @@ public class LoginController
 			request.getSession().setAttribute(AdminConstant.CURRENT_USER, su);
 			request.getSession().setAttribute(AdminConstant.CURRENT_USER_NAME, su.getLoginName());
 			List<MenuShow> menuList = Lists.newLinkedList();
-			menuList.addAll(PowerConstant.menuMap.get(su.getRoleId()));
-			menuList.addAll(PowerConstant.menuMap.get(PowerTypeEnum.MODIFY.getValue()));
+			String[] roles = su.getRoleId().split(",");
+			for (String role : roles)
+			{
+				menuList.addAll(PowerConstant.menuMap.get(Integer.valueOf(role)));
+				//				menuList.addAll(PowerConstant.menuMap.get(PowerTypeEnum.MODIFY.getValue()));
+			}
 			request.getSession().setAttribute(AdminConstant.MENU_LIST, menuList);
 		}
 		catch (Exception e)

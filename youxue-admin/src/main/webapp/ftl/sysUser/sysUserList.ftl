@@ -60,7 +60,11 @@
 												</p>
 											</td>
 											<td>${adItem.tel!""}</td>
-											<td>${roleMap[adItem.roleId?string('0')]}</td>
+											<td>
+												<#list (adItem.roleId!'')?split(',') as t>
+													${roleMap[t]}&nbsp;
+												</#list>
+											</td>
 											<td>${adItem.createTime?string("yyyy-MM-dd HH:mm:ss")}</td>
 											<td>
 											<#if adItem.status=0>
@@ -109,7 +113,7 @@
 							<td>
 							<#list roleMap?keys as t>
 							       <label class="radio-inline">
-										<input type="radio" name="roleId" value="${t}"/>${roleMap[t]}
+										<input type="checkbox" name="roleId" value="${t}" />${roleMap[t]}
 									</label>
 							</#list>
 							</td>

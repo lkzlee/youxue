@@ -1,5 +1,7 @@
 package com.youxue.admin.order.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +23,12 @@ import com.lkzlee.pay.utils.DateUtil;
 import com.lkzlee.pay.wx.bean.TemplateMsgDataDto;
 import com.lkzlee.pay.wx.helper.MessageHelper;
 import com.youxue.admin.constant.ConstantMapUtil;
+import com.youxue.admin.order.controller.dto.OrderDetailInfoDto;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.enums.MessageEnum;
 import com.youxue.core.enums.PayTypeEnum;
@@ -31,7 +37,9 @@ import com.youxue.core.service.order.OrderService;
 import com.youxue.core.service.order.RefundService;
 import com.youxue.core.util.MailUtil;
 import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderDetailVo;
+import com.youxue.core.vo.OrderPersonVo;
 import com.youxue.core.vo.OrderVo;
 import com.youxue.core.vo.Page;
 import com.youxue.core.vo.UserInfoVo;
@@ -59,6 +67,65 @@ public class UserOrderController extends BaseController
 	private MailUtil mailUtil;
 	@Resource
 	private UserInfoDao userInfoDao;
+	@Resource
+	private OrderPersonDao orderPersonDao;
+	@Resource
+	private LogicOrderDao logicOrderDao;
+
+	/***
+	 * 个人订单详情
+	 * @param request
+	 * @param response
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(path = "/admin/orderdetail.do")
+	public String orderDetailInfo(HttpServletRequest request, HttpServletResponse response, String orderId,
+			ModelMap modelMap)
+	{
+		try
+		{
+			LOG.info("管理后台订单详情页,orderId=" + orderId);
+			if (StringUtils.isBlank(orderId))
+			{
+				modelMap.put("errorMessage", "参数非法");
+				return "/error";
+			}
+			OrderVo order = orderDao.selectByPrimaryKey(orderId, false);
+			if (order == null)
+			{
+				modelMap.put("errorMessage", "订单不存在");
+				return "/error";
+			}
+			CampsVo camps = campsDao.selectByPrimaryKey(order.getCampsId());
+			LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(order.getLogicOrderId(), false);
+			List<OrderPersonVo> list = orderPersonDao.getOrderPersonById(order.getOrderId());
+			OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, list);
+			modelMap.put("orderDetail", orderDetail);
+			modelMap.put("payTypeMap", ConstantMapUtil.payTypeMap);
+			return "/order/orderDetail";
+		}
+		catch (Exception e)
+		{
+			LOG.fatal("订单详情查询异常", e);
+			modelMap.put("errorMessage", "系统繁忙，请稍后");
+			return "/error";
+		}
+
+	}
+
+	private OrderDetailInfoDto buildOrderDetailInfo(OrderVo order, LogicOrderVo logicOrder, CampsVo camps,
+			List<OrderPersonVo> list)
+	{
+		OrderDetailInfoDto orderDto = new OrderDetailInfoDto();
+		orderDto.setPayType(logicOrder.getPayType());
+		BeanUtils.copyProperties(camps, orderDto);
+		BeanUtils.copyProperties(order, orderDto);
+		orderDto.setOrderPersonList(list);
+		orderDto.setResult(100);
+		orderDto.setResultDesc("查询成功");
+		return orderDto;
+	}
 
 	/***
 	 *  用户个人订单信息查询

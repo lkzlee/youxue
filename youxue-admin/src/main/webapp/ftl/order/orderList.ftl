@@ -83,7 +83,7 @@
 											<td>${adItem_index + 1}</td>
 											<td style=''>
 												<p>
-													${adItem.orderId!""}
+												<a href="/admin/orderdetail.do?orderId=${adItem.orderId}" target="_blank">	${adItem.orderId!""}</a>
 												</p>
 											</td>
 											<td style='background-color:${adItem.statusColor!""};'>${adItem.campsName!""}</td>
@@ -95,6 +95,7 @@
 											<td>${adItem.creatTime?string("yyyy-MM-dd HH:mm:ss")}</td>
 											<td>${orderStatusMap[adItem.status?string("0")]}</td>
 											<td>
+											
 											<#if adItem.status=1>
 											<a href="/admin/auditOrder.do?type=pass&orderId=${adItem.orderId}"><span>审核通过(待出行)</span></a> | 
 											<a href="/admin/auditOrder.do?type=fail&orderId=${adItem.orderId}"><span>拒绝(申请退款)</span></a>

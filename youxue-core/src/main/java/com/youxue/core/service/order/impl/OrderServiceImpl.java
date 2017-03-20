@@ -238,11 +238,6 @@ public class OrderServiceImpl implements OrderService
 			campsVo.setUpdateTime(DateUtil.getCurrentTimestamp());
 			campsDao.updateByPrimaryKeySelective(campsVo);
 		}
-
-		UserInfoVo user = userInfoDao.selectByPrimaryKey(logicOrderVo.getAccountId());
-		user.setSpend(logicOrderVo.getTotalPayPrice().add(user.getSpend()));
-		userInfoDao.updateByPrimaryKeySelective(user);
-
 		pushMsg(logicOrderVo);
 	}
 

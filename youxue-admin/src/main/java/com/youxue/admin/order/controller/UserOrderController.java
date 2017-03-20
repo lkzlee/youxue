@@ -1,5 +1,6 @@
 package com.youxue.admin.order.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -273,6 +274,10 @@ public class UserOrderController extends BaseController
 			else if (OrderVo.TO_OUT == order.getStatus())
 			{
 				order.setStatus(OrderVo.DONE);
+				UserInfoVo user = userInfoDao.selectByPrimaryKey(order.getAccountId());
+				BigDecimal spend = user.getSpend() == null ? BigDecimal.ZERO : user.getSpend();
+				user.setSpend(spend.add(order.getPayPrice()));
+				userInfoDao.updateByPrimaryKeySelective(user);
 			}
 			/***
 			 * 申请退款-->已退款,

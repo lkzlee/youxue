@@ -225,7 +225,7 @@
        open_id = #{openId,jdbcType=VARCHAR},
       </if>
       <if test="spend != null" >
-       #{spend,jdbcType=DECIMAL},
+       spend = #{spend,jdbcType=DECIMAL},
       </if>
     </set>
     where account_id = #{accountId,jdbcType=VARCHAR}

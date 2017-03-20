@@ -1,5 +1,6 @@
 package com.youxue.pc.task;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.dao.OrderDao;
+import com.youxue.core.dao.UserInfoDao;
 import com.youxue.core.vo.OrderVo;
+import com.youxue.core.vo.UserInfoVo;
 
 @Service
 public class OrderHandlerTask
@@ -23,6 +26,8 @@ public class OrderHandlerTask
 
 	@Resource
 	private OrderDao orderDao;
+	@Resource
+	private UserInfoDao userInfoDao;
 	private static final ExecutorService exec = Executors.newSingleThreadExecutor();
 
 	@PostConstruct
@@ -70,6 +75,10 @@ public class OrderHandlerTask
 							r.setStatus(OrderVo.DONE); //更改订单为已完成状态
 							r.setUpdateTime(DateUtil.getCurrentTimestamp());
 							orderDao.updateByPrimaryKeySelective(r);
+							UserInfoVo user = userInfoDao.selectByPrimaryKey(r.getAccountId());
+							BigDecimal spend = user.getSpend() == null ? BigDecimal.ZERO : user.getSpend();
+							user.setSpend(spend.add(r.getPayPrice()));
+							userInfoDao.updateByPrimaryKeySelective(user);
 						}
 					}
 					Thread.sleep(10l * 60 * 1000); //休息10分钟

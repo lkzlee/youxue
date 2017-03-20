@@ -163,17 +163,19 @@
             }
         })
         $('#delete').click(function(){
-            var checked=$('#message_ul input[type="checkbox"]:checked');
-            var childCheck=checked.serialize();
-            
-            login_post('/uc/delmessage.do',childCheck,'',function(data){
-                data=JSON.parse(data);
-                user_success(data,function(){
-                    checked.each(function(){
-                        $(this).closest('li').hide();
+            if(window.confirm('您确定要删除所选的消息吗？')){
+                var checked=$('#message_ul input[type="checkbox"]:checked');
+                var childCheck=checked.serialize();
+                
+                login_post('/uc/delmessage.do',childCheck,'',function(data){
+                    data=JSON.parse(data);
+                    user_success(data,function(){
+                        checked.each(function(){
+                            $(this).closest('li').hide();
+                        })
                     })
                 })
-            })
+            }
         })
         $('#signRead').click(function(){
             var checked=$('#message_ul input[type="checkbox"]:checked');

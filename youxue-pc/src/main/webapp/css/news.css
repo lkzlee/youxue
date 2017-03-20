@@ -25,6 +25,8 @@
 .news_content{}
 .news_content h1{line-height:50px;text-align:center;font-size:26px;}
 /*about*/
+.aboutImg_r{text-align:center;}
+.aboutImg_r img{max-width:100%;}
 .content.content_qg .left i{background: #eaeff5;}
 .content.content_qg .right{padding:13px 20px 14px 17px;width:907px;height:100%;background:#eaeff5;}
 .cont_right{padding:11px 22px 0;}

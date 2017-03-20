@@ -57,7 +57,7 @@
         <p><a href="#mainProduct">常见问题<i></i></a></p>
     </section>
     <section class="right">
-        <div style="text-align:center;"><img src="" alt="" class="j_img"></div>
+        <div class="aboutImg_r"><img src="" alt="" class="j_img"></div>
         <div class="cont_right">
             <div class="right_cont_right icon_circ j_content">
                 
@@ -86,20 +86,20 @@ $(function(){
 window.onhashchange=function(){
     getHash();
 }
-$('.j_list p').click(function(){
-    $(this).addClass('active').siblings('p').removeClass('active');
-})
 function getHash(){
+    $('.j_img').hide();
+    $('.j_content').hide();
     var url=window.location.hash;
     var param=url.split('#')[1];
+    $('.j_list a[href="#'+param+'"]').parent().addClass('active').siblings('p').removeClass('active');
     load_aboutInfo(param);
 }
 function load_aboutInfo(type){
     login_post('/aboutUs.do','type='+(type || 'aboutUs'),'',function(data){
         data=JSON.parse(data);
         if(data.descs){
-            $('.j_img').attr('src',handle_pic(data.imgurl)[0]);
-            $('.j_content').html(data.descs)
+            $('.j_img').attr('src',handle_pic(data.imgurl)[0]).show();
+            $('.j_content').html(data.descs).show();
         }            
     })
 }

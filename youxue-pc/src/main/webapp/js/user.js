@@ -392,28 +392,32 @@ function car(){
         checked_change_li(isChecked);
     });
     $('.a_del').click(function(){
-        var check=$('#car_ul input:checked');
-        if(check.length>0){
-            var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
-            login_post('/deleteCartItem.do',str,'',function(data){
-                user_success(JSON.parse(data),function(){
-                    check.each(function(){
-                        var childCheck=$(this);
-                        del_change($(this),childCheck)
+        if(window.confirm('您确定要删除吗？')){
+            var check=$('#car_ul input:checked');
+            if(check.length>0){
+                var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
+                login_post('/deleteCartItem.do',str,'',function(data){
+                    user_success(JSON.parse(data),function(){
+                        check.each(function(){
+                            var childCheck=$(this);
+                            del_change($(this),childCheck)
+                        })
                     })
                 })
-            })
+            }
         }
     })
     $('.child_del').click(function(){
-        var This=$(this);
-        var childCheck=$(this).siblings('input[name="campusId"]');
-        var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
-        login_post('/deleteCartItem.do','campusId='+value,'',function(data){
-            user_success(JSON.parse(data),function(){
-                del_change(This,childCheck);
+        if(window.confirm('您确定要删除吗？')){
+            var This=$(this);
+            var childCheck=$(this).siblings('input[name="campusId"]');
+            var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
+            login_post('/deleteCartItem.do','campusId='+value,'',function(data){
+                user_success(JSON.parse(data),function(){
+                    del_change(This,childCheck);
+                })
             })
-        })
+        }
     })
     //结算
     $('.checkout').click(function(){

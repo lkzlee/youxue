@@ -156,7 +156,7 @@ function render_list(data){
                     }
                     arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'" class="'+aPaddingBot+'">')
                     arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
-                    arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div>');
+                    arr.push('<div class="r_orderInfo"><p class="title">'+cutstr(orderList[j]['campsTitle'],42)+'</p><p class="order_number">数量 <span>1</span></p></div></div>');
                     arr.push('</a>')
                     if(j==jLen-1){
                         arr.push('<div class="order_pay_module cf"><p><i>费用: ¥</i><span>'+price.toFixed(2)+'</span></p><div class="order_pay_button cf">');
@@ -174,7 +174,7 @@ function render_list(data){
 
                     arr.push('<a href="/wxwap/order_info.jsp?orderId='+orderList[j]['orderId']+'">')
                     arr.push('<div class="cf order_intr"><div class="lImg"><img src="'+handle_pic(orderList[j].campsImages)[0]+'"/></div>');
-                    arr.push('<div class="r_orderInfo"><p class="title">'+orderList[j]['campsTitle']+'</p><p class="order_number">数量 <span>1</span></p></div></div>');
+                    arr.push('<div class="r_orderInfo"><p class="title">'+cutstr(orderList[j]['campsTitle'],42)+'</p><p class="order_number">数量 <span>1</span></p></div></div>');
                     arr.push('</a>')
                     arr.push('<div class="order_pay_module cf"><p><i>费用: ¥</i><span>'+orderList[j]['payPrice']+'</p><div class="order_pay_button cf">');
                     if(orderList[j]['status']==2||orderList[j]['status']==6||orderList[j]['status']==7){

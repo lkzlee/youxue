@@ -89,7 +89,7 @@ header ul li.active{
     /*background-color: #F9F9F9;*/
     height:90px;
 }
-.order_intr .r_orderInfo .title { height: 30px; overflow: hidden;font-size:14px;color: #717171; }
+.order_intr .r_orderInfo .title { height: 36px;line-height: 18px; overflow: hidden;font-size:14px;color: #717171; }
 .order_number{
     margin-top:17px;
     font-size: 12px;

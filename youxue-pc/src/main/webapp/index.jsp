@@ -78,7 +78,7 @@
             </div>
             <div class="border_hot"></div>
         </div>
-        <ul class="hot_list">
+        <ul class="hot_list clear">
 
         </ul>
     </div>
@@ -107,7 +107,7 @@
         <span class="span2">公司邮箱：chingoo@chingoo.cn</span>
     </div>
     <div class="div2_foot">
-        <p class="p1_foot">营联天下 版权所有</p>
+        <p class="p1_foot">营联世界 版权所有</p>
         <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
     </div>
 </section>
@@ -187,9 +187,9 @@ function CampsDetail(){
                 for(var i=0,len=obj.length;i<len;i++){
                     var liNo=(i+1)%3==0?'li3':'';
                     if(i==len-1){
-                        li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="/search.jsp">更多More</a></div></li>');
+                        li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><div><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"></div><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="/search.jsp">更多More</a></div></li>');
                     }else{
-                        li.push('<li class="'+liNo+'"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
+                        li.push('<li class="'+liNo+'"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><div><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"></div><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
                     }
                 }
                 subject_list.append(li.join(''));
@@ -197,7 +197,7 @@ function CampsDetail(){
             function str(val){
                 var arr=[];
                 arr.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
-                arr.push('<img src="'+handle_pic(val['campsImages'])[0]+'" alt=""><div class="clear">');
+                arr.push('<div class="hotImgs"><img src="'+handle_pic(val['campsImages'])[0]+'" alt=""></div><div class="clear">');
                 arr.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
                 arr.push('<p>'+cutstr(setContent(val['campsDesc']),100)+'</p></a></li>');
                 return arr.join('');

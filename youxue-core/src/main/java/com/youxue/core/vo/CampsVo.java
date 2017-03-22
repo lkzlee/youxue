@@ -2,6 +2,7 @@ package com.youxue.core.vo;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -77,6 +78,8 @@ public class CampsVo
 	private Date createTime;
 
 	private Date updateTime;
+
+	private List<CampsDetailVo> campsDetailList;
 
 	public String getDeadlineDateStr()
 	{
@@ -523,6 +526,16 @@ public class CampsVo
 	public void setTraceTitle(String traceTitle)
 	{
 		this.traceTitle = traceTitle;
+	}
+
+	public List<CampsDetailVo> getCampsDetailList()
+	{
+		return campsDetailList;
+	}
+
+	public void setCampsDetailList(List<CampsDetailVo> campsDetailList)
+	{
+		this.campsDetailList = campsDetailList;
 	}
 
 }

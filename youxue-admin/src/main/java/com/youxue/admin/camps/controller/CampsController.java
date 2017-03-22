@@ -1,5 +1,6 @@
 package com.youxue.admin.camps.controller;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,15 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.youxue.admin.constant.AdminBaseController;
 import com.youxue.core.constant.CommonConstant;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.dao.CommonDao;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.util.DateUtil;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CategoryVo;
 import com.youxue.core.vo.Page;
@@ -36,6 +38,8 @@ public class CampsController extends AdminBaseController
 	public static final int pageSize = 10;
 	@Autowired
 	private CampsDao campsDao;
+	@Autowired
+	private CampsDetailDao campsDetailDao;
 	@Autowired
 	private CatetoryDao categoryDao;
 	@Autowired
@@ -215,7 +219,7 @@ public class CampsController extends AdminBaseController
 
 	@RequestMapping(value = "doAddCamps.do")
 	public String doAddCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			CampsVo camps, @RequestParam String startDateStr, @RequestParam String deadlineDateStr)
+			CampsVo camps, String deadlineDateStr, String detailStartDates, String detailNames, String detailPrices)
 	{
 		try
 		{
@@ -224,15 +228,31 @@ public class CampsController extends AdminBaseController
 			{
 				return "redirect:/addCampsIndex.do";
 			}
-			if (StringUtils.isNotBlank(startDateStr))
+			String[] startDates = detailStartDates.split(",");
+			String[] names = detailNames.split(",");
+			String[] prices = detailPrices.split(",");
+			Date maxCampsStartDate = null;
+			List<CampsDetailVo> detailList = new LinkedList<CampsDetailVo>();
+			for (int i = 0; i < startDates.length; i++)
 			{
-				camps.setStartDate(DateUtil.formatToDate(startDateStr, "yyyy-MM-dd"));
+				CampsDetailVo detail = new CampsDetailVo();
+				detail.setDetailId(commonDao.getIdByPrefix(CommonConstant.CAMPS_DETAIL_ID_PREFIX));
+				detail.setDetailName(names[i]);
+				detail.setDetailPrice(new BigDecimal(prices[i]));
+				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
+				detail.setDetailStartTime(startDate);
+				detailList.add(detail);
+				if (maxCampsStartDate == null || startDate.after(maxCampsStartDate))
+				{
+					//更新最晚开始时间
+					maxCampsStartDate = startDate;
+				}
 			}
-			else
+			if (maxCampsStartDate == null)
 			{
 				LOG.error("营地开始时间为空,请检查");
 				modelMap.put("msg", "营地开始时间为空,请检查");
-				return "redirect:/addCampsIndex.do";
+				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
 			}
 			if (StringUtils.isNotBlank(deadlineDateStr))
 			{
@@ -261,6 +281,12 @@ public class CampsController extends AdminBaseController
 			}
 			camps.setCreateTime(new Date());
 			campsDao.insertSelective(camps);
+
+			for (CampsDetailVo detail : detailList)
+			{
+				detail.setCampsId(camps.getCampsId());
+				campsDetailDao.insert(detail);
+			}
 		}
 		catch (Exception e)
 		{
@@ -284,6 +310,8 @@ public class CampsController extends AdminBaseController
 			{
 				return "redirect:/campsList.do";
 			}
+			List<CampsDetailVo> campsDetailList = campsDetailDao.selectByCampsId(campsId);
+			camps.setCampsDetailList(campsDetailList);
 			modelMap.put("camps", camps);
 			fillCategoryListMap(modelMap);
 			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
@@ -299,7 +327,7 @@ public class CampsController extends AdminBaseController
 
 	@RequestMapping(value = "doModifyCamps.do")
 	public String doModifyCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			CampsVo camps)
+			CampsVo camps, String detailIds, String detailStartDates, String detailNames, String detailPrices)
 	{
 		try
 		{
@@ -316,16 +344,48 @@ public class CampsController extends AdminBaseController
 					camps.setCampsLocale(category.getCategoryName());
 				}
 			}
-			if (StringUtils.isNotBlank(camps.getStartDateStr()))
+			//			if (StringUtils.isNotBlank(camps.getStartDateStr()))
+			//			{
+			//				camps.setStartDate(DateUtil.formatToDate(camps.getStartDateStr(), "yyyy-MM-dd"));
+			//			}
+			//			else
+			//			{
+			//				LOG.error("营地开始时间为空,请检查");
+			//				modelMap.put("msg", "营地开始时间为空,请检查");
+			//				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
+			//			}
+			String[] ids = detailIds.split(",");
+			String[] startDates = detailStartDates.split(",");
+			String[] names = detailNames.split(",");
+			String[] prices = detailPrices.split(",");
+			Date minCampsStartDate = null;
+			for (int i = 0; i < ids.length; i++)
 			{
-				camps.setStartDate(DateUtil.formatToDate(camps.getStartDateStr(), "yyyy-MM-dd"));
+				if (StringUtils.isBlank(ids[i]))
+				{
+					continue;
+				}
+				CampsDetailVo detail = new CampsDetailVo();
+				detail.setDetailId(ids[i]);
+				detail.setDetailName(names[i]);
+				detail.setDetailPrice(new BigDecimal(prices[i]));
+				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
+				detail.setDetailStartTime(startDate);
+				campsDetailDao.updateByPrimaryKeySelective(detail);
+
+				if (minCampsStartDate == null || startDate.before(minCampsStartDate))
+				{
+					//更新最早时间
+					minCampsStartDate = startDate;
+				}
 			}
-			else
+			if (minCampsStartDate == null)
 			{
 				LOG.error("营地开始时间为空,请检查");
 				modelMap.put("msg", "营地开始时间为空,请检查");
 				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
 			}
+
 			if (StringUtils.isNotBlank(camps.getDeadlineDateStr()))
 			{
 				camps.setDeadlineDate(DateUtil.formatToDate(camps.getDeadlineDateStr(), "yyyy-MM-dd"));
@@ -336,7 +396,7 @@ public class CampsController extends AdminBaseController
 				modelMap.put("msg", "营地截止时间为空,请检查");
 				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
 			}
-			if (camps.getDeadlineDate().after(camps.getStartDate()))
+			if (camps.getDeadlineDate().after(minCampsStartDate))
 			{
 				LOG.error("营地截止时间晚于开始时间,请检查");
 				modelMap.put("msg", "营地截止时间晚于开始时间,请检查");

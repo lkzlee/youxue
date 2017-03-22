@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.youxue.core.dao.CampsDetailVoDao" >
+  <resultMap id="BaseResultMap" type="com.youxue.core.vo.CampsDetailVo" >
+    <id column="detail_id" property="detailId" jdbcType="VARCHAR" />
+    <result column="detail_name" property="detailName" jdbcType="VARCHAR" />
+    <result column="detail_price" property="detailPrice" jdbcType="DECIMAL" />
+    <result column="detail_start_time" property="detailStartTime" jdbcType="TIMESTAMP" />
+    <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    detail_id, detail_name, detail_price, detail_start_time, camps_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps_detail
+    where detail_id = #{detailId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_camps_detail
+    where detail_id = #{detailId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.youxue.core.vo.CampsDetailVo" >
+    insert into tb_camps_detail (detail_id, detail_name, detail_price, 
+      detail_start_time, camps_id)
+    values (#{detailId,jdbcType=VARCHAR}, #{detailName,jdbcType=VARCHAR}, #{detailPrice,jdbcType=DECIMAL}, 
+      #{detailStartTime,jdbcType=TIMESTAMP}, #{campsId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsDetailVo" >
+    insert into tb_camps_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="detailName != null" >
+        detail_name,
+      </if>
+      <if test="detailPrice != null" >
+        detail_price,
+      </if>
+      <if test="detailStartTime != null" >
+        detail_start_time,
+      </if>
+      <if test="campsId != null" >
+        camps_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailId != null" >
+        #{detailId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailName != null" >
+        #{detailName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailPrice != null" >
+        #{detailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="detailStartTime != null" >
+        #{detailStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsId != null" >
+        #{campsId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youxue.core.vo.CampsDetailVo" >
+    update tb_camps_detail
+    <set >
+      <if test="detailName != null" >
+        detail_name = #{detailName,jdbcType=VARCHAR},
+      </if>
+      <if test="detailPrice != null" >
+        detail_price = #{detailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="detailStartTime != null" >
+        detail_start_time = #{detailStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="campsId != null" >
+        camps_id = #{campsId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where detail_id = #{detailId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youxue.core.vo.CampsDetailVo" >
+    update tb_camps_detail
+    set detail_name = #{detailName,jdbcType=VARCHAR},
+      detail_price = #{detailPrice,jdbcType=DECIMAL},
+      detail_start_time = #{detailStartTime,jdbcType=TIMESTAMP},
+      camps_id = #{campsId,jdbcType=VARCHAR}
+    where detail_id = #{detailId,jdbcType=VARCHAR}
+  </update>
+</mapper>

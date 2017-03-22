@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
     <classPathEntry
-            location="D:\repository\mysql\mysql-connector-java\5.1.29\mysql-connector-java-5.1.29.jar"/>
+            location="F:\repository\mysql\mysql-connector-java\5.1.29\mysql-connector-java-5.1.29.jar"/>
     <context id="my" targetRuntime="MyBatis3">
         <commentGenerator>
             <property name="suppressDate" value="false"/>
@@ -17,18 +17,18 @@
                         password="123456"/>
 
         <javaModelGenerator targetPackage="com.youxue.core.vo"
-                            targetProject="D:\workspace_20161011\youxue\youxue-core\src\main\java\">
+                            targetProject="D:\workspace_20170213\youxue\youxue-core\src\main\java\">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="sqlmap"
-                         targetProject="D:\workspace_20161011\youxue\youxue-core\src\main\resources">
+                         targetProject="D:\workspace_20170213\youxue\youxue-core\src\main\resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <javaClientGenerator targetPackage="com.youxue.core.dao"
-                             targetProject="D:\workspace_20161011\youxue\youxue-core\src\main\java\" type="XMLMAPPER">
+                             targetProject="D:\workspace_20170213\youxue\youxue-core\src\main\java\" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 		<!-- <table tableName="tb_camps" domainObjectName="CampsVo"
@@ -122,7 +122,7 @@
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table> -->
-         <table tableName="tb_personal_tailor" domainObjectName="PersonTailorVo"
+         <table tableName="tb_camps_detail" domainObjectName="CampsDetailVo"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

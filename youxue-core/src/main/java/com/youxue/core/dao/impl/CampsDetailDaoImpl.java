@@ -54,4 +54,10 @@ public class CampsDetailDaoImpl extends BaseDao implements CampsDetailDao
 		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDetailDao.selectByCampsId", campsId);
 	}
 
+	@Override
+	public CampsDetailVo selectCheapestByCampsId(String campsId)
+	{
+		return this.sqlSessionTemplate.selectOne("com.youxue.core.dao.CampsDetailDao.selectCheapestByCampsId", campsId);
+	}
+
 }

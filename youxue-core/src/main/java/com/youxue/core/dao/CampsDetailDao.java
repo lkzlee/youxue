@@ -20,4 +20,10 @@ public interface CampsDetailDao
 	int updateByPrimaryKey(CampsDetailVo record);
 
 	List<CampsDetailVo> selectByCampsId(String campsId);
+
+	/**
+	 * @param campsId
+	 * @return 获取价格最低的那一条营地信息
+	 */
+	CampsDetailVo selectCheapestByCampsId(String campsId);
 }

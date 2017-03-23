@@ -25,7 +25,7 @@
 		<mapper resource="sqlmap/CampsCategoryRelationVoMapper.xml" />
 		<mapper resource="sqlmap/CampsTraceVoMapper.xml" />
 		<mapper resource="sqlmap/CampsVoMapper.xml" />
-		<mapper resource="sqlmap/CampsDetailVoMapper.xml.xml" />
+		<mapper resource="sqlmap/CampsDetailVoMapper.xml" />
 		<mapper resource="sqlmap/CatetoryVoMapper.xml" />
 		<mapper resource="sqlmap/CouponCodeVoMapper.xml" />
 		<mapper resource="sqlmap/LogicOrderVoMapper.xml" />

@@ -48,7 +48,7 @@ public class OrderVo implements Serializable
 	private String accountId;
 
 	private String logicOrderId;
-
+	private String detailId;
 	private String codeId;
 
 	private Integer status;
@@ -256,6 +256,16 @@ public class OrderVo implements Serializable
 				+ ", codeStatus=" + codeStatus + ", payPrice=" + payPrice + ", totalCount=" + totalCount
 				+ ", contactName=" + contactName + ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone
 				+ ", orderIp=" + orderIp + "]";
+	}
+
+	public String getDetailId()
+	{
+		return detailId;
+	}
+
+	public void setDetailId(String detailId)
+	{
+		this.detailId = detailId;
 	}
 
 }

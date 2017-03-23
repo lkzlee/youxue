@@ -105,7 +105,7 @@ public class PcAddOrderPayServiceImpl extends AbstAddOrderPayService
 			try
 			{
 				List<String> campsIdList = orderList.stream().map(t -> {
-					return t.getCampsId();
+					return t.getCampsId() + "," + t.getDetailId();
 				}).collect(Collectors.toList());
 				String[] ids = campsIdList.toArray(new String[0]);
 				jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + logicOrderVo.getAccountId(), ids);

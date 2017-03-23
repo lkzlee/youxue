@@ -11,6 +11,7 @@ import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
+	private String detailName;//不同开始时间的不同描述名字
 
 	public String getCampsId()
 	{
@@ -410,6 +411,16 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setTraceDesc(String traceDesc)
 	{
 		this.traceDesc = traceDesc;
+	}
+
+	public String getDetailName()
+	{
+		return detailName;
+	}
+
+	public void setDetailName(String detailName)
+	{
+		this.detailName = detailName;
 	}
 
 }

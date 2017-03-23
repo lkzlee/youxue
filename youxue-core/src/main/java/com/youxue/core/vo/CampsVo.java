@@ -17,7 +17,7 @@ public class CampsVo
 	private String campsName;
 
 	private String campsTitle;
-
+	private String detailName;//不同开始时间的不同描述名字
 	private String campsDesc;
 
 	private String campsImages;
@@ -546,6 +546,16 @@ public class CampsVo
 	public void setFadeDoneCount(Integer fadeDoneCount)
 	{
 		this.fadeDoneCount = fadeDoneCount;
+	}
+
+	public String getDetailName()
+	{
+		return detailName;
+	}
+
+	public void setDetailName(String detailName)
+	{
+		this.detailName = detailName;
 	}
 
 }

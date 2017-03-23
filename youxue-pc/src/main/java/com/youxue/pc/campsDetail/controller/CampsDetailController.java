@@ -67,6 +67,11 @@ public class CampsDetailController extends BaseController
 		{
 			LOG.error("error during campsDetail,campsId:" + campusId);
 		}
+		if (camps.getFadeDoneCount() != null && camps.getFadeDoneCount() > 0)
+		{
+			//如果假数据大于0，则按照假数据显示
+			campsDto.setDoneCount((long) camps.getFadeDoneCount());
+		}
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isNotBlank(accountId) && jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId))
 		{
@@ -115,6 +120,7 @@ public class CampsDetailController extends BaseController
 		System.out.println(list.toString());
 	}
 
+	@Deprecated
 	@RequestMapping("/getCampsListByCategory.do")
 	@ResponseBody
 	public String getCampsListByCategory(HttpServletRequest request, HttpServletResponse response,

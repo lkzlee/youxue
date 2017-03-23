@@ -7,7 +7,7 @@
     <result column="detail_price" property="detailPrice" jdbcType="DECIMAL" />
     <result column="detail_start_time" property="detailStartTime" jdbcType="TIMESTAMP" />
     <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
-    <result column="duration" property="duration" jdbcType="Integer" />
+    <result column="duration" property="duration" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     detail_id, detail_name, detail_price, detail_start_time, camps_id,duration
@@ -17,6 +17,12 @@
     <include refid="Base_Column_List" />
     from tb_camps_detail
     where detail_id = #{detailId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCheapestByCampsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_camps_detail
+    where camps_id = #{detailId,jdbcType=VARCHAR} order by detail_price limit 0,1
   </select>
   <select id="selectByCampsId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 

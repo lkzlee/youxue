@@ -4,17 +4,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.youxue.core.dao.BaseDao;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.enums.CategoryTypeEnum;
+import com.youxue.core.vo.CampsDetailKey;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.Page;
+import com.youxue.core.vo.ShopCartCampsDetail;
 
 @Repository
 public class CampsDaoImpl extends BaseDao implements CampsDao
 {
+
+	@Autowired
+	CampsDetailDao campsDetailDao;
 
 	@Override
 	public int deleteByPrimaryKey(String campsId)
@@ -56,8 +65,17 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 	public Page<CampsVo> selectByConditions(Map<String, Object> queryConditions, int pageNo, int pageSize)
 	{
 		Page<CampsVo> page = new Page<CampsVo>(pageNo, pageSize);
-		return getPageList(page, "com.youxue.core.dao.CampsDao.selectByConditions",
+		Page<CampsVo> campsList = getPageList(page, "com.youxue.core.dao.CampsDao.selectByConditions",
 				"com.youxue.core.dao.CampsDao.selectCountByConditions", queryConditions, sqlSessionTemplate);
+		if (CollectionUtils.isEmpty(campsList.getResultList()))
+		{
+			return campsList;
+		}
+		for (CampsVo camps : campsList.getResultList())
+		{
+			fillCampsDetails(camps);
+		}
+		return campsList;
 	}
 
 	@Override
@@ -77,9 +95,9 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 	}
 
 	@Override
-	public List<CampsVo> selectCampsListByIds(List<String> campsId)
+	public List<ShopCartCampsDetail> selectShopCartCampsListByIds(List<CampsDetailKey> keyList)
 	{
-		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectCampsListByIds", campsId);
+		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.selectShopCartCampsListByIds", keyList);
 	}
 
 	@Override
@@ -87,7 +105,17 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 	{
 		Map<String, Object> conditions = new HashMap<>();
 		conditions.put("ifCheckValid", ifCheckValid);
-		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getHotCampusList", conditions);
+		List<CampsVo> campsList = sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getHotCampusList",
+				conditions);
+		if (CollectionUtils.isEmpty(campsList))
+		{
+			return campsList;
+		}
+		for (CampsVo camps : campsList)
+		{
+			fillCampsDetails(camps);
+		}
+		return campsList;
 	}
 
 	@Override
@@ -95,6 +123,28 @@ public class CampsDaoImpl extends BaseDao implements CampsDao
 	{
 		Map<String, Object> conditions = new HashMap<>();
 		conditions.put("ifCheckValid", ifCheckValid);
-		return sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getPriceCampusList", conditions);
+		List<CampsVo> campsList = sqlSessionTemplate.selectList("com.youxue.core.dao.CampsDao.getPriceCampusList",
+				conditions);
+		if (CollectionUtils.isEmpty(campsList))
+		{
+			return campsList;
+		}
+		for (CampsVo camps : campsList)
+		{
+			fillCampsDetails(camps);
+		}
+		return campsList;
+	}
+
+	private void fillCampsDetails(CampsVo camps)
+	{
+		CampsDetailVo detail = campsDetailDao.selectCheapestByCampsId(camps.getCampsId());
+		if (detail != null)
+		{
+			camps.setTotalPrice(detail.getDetailPrice());
+			camps.setStartDate(detail.getDetailStartTime());
+			camps.setDurationTime(detail.getDuration());
+			camps.setDetailName(detail.getDetailName());
+		}
 	}
 }

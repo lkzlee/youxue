@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lkzlee.pay.wx.helper.MenuOperationHelper;
 import com.youxue.core.common.BaseController;
+import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 
 /**
@@ -32,6 +34,24 @@ public class TestController extends BaseController
 	CampsDao campsDao;
 	@Autowired
 	TxTestService txTestService;
+	@Autowired
+	JedisProxy jedisProxy;
+
+	@RequestMapping("/removeRedis.do")
+	@ResponseBody
+	public String removeRedis(HttpServletRequest request, HttpServletResponse response, String accountId)
+	{
+		try
+		{
+			jedisProxy.del(RedisConstant.SHOP_CART_KEY + accountId);
+		}
+		catch (Exception e)
+		{
+			LOG.info("error", e);
+			return "error";
+		}
+		return "success";
+	}
 
 	@RequestMapping("/test1.do")
 	@ResponseBody

@@ -1,4 +1,4 @@
-package com.youxue.pc.shopCart.dto;
+package com.youxue.core.vo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,11 +18,11 @@ public class ShopCartCampsDetail implements Serializable
 
 	private String campsImages;
 
-	private String realCampsImages;
-
 	private BigDecimal totalPrice;
 
 	private Integer cartBuyCount;
+	private String detailId;
+	private String detailName;
 
 	public String getCampsId()
 	{
@@ -64,16 +64,6 @@ public class ShopCartCampsDetail implements Serializable
 		this.campsImages = campsImages;
 	}
 
-	public String getRealCampsImages()
-	{
-		return realCampsImages;
-	}
-
-	public void setRealCampsImages(String realCampsImages)
-	{
-		this.realCampsImages = realCampsImages;
-	}
-
 	public BigDecimal getTotalPrice()
 	{
 		return totalPrice;
@@ -98,8 +88,28 @@ public class ShopCartCampsDetail implements Serializable
 	public String toString()
 	{
 		return "ShopCartCampsDetail [campsId=" + campsId + ", campsName=" + campsName + ", campsTitle=" + campsTitle
-				+ ", campsImages=" + campsImages + ", realCampsImages=" + realCampsImages + ", totalPrice="
-				+ totalPrice + ", cartBuyCount=" + cartBuyCount + "]";
+				+ ", campsImages=" + campsImages + ", totalPrice=" + totalPrice + ", cartBuyCount=" + cartBuyCount
+				+ "]";
+	}
+
+	public String getDetailId()
+	{
+		return detailId;
+	}
+
+	public void setDetailId(String detailId)
+	{
+		this.detailId = detailId;
+	}
+
+	public String getDetailName()
+	{
+		return detailName;
+	}
+
+	public void setDetailName(String detailName)
+	{
+		this.detailName = detailName;
 	}
 
 }

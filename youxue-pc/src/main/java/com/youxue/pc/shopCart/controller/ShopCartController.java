@@ -2,11 +2,11 @@ package com.youxue.pc.shopCart.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -24,9 +24,10 @@ import com.youxue.core.dao.CampsDao;
 import com.youxue.core.dao.CatetoryDao;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsDetailKey;
 import com.youxue.core.vo.CampsVo;
+import com.youxue.core.vo.ShopCartCampsDetail;
 import com.youxue.pc.shopCart.dto.AddShopCartDetailDto;
-import com.youxue.pc.shopCart.dto.ShopCartCampsDetail;
 import com.youxue.pc.shopCart.dto.ShopCartListlDto;
 
 /**
@@ -50,7 +51,9 @@ public class ShopCartController extends BaseController
 	 * @param request
 	 * @param response
 	 * 加入购物车详情页面
+	 * 废弃掉的接口
 	 */
+	@Deprecated
 	@RequestMapping("/shopCartDetail.do")
 	@ResponseBody
 	public String shopCartDetail(HttpServletRequest request, HttpServletResponse response, String campusId)
@@ -96,7 +99,8 @@ public class ShopCartController extends BaseController
 	 */
 	@RequestMapping("/addCartItem.do")
 	@ResponseBody
-	public String addCartItem(HttpServletRequest request, HttpServletResponse response, String campusId, Integer num)
+	public String addCartItem(HttpServletRequest request, HttpServletResponse response, String campusId,
+			String detailId, Integer num)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
@@ -111,7 +115,7 @@ public class ShopCartController extends BaseController
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
 		}
 
-		jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId, num);
+		jedisProxy.hset(RedisConstant.SHOP_CART_KEY + accountId, campusId + "," + detailId, num);
 		//		boolean exist = jedisProxy.hexist(RedisConstant.SHOP_CART_KEY + accountId, campusId);
 		//		if (exist)
 		//		{
@@ -131,7 +135,8 @@ public class ShopCartController extends BaseController
 
 	@RequestMapping("/deleteCartItem.do")
 	@ResponseBody
-	public String deleteCartItem(HttpServletRequest request, HttpServletResponse response, String[] campusId)
+	public String deleteCartItem(HttpServletRequest request, HttpServletResponse response, String[] campusId,
+			String[] detailId)
 	{
 		String accountId = getCurrentLoginUserName(request);
 		if (StringUtils.isBlank(accountId))
@@ -140,7 +145,12 @@ public class ShopCartController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数错误"));
 		}
-		jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, campusId);
+		String[] keys = new String[campusId.length];
+		for (int i = 0; i < campusId.length; i++)
+		{
+			keys[i] = campusId[i] + "," + detailId[i];
+		}
+		jedisProxy.hdel(RedisConstant.SHOP_CART_KEY + accountId, keys);
 		return JsonUtil.serialize(BaseResponseDto.successDto());
 	}
 
@@ -159,39 +169,33 @@ public class ShopCartController extends BaseController
 		Map<String, String> cartMap = jedisProxy.hgetAll(RedisConstant.SHOP_CART_KEY + accountId);
 		if (MapUtils.isEmpty(cartMap))
 		{
+			LOG.info("shop cart is empty,accountId:" + accountId);
 			ShopCartListlDto shopCartDto = new ShopCartListlDto();
 			shopCartDto.setShopCartList(Lists.newArrayList());
 			shopCartDto.setResult(100);
 			shopCartDto.setResultDesc("查询成功");
 			return JsonUtil.serialize(shopCartDto);
 		}
-		List<String> campsIdList = Lists.newArrayList();
-		campsIdList.addAll(cartMap.keySet());
-		List<CampsVo> campsList = campsDao.selectCampsListByIds(campsIdList);
-		if (CollectionUtils.isEmpty(campsList))
+		LOG.info("shop cart is :" + cartMap);
+		List<CampsDetailKey> keyList = Lists.newArrayList();
+		Set<String> redisKeys = cartMap.keySet();
+		for (String redisKey : redisKeys)
 		{
-			ShopCartListlDto shopCartDto = new ShopCartListlDto();
-			shopCartDto.setShopCartList(Lists.newArrayList());
-			shopCartDto.setResult(100);
-			shopCartDto.setResultDesc("查询成功");
-			return JsonUtil.serialize(shopCartDto);
+			String[] s = redisKey.split(",");
+			CampsDetailKey key = new CampsDetailKey();
+			key.setCampsId(s[0]);
+			key.setDetailId(s[1]);
+			keyList.add(key);
+		}
+
+		List<ShopCartCampsDetail> campsList = campsDao.selectShopCartCampsListByIds(keyList);
+		for (ShopCartCampsDetail camps : campsList)
+		{
+			String buyCount = cartMap.get(camps.getCampsId() + "," + camps.getDetailId());
+			camps.setCartBuyCount(Integer.parseInt(buyCount));
 		}
 		ShopCartListlDto shopCartDto = new ShopCartListlDto();
-		List<ShopCartCampsDetail> buyList = Lists.newArrayList();
-		for (CampsVo camps : campsList)
-		{
-			String buyCount = cartMap.get(camps.getCampsId());
-			ShopCartCampsDetail cartDto = new ShopCartCampsDetail();
-			cartDto.setCampsId(camps.getCampsId());
-			cartDto.setCampsImages(camps.getCampsImages());
-			cartDto.setCampsName(camps.getCampsName());
-			cartDto.setCampsTitle(camps.getCampsTitle());
-			cartDto.setRealCampsImages(camps.getRealCampsImages());
-			cartDto.setTotalPrice(camps.getTotalPrice());
-			cartDto.setCartBuyCount(Integer.parseInt(buyCount));
-			buyList.add(cartDto);
-		}
-		shopCartDto.setShopCartList(buyList);
+		shopCartDto.setShopCartList(campsList);
 		shopCartDto.setResult(100);
 		shopCartDto.setResultDesc("查询成功");
 		return JsonUtil.serialize(shopCartDto);

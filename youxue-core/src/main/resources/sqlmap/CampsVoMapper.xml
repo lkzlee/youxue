@@ -40,6 +40,15 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+   <resultMap id="ShopCartCampsDetailMap" type="com.youxue.core.vo.ShopCartCampsDetail" >
+    <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
+    <result column="camps_name" property="campsName" jdbcType="VARCHAR" />
+    <result column="camps_title" property="campsTitle" jdbcType="VARCHAR" />
+    <result column="camps_images" property="campsImages" jdbcType="VARCHAR" />
+    <result column="detail_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="detail_id" property="detailId" jdbcType="VARCHAR" />
+    <result column="detail_name" property="detailName" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
     camps_id, camps_name, camps_title, camps_desc, camps_images, camps_locale, oriented_people, 
     feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
@@ -61,6 +70,17 @@
     <foreach collection="list" item="ite" open="(" close=")" separator=",">
     #{ite,jdbcType=VARCHAR}
     </foreach>
+  </select>
+  <select id="selectShopCartCampsListByIds" resultMap="ShopCartCampsDetailMap" parameterType="java.util.List" >
+  	select * from(
+	  	<foreach collection="list"  item="ite" separator="union">
+		    select 
+		   		c.camps_id,c.camps_name,c.camps_title,c.camps_images,d.detail_price,d.detail_id,d.detail_name
+		    from tb_camps c,tb_camps_detail d
+		    where c.camps_id = d.camps_id and d.camps_id = #{ite.campsId,jdbcType=VARCHAR} 
+		    	and d.detail_id =  #{ite.detailId,jdbcType=VARCHAR}
+	    </foreach>
+    ) as sResult
   </select>
   <select id="getHotCampusList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
     select 

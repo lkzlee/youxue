@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.vo.ShopCartCampsDetail;
 
 public class ShopCartListlDto extends BaseResponseDto implements Serializable
 {

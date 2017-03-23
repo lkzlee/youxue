@@ -7,9 +7,10 @@
     <result column="detail_price" property="detailPrice" jdbcType="DECIMAL" />
     <result column="detail_start_time" property="detailStartTime" jdbcType="TIMESTAMP" />
     <result column="camps_id" property="campsId" jdbcType="VARCHAR" />
+    <result column="duration" property="duration" jdbcType="Integer" />
   </resultMap>
   <sql id="Base_Column_List" >
-    detail_id, detail_name, detail_price, detail_start_time, camps_id
+    detail_id, detail_name, detail_price, detail_start_time, camps_id,duration
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -29,9 +30,9 @@
   </delete>
   <insert id="insert" parameterType="com.youxue.core.vo.CampsDetailVo" >
     insert into tb_camps_detail (detail_id, detail_name, detail_price, 
-      detail_start_time, camps_id)
+      detail_start_time, camps_id,duration)
     values (#{detailId,jdbcType=VARCHAR}, #{detailName,jdbcType=VARCHAR}, #{detailPrice,jdbcType=DECIMAL}, 
-      #{detailStartTime,jdbcType=TIMESTAMP}, #{campsId,jdbcType=VARCHAR})
+      #{detailStartTime,jdbcType=TIMESTAMP}, #{campsId,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsDetailVo" >
     insert into tb_camps_detail
@@ -51,6 +52,9 @@
       <if test="campsId != null" >
         camps_id,
       </if>
+      <if test="duration != null" >
+        duration,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="detailId != null" >
@@ -67,6 +71,9 @@
       </if>
       <if test="campsId != null" >
         #{campsId,jdbcType=VARCHAR},
+      </if>
+      <if test="duration != null" >
+        #{duration,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -85,6 +92,9 @@
       <if test="campsId != null" >
         camps_id = #{campsId,jdbcType=VARCHAR},
       </if>
+      <if test="duration != null" >
+        duration = #{duration,jdbcType=INTEGER},
+      </if>
     </set>
     where detail_id = #{detailId,jdbcType=VARCHAR}
   </update>
@@ -93,7 +103,8 @@
     set detail_name = #{detailName,jdbcType=VARCHAR},
       detail_price = #{detailPrice,jdbcType=DECIMAL},
       detail_start_time = #{detailStartTime,jdbcType=TIMESTAMP},
-      camps_id = #{campsId,jdbcType=VARCHAR}
+      camps_id = #{campsId,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=INTEGER}
     where detail_id = #{detailId,jdbcType=VARCHAR}
   </update>
 </mapper>

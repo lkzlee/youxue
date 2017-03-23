@@ -78,7 +78,7 @@ public class CampsVo
 	private Date createTime;
 
 	private Date updateTime;
-
+	private Integer fadeDoneCount;//后台输入的总报名人次
 	private List<CampsDetailVo> campsDetailList;
 
 	public String getDeadlineDateStr()
@@ -536,6 +536,16 @@ public class CampsVo
 	public void setCampsDetailList(List<CampsDetailVo> campsDetailList)
 	{
 		this.campsDetailList = campsDetailList;
+	}
+
+	public Integer getFadeDoneCount()
+	{
+		return fadeDoneCount;
+	}
+
+	public void setFadeDoneCount(Integer fadeDoneCount)
+	{
+		this.fadeDoneCount = fadeDoneCount;
 	}
 
 }

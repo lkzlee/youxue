@@ -29,6 +29,7 @@
     <result column="questions" property="questions" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="if_hot" property="ifHot" jdbcType="INTEGER" />
+    <result column="fadeDoneCount" property="fadeDoneCount" jdbcType="INTEGER" />
     <result column="if_price" property="ifPrice" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
     <result column="done_count" property="doneCount" jdbcType="DECIMAL" />
@@ -44,7 +45,7 @@
     feature, service_support, course_desc, activity_desc, camps_food_desc, camps_foods_photos, 
     camps_hotel_desc, camps_hotel_photos, fee_desc, status, total_price, done_count, 
     deadline_date, departure_date, start_date, duration_time, create_time, update_time,camps_locale_id,camps_subject_id,
-    camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price,tracePhotos,traceDesc,questions,traceTitle
+    camps_duration_id,camps_departure_id,camps_price_id,if_hot,if_price,tracePhotos,traceDesc,questions,traceTitle,fadeDoneCount
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -270,7 +271,7 @@
       done_count, deadline_date, departure_date, 
       start_date, duration_time, create_time, 
       update_time,camps_locale_id,camps_subject_id,camps_duration_id,camps_departure_id,camps_price_id
-      ,if_hot,if_price,traceDesc,tracePhotos,questions,traceTitle)
+      ,if_hot,if_price,traceDesc,tracePhotos,questions,traceTitle,fadeDoneCount)
     values (#{campsId,jdbcType=VARCHAR}, #{campsName,jdbcType=VARCHAR}, #{campsTitle,jdbcType=VARCHAR}, 
       #{campsDesc,jdbcType=VARCHAR}, #{campsImages,jdbcType=VARCHAR}, #{campsLocale,jdbcType=VARCHAR}, 
       #{orientedPeople,jdbcType=VARCHAR}, #{feature,jdbcType=VARCHAR}, #{serviceSupport,jdbcType=VARCHAR}, 
@@ -282,7 +283,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{campsLocaleId,jdbcType=VARCHAR}, #{campsSubjectId,jdbcType=VARCHAR}
       , #{campsDurationId,jdbcType=VARCHAR}, #{campsDepartureId,jdbcType=VARCHAR}, #{campsPriceId,jdbcType=VARCHAR}
       , #{ifHot,jdbcType=INTEGER}, #{ifPrice,jdbcType=INTEGER}, #{traceDesc,jdbcType=VARCHAR}, #{tracePhotos,jdbcType=VARCHAR}
-      , #{questions,jdbcType=VARCHAR}, #{traceTitle,jdbcType=VARCHAR})
+      , #{questions,jdbcType=VARCHAR}, #{traceTitle,jdbcType=VARCHAR}, #{fadeDoneCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.CampsVo" >
     insert into tb_camps
@@ -615,6 +616,9 @@
       <if test="traceTitle != null" >
         traceTitle = #{traceTitle,jdbcType=VARCHAR},
       </if>
+      <if test="fadeDoneCount != null" >
+        fadeDoneCount = #{fadeDoneCount,jdbcType=INTEGER},
+      </if>
     </set>
     where camps_id = #{campsId,jdbcType=VARCHAR}
   </update>
@@ -646,6 +650,7 @@
       traceTitle = #{traceTitle,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       if_hot = #{ifHot,jdbcType=INTEGER},
+      fadeDoneCount = #{fadeDoneCount,jdbcType=INTEGER},
       if_price = #{ifPrice,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=DECIMAL},
       done_count = #{doneCount,jdbcType=DECIMAL},

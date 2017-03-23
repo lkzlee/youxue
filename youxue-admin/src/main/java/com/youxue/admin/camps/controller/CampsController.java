@@ -219,7 +219,8 @@ public class CampsController extends AdminBaseController
 
 	@RequestMapping(value = "doAddCamps.do")
 	public String doAddCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			CampsVo camps, String deadlineDateStr, String detailStartDates, String detailNames, String detailPrices)
+			CampsVo camps, String deadlineDateStr, String detailStartDates, String detailNames, String detailPrices,
+			String durations)
 	{
 		try
 		{
@@ -231,6 +232,7 @@ public class CampsController extends AdminBaseController
 			String[] startDates = detailStartDates.split(",");
 			String[] names = detailNames.split(",");
 			String[] prices = detailPrices.split(",");
+			String[] durationDays = durations.split(",");
 			Date maxCampsStartDate = null;
 			List<CampsDetailVo> detailList = new LinkedList<CampsDetailVo>();
 			for (int i = 0; i < startDates.length; i++)
@@ -241,6 +243,7 @@ public class CampsController extends AdminBaseController
 				detail.setDetailPrice(new BigDecimal(prices[i]));
 				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
 				detail.setDetailStartTime(startDate);
+				detail.setDuration(Integer.valueOf(durationDays[i]));
 				detailList.add(detail);
 				if (maxCampsStartDate == null || startDate.after(maxCampsStartDate))
 				{
@@ -327,7 +330,8 @@ public class CampsController extends AdminBaseController
 
 	@RequestMapping(value = "doModifyCamps.do")
 	public String doModifyCamps(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap,
-			CampsVo camps, String detailIds, String detailStartDates, String detailNames, String detailPrices)
+			CampsVo camps, String detailIds, String detailStartDates, String detailNames, String detailPrices,
+			String durations)
 	{
 		try
 		{
@@ -358,6 +362,7 @@ public class CampsController extends AdminBaseController
 			String[] startDates = detailStartDates.split(",");
 			String[] names = detailNames.split(",");
 			String[] prices = detailPrices.split(",");
+			String[] durationDays = durations.split(",");
 			Date minCampsStartDate = null;
 			for (int i = 0; i < ids.length; i++)
 			{
@@ -371,6 +376,7 @@ public class CampsController extends AdminBaseController
 				detail.setDetailPrice(new BigDecimal(prices[i]));
 				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
 				detail.setDetailStartTime(startDate);
+				detail.setDuration(Integer.valueOf(durationDays[i]));
 				campsDetailDao.updateByPrimaryKeySelective(detail);
 
 				if (minCampsStartDate == null || startDate.before(minCampsStartDate))

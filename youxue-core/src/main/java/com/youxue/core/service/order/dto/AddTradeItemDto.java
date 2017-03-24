@@ -21,6 +21,8 @@ public class AddTradeItemDto implements Serializable
 
 	private String campsId;
 
+	private String detailId;
+
 	private String totalCount;
 
 	private String contactName;
@@ -65,6 +67,16 @@ public class AddTradeItemDto implements Serializable
 	public void setCampsId(String campsId)
 	{
 		this.campsId = campsId;
+	}
+
+	public String getDetailId()
+	{
+		return detailId;
+	}
+
+	public void setDetailId(String detailId)
+	{
+		this.detailId = detailId;
 	}
 
 	public String getTotalCount()
@@ -140,10 +152,9 @@ public class AddTradeItemDto implements Serializable
 	@Override
 	public String toString()
 	{
-		return "AddTradeItemDto [codeId=" + codeId + ", campsId=" + campsId + ", totalCount=" + totalCount
-				+ ", contactName=" + contactName + ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone
-				+ ", totalPrice=" + totalPrice + ", codePrice=" + codePrice + ", payPrice=" + payPrice
-				+ ", outPersonList=" + Arrays.toString(outPersonList) + "]";
+		return "AddTradeItemDto [codeId=" + codeId + ", campsId=" + campsId + ", detailId=" + detailId
+				+ ", totalCount=" + totalCount + ", contactName=" + contactName + ", contactEmail=" + contactEmail
+				+ ", contactPhone=" + contactPhone + ", totalPrice=" + totalPrice + ", codePrice=" + codePrice
+				+ ", payPrice=" + payPrice + ", outPersonList=" + Arrays.toString(outPersonList) + "]";
 	}
-
 }

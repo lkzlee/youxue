@@ -26,6 +26,7 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.enums.PayTypeEnum;
@@ -35,6 +36,7 @@ import com.youxue.core.service.order.dto.AddOrderPersonDto;
 import com.youxue.core.service.order.dto.AddTradeItemDto;
 import com.youxue.core.service.order.dto.AddTradeOrderDto;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.core.vo.LogicOrderVo;
@@ -55,6 +57,8 @@ public class OrderController extends BaseController
 	private CouponCodeDao couponCodeDao;
 	@Resource
 	private CouponService couponService;
+	@Resource
+	private CampsDetailDao campsDetailDao;
 	@Resource
 	private CampsDao campsDao;
 	@Autowired
@@ -238,6 +242,7 @@ public class OrderController extends BaseController
 				throw new BusinessException("订单对应联系人的电话有误，请检查");
 			}
 			CampsVo camps = campsDao.selectByPrimaryKey(ote.getCampsId());
+			CampsDetailVo detailVo = campsDetailDao.selectByPrimaryKey(ote.getDetailId());
 			if (camps == null || camps.getStatus() != CampsVo.NORMAL)
 			{
 				throw new BusinessException("下单有误，对应的营地不存在或者营地未开放");
@@ -247,12 +252,17 @@ public class OrderController extends BaseController
 				throw new BusinessException("营地报名截止时间已过,截止时间:"
 						+ DateUtil.formatDate(camps.getDeadlineDate(), "yyyy-MM-dd"));
 			}
-			if (camps.getStartDate().before(new Date()))
+			if (detailVo == null)
 			{
-				throw new BusinessException("营地已经开始,开始时间:" + DateUtil.formatDate(camps.getStartDate(), "yyyy-MM-dd"));
+				throw new BusinessException("下单有误，对应的营地详情缺失，请联系相关客服");
+			}
+			if (detailVo.getDetailStartTime().before(new Date()))
+			{
+				throw new BusinessException("营地已经开始,开始时间:"
+						+ DateUtil.formatDate(detailVo.getDetailStartTime(), "yyyy-MM-dd"));
 			}
 			BigDecimal couponPrice = BigDecimal.ZERO;
-			BigDecimal totalPrice = camps.getTotalPrice().multiply(new BigDecimal(totalPerson));
+			BigDecimal totalPrice = detailVo.getDetailPrice().multiply(new BigDecimal(totalPerson));
 			codeId = ote.getCodeId();
 			if (!StringUtils.isBlank(ote.getCodeId()))
 			{

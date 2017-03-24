@@ -131,6 +131,7 @@ public class OrderServiceImpl implements OrderService
 	{
 		orderVo.setAccountId(accountId);
 		orderVo.setCampsId(ot.getCampsId());
+		orderVo.setDetailId(ot.getDetailId());
 		orderVo.setCodeId(ot.getCodeId());
 		orderVo.setCodePrice(ot.getCodePrice());
 		orderVo.setCodeStatus(OrderVo.UNPAY);

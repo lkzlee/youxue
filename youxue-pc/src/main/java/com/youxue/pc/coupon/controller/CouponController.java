@@ -18,9 +18,11 @@ import com.lkzlee.pay.exceptions.BusinessException;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.dao.CouponCodeDao;
 import com.youxue.core.service.coupon.CouponService;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.CouponCodeVo;
 import com.youxue.pc.coupon.dto.CalcPayAmountDto;
@@ -35,6 +37,8 @@ public class CouponController extends BaseController
 	@Resource
 	private CouponService couponService;
 	@Resource
+	private CampsDetailDao campsDetailDao;
+	@Resource
 	private CampsDao campsDao;
 
 	/***
@@ -46,7 +50,7 @@ public class CouponController extends BaseController
 	@RequestMapping("/coupon/getCouponByCode.do")
 	@ResponseBody
 	public String getCouponCode(HttpServletRequest request, HttpServletResponse response, String codeId,
-			String campsIds, String totalPersons)
+			String campsIds, String detailIds, String totalPersons)
 	{
 		try
 		{
@@ -59,11 +63,12 @@ public class CouponController extends BaseController
 				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
 			}
 			String[] campsIdArr = campsIds.split(",");
+			String[] detailIdArr = detailIds.split(",");
 			String[] totalsArr = totalPersons.split(",");
-			if (ArrayUtils.isEmpty(campsIdArr) || ArrayUtils.isEmpty(totalsArr))
+			if (ArrayUtils.isEmpty(campsIdArr) || ArrayUtils.isEmpty(totalsArr) || ArrayUtils.isEmpty(detailIdArr))
 				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("参数非法"));
-			if (campsIdArr.length != totalsArr.length)
-				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("选择的营地与出行人数不对应"));
+			if (campsIdArr.length != totalsArr.length || campsIdArr.length != detailIdArr.length)
+				return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("选择的营地、详情、出行人数不对应"));
 			BigDecimal codeAmount = BigDecimal.ZERO;
 			BigDecimal totalAmount = BigDecimal.ZERO;
 			if (StringUtils.isBlank(codeId))
@@ -72,8 +77,10 @@ public class CouponController extends BaseController
 				{
 					String campsId = campsIdArr[i];
 					String totalPerson = totalsArr[i].trim();
+					String detailId = detailIdArr[i].trim();
 					CampsVo campsVo = campsDao.selectByPrimaryKey(campsId);
-					totalAmount = totalAmount.add(campsVo.getTotalPrice().multiply(new BigDecimal(totalPerson)));
+					CampsDetailVo detailVo = campsDetailDao.selectByPrimaryKey(detailId);
+					totalAmount = totalAmount.add(detailVo.getDetailPrice().multiply(new BigDecimal(totalPerson)));
 				}
 			}
 			else
@@ -88,8 +95,10 @@ public class CouponController extends BaseController
 				{
 					String campsId = campsIdArr[i];
 					String totalPerson = totalsArr[i].trim();
+					String detailId = detailIdArr[i].trim();
 					CampsVo campsVo = campsDao.selectByPrimaryKey(campsId);
-					BigDecimal perTotalAmount = campsVo.getTotalPrice().multiply(new BigDecimal(totalPerson));
+					CampsDetailVo detailVo = campsDetailDao.selectByPrimaryKey(detailId);
+					BigDecimal perTotalAmount = detailVo.getDetailPrice().multiply(new BigDecimal(totalPerson));
 					totalAmount = totalAmount.add(perTotalAmount);
 					BigDecimal couponPrice = BigDecimal.ZERO;
 					try

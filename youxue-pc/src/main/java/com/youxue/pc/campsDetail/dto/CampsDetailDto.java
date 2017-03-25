@@ -7,11 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.youxue.core.common.BaseResponseDto;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsTraceVo;
 
 public class CampsDetailDto extends BaseResponseDto implements Serializable
 {
 	private String detailName;//不同开始时间的不同描述名字
+	private List<CampsDetailVo> campsDetailList;
 
 	public String getCampsId()
 	{
@@ -421,6 +423,16 @@ public class CampsDetailDto extends BaseResponseDto implements Serializable
 	public void setDetailName(String detailName)
 	{
 		this.detailName = detailName;
+	}
+
+	public List<CampsDetailVo> getCampsDetailList()
+	{
+		return campsDetailList;
+	}
+
+	public void setCampsDetailList(List<CampsDetailVo> campsDetailList)
+	{
+		this.campsDetailList = campsDetailList;
 	}
 
 }

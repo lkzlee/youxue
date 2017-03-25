@@ -1,10 +1,15 @@
 package com.youxue.core.vo;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CampsDetailVo
+public class CampsDetailVo implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String detailId;
 
 	private String detailName;

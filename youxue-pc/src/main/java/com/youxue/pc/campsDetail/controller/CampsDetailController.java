@@ -19,11 +19,13 @@ import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.constant.RedisConstant;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.dao.CampsTraceDao;
 import com.youxue.core.enums.CategoryTypeEnum;
 import com.youxue.core.redis.JedisProxy;
 import com.youxue.core.util.JsonUtil;
 import com.youxue.core.util.ReflectUtil;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.pc.campsDetail.dto.CampsDetailDto;
 import com.youxue.pc.shopCart.dto.CampsListDto;
@@ -40,6 +42,8 @@ public class CampsDetailController extends BaseController
 
 	@Autowired
 	CampsDao campsDao;
+	@Autowired
+	CampsDetailDao campsDetailDao;
 	@Autowired
 	CampsTraceDao campsTraceDao;
 	@Autowired
@@ -58,6 +62,7 @@ public class CampsDetailController extends BaseController
 		{
 			return JsonUtil.serialize(BaseResponseDto.errorDto().setDesc("对应的营地不存在"));
 		}
+		List<CampsDetailVo> detailList = campsDetailDao.selectByCampsId(campusId);
 		CampsDetailDto campsDto = new CampsDetailDto();
 		try
 		{
@@ -67,6 +72,7 @@ public class CampsDetailController extends BaseController
 		{
 			LOG.error("error during campsDetail,campsId:" + campusId);
 		}
+		campsDto.setCampsDetailList(detailList);
 		if (camps.getFadeDoneCount() != null && camps.getFadeDoneCount() > 0)
 		{
 			//如果假数据大于0，则按照假数据显示

@@ -19,6 +19,7 @@
     <result column="contact_email" property="contactEmail" jdbcType="VARCHAR" />
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
     <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
+    <result column="detail_id" property="detailId" jdbcType="VARCHAR" />
   </resultMap>
    <resultMap id="orderDetailVoMap" type="com.youxue.core.vo.OrderDetailVo" >
     <id column="order_id" property="orderId" jdbcType="VARCHAR" />
@@ -38,6 +39,7 @@
     <result column="contact_email" property="contactEmail" jdbcType="VARCHAR" />
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
     <result column="order_ip" property="orderIp" jdbcType="VARCHAR" />
+     <result column="detail_id" property="detailId" jdbcType="VARCHAR" />
     <!-- logicOrder -->
     <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
     <result column="pay_type" property="payType" jdbcType="INTEGER" />
@@ -86,7 +88,7 @@
   <sql id="Base_Column_List" >
     order_id, account_id, logic_order_id, code_id, status, creat_time, update_time, camps_id, 
     total_price, code_price, code_status, pay_price, total_count, contact_name, contact_email, 
-    contact_phone, order_ip
+    contact_phone, order_ip,detail_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.Map" >
     select 
@@ -216,7 +218,7 @@ select
        camps_id, total_price, 
       code_price, code_status, pay_price, 
       total_count, contact_name, contact_email, 
-      contact_phone, order_ip)
+      contact_phone, order_ip,detail_id)
     values 
     <foreach collection="list" item="ite" separator=",">
     (#{ite.orderId,jdbcType=VARCHAR}, #{ite.accountId,jdbcType=VARCHAR}, #{ite.logicOrderId,jdbcType=VARCHAR}, 
@@ -224,7 +226,7 @@ select
      #{ite.campsId,jdbcType=VARCHAR}, #{ite.totalPrice,jdbcType=DECIMAL}, 
       #{ite.codePrice,jdbcType=DECIMAL}, #{ite.codeStatus,jdbcType=INTEGER}, #{ite.payPrice,jdbcType=DECIMAL}, 
       #{ite.totalCount,jdbcType=INTEGER}, #{ite.contactName,jdbcType=VARCHAR}, #{ite.contactEmail,jdbcType=VARCHAR}, 
-      #{ite.contactPhone,jdbcType=VARCHAR}, #{ite.orderIp,jdbcType=VARCHAR})
+      #{ite.contactPhone,jdbcType=VARCHAR}, #{ite.orderIp,jdbcType=VARCHAR},#{ite.detailId,jdbcType=VARCHAR})
     </foreach>
   </insert>
   <insert id="insert" parameterType="com.youxue.core.vo.OrderVo" >
@@ -233,13 +235,13 @@ select
       update_time, camps_id, total_price, 
       code_price, code_status, pay_price, 
       total_count, contact_name, contact_email, 
-      contact_phone, order_ip)
+      contact_phone, order_ip,detail_id)
     values (#{orderId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{logicOrderId,jdbcType=VARCHAR}, 
       #{codeId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{campsId,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}, 
       #{codePrice,jdbcType=DECIMAL}, #{codeStatus,jdbcType=INTEGER}, #{payPrice,jdbcType=DECIMAL}, 
       #{totalCount,jdbcType=INTEGER}, #{contactName,jdbcType=VARCHAR}, #{contactEmail,jdbcType=VARCHAR}, 
-      #{contactPhone,jdbcType=VARCHAR}, #{orderIp,jdbcType=VARCHAR})
+      #{contactPhone,jdbcType=VARCHAR}, #{orderIp,jdbcType=VARCHAR},#{detailId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.youxue.core.vo.OrderVo" >
     insert into tb_order

@@ -267,7 +267,7 @@ public class CampsController extends AdminBaseController
 				modelMap.put("msg", "营地截止时间为空,请检查");
 				return "redirect:/addCampsIndex.do";
 			}
-			if (camps.getDeadlineDate().after(camps.getStartDate()))
+			if (camps.getDeadlineDate().after(maxCampsStartDate))
 			{
 				LOG.error("营地截止时间晚于开始时间,请检查");
 				modelMap.put("msg", "营地截止时间晚于开始时间,请检查");

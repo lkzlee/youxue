@@ -1,34 +1,35 @@
 $(function() {
 	//表单校验
-	$('form[data-validate=true]').bootstrapValidator({
-		excluded: [':disabled'],
-		fields: {
-			startDateStr: {
-				validators: {
-					// integer: {},
-					callback: {
-						message: '行程开始时间不能小于报名截止时间',
-						callback:function(value, validator,$field,options){
-							var end = $('input[name="deadlineDateStr"]').val();
-							return formatDate(value)>formatDate(end);
-						}
-					}
-				}
-			},
-			deadlineDateStr: {
-				validators: {
-					// integer: {},
-					callback: {
-						message: '报名截止时间不能大于行程开始时间',
-						callback:function(value, validator,$field,options){
-							var begin = $('input[name="startDateStr"]').val();
-							return formatDate(value)<formatDate(begin);
-						}
-					}
-				}
-			}
-		}
-	});
+	
+//	$('form[data-validate=true]').bootstrapValidator({
+//		excluded: [':disabled'],
+//		fields: {
+//			startDateStr: {
+//				validators: {
+//					// integer: {},
+//					callback: {
+//						message: '行程开始时间不能小于报名截止时间',
+//						callback:function(value, validator,$field,options){
+//							var end = $('input[name="deadlineDateStr"]').val();
+//							return formatDate(value)>formatDate(end);
+//						}
+//					}
+//				}
+//			},
+//			deadlineDateStr: {
+//				validators: {
+//					// integer: {},
+//					callback: {
+//						message: '报名截止时间不能大于行程开始时间',
+//						callback:function(value, validator,$field,options){
+//							var begin = $('input[name="startDateStr"]').val();
+//							return formatDate(value)<formatDate(begin);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	});
 
 	//日期组件
 	$('.form_datetime').each(function(i, elem) {

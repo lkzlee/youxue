@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.youxue.core.util.DateUtil;
+
 public class CampsDetailVo implements Serializable
 {
 	/**
@@ -17,7 +21,7 @@ public class CampsDetailVo implements Serializable
 	private BigDecimal detailPrice;
 
 	private Date detailStartTime;
-
+	private String detailStartTimeStr;
 	private String campsId;
 
 	private Integer duration;
@@ -80,5 +84,18 @@ public class CampsDetailVo implements Serializable
 	public void setDuration(Integer duration)
 	{
 		this.duration = duration;
+	}
+
+	public String getDetailStartTimeStr()
+	{
+		if (StringUtils.isNotBlank(detailStartTimeStr))
+			return detailStartTimeStr;
+		else
+			return DateUtil.formatDate(detailStartTime, "yyyy-MM-dd");
+	}
+
+	public void setDetailStartTimeStr(String detailStartTimeStr)
+	{
+		this.detailStartTimeStr = detailStartTimeStr;
 	}
 }

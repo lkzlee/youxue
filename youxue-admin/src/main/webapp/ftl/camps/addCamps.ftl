@@ -128,12 +128,21 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">行程开始时间：</label>
+                            <label class="col-lg-2 control-label">自定义字段：</label>
                             <div class="col-lg-8">
-                               <input class="form-control form_datetime" name="startDateStr"
-                                        type="text"  data-picker-position="top-right" data-bv-notempty="true"/>
+                            	<a href="javascript:void(0)">+</a>
+                                <div>
+                                    	行程开始时间<input class="detailStartDates form-control form_datetime" name="detailStartDates"
+                                        type="text"  data-picker-position="top-right" data-bv-notempty="true" style="display:inline-block;width:90%"/>
+                                    	<br>	
+                                    	行程短称<input class="form-control" name="detailNames"  type="text"   data-bv-notempty="true"/>
+                                    	行程价格<input class="form-control" name="detailPrices"  type="text"   data-bv-notempty="true"/>
+                                    	行程持续天数<input class="form-control" name="durations"  type="text"   data-bv-notempty="true"/>
+                                    	<hr>
+                                </div>
                             </div>
                         </div>
+                        <!--
 						<div class="form-group">
                             <label class="col-lg-2 control-label">持续天数：</label>
                             <div class="col-lg-8">
@@ -142,6 +151,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                         type="text" />
                             </div>
                         </div>
+                        -->
 						<div class="form-group">
                             <label class="col-lg-2 control-label">报名截止时间：</label>
                             <div class="col-lg-8">
@@ -149,7 +159,8 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                         type="text"  data-picker-position="top-right" data-bv-notempty="true"/>
                             </div>
                         </div>
-                  
+                  		
+                  		<!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">产品金额：</label>
                             <div class="col-lg-8">
@@ -157,6 +168,8 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                                         type="number"/>
                             </div>
                         </div>
+                        -->
+                        
 						<div class="form-group">
                             <label class="col-lg-2 control-label">产品特色：</label>
                             <div class="col-lg-8">

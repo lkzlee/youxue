@@ -1,35 +1,106 @@
 $(function() {
+	$('#Form').on('submit',function(){
+		var child=$('.zdy_child');
+		var bool=true;
+		child.each(function(){
+			if($(this).css('display')=='block'){
+				var input=$('input[type=text]',$(this));
+				input.each(function(){
+					if($(this).val().length<=1){
+						$(this).parent().addClass('has-error').siblings('.help-block').text('输入不正确');
+						bool=false;
+						return bool;
+					}else{
+						$(this).parent().removeClass('has-error').siblings('.help-block').text('');
+					}
+				})
+			}
+		})
+		return bool;
+	})
+	$('.detailStartDates').on('input',function(){
+		var val=$(this).val();
+		var endVal=$('.deadlineDateStr').val();
+		if(formatDate(endVal).length>0 && formatDate(val)<=formatDate(endVal)){
+			$(this).parent().addClass('has-error').siblings('.help-block').text('行程开始时间不能小于报名截止时间1');
+			// $(this).next().show().parent().addClass('has-error');
+			$('.addSubmit').addAttr('disabled');
+			return false;
+		}else{
+			$(this).parent().removeClass('has-error').siblings('.help-block').text('');
+			$('.addSubmit').removeAttr('disabled');
+			return true;
+		}
+	})
+	$('.deadlineDateStr').on('input',function(){
+		var Taht=$(this);
+		var endVal=$(this).val();
+		$('.detailStartDates').each(function(){
+			var val=$(this).val();
+			if(formatDate(val).length>0 && formatDate(val)<=formatDate(endVal)){
+				Taht.next().text('报名截止时间不能大于行程开始时间').parent().addClass('has-error');
+				$('.addSubmit').addAttr('disabled');
+				return false;
+			}else{
+				Taht.next().text('').parent().removeClass('has-error');
+				$('.addSubmit').removeAttr('disabled');
+				return true;
+			}
+		})
+	})
+	$('.number_input').on('input',function(){
+		var val=$(this).val();
+		if(isNaN(val)){
+			$(this).parent().addClass('has-error').siblings('.help-block').text('价格必须是数字');
+			$('.addSubmit').addAttr('disabled');
+			return false;
+		}else{
+			$(this).parent().removeClass('has-error').siblings('.help-block').text('');
+			$('.addSubmit').removeAttr('disabled');
+			return true;
+		}
+	})
+	$('.empty_input').on('input',function(){
+		var val=$(this).val();
+		if(val.length<=1){
+			$(this).parent().addClass('has-error').siblings('.help-block').text('行程短程长度过短');
+		}else{
+			$(this).parent().removeClass('has-error').siblings('.help-block').text('');
+		}
+	})
 	//表单校验
-	
-//	$('form[data-validate=true]').bootstrapValidator({
-//		excluded: [':disabled'],
-//		fields: {
-//			startDateStr: {
-//				validators: {
-//					// integer: {},
-//					callback: {
-//						message: '行程开始时间不能小于报名截止时间',
-//						callback:function(value, validator,$field,options){
-//							var end = $('input[name="deadlineDateStr"]').val();
-//							return formatDate(value)>formatDate(end);
-//						}
-//					}
-//				}
-//			},
-//			deadlineDateStr: {
-//				validators: {
-//					// integer: {},
-//					callback: {
-//						message: '报名截止时间不能大于行程开始时间',
-//						callback:function(value, validator,$field,options){
-//							var begin = $('input[name="startDateStr"]').val();
-//							return formatDate(value)<formatDate(begin);
-//						}
-//					}
-//				}
-//			}
-//		}
-//	});
+	$('.zdy_div').on('click','a',function(){
+		$(this).hide().parent().next().show();
+	})
+	$('form[data-validate=true]').bootstrapValidator({
+		excluded: [':disabled'],
+	// 	fields: {
+	// 		startDateStr: {
+	// 			validators: {
+	// 				// integer: {},
+	// 				callback: {
+	// 					message: '行程开始时间不能小于报名截止时间',
+	// 					callback:function(value, validator,$field,options){
+	// 						var end = $('input[name="deadlineDateStr"]').val();
+	// 						return formatDate(value)>formatDate(end);
+	// 					}
+	// 				}
+	// 			}
+	// 		},
+	// 		deadlineDateStr: {
+	// 			validators: {
+	// 				// integer: {},
+	// 				callback: {
+	// 					message: '报名截止时间不能大于行程开始时间',
+	// 					callback:function(value, validator,$field,options){
+	// 						var begin = $('input[name="startDateStr"]').val();
+	// 						return formatDate(value)<formatDate(begin);
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	});
 
 	//日期组件
 	$('.form_datetime').each(function(i, elem) {

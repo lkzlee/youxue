@@ -117,3 +117,6 @@ table{
 .form-group .collapsed .glyphicon-resize-full::before{
   content: "\e097";
 }
+.width90{display:inline-block;width:90%}
+.zdy_div div{margin-bottom:5px;}
+.zdy_div span{display:inline-block;width:100px;}

@@ -130,21 +130,42 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">自定义字段：</label>
+                            <label class="col-lg-2 control-label">报名截止时间：</label>
                             <div class="col-lg-8">
-                           		<a href="javascript:void(0)">+</a>
+                                <input class="deadlineDateStr form-control form_datetime" name="deadlineDateStr" value="${camps.deadlineDateStr!""}"
+                                        type="text" data-picker-position="top-right"/>
+                                <small data-bv-validator="callback" data-bv-validator-for="startDateStr" class="help-block" style="color: #a94442;"></small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">自定义字段：</label>
+                            <div class="col-lg-8 zdy_div">
                                 <#list camps.campsDetailList as t>
-	                                <div>
-	                                    	行程开始时间<input class="form-control form_datetime" name="detailStartDates" value="${t.detailStartTime?date}"
-	                                        type="text"  data-picker-position="top" style="display:inline-block;width:90%"/>
-	                                    	<br>	
-	                                    	行程短称<input class="form-control" name="detailNames"  type="text"  value="${t.detailName!""}" data-bv-notempty="true"/>
-	                                    	行程价格<input class="form-control" name="detailPrices"  type="number" value="${(t.detailPrice?c)!""}" data-bv-notempty="true"/>
-	                                    	行程持续天数<input class="form-control" name="durations"  type="number"  value="${(t.duration?c)!""}" data-bv-notempty="true"/>
-	                                    	<input class="form-control" type="hidden" name="detailIds"  type="text" value="${t.detailId!""}" data-bv-notempty="true"/>
-	                                    	<hr>
-	                                </div>
+                                <div class="zdy_child">
+                                    <a href="javascript:void(0)">+</a>
+                                    <div><span>行程开始时间</span><input class="width90 detailStartDates form-control form_datetime" name="detailStartDates" type="text"  data-picker-position="top-right" value="${t.detailStartTime?date}"/></div>
+                                    <div><span>行程短称</span><input class="empty_input width90 form-control" name="detailNames"  type="text"   value="${t.detailName!""}"/></div>
+                                    <div><span>行程价格</span><input class="number_input width90 form-control" name="detailPrices"  type="text"   value="${(t.detailPrice?c)!""}"/></div>
+                                    <div><span>行程持续天数</span><input class="number_input width90 form-control" name="durations"  type="text"   value="${(t.duration?c)!""}"/></div>
+                                    <input class="form-control" type="hidden" name="detailIds"  type="text" value="${t.detailId!""}"/>
+                                    <small data-bv-validator="callback" data-bv-validator-for="startDateStr" class="help-block" style="color: #a94442;"></small>
+                                    <hr>
+                                </div>
                                 </#list>
+                                <#if (camps.campsDetailList?size<5)>
+                                <#list 1..(5 - camps.campsDetailList?size) as t>
+                                    <div class="zdy_child" style="display:none;">
+                                        <a href="javascript:void(0)">+</a>
+                                        <div><span>行程开始时间</span><input class="width90 detailStartDates form-control form_datetime" name="detailStartDates" type="text"  data-picker-position="top-right" value=""/></div>
+                                        <div><span>行程短称</span><input class="empty_input width90 form-control" name="detailNames"  type="text"   value=""/></div>
+                                        <div><span>行程价格</span><input class="number_input width90 form-control" name="detailPrices"  type="text"   value=""/></div>
+                                        <div><span>行程持续天数</span><input class="number_input width90 form-control" name="durations"  type="text"   value=""/></div>
+                                        <input class="form-control" type="hidden" name="detailIds"  type="text" value=""/>
+                                        <small data-bv-validator="callback" data-bv-validator-for="startDateStr" class="help-block" style="color: #a94442;"></small>
+                                        <hr>
+                                    </div>
+                                </#list>
+                                </#if>
                             </div>
                         </div>
                         <!--
@@ -157,13 +178,6 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             </div>
                         </div>
                         -->
-						<div class="form-group">
-                            <label class="col-lg-2 control-label">报名截止时间：</label>
-                            <div class="col-lg-8">
-                                <input class="form-control form_datetime" name="deadlineDateStr" value="${camps.deadlineDateStr!""}"
-                                        type="text" data-bv-notempty="true" data-picker-position="top-right"/>
-                            </div>
-                        </div>
                   		<!--
                         <div class="form-group">
                             <label class="col-lg-2 control-label">产品金额：</label>
@@ -345,7 +359,7 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                         </div>
                         <div class="form-group">
                             <div class="col-lg-offset-4 col-lg-10">
-                                <button type="submit" class="btn btn-primary">提交</button>
+                                <button type="submit" class="btn btn-primary addSubmit">提交</button>
                             </div>
                        </div>
                     </form>

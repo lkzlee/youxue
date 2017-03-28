@@ -92,8 +92,11 @@ ul.on('touchstart','.choice_goods',function(event){
 })
 ul.on('click','.child_del',function(){
     var This=$(this);
-    var value=$(this).attr('data-id');
-    login_post('/deleteCartItem.do','campusId='+value,'',function(data){
+    var obj={
+        detailId:$(this).attr('data-detailid'),
+        campusId:$(this).attr('data-campusid')
+    }
+    login_post('/deleteCartItem.do',obj,'',function(data){
         user_success(JSON.parse(data),function(){
             getCar();
         })
@@ -119,13 +122,14 @@ $('#j_btnCheck').on('click',function(){
         arr.push($('.j_money_car').text());
         checks.each(function(){
             var parent=$(this).parents('li.cf');
-            var id=parent.find('.cart_edit_choice').attr('data-id');
+            var campusId=parent.find('.cart_edit_choice').attr('data-campusId');
+            var detailId=parent.find('.cart_edit_choice').attr('data-detailId');
             var src=parent.find('img').attr('src');
             var title=parent.find('.title').text();
             var price=Number(parent.find('.j_price').text());
             var num=Number(parent.find('.j_numberSpan').text());
             var xj_price=price*num;
-            arr.push([id,src,title,price,num,xj_price].join('$$'));
+            arr.push([campusId,detailId,src,title,price,num,xj_price].join('$$'));
         });
         auto_submit('/wxwap/check_order.jsp',{'orderList':arr},'post');
     }
@@ -195,9 +199,9 @@ function renderCar(data){
             // arr.push('<a href="camp_details.jsp?campusId='+source[i].campsId+'">');
             arr.push('<div class="lImg"><img src="'+handle_pic(source[i].campsImages)[0]+'"/></div><div class="js_calc_width"><p class="title">'+source[i].campsTitle+'</p><p class="price">价格 ¥ <span class="j_price">'+source[i].totalPrice+'</span></p></div>');
             // arr.push('</a>');
-            arr.push('<button class="child_del" data-id="'+source[i].campsId+'">删除</button></div></div></div>');
+            arr.push('<button class="child_del" data-detailId="'+source[i].detailId+'" data-campusId="'+source[i].campsId+'">删除</button></div></div></div>');
             arr.push('<div class="cf cart_edit"><p>数量<span class="j_numberSpan">'+source[i].cartBuyCount+'</span></p><div class="cart_edit_number hidden_active"><span class="sub_button"></span>');
-            arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice" data-id="'+source[i]['campsId']+'">编辑</div></div></li>');
+            arr.push('<input class="j_number" type="number" value="'+source[i].cartBuyCount+'"><span class="sum_button"></span></div><div class="cart_edit_choice" data-detailId="'+source[i].detailId+'" data-campusId="'+source[i].campsId+'">编辑</div></div></li>');
         }
         $('ul').html(arr.join(''));
     }

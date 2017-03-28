@@ -31,19 +31,36 @@ function load_render(data){
     login_post('/campsDetail.do',data,'',function(data){
         data=JSON.parse(data);
         // data.campsImages='a,b,c,d';
-        // console.log(data);
         success(data,function(){
             console.log(data);
-            $('.createTime').text(data.createTime)
             $('.title').text(data.campsTitle);
             $('title').prepend(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
-            $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(formatDate(data.deadlineDate,0));
-            $('.totalPrice').text(data.totalPrice);
             $('.feature').text(data.feature);
             $('.shopCartCount').val(data.shopCartCount || 1);
             $('.doneCount').text(data.doneCount);
+            $('.campsLocale').text(data.campsLocale);
+            $('.campsDesc').html(data.campsDesc);
+            $('.courseDesc').html(data.courseDesc);
+            $('.activityDesc').html(data.activityDesc);
+            $('.campsFoodDesc').html(data.campsFoodDesc);
+            $('.campsHotelDesc').html(data.campsHotelDesc);
+            $('.traces').html(data.traceDesc);
+            $('.feeDesc').html(data.feeDesc);
+            $('.questions').html(data.questions);
+            if(data.campsDetailList.length>0){
+                var arr=[];
+                for(var i=0,len=data.campsDetailList.length;i<len;i++){
+                    arr.push('<span data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i])+'<i></i></span>');
+                    if(i==0){
+                        $('.createTime').html(arr.join(''))
+                    }
+                }
+                $('.startTime').html(arr.join(''));
+                $('.totalPrice').text(data.campsDetailList[0]['detailPrice']);
+                $('.durationTime').text(data.campsDetailList[0]['duration']);
+            }
             if(data.serviceSupport){
                 var arr=handle_pic(data.serviceSupport);
                 var str='';
@@ -64,11 +81,6 @@ function load_render(data){
                 $('.img_list').html(str);
                 $('#yingdi_list').html(str);
             }
-            $('.campsLocale').text(data.campsLocale);
-            $('.campsDesc').html(data.campsDesc);
-            $('.courseDesc').html(data.courseDesc);
-            $('.activityDesc').html(data.activityDesc);
-            $('.campsFoodDesc').html(data.campsFoodDesc);
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
@@ -77,7 +89,6 @@ function load_render(data){
                 }
                 $('.campsFoodsPhotos').html(str);
             }
-            $('.campsHotelDesc').html(data.campsHotelDesc);
             if(data.campsHotelPhotos){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
@@ -86,7 +97,6 @@ function load_render(data){
                 }
                 $('.campsHotelPhotos').html(str);
             }
-            $('.traces').html(data.traceDesc);
             // var traces=data.traces;
             // if(traces.length>0){
             //     var arr=[];
@@ -96,11 +106,27 @@ function load_render(data){
             //     }
             //     $('.traces').html(arr.join(''));
             // }
-            $('.feeDesc').html(data.feeDesc);
-            $('.questions').html(data.questions);
+            date_select(data.campsDetailList);
             yingdi_pic();
             tab_pic();
         })
+    })
+}
+// 根据持续天数设置时间范围
+function getDurationSetDate(detailList){
+    var now = detailList['detailStartTime']?new Date(detailList['detailStartTime']):new Date();
+    var nowTime = now.getTime() ;
+    var duration = detailList['duration']*24*60*60*1000;
+    return formatDate(nowTime+duration,0);
+}
+//时间范围选择时间
+function date_select(detailList){
+    $('.startTime span').click(function(){
+        var index=$(this).index();
+        $('.totalPrice').text(detailList[index]['detailPrice']);
+        $('.durationTime').text(detailList[index]['duration']);
+        $('.createTime').html($(this).text())
+        $(this).addClass('selected').siblings().removeClass('selected');
     })
 }
 function yingdi_pic(){

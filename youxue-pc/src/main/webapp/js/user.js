@@ -126,7 +126,7 @@ function logo_user(callback){
         login_post('login.do',data,'',successFn);
         function successFn(json_data){
             var data=JSON.parse(json_data);
-            console.log(data)
+            // console.log(data)
             if(data.result==100){
                 callback && callback();
             }else{
@@ -395,8 +395,15 @@ function car(){
         if(window.confirm('您确定要删除吗？')){
             var check=$('#car_ul input:checked');
             if(check.length>0){
-                var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
-                login_post('/deleteCartItem.do',str,'',function(data){
+                var dataArr=[];
+                check.each(function(){
+                    dataArr.push($.param({
+                        'campusId':$(this).attr('data-campusId'),
+                        'detailId':$(this).attr('data-detailId')
+                    }))
+                })
+                // var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
+                login_post('/deleteCartItem.do',dataArr.join(','),'',function(data){
                     user_success(JSON.parse(data),function(){
                         check.each(function(){
                             var childCheck=$(this);
@@ -411,8 +418,11 @@ function car(){
         if(window.confirm('您确定要删除吗？')){
             var This=$(this);
             var childCheck=$(this).siblings('input[name="campusId"]');
-            var value=childCheck.prop('value');//要删除的ID-//发给服务端执行的，服务端返回成功后，执行下边代码
-            login_post('/deleteCartItem.do','campusId='+value,'',function(data){
+            var data={
+                'campusId':childCheck.attr('data-campusId'),
+                'detailId':childCheck.attr('data-detailId')
+            };
+            login_post('/deleteCartItem.do',data,'',function(data){
                 user_success(JSON.parse(data),function(){
                     del_change(This,childCheck);
                 })
@@ -427,7 +437,7 @@ function car(){
             arr.push(moneyTotal);
             check.each(function(){
                 var title=$(this).siblings('.yingdi_title');
-                arr.push([$(this).attr('value'),title.children('img').attr('src'),title.children('span').text(),Number($(this).siblings('.span4').text()),Number($(this).siblings('.num_span_car').text()),Number($(this).siblings('.money_span_car').text())].join('$$'));
+                arr.push([$(this).attr('data-campusid'),$(this).attr('data-detailid'),title.children('img').attr('src'),title.children('span').text(),Number($(this).siblings('.span4').text()),Number($(this).siblings('.num_span_car').text()),Number($(this).siblings('.money_span_car').text())].join('$$'));
             });
             auto_submit('/user_checkout.jsp',{'orderList':arr},'post');
         }

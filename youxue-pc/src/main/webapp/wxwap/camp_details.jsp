@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="camp_details_generalize">
         <h2 class="title"></h2>
         <ul class="travel_feature">
-            <li>出发时间<span class="active startDate"></span></li>
+            <li><label style="line-height: 21px;">营地时间</label><span class="active startDate"><label class="selected">2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label></span></li>
             <li>行程周期<span class="durationTime"></span>天</li>
             <li>产品特色<span class="feature"></span></li>
         </ul>
@@ -44,9 +44,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div>
                 <table style="width:100%;">
                     <caption style="text-align: left;padding-left:3px;">营地</caption>
-                    <tr><td>时间 :</td><td><label class="startDate"></label></td></tr>
+                    <tr><td>时间 :</td><td><label class="startDate1"></label></td></tr>
                     <tr><td>地点 :</td><td><label class="campsLocale"></label></td></tr>
-                    <tr><td>周期 :</td><td><label class="durationTime"></lable>天</td></tr>
+                    <tr><td>周期 :</td><td><label class="durationTime"></label>天</td></tr>
                     <tr><td>简介 :</td><td class="campsDesc"></td></tr>
                 </table>
             </div>
@@ -152,6 +152,11 @@ $(function() {
     })
 });
 function addCarFn(element,location){
+    data_car['detailId']=$('.startDate .selected').attr('data-id');
+    if(!data_car['detailId']){
+        alert('请选择营地时间');
+        return false;
+    }
     setBtnDisabled(element,false)
     data_car['num']=1;
     login_post('/addCartItem.do',data_car,'',function(data){
@@ -173,20 +178,37 @@ function load_render(data){
         //虚拟数据
         // data.campsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
         // data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
-        console.log(data);
+        // console.log(data);
         success(data,function(){
             $('.title').text(data.campsTitle);
             $('title').prepend(data.campsTitle);
-            $('.createTime').text(data.createTime);
-            $('.startDate').text(formatDate(data.startDate,0));
             $('.orientedPeople').text(data.orientedPeople);
-            $('.durationTime').text(data.durationTime);
             $('.deadlineDate').text(data.deadlineDate);
-            $('.totalPrice').text(data.totalPrice);
             $('.feature').text(data.feature);
             $('.shopCartCount').val(data.shopCartCount || 1);
             $('.doneCount').text(data.doneCount);
             $('.questions').html(data.questions);
+            $('.campsLocale').text(data.campsLocale);
+            $('.campsDesc').html(data.campsDesc);
+            $('.courseDesc').html(data.courseDesc);
+            $('.activityDesc').html(data.activityDesc);
+            $('.campsFoodDesc').html(data.campsFoodDesc);
+            $('.campsHotelDesc').html(data.campsHotelDesc);
+            $('.traces').html(data.traceDesc);
+            $('.feeDesc').html(data.feeDesc);
+            $('.j_price').text(data.totalPrice)
+            if(data.campsDetailList.length>0){
+                var arr=[];
+                for(var i=0,len=data.campsDetailList.length;i<len;i++){
+                    arr.push('<label data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i])+'</label>');
+                    if(i==0){
+                        $('.startDate1').html(arr.join(''))
+                    }
+                }
+                $('.startDate').html(arr.join(''));
+                $('.totalPrice').text(data.campsDetailList[0]['detailPrice']);
+                $('.durationTime').text(data.campsDetailList[0]['duration']);
+            }
             if(data.serviceSupport){
                 var arr=handle_pic(data.serviceSupport);
                 var str='';
@@ -205,11 +227,6 @@ function load_render(data){
                 console.log(arr);
                 $('.yingdi_list').html(str);
             }
-            $('.campsLocale').text(data.campsLocale);
-            $('.campsDesc').html(data.campsDesc);
-            $('.courseDesc').html(data.courseDesc);
-            $('.activityDesc').html(data.activityDesc);
-            $('.campsFoodDesc').html(data.campsFoodDesc);
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
@@ -218,7 +235,6 @@ function load_render(data){
                 }
                 $('.campsFoodsPhotos').html(str);
             }
-            $('.campsHotelDesc').html(data.campsHotelDesc);
             if(data.campsHotelPhotos){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
@@ -227,7 +243,6 @@ function load_render(data){
                 }
                 $('.campsHotelPhotos').html(str);
             }
-            $('.traces').html(data.traceDesc);
             // var traces=data.traces;
             // if(traces.length>0){
             //     var arr=[];
@@ -238,10 +253,26 @@ function load_render(data){
             //     }
             //     $('.traces').html(arr.join(''));
             // }
-            $('.feeDesc').html(data.feeDesc);
-            $('.j_price').text(data.totalPrice)
+            date_select(data.campsDetailList)
             load_carousel();
         })
+    })
+}
+// 根据持续天数设置时间范围
+function getDurationSetDate(detailList){
+    var now = detailList['detailStartTime']?new Date(detailList['detailStartTime']):new Date();
+    var nowTime = now.getTime() ;
+    var duration = detailList['duration']*24*60*60*1000;
+    return formatDate(nowTime+duration,0);
+}
+//时间范围选择时间
+function date_select(detailList){
+    $('.startDate label').click(function(){
+        var index=$(this).index();
+        $('.startDate1').html($(this).text());
+        $('.totalPrice').text(detailList[index]['detailPrice']);
+        $('.durationTime').text(detailList[index]['duration']);
+        $(this).addClass('selected').siblings().removeClass('selected');
     })
 }
 //加载轮播图-ajax获取页面信息后再调用此函数

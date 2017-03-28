@@ -153,7 +153,7 @@
 <script>
     var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
     $(function(){
-        var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0,campsIds=[],totalPersons=[];
+        var orderObj=[],htmlArr=[],num=0,len=0,moneyTotal=0,campsIds=[],detailIds=[],totalPersons=[];
         var discount=0;//优惠金额
         //输入优惠码.验证后单选选中，否则取消；提交时如果单选选中，那么提交优惠码
         $('input[name=codeId]').bind(' input propertychange ',function(){
@@ -164,6 +164,7 @@
                 var obj={
                     'codeId':$('input[name=codeId]').val(),
                     'campsIds':campsIds.join(','),
+                    'detailIds':detailIds.join(','),
                     'totalPersons':totalPersons.join(',')
                 }
                 login_post('/coupon/getCouponByCode.do',obj,'',function(data){
@@ -200,15 +201,17 @@
             for(var i=1;i<len;i++){
                 var orderArr=arr[i].split('$$');
                 orderObj[i]={
-                    'value':orderArr[0],
-                    'img':orderArr[1],
-                    'name':orderArr[2],
-                    'unitPrice':orderArr[3],
-                    'numCar':orderArr[4],
-                    'money':orderArr[5]
+                    'campusId':orderArr[0],
+                    'detailId':orderArr[1],
+                    'img':orderArr[2],
+                    'name':orderArr[3],
+                    'unitPrice':orderArr[4],
+                    'numCar':orderArr[5],
+                    'money':orderArr[6]
                 }
-                campsIds.push(orderArr[0])
-                totalPersons.push(orderArr[4])
+                campsIds.push(orderArr[0]);
+                detailIds.push(orderArr[1]);
+                totalPersons.push(orderArr[5])
                 for(var j=0;j<orderObj[i]['numCar'];j++){
                     num++;
                     htmlArr.push(render_orderInfo(orderObj[i],i+''+j));
@@ -240,6 +243,7 @@
                     var orderListObj=$('.person'+i+''+j).serializeObject();
                     infoArr.push({
                         'campsId':orderListObj['campsId'],
+                        'detailId':orderListObj['detailId'],
                         'codeId':outherObj['codeId'],
                         'totalCount':1,
                         'contactName':outherObj['contactName'],
@@ -329,7 +333,7 @@
         arr.push('</li><li><span><i>*</i>身份证号码：</span><input type="text" class="input4 require" name="personIdno"></li><li><span><i>*</i>联系地址：</span>');
         arr.push('<div data-toggle="distpicker" class="div_address"><div class="form-group"><select class="form-control" name="province"></select></div><div class="form-group">');
         arr.push('<select class="form-control" name="city"></select></div><div class="form-group"><select class="form-control" name="district"></select></div></div>');
-        arr.push('<input type="text" class="input4 require" name="personAddress"></li></ul></div><input type="hidden" name="campsId" value="'+obj['value']+'"/> ');
+        arr.push('<input type="text" class="input4 require" name="personAddress"></li></ul></div><input type="hidden" name="campsId" value="'+obj['campusId']+'"/><input type="hidden" name="detailId" value="'+obj['detailId']+'"/>');
         arr.push('</form>');
         return arr.join('')
     }

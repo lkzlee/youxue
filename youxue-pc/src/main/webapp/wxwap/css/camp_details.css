@@ -24,6 +24,8 @@ section{
 }
 .traces{width: 100%; padding-bottom: 15px; overflow: hidden;}
 .traces img{max-width:100%;}
+.startDate label{display: inline-block; padding:1px 3px;margin: 0px 5px 5px 0;border: 1px solid #e5e5e5;border-radius: 3px;color: #999;}
+.startDate label.selected{background-color: #20BDF5;border: 1px solid #20BDF5;color:#fff;}
 .camp_details_generalize>ul>li:first-child>span{
     display: inline-block;
     border:1px solid #999;
@@ -37,9 +39,9 @@ section{
     margin-bottom: 10px;
 }
 .travel_feature>li:first-child span.active{
-    background-color:#20BDF5;
-    color:#fff;
-    border:1px solid #20BDF5;
+    /*background-color:#20BDF5;*/
+    color:#fff;display: inline-block; border: none; width: 324px; vertical-align: top;
+    /*border:1px solid #20BDF5;*/
 }
 .camp_details_generalize>ul:nth-child(2)>li{
     font-size: 12px;

@@ -68,9 +68,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="con1_info">
                 <div class="con1_info_d1">
                     <p class="p1">面向对象：<label class="orientedPeople"></label></p>
-                    <p class="p1">行程时间：<labe class="durationTime"></labe>天</p>
+                    <!-- <p class="p1">行程时间：<labe class="durationTime"></labe>天</p> -->
                     <p class="p2">报名截止时间：<label class="deadlineDate"></label></p>
                 </div>
+                <p class="con1_info_p3">营地时间：<label class="startTime"></label></p>
                 <div class="con1_info_d2 clear">
                     <div class="left">已有<span class="doneCount"></span>人报名</div>
                     <div class="right">
@@ -303,6 +304,11 @@ $(function(){
         ev.stopPropagation();
     })    
     function notLog_alert(element,location){
+        data_car['detailId']=$('.startTime .selected').attr('data-id');
+        if(!data_car['detailId']){
+            alert('请选择营地时间');
+            return false;
+        }
         if(!isLogin){
             frm_logo.show();
             notLogin.fadeIn(300);

@@ -375,6 +375,43 @@ function getMonth(num,dateTime){
     }
     return formatDate(year+'-'+month+'-'+1);
 }
+/**
+ * 时间数组转换成正常时间格式
+ * @param arrTime
+ * @returns {string}
+ */
+function formatDate(time,style){
+    var format='',str='';
+    var dateTime=new Date(time);
+    switch(style){
+        case 0:
+            format='-';
+            str=dateTime.getFullYear()+format+toDb(dateTime.getMonth()+1)+format+toDb(dateTime.getDate());
+            break;
+        case 1:
+            format=['年','月','日','时','分','秒'];
+            str=dateTime.getFullYear()+format[0]+toDb(dateTime.getMonth()+1)+format[1]+toDb(dateTime.getDate())+format[2];
+            break;
+        case 2:
+            str=toDb(dateTime.getDate())+'/'+toDb(dateTime.getMonth()+1)+'/'+dateTime.getFullYear();
+            break;
+        case 3:
+            str=dateTime.getFullYear()+'-'+toDb(dateTime.getMonth()+1)+'-'+toDb(dateTime.getDate())+' '+dateTime.getHours()+':'+dateTime.getMinutes()+':'+dateTime.getSeconds();
+            break;
+        default:
+            str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());
+            break;
+    }
+    return str;
+}
+/**
+ * 给日期的个位补0
+ * @param date
+ * @returns 如果10以内,补一个0,10及以上的数字,改成字符串格式输出
+ */
+function toDb(date){
+    return date<10?'0'+date:''+date;
+}
 //对象转换字符串
 function ObjTrans(obj){
     var str='',i=0;
@@ -434,43 +471,6 @@ function change_page(element,data,callback){
         callback && callback(data);
         return false;
     })
-}
-/**
- * 时间数组转换成正常时间格式
- * @param arrTime
- * @returns {string}
- */
-function formatDate(time,style){
-    var format='',str='';
-    var dateTime=new Date(time);
-    switch(style){
-        case 0:
-            format='-';
-            str=dateTime.getFullYear()+format+toDb(dateTime.getMonth()+1)+format+toDb(dateTime.getDate());
-            break;
-        case 1:
-            format=['年','月','日','时','分','秒'];
-            str=dateTime.getFullYear()+format[0]+toDb(dateTime.getMonth()+1)+format[1]+toDb(dateTime.getDate())+format[2];
-            break;
-        case 2:
-            str=toDb(dateTime.getDate())+'/'+toDb(dateTime.getMonth()+1)+'/'+dateTime.getFullYear();
-            break;
-        case 3:
-            str=dateTime.getFullYear()+'-'+toDb(dateTime.getMonth()+1)+'-'+toDb(dateTime.getDate())+' '+dateTime.getHours()+':'+dateTime.getMinutes()+':'+dateTime.getSeconds();
-            break;
-        default:
-            str=dateTime.getFullYear()+''+toDb(dateTime.getMonth()+1)+''+toDb(dateTime.getDate());
-            break;
-    }
-    return str;
-}
-/**
- * 给日期的个位补0
- * @param date
- * @returns 如果10以内,补一个0,10及以上的数字,改成字符串格式输出
- */
-function toDb(date){
-    return date<10?'0'+date:''+date;
 }
 /*字符串过滤HTML*/
 function setContent(str) {

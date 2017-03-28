@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         // FastClick.attach(document.body);
         $(function() {
             var btn_order=$('#btn_order');
-            var moneyTotal=0,len=0,orderObj=[],campsIds=[],totalPersons=[];
+            var moneyTotal=0,len=0,orderObj=[],campsIds=[],detailIds=[],totalPersons=[];
             if(orderList){
                 var htmlArr=[],num=0;
                 var arr=orderList.split(',');
@@ -69,15 +69,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 for(var i=1;i<len;i++){
                     var orderArr=arr[i].split('$$');
                     orderObj[i]={
-                        'value':orderArr[0],
-                        'img':orderArr[1],
-                        'name':orderArr[2],
-                        'unitPrice':orderArr[3],
-                        'numCar':orderArr[4],
-                        'money':orderArr[5]
+                        'campusId':orderArr[0],
+                        'detailId':orderArr[1],
+                        'img':orderArr[2],
+                        'name':orderArr[3],
+                        'unitPrice':orderArr[4],
+                        'numCar':orderArr[5],
+                        'money':orderArr[6]
                     }
-                    campsIds.push(orderArr[0])
-                    totalPersons.push(orderArr[4])
+                    campsIds.push(orderArr[0]);
+                    detailIds.push(orderArr[1]);
+                    totalPersons.push(orderArr[5])
                     for(var j=0;j<orderObj[i]['numCar'];j++){
                         num++;
                         htmlArr.push(render_orderInfo(orderObj[i],i+''+j));
@@ -111,6 +113,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     var obj={
                         'codeId':$(this).val(),
                         'campsIds':campsIds.join(','),
+                        'detailIds':detailIds.join(','),
                         'totalPersons':totalPersons.join(',')
                     }
                     login_post('/coupon/getCouponByCode.do',obj,'',function(data){
@@ -146,6 +149,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         var orderListObj=$('.person'+i+''+j).serializeObject();
                         infoArr.push({
                             'campsId':orderListObj['campsId'],
+                            'detailId':orderListObj['detailId'],
                             'codeId':outherObj['codeId'],
                             'totalCount':1,
                             'contactName':outherObj['contactName'],
@@ -168,7 +172,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 AllObj['payType']=outherObj['payType'];
                 login_post('/wxpay/addTradeOrder.do',JSON.stringify(AllObj),'',function(data){
                     data=JSON.parse(data);
-                    console.log(data)
                     success(data,function(){
                         if(data.wxPayParam){
                             window.location.href='wxpay.jsp?'+urlFormatObj(data.wxPayParam);
@@ -234,7 +237,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             arr.push('<li><span>联系电话</span><input type="text" class="require" name="personPhone" placeholder="输入手机号"/></li>');
             arr.push('<li><span>身份证号</span><input type="text" class="require" name="personIdno" placeholder="点击输入"/></li>');
             arr.push('<li><span>联系地址</span><input type="text" class="require" name="personAddress" placeholder="点击输入"/></li>');
-            arr.push('</ul></div></div><input type="hidden" name="campsId" value="'+obj['value']+'"/>');
+            arr.push('</ul></div></div><input type="hidden" name="campsId" value="'+obj['campusId']+'"/><input type="hidden" name="detailId" value="'+obj['detailId']+'"/>');
             arr.push('</form><div class="bg_height10"></div>');
             return arr.join('')
         }

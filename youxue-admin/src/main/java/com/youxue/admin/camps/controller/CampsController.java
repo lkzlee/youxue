@@ -341,6 +341,8 @@ public class CampsController extends AdminBaseController
 	{
 		try
 		{
+			LOG.info("get doModifyCamps request,campsId:" + camps.getCampsId() + ",detailIds" + detailIds
+					+ ",detailStartDates：" + detailStartDates);
 			if (camps == null || StringUtils.isBlank(camps.getCampsName())
 					|| StringUtils.isBlank(camps.getCampsTitle()) || StringUtils.isBlank(camps.getCampsId()))
 			{
@@ -360,7 +362,7 @@ public class CampsController extends AdminBaseController
 			String[] prices = detailPrices.split(",");
 			String[] durationDays = durations.split(",");
 			Date maxCampsStartDate = null;
-			for (int i = 0; i < ids.length; i++)
+			for (int i = 0; i < startDates.length; i++)
 			{
 				if (StringUtils.isBlank(names[i]) || StringUtils.isBlank(startDates[i])
 						|| StringUtils.isBlank(prices[i]) || StringUtils.isBlank(durationDays[i]))
@@ -369,7 +371,7 @@ public class CampsController extends AdminBaseController
 					continue;
 				}
 				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
-				if (StringUtils.isBlank(ids[i]))
+				if (i >= ids.length || StringUtils.isBlank(ids[i]))
 				{
 					CampsDetailVo detail = new CampsDetailVo();
 					detail.setDetailId(commonDao.getIdByPrefix(CommonConstant.CAMPS_DETAIL_ID_PREFIX));
@@ -428,6 +430,13 @@ public class CampsController extends AdminBaseController
 			logger.error("doModifyCampsIndex()--error", e);
 		}
 		return "redirect:/campsList.do";
+	}
+
+	public static void main(String[] args)
+	{
+		String s = "20170327144428CD1f120e86,,,,";
+		System.out.println(s.split(",").length);
+		System.out.println(s.split(","));
 	}
 
 	@RequestMapping(value = "upOrDownCamps.do")

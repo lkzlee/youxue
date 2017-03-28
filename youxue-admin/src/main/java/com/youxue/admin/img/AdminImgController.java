@@ -71,7 +71,7 @@ public class AdminImgController
 	@RequestMapping("/ueditorUpload.do")
 	public void ueditorUpload(HttpServletRequest request, HttpServletResponse response, String action) throws Exception
 	{
-		log.info("get ueditorUpload request,action:" + action);
+		//		log.info("get ueditorUpload request,action:" + action);
 		try
 		{
 			if (!"config".equalsIgnoreCase(action) && !"uploadImage".equalsIgnoreCase(action))
@@ -117,7 +117,7 @@ public class AdminImgController
 
 				//			String rootPath = PropertyUtils.getProperty("img.root.dir", "/home/qinggu/img/");
 				String rootPath = request.getSession().getServletContext().getRealPath("/");
-				log.info("ueditorUpload rootPath:" + rootPath);
+				//				log.info("ueditorUpload rootPath:" + rootPath);
 				response.getWriter().write(new ActionEnter(request, rootPath).exec());
 			}
 		}

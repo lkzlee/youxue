@@ -237,6 +237,12 @@ public class CampsController extends AdminBaseController
 			List<CampsDetailVo> detailList = new LinkedList<CampsDetailVo>();
 			for (int i = 0; i < startDates.length; i++)
 			{
+				if (StringUtils.isBlank(names[i]) || StringUtils.isBlank(startDates[i])
+						|| StringUtils.isBlank(prices[i]) || StringUtils.isBlank(durationDays[i]))
+				{
+					LOG.error("empty input ,continue");
+					continue;
+				}
 				CampsDetailVo detail = new CampsDetailVo();
 				detail.setDetailId(commonDao.getIdByPrefix(CommonConstant.CAMPS_DETAIL_ID_PREFIX));
 				detail.setDetailName(names[i]);
@@ -348,44 +354,49 @@ public class CampsController extends AdminBaseController
 					camps.setCampsLocale(category.getCategoryName());
 				}
 			}
-			//			if (StringUtils.isNotBlank(camps.getStartDateStr()))
-			//			{
-			//				camps.setStartDate(DateUtil.formatToDate(camps.getStartDateStr(), "yyyy-MM-dd"));
-			//			}
-			//			else
-			//			{
-			//				LOG.error("营地开始时间为空,请检查");
-			//				modelMap.put("msg", "营地开始时间为空,请检查");
-			//				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
-			//			}
 			String[] ids = detailIds.split(",");
 			String[] startDates = detailStartDates.split(",");
 			String[] names = detailNames.split(",");
 			String[] prices = detailPrices.split(",");
 			String[] durationDays = durations.split(",");
-			Date minCampsStartDate = null;
+			Date maxCampsStartDate = null;
 			for (int i = 0; i < ids.length; i++)
 			{
-				if (StringUtils.isBlank(ids[i]))
+				if (StringUtils.isBlank(names[i]) || StringUtils.isBlank(startDates[i])
+						|| StringUtils.isBlank(prices[i]) || StringUtils.isBlank(durationDays[i]))
 				{
+					LOG.error("empty input ,continue");
 					continue;
 				}
-				CampsDetailVo detail = new CampsDetailVo();
-				detail.setDetailId(ids[i]);
-				detail.setDetailName(names[i]);
-				detail.setDetailPrice(new BigDecimal(prices[i]));
 				Date startDate = DateUtil.formatToDate(startDates[i], "yyyy-MM-dd");
-				detail.setDetailStartTime(startDate);
-				detail.setDuration(Integer.valueOf(durationDays[i]));
-				campsDetailDao.updateByPrimaryKeySelective(detail);
-
-				if (minCampsStartDate == null || startDate.before(minCampsStartDate))
+				if (StringUtils.isBlank(ids[i]))
 				{
-					//更新最早时间
-					minCampsStartDate = startDate;
+					CampsDetailVo detail = new CampsDetailVo();
+					detail.setDetailId(commonDao.getIdByPrefix(CommonConstant.CAMPS_DETAIL_ID_PREFIX));
+					detail.setDetailName(names[i]);
+					detail.setDetailPrice(new BigDecimal(prices[i]));
+					detail.setDetailStartTime(startDate);
+					detail.setDuration(Integer.valueOf(durationDays[i]));
+					detail.setCampsId(camps.getCampsId());
+					campsDetailDao.insert(detail);
+				}
+				else
+				{
+					CampsDetailVo detail = new CampsDetailVo();
+					detail.setDetailId(ids[i]);
+					detail.setDetailName(names[i]);
+					detail.setDetailPrice(new BigDecimal(prices[i]));
+					detail.setDetailStartTime(startDate);
+					detail.setDuration(Integer.valueOf(durationDays[i]));
+					campsDetailDao.updateByPrimaryKeySelective(detail);
+				}
+				if (maxCampsStartDate == null || startDate.after(maxCampsStartDate))
+				{
+					//更新最晚时间
+					maxCampsStartDate = startDate;
 				}
 			}
-			if (minCampsStartDate == null)
+			if (maxCampsStartDate == null)
 			{
 				LOG.error("营地开始时间为空,请检查");
 				modelMap.put("msg", "营地开始时间为空,请检查");
@@ -402,7 +413,7 @@ public class CampsController extends AdminBaseController
 				modelMap.put("msg", "营地截止时间为空,请检查");
 				return "redirect:/modifyCampsIndex.do?campsId=" + camps.getCampsId();
 			}
-			if (camps.getDeadlineDate().after(minCampsStartDate))
+			if (camps.getDeadlineDate().after(maxCampsStartDate))
 			{
 				LOG.error("营地截止时间晚于开始时间,请检查");
 				modelMap.put("msg", "营地截止时间晚于开始时间,请检查");

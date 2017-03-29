@@ -89,11 +89,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="left">价格档位<i></i></div>
             <div class="right priceRange">
                 <a href="?priceRange=" data-param="priceRange" data-value="">不限<i></i></a>
-               <!--  <a href="?priceRange=5000-8000" data-param="priceRange" data-value="5000-8000">5000-8000<i></i></a>
-                <a href="?priceRange=8000-10000" data-param="priceRange" data-value="8000-10000">8000-10000<i></i></a>
-                <a href="?priceRange=10000-15000" data-param="priceRange" data-value="10000-15000">10000-15000<i></i></a>
-                <a href="?priceRange=15000-20000" data-param="priceRange" data-value="15000-20000">15000-20000<i></i></a>
-                <a href="?priceRange=20000-1000000" data-param="priceRange" data-value="20000-1000000">20000以上</a> -->
             </div>
         </li>
         <li>
@@ -220,11 +215,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         //6加载时间分类
         load_local(6,function(arr){
-            $('#custom_time').before(publics(arr,'departureMonth','categoryType'));
+            $('#custom_time').before(publics(arr,'departureMonth','categoryWeight'));
         });
         //7加载价格档位
         load_local(7,function(arr){
-            $('.priceRange').append(publics(arr,'priceRange'));
+            $('.priceRange').append(publics(arr,'priceCategoryId'));
         });
         function publics(con,str,param){
             param=param||'categoryId';
@@ -260,7 +255,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $('#position').html(public_obj['searchContent']?'<a href="javascript:void(0)"><i>></i>'+public_obj['searchContent']+'</a>':'<a href="javascript:void(0)"><i>></i>搜索</a>');
         login_post('/getCampsList.do',public_obj,'',function(data){
             data=JSON.parse(data);
-        console.log(data);
             success(data,function(){
 //                data.campsList.pageNo=5;
 //                data.campsList.totalPage=10;

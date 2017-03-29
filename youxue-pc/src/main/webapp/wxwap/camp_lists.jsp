@@ -46,13 +46,13 @@ if(subjectCategoryId){
     public_obj['subjectCategoryId']=subjectCategoryId;
 }
 if(timeDuration){
-    public_obj['timeDuration']=timeDuration;
+    public_obj['durationCategoryId']=timeDuration;
 }
 if(priceRange){
-    public_obj['priceRange']=priceRange;
+    public_obj['priceCategoryId']=priceRange;
 }
 if(departureMonth){
-    public_obj['departureMonth']=departureMonth;
+    public_obj['departureCategoryId']=departureMonth;
 }
 $(function() {
     FastClick.attach(document.body);
@@ -82,20 +82,11 @@ $(window).on('scroll', function () {
         search_sourch();
     }
 });
-// var _tmp='';
 function search_sourch(){
 	load_message.show();
     login_post('/getCampsList.do',public_obj,'',function(data){
         data=JSON.parse(data);
         success(data,function(){
-       		// data.campsList.totalPage=10;
-       		// data.campsList.totalCount=100;
-       		// if(!_tmp){
-       		// 	_tmp=data.campsList.resultList[0];
-       		// }
-       		// for(var i=0;i<8;i++){
-       		// 	data.campsList.resultList.push(_tmp);
-       		// }
 			public_obj['pageNo']=data.campsList.pageNo;
             public_obj['totalPage']=data.campsList.totalPage;
             public_obj['totalCount']=data.campsList.totalCount;
@@ -136,18 +127,6 @@ function CampsDetail(section,index){
                 var val=data.priceCampsList[0];
                 str(val,section.eq(2))
             }
-            // if(data.subjectList.length>0){//主题分类
-            //     var obj=data.subjectList;
-            //     var li=[];
-            //     for(var i=0,len=obj.length;i<len;i++){
-            //         if(i==5){
-            //             li.push('<li class="li6"><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a><div class="div6_li"><a href="'+obj[i]['categoryId']+'">更多More</a></div></li>');
-            //         }else{
-            //             li.push('<li><a href="/search.jsp?subjectCategoryId='+obj[i]['categoryId']+'"><img src="'+handle_pic(obj[i]['categoryUrl'])[0]+'"><span>'+obj[i]['categoryName']+'</span><i></i></a></li>');
-            //         }
-            //     }
-            //     subject_list.append(li.join(''));
-            // }
             function str(val,element){
                 var li=[];
                 li.push('<li class="camp_lists_common" data-campusId="'+val['campsId']+'"><div class="cf"><div class="cl_img"><img class="fl" src="'+handle_pic(val['campsImages'])[0]+'"/></div>');

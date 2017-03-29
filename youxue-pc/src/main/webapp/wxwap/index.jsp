@@ -22,7 +22,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="swiper-slide"><img src="img/banner1.jpg" alt="" width="100%" ></div>
             <div class="swiper-slide"><img src="img/banner1.jpg" alt="" width="100%" ></div>
         </div>
-        <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
     </div>
 </header>
@@ -124,7 +123,7 @@ function load_(){
     });
     // //6加载时间分类
     load_local(6,function(arr){
-        $('.departureMonth').append(publics(arr,'categoryType'));
+        $('.departureMonth').append(publics(arr,'departureMonth'));
     });
     // //7加载价格档位
     load_local(7,function(arr){

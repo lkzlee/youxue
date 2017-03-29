@@ -72,11 +72,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
             <div class="left">时间周期<i></i></div>
             <div class="right timeDuration">
-                <a href="?timeDuration=" data-param="timeDuration" data-value="">不限<i></i></a>
-                <!-- <a href="?timeDuration=7-14" data-param="timeDuration" data-value="7-14">7-14天<i></i></a>
-                <a href="?timeDuration=14-21" data-param="timeDuration" data-value="14-21">14-21天<i></i></a>
-                <a href="?timeDuration=21-30" data-param="timeDuration" data-value="21-30">21-30天<i></i></a>
-                <a href="?timeDuration=30-60" data-param="timeDuration" data-value="30-60">1-2月</a> -->
+                <a href="?timeDuration=" data-param="durationCategoryId" data-value="">不限<i></i></a>
             </div>
         </li>
         <li>
@@ -94,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
             <div class="left">出发时间<i></i></div>
             <div class="right departureMonth">
-                <a href="?departureMonth=" data-param="departureMonth" data-value="">不限<i></i></a>
+                <a href="?departureMonth=" data-param="departureCategoryId" data-value="">不限<i></i></a>
                 
                 <a href="?departureTime=" data-param="departureTime" data-value="" id="custom_time">自定义出发时间</a>
             </div>
@@ -133,9 +129,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var campusId='<%=request.getParameter("campusId")==null?"":request.getParameter("campusId")%>';
     var localeCategoryId='<%=request.getParameter("localeCategoryId")==null?"":request.getParameter("localeCategoryId")%>';
     var subjectCategoryId='<%=request.getParameter("subjectCategoryId")==null?"":request.getParameter("subjectCategoryId")%>';
-    var timeDuration='<%=request.getParameter("timeDuration")==null?"":request.getParameter("timeDuration")%>';
+    var durationCategoryId='<%=request.getParameter("durationCategoryId")==null?"":request.getParameter("durationCategoryId")%>';
     var priceRange='<%=request.getParameter("priceRange")==null?"":request.getParameter("priceRange")%>';
-    var departureMonth='<%=request.getParameter("departureMonth")==null?"":request.getParameter("departureMonth")%>';
+    var departureCategoryId='<%=request.getParameter("departureCategoryId")==null?"":request.getParameter("departureCategoryId")%>';
     var startdate='<%=request.getParameter("startdate")==null?"":request.getParameter("startdate")%>';
     var enddate='<%=request.getParameter("enddate")==null?"":request.getParameter("enddate")%>';
     $(function(){
@@ -152,14 +148,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         if(subjectCategoryId){
             public_obj['subjectCategoryId']=subjectCategoryId;
         }
-        if(timeDuration){
-            public_obj['timeDuration']=timeDuration;
+        if(durationCategoryId){
+            public_obj['durationCategoryId']=durationCategoryId;
         }
         if(priceRange){
             public_obj['priceRange']=priceRange;
         }
-        if(departureMonth){
-            public_obj['departureMonth']=departureMonth;
+        if(departureCategoryId){
+            public_obj['departureCategoryId']=departureCategoryId;
         }
         if(startdate && enddate){
             public_obj['departureTime']=startdate.split('-').join('')+'-'+enddate.split('-').join('');
@@ -181,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             var param=$(this).attr('data-param');
             var value=$(this).attr('data-value');
             public_obj[param]=value;
-            if(param=='departureMonth'){
+            if(param=='departureCategoryId'){
                 delete public_obj['departureTime'];
             }
             delete public_obj['searchContent'];
@@ -194,7 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             enddate=data2;
             public_obj['departureTime']=startdate.split('-').join('')+'-'+enddate.split('-').join('');
             public_obj['pageNo']=1;
-            delete public_obj['departureMonth'];
+            delete public_obj['departureCategoryId'];
             delete public_obj['searchContent'];
             search_sourch();
         });
@@ -211,18 +207,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         //5加载时间周期
         load_local(5,function(arr){
-            $('.timeDuration').append(publics(arr,'timeDuration'));
+            console.log(arr)
+            $('.timeDuration').append(publics(arr,'durationCategoryId'));
         });
         //6加载时间分类
         load_local(6,function(arr){
-            $('#custom_time').before(publics(arr,'departureMonth','categoryWeight'));
+            $('#custom_time').before(publics(arr,'departureCategoryId'));
         });
         //7加载价格档位
         load_local(7,function(arr){
             $('.priceRange').append(publics(arr,'priceCategoryId'));
         });
-        function publics(con,str,param){
-            param=param||'categoryId';
+        function publics(con,str){
+            param='categoryId';
             var as='';
             for(var i=0,len=con.length;i<len;i++){
                 var class1='',i1='';

@@ -9,6 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<base href="<%=basePath%>"></base>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta content="telephone=no" name="format-detection">
     <title>_Camplink</title>
     <link rel="stylesheet" href="css/swiper.min.css"/>
     <link rel="stylesheet" href="css/cssReset.css"/>
@@ -175,13 +176,16 @@ function addCarFn(element,location){
 function load_render(data){
     login_post('/campsDetail.do',data_car,'',function(data){
         data=JSON.parse(data);
-        //虚拟数据
-        // data.campsImages='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
-        // data.campsFoodsPhotos='/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png,/img/lb_test.png';
-        // console.log(data);
         success(data,function(){
+            //解决IOS下标题不能动态修改的bug
+            var $body = $('body')
+            document.title=data.campsTitle+'_Camplink';
+            var $iframe = $('<iframe src="/favicon.ico"></iframe>').on('load', function() {
+              setTimeout(function() {
+                $iframe.off('load').remove()
+              }, 0)
+            }).appendTo($body);
             $('.title').text(data.campsTitle);
-            $('title').prepend(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
             $('.deadlineDate').text(data.deadlineDate);
             $('.feature').text(data.feature);
@@ -196,7 +200,14 @@ function load_render(data){
             $('.campsHotelDesc').html(data.campsHotelDesc);
             $('.traces').html(data.traceDesc);
             $('.feeDesc').html(data.feeDesc);
-            $('.j_price').text(data.totalPrice)
+            if(data.campsImages){
+                var arr=handle_pic(data.campsImages);
+                var str='';
+                for(var i=0;i<arr.length;i++){
+                    str+='<div class="swiper-slide"><img src="'+arr[i]+'" style="width:100%;" alt=""/></div>';
+                }
+                $('.yingdi_list').html(str);
+            }
             if(data.campsDetailList.length>0){
                 var arr=[];
                 for(var i=0,len=data.campsDetailList.length;i<len;i++){
@@ -208,6 +219,7 @@ function load_render(data){
                 $('.startDate').html(arr.join(''));
                 $('.totalPrice').text(data.campsDetailList[0]['detailPrice']);
                 $('.durationTime').text(data.campsDetailList[0]['duration']);
+                $('.j_price').text(data.campsDetailList[0]['detailPrice'])
             }
             if(data.serviceSupport){
                 var arr=handle_pic(data.serviceSupport);
@@ -217,15 +229,6 @@ function load_render(data){
                     str+='<li class="fl '+_class+'">'+arr[i]+'</li>';
                 }
                 $('.serviceSupport').html(str);
-            }
-            if(data.campsImages){
-                var arr=handle_pic(data.campsImages);
-                var str='';
-                for(var i=0;i<arr.length;i++){
-                    str+='<div class="swiper-slide"><img src="'+arr[i]+'" style="width:100%;" alt=""/></div>';
-                }
-                console.log(arr);
-                $('.yingdi_list').html(str);
             }
             if(data.campsFoodsPhotos){
                 var arr=handle_pic(data.campsFoodsPhotos);
@@ -243,16 +246,6 @@ function load_render(data){
                 }
                 $('.campsHotelPhotos').html(str);
             }
-            // var traces=data.traces;
-            // if(traces.length>0){
-            //     var arr=[];
-            //     for(i=0,len=traces.length;i<len;i++){
-            //         arr.push('<li class="cf"><div class="item_left fl">Part <span>'+(i+1)+'</span></div><div class="item_right">')
-            //         arr.push('<h2>'+traces[i]['traceName']+'</h2><p>'+traces[i]['traceDesc']+'</p><p>')
-            //         arr.push('<img src="'+handle_pic(traces[i]['tracePhotos'])[0]+'" alt=""/></p></div></li>');
-            //     }
-            //     $('.traces').html(arr.join(''));
-            // }
             date_select(data.campsDetailList)
             load_carousel();
         })
@@ -261,6 +254,7 @@ function load_render(data){
 // 根据持续天数设置时间范围
 function getDurationSetDate(detailList){
     var now = detailList['detailStartTime']?new Date(detailList['detailStartTime']):new Date();
+    now = now.getFullYear() > 0 ? now : new Date(Date.parse(detailList['detailStartTime'].replace(/-/g, "/")));
     var nowTime = now.getTime() ;
     var duration = detailList['duration']*24*60*60*1000;
     return formatDate(nowTime+duration,0);
@@ -272,6 +266,7 @@ function date_select(detailList){
         $('.startDate1').html($(this).text());
         $('.totalPrice').text(detailList[index]['detailPrice']);
         $('.durationTime').text(detailList[index]['duration']);
+        $('.j_price').text(detailList[index]['detailPrice'])
         $(this).addClass('selected').siblings().removeClass('selected');
     })
 }

@@ -205,7 +205,13 @@ window.UEDITOR_HOME_URL = "/ueditor/";
                             </div>
                         </div>
                         -->
-                        
+                         <div class="form-group">
+                            <label class="col-lg-2 control-label">显示已售数量：</label>
+                            <div class="col-lg-8">
+                                <input class="form-control" name="fadeDoneCount"  data-bv-notempty="true"
+                                        type="number"/>
+                            </div>
+                        </div>
 						<div class="form-group">
                             <label class="col-lg-2 control-label">产品特色：</label>
                             <div class="col-lg-8">

@@ -150,6 +150,7 @@
 											<th>分组类别</th>
 											<th>订单价</th>
 											<th>已售数量</th>
+											<th>已售数量</th>
 											<th>状态</th>
 											<th>标签</th>
 											<th class="text-center" colspan=2>操作</th>
@@ -162,6 +163,7 @@
 											<td>${adItem.categoryStrs!""}</td>
 											<td>${adItem.totalPrice}</td>
 											<td>${adItem.doneCount}</td>
+											<td>${(adItem.fadeDoneCount?c)!""}</td>
 											<td>${campsStatusMap[str+adItem.status]}</td>
 											<td>${adItem.hotOrPrice!""}</td>
 											<td><a href="/modifyCampsIndex.do?campsId=${adItem.campsId}"><span>修改</span></a></td>

@@ -259,8 +259,8 @@ public class UserOrderController extends BaseController
 				{
 					mailUtil.init(userInfo.getEmail(), null);
 					mailUtil.sendEmail(
-							"【营联天下】您有一条待出行订单",
-							"【营联天下】您有一条待出行订单",
+							"【Camplink】您有一条待出行订单",
+							"【Camplink】您有一条待出行订单",
 							"您有一条待出行订单，订单详情请查看：http://qg.igalaxy.com.cn/user_paymentInfo.jsp?orderId="
 									+ order.getOrderId(), "UTF-8");
 

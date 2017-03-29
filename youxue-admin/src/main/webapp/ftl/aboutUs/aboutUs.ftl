@@ -58,7 +58,7 @@
                 </div>
                 <hr>
                 <div class="col-lg-offset-2 col-lg-8">
-                	<h4 class="text-center">青古内容</h4>
+                	<h4 class="text-center">Camplink内容</h4>
                     <form class="form-horizontal" id="Form" method="POST" action="doModifyAboutUs.do" data-validate="true">
 						<div class="form-group">
                             <label class="col-lg-2 control-label">上传海报：</label>
@@ -75,7 +75,7 @@
                             </div>
                         </div>
 						<div class="form-group">
-                            <label class="col-lg-2 control-label">青古内容描述：</label>
+                            <label class="col-lg-2 control-label">Camplink内容描述：</label>
                             <div class="col-lg-6">
                             	<input type="hidden"  name="type" data-bv-notempty="true"  value="qinggu"/>
 								<script id="container2" name="descs" type="text/plain">

@@ -150,7 +150,7 @@ public class CampsController extends AdminBaseController
 			modelMap.put("categoryTypeMap", CategoryTypeEnum.getCateTypeMap());
 			modelMap.put("campsStatusMap", campsStatusMap);
 			modelMap.put("campsNameKey", StringUtils.isBlank(campsNameKey) ? "" : campsNameKey);
-			modelMap.put("status", String.valueOf(status));
+			modelMap.put("status", status == null ? "" : String.valueOf(status));
 			modelMap.put("localeCategoryIds", StringUtils.isBlank(localeCategoryIds) ? "" : localeCategoryIds);
 			modelMap.put("subjectCategoryIds", StringUtils.isBlank(subjectCategoryIds) ? "" : subjectCategoryIds);
 			modelMap.put("durationCategoryIds", StringUtils.isBlank(durationCategoryIds) ? "" : durationCategoryIds);

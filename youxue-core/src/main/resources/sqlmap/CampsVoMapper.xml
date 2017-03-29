@@ -160,10 +160,12 @@
         and camps_title LIKE CONCAT('%',CONCAT(#{campsNameKey},'%'))
       </if>
      <if test="minDepartureTime != null" >
-        and date_format(departure_date,'%Y%c%d') &gt;= #{minDepartureTime}
-      </if>
-      <if test="maxDepartureTime != null" >
-        and date_format(departure_date,'%Y%c%d') &lt;= #{maxDepartureTime}
+     	and camps_id in 
+     	(
+     		select distinct(camps_id ) from tb_camps_detail where 
+     			date_format(detail_start_time,'%Y%m%d') &gt;= #{minDepartureTime} 
+     			and date_format(detail_start_time,'%Y%m%d') &lt;= #{maxDepartureTime}
+     	)
       </if>
      <if test="minPrice != null" >
         and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}
@@ -239,11 +241,13 @@
      <if test="campsNameKey != null" >
         and camps_title LIKE CONCAT('%',CONCAT(#{campsNameKey},'%'))
       </if>
-     <if test="minDepartureTime != null" >
-        and date_format(departure_date,'%Y%c%d') &gt;= #{minDepartureTime}
-      </if>
-      <if test="maxDepartureTime != null" >
-        and date_format(departure_date,'%Y%c%d') &lt;= #{maxDepartureTime}
+      <if test="minDepartureTime != null" >
+     	and camps_id in 
+     	(
+     		select distinct(camps_id ) from tb_camps_detail where 
+     			date_format(detail_start_time,'%Y%m%d') &gt;= #{minDepartureTime} 
+     			and date_format(detail_start_time,'%Y%m%d') &lt;= #{maxDepartureTime}
+     	)
       </if>
      <if test="minPrice != null" >
         and total_price &gt;= #{minPrice} and total_price &lt;=#{maxPrice}

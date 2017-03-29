@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="camp_details_generalize">
         <h2 class="title"></h2>
         <ul class="travel_feature">
-            <li><label style="line-height: 21px;">营地时间</label><span class="active startDate"><label class="selected">2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label><label>2015-02-02至2016-03-03</label></span></li>
+            <li><label style="line-height: 21px;">营地时间</label><span class="active startDate"></span></li>
             <li>行程周期<span class="durationTime"></span>天</li>
             <li>产品特色<span class="feature"></span></li>
         </ul>

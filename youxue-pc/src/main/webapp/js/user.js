@@ -395,16 +395,13 @@ function car(){
         if(window.confirm('您确定要删除吗？')){
             var check=$('#car_ul input:checked');
             if(check.length>0){
-                var dataArr=[];
+                var data=new FormData();
                 check.each(function(){
-                    dataArr.push($.param({
-                        'campusId':$(this).attr('data-campusId'),
-                        'detailId':$(this).attr('data-detailId')
-                    }))
+                    data.append('campusId',$(this).attr('data-campusId'))
+                    data.append('detailId',$(this).attr('data-detailId'))
                 })
-                // var str=check.serialize();//发给服务端执行的，服务端返回成功后，执行下边代码
-                login_post('/deleteCartItem.do',dataArr.join(','),'',function(data){
-                    user_success(JSON.parse(data),function(){
+                file_post('/deleteCartItem.do',data,'',function(data){
+                    user_success(JSON.parse(JSON.parse(data)),function(){
                         check.each(function(){
                             var childCheck=$(this);
                             del_change($(this),childCheck)

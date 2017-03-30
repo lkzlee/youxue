@@ -254,13 +254,13 @@ public class OrderServiceImpl implements OrderService
 				String[] templates = templateId.split(";");
 				for (String t : templates)
 				{
-					if (t.indexOf("audit_msg") >= 0)
+					if (t.indexOf("commit_msg") >= 0)
 					{
 						templateId = t.split(":")[1];
 					}
 				}
 				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
-						"http://qg.igalaxy.com.cn/wxwap/my_order.jsp");
+						"http://www.camplink.cn/wxwap/my_order.jsp");
 				data.push("first", "我们已收到您的订单 ，请耐心等待审核！");
 				data.push("keyword1", "订单提交成功");
 				data.push("keyword2", "等待审核中");

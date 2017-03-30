@@ -4,9 +4,10 @@ import java.text.MessageFormat;
 
 public enum MessageEnum
 {
-	WAIT_AUDIT("【营联天下】已收到您的订单（订单编号：{0}），请耐心等待审核。", "订单成功提醒"), WAIT_DEPARTURE("【营联天下】您的订单(订单编号：{0}) 已通过审核，请您准备好出行！",
-			"订单审核通过"), REFUNDED("【营联天下】您的订单(订单编号：{0}) 已成功申请退款，支付金额将按照原支付方式退还，请注意查收！", "订单退款提醒"), AUDIT_FAILED(
-			"【营联天下】您的订单(订单编号：{0}) 未通过审核，支付金额将按照原支付方式退还，请注意查收！", "订单审核未通过");
+	WAIT_AUDIT("【Camplink】已收到您的订单（订单编号：{0}），请耐心等待审核。", "订单成功提醒"), WAIT_DEPARTURE(
+			"【Camplink】您的订单(订单编号：{0}) 已通过审核，请您准备好出行！", "订单审核通过"), REFUNDED(
+			"【Camplink】您的订单(订单编号：{0}) 已成功申请退款，支付金额将按照原支付方式退还，请注意查收！", "订单退款提醒"), AUDIT_FAILED(
+			"【Camplink】您的订单(订单编号：{0}) 未通过审核，支付金额将按照原支付方式退还，请注意查收！", "订单审核未通过");
 	private String desc;
 	private String title;
 

@@ -259,9 +259,9 @@ public class UserOrderController extends BaseController
 				{
 					mailUtil.init(userInfo.getEmail(), null);
 					mailUtil.sendEmail(
-							"【营联天下】您有一条待出行订单",
-							"【营联天下】您有一条待出行订单",
-							"您有一条待出行订单，订单详情请查看：http://qg.igalaxy.com.cn/user_paymentInfo.jsp?orderId="
+							"【Camplink】您有一条待出行订单",
+							"【Camplink】您有一条待出行订单",
+							"您有一条待出行订单，订单详情请查看：http://www.camplink.cn/user_paymentInfo.jsp?orderId="
 									+ order.getOrderId(), "UTF-8");
 
 				}
@@ -335,14 +335,14 @@ public class UserOrderController extends BaseController
 				String[] templates = templateId.split(";");
 				for (String t : templates)
 				{
-					if (t.indexOf("noitfy_msg") >= 0)
+					if (t.indexOf("audit_msg") >= 0)
 					{
 						templateId = t.split(":")[1];
 					}
 				}
 				CampsVo campsVo = campsDao.selectByPrimaryKey(order.getCampsId());
 				TemplateMsgDataDto data = new TemplateMsgDataDto(openId, templateId,
-						"http://qg.igalaxy.com.cn/wxwap/order_info.jsp?orderId=" + order.getOrderId());
+						"http://www.camplink.cn/wxwap/order_info.jsp?orderId=" + order.getOrderId());
 				data.push("first", "尊敬的用户，您的订单已经支付成功");
 				data.push("orderId", order.getOrderId());
 				data.push("orderPrice", CommonUtil.formatBigDecimal(order.getPayPrice()));

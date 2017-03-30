@@ -45,7 +45,8 @@ public class WxLoginController extends BaseController
 	 * http://open.weixin.qq.com/connect/oauth2/authorize?appid=wx46701bcc055a3dec&redirect_uri=http%3a%2f%2flkzlee.imwork.net%2fwxlogin.do&response_type=code&scope=snsapi_base&state=DXFG#wechat_redirect
 	 */
 	@RequestMapping(value = "/wxlogin.do")
-	public String wxLogin(HttpServletRequest request, HttpServletResponse response, String code) throws IOException
+	public String wxLogin(HttpServletRequest request, HttpServletResponse response, String code, String state)
+			throws IOException
 	{
 		log.info("微信授权登录code=" + code);
 		String openId = WeixinOauthHelper.oauthAndLogin(code);
@@ -59,7 +60,10 @@ public class WxLoginController extends BaseController
 		{
 			ControllerUtil.setWxOpenId(request, openId);
 			ControllerUtil.setCurrentLoginUserName(request, userInfo.getAccountId());
-			return "wxwap/index"; //跳转微信首页
+			if ("user".equals(state))
+				return "wxwap/user";
+			else
+				return "wxwap/index"; //跳转微信首页
 		}
 		ControllerUtil.setWxOpenId(request, openId);
 		return "wxwap/login"; //跳转微信绑定手机号登录页

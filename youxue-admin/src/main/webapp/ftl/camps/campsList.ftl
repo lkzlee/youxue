@@ -149,8 +149,8 @@
 											<th>营地标题</th>
 											<th>分组类别</th>
 											<th>订单价</th>
-											<th>已售数量</th>
-											<th>已售数量</th>
+											<th>实际已售数量</th>
+											<th>显示已售数量</th>
 											<th>状态</th>
 											<th>标签</th>
 											<th class="text-center" colspan=2>操作</th>

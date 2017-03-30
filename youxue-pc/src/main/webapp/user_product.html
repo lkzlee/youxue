@@ -165,7 +165,6 @@ $(function(){
 function getProduct(){
     login_post('/productOrderList.do','','',function(data){
         data=JSON.parse(data);
-        console.log(data)
         success(data,function(){
             renderProduct(data['productOrderList1'],$('#j_qzfw'))
             renderProduct(data['productOrderList2'],$('#j_jsjfw'))
@@ -174,7 +173,7 @@ function getProduct(){
 }
 function renderProduct(list,element){
     var len=list.length;
-    var arr=['暂无数据'];
+    var arr=['<tr><td colspan="6">暂无数据</td></tr>'];
     if(len>0){
         arr=[];
         for(var i=0;i<len;i++){

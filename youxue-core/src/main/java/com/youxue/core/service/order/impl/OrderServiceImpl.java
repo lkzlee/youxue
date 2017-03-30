@@ -254,7 +254,7 @@ public class OrderServiceImpl implements OrderService
 				String[] templates = templateId.split(";");
 				for (String t : templates)
 				{
-					if (t.indexOf("audit_msg") >= 0)
+					if (t.indexOf("commit_msg") >= 0)
 					{
 						templateId = t.split(":")[1];
 					}

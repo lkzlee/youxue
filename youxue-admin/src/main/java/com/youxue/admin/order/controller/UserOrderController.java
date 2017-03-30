@@ -335,7 +335,7 @@ public class UserOrderController extends BaseController
 				String[] templates = templateId.split(";");
 				for (String t : templates)
 				{
-					if (t.indexOf("noitfy_msg") >= 0)
+					if (t.indexOf("audit_msg") >= 0)
 					{
 						templateId = t.split(":")[1];
 					}

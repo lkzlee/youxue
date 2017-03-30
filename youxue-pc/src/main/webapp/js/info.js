@@ -32,7 +32,6 @@ function load_render(data){
         data=JSON.parse(data);
         // data.campsImages='a,b,c,d';
         success(data,function(){
-            console.log(data);
             $('.title').text(data.campsTitle);
             $('title').prepend(data.campsTitle);
             $('.orientedPeople').text(data.orientedPeople);
@@ -52,7 +51,7 @@ function load_render(data){
             if(data.campsDetailList.length>0){
                 var arr=[];
                 for(var i=0,len=data.campsDetailList.length;i<len;i++){
-                    arr.push('<span data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i])+'<i></i></span>');
+                    arr.push('<span data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i])+' '+data.campsDetailList[i]['detailName']+'<i></i></span>');
                     if(i==0){
                         $('.createTime').html(arr.join(''))
                     }

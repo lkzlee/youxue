@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         //5加载时间周期
         load_local(5,function(arr){
-            console.log(arr)
+            // console.log(arr)
             $('.timeDuration').append(publics(arr,'durationCategoryId'));
         });
         //6加载时间分类

@@ -191,7 +191,7 @@
                 function update_email(value){
                     login_post('/uc/activeEmail.do','email='+value,'',function(data){
                         data=JSON.parse(data);
-                        console.log(data);
+                        // console.log(data);
                         user_success(data,function(){
                             load(data);
                         })

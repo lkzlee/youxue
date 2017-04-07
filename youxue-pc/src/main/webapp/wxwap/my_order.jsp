@@ -128,7 +128,7 @@ function get_orderList(){
 }
 //渲染消息列表
 function render_list(data){
-    console.log(data)
+    // console.log(data)
     public_obj['pageNo']=data.pageNo;
     public_obj['totalPage']=data.totalPage;
     public_obj['totalCount']=data.totalCount;
@@ -199,7 +199,6 @@ function render_list(data){
     load_message.fadeOut(600);
     $('section ul').append(arr.join(''));
     $('.lImg img').each(function(){
-        console.log($(this))
         imgAutoFull($(this),$(this).attr('src'));
     })
     is_trunPage = true;

@@ -383,6 +383,7 @@ function getMonth(num,dateTime){
 function formatDate(time,style){
     var format='',str='';
     var dateTime=new Date(time);
+    dateTime = dateTime.getFullYear() > 0 ? dateTime : new Date(Date.parse(time.replace(/-/g, "/")));
     switch(style){
         case 0:
             format='-';
@@ -403,6 +404,14 @@ function formatDate(time,style){
             break;
     }
     return str;
+}
+// 根据持续天数设置时间范围
+function getDurationSetDate(detailStartTime,duration){
+    var now = detailStartTime?new Date(detailStartTime):new Date();
+    now = now.getFullYear() > 0 ? now : new Date(Date.parse(detailStartTime.replace(/-/g, "/")));
+    var nowTime = now.getTime() ;
+    duration = duration*24*60*60*1000;
+    return formatDate(nowTime+duration,0);
 }
 /**
  * 给日期的个位补0

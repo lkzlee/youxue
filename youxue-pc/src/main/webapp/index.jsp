@@ -163,7 +163,7 @@ function event_yingdi(){
 function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
-        console.log(data)
+        // console.log(data)
         success(data,function(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');

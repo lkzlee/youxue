@@ -128,11 +128,12 @@
   <select id="selectPageOrderListByType" resultMap="orderDetailVoMap" parameterType="java.util.Map" >
     select 
 	   t.*,tg.pay_status,tg.pay_type,c.camps_name,c.camps_title,c.camps_images,
-	   c.deadline_date,c.departure_date,c.start_date,c.duration_time
-    from tb_order t,tb_logic_order tg,tb_camps c
+	   c.deadline_date,c.departure_date,d.detail_start_time as start_date,d.duration as duration_time
+    from tb_order t,tb_logic_order tg,tb_camps c,tb_camps_detail d
     where 
 	    t.logic_order_id=tg.logic_order_id 
 	    and c.camps_id=t.camps_id
+	    and t.detail_id=d.detail_id
 	    and t.account_id = #{accountId,jdbcType=VARCHAR} 
 	    and t.status !=5
 	    <if test="statusList !=null">

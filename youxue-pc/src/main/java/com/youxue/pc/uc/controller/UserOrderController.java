@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,11 +27,13 @@ import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseController;
 import com.youxue.core.common.BaseResponseDto;
 import com.youxue.core.dao.CampsDao;
+import com.youxue.core.dao.CampsDetailDao;
 import com.youxue.core.dao.LogicOrderDao;
 import com.youxue.core.dao.OrderDao;
 import com.youxue.core.dao.OrderPersonDao;
 import com.youxue.core.dao.ProductOrderVoDao;
 import com.youxue.core.util.JsonUtil;
+import com.youxue.core.vo.CampsDetailVo;
 import com.youxue.core.vo.CampsVo;
 import com.youxue.core.vo.LogicOrderVo;
 import com.youxue.core.vo.OrderDetailVo;
@@ -60,6 +63,8 @@ public class UserOrderController extends BaseController
 	private LogicOrderDao logicOrderDao;
 	@Resource
 	private ProductOrderVoDao productOrderVoDao;
+	@Autowired
+	private CampsDetailDao detailDao;
 
 	/***
 	 *  用户个人订单信息查询
@@ -228,7 +233,9 @@ public class UserOrderController extends BaseController
 			CampsVo camps = campsDao.selectByPrimaryKey(order.getCampsId());
 			LogicOrderVo logicOrder = logicOrderDao.selectByPrimaryKey(order.getLogicOrderId(), false);
 			List<OrderPersonVo> list = orderPersonDao.getOrderPersonById(order.getOrderId());
-			OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, list);
+			CampsDetailVo detailVo = detailDao.selectByPrimaryKey(order.getDetailId());
+
+			OrderDetailInfoDto orderDetail = buildOrderDetailInfo(order, logicOrder, camps, detailVo, list);
 			return JsonUtil.serialize(orderDetail);
 		}
 		catch (Exception e)
@@ -271,12 +278,14 @@ public class UserOrderController extends BaseController
 	}
 
 	private OrderDetailInfoDto buildOrderDetailInfo(OrderVo order, LogicOrderVo logicOrder, CampsVo camps,
-			List<OrderPersonVo> list)
+			CampsDetailVo detailVo, List<OrderPersonVo> list)
 	{
 		OrderDetailInfoDto orderDto = new OrderDetailInfoDto();
 		orderDto.setPayType(logicOrder.getPayType());
 		BeanUtils.copyProperties(camps, orderDto);
 		BeanUtils.copyProperties(order, orderDto);
+		orderDto.setStartDate(detailVo.getDetailStartTime());
+		orderDto.setDurationTime(detailVo.getDuration());
 		orderDto.setOrderPersonList(list);
 		orderDto.setResult(100);
 		orderDto.setResultDesc("查询成功");

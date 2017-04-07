@@ -2,6 +2,10 @@ package com.youxue.core.vo;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.youxue.core.util.DateUtil;
+
 public class OrderDetailVo extends OrderVo
 {
 
@@ -23,6 +27,8 @@ public class OrderDetailVo extends OrderVo
 	private Date departureDate;
 
 	private Date startDate;
+
+	private String detailStartTimeStr;
 
 	private Integer durationTime;//持续天数
 
@@ -152,6 +158,19 @@ public class OrderDetailVo extends OrderVo
 	public void setIsRefund(Integer isRefund)
 	{
 		this.isRefund = isRefund;
+	}
+
+	public String getDetailStartTimeStr()
+	{
+		if (StringUtils.isNotBlank(detailStartTimeStr))
+			return detailStartTimeStr;
+		else
+			return DateUtil.formatDate(startDate, "yyyy-MM-dd");
+	}
+
+	public void setDetailStartTimeStr(String detailStartTimeStr)
+	{
+		this.detailStartTimeStr = detailStartTimeStr;
 	}
 
 	@Override

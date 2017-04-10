@@ -6,7 +6,7 @@ $(function() {
 			if($(this).css('display')=='block'){
 				var input=$('input[type=text]',$(this));
 				input.each(function(){
-					if($(this).val().length<=1){
+					if($(this).val().length<1){
 						$(this).parent().addClass('has-error').siblings('.help-block').text('输入不正确');
 						bool=false;
 						return bool;
@@ -24,7 +24,7 @@ $(function() {
 		if(formatDate(endVal).length>0 && formatDate(val)<=formatDate(endVal)){
 			$(this).parent().addClass('has-error').siblings('.help-block').text('行程开始时间不能小于报名截止时间1');
 			// $(this).next().show().parent().addClass('has-error');
-			$('.addSubmit').addAttr('disabled');
+			$('.addSubmit').attr("disabled","disabled");
 			return false;
 		}else{
 			$(this).parent().removeClass('has-error').siblings('.help-block').text('');
@@ -39,7 +39,7 @@ $(function() {
 			var val=$(this).val();
 			if(formatDate(val).length>0 && formatDate(val)<=formatDate(endVal)){
 				Taht.next().text('报名截止时间不能大于行程开始时间').parent().addClass('has-error');
-				$('.addSubmit').addAttr('disabled');
+				$('.addSubmit').attr("disabled","disabled");
 				return false;
 			}else{
 				Taht.next().text('').parent().removeClass('has-error');
@@ -52,7 +52,7 @@ $(function() {
 		var val=$(this).val();
 		if(isNaN(val)){
 			$(this).parent().addClass('has-error').siblings('.help-block').text('价格必须是数字');
-			$('.addSubmit').addAttr('disabled');
+			$('.addSubmit').attr("disabled","disabled");
 			return false;
 		}else{
 			$(this).parent().removeClass('has-error').siblings('.help-block').text('');

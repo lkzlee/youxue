@@ -1,6 +1,5 @@
 package com.youxue.admin.img;
 
-import java.io.File;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,7 @@ import com.baidu.ueditor.ActionEnter;
 import com.google.common.collect.Maps;
 import com.lkzlee.pay.utils.DateUtil;
 import com.youxue.core.common.BaseResponseDto;
-import com.youxue.core.constant.ImgConstant;
+import com.youxue.core.util.AliOSSUtil;
 import com.youxue.core.util.JsonUtil;
 
 @Controller
@@ -43,19 +42,11 @@ public class AdminImgController
 			String headName = fileName.substring(0, fileName.indexOf("."));
 			String fileType = fileName.substring(fileName.indexOf(".") + 1);
 			String realdFileName = headName + "_" + prefix + "." + fileType;
-			String imgPath = businessType + File.separator + fileType + File.separator + realdFileName;
-			String filePath = ImgConstant.getImgFilePath(imgPath);
-			log.info("文件路径:" + filePath + ",文件名：fileName=" + fileName);
-			File targetFile = new File(filePath);
-			if (!targetFile.exists())
-			{
-				targetFile.mkdirs();
-			}
-			imgFile.transferTo(targetFile);
-			String httpFileUrl = ImgConstant.getHttpImgUrl("/img/" + businessType + "/" + fileType + "/" + headName
-					+ "_" + prefix);
+			String imgPath = businessType + "/" + fileType + "/" + realdFileName;
+			log.info("文件路径:" + imgPath + ",文件名：fileName=" + fileName);
+			String imgHttpUrl = AliOSSUtil.uploadFileOSS(imgFile.getInputStream(), imgPath);
 			Map<String, Object> resultMap = Maps.newHashMap();
-			resultMap.put("url", httpFileUrl);
+			resultMap.put("url", imgHttpUrl);
 			resultMap.put("retCode", 200);
 			resultMap.put("msg", "success");
 			return JsonUtil.serialize(resultMap);
@@ -92,22 +83,14 @@ public class AdminImgController
 				String headName = fileName.substring(0, fileName.indexOf("."));
 				String fileType = fileName.substring(fileName.indexOf(".") + 1);
 				String realdFileName = headName + "_" + prefix + "." + fileType;
-				String imgPath = "uEditor" + File.separator + fileType + File.separator + realdFileName;
-				String filePath = ImgConstant.getImgFilePath(imgPath);
-				log.info("文件路径:" + filePath + ",文件名：fileName=" + fileName);
-				File targetFile = new File(filePath);
-				if (!targetFile.exists())
-				{
-					targetFile.mkdirs();
-				}
-				imgFile.transferTo(targetFile);
-				String httpFileUrl = ImgConstant.getHttpImgUrl("/img/" + "uEditor" + "/" + fileType + "/" + headName
-						+ "_" + prefix);
+				String imgPath = "uEditor" + "/" + fileType + "/" + realdFileName;
+				log.info("文件路径:" + imgPath + ",文件名：fileName=" + fileName);
+				String imgHttpUrl = AliOSSUtil.uploadFileOSS(imgFile.getInputStream(), imgPath);
 				ReturnUploadImage result = new ReturnUploadImage();
 				result.setState("SUCCESS");
 				result.setOriginal(realdFileName);
 				result.setTitle(realdFileName);
-				result.setUrl(httpFileUrl);
+				result.setUrl(imgHttpUrl);
 				result.setSize(imgFile.getSize());
 				result.setType("." + fileType);
 				response.getWriter().write(JsonUtil.serialize(result));

@@ -84,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
             <div class="left">价格档位<i></i></div>
             <div class="right priceRange">
-                <a href="?priceRange=" data-param="priceRange" data-value="">不限<i></i></a>
+                <a href="?priceCategoryId=" data-param="priceCategoryId" data-value="">不限<i></i></a>
             </div>
         </li>
         <li>
@@ -130,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var localeCategoryId='<%=request.getParameter("localeCategoryId")==null?"":request.getParameter("localeCategoryId")%>';
     var subjectCategoryId='<%=request.getParameter("subjectCategoryId")==null?"":request.getParameter("subjectCategoryId")%>';
     var durationCategoryId='<%=request.getParameter("durationCategoryId")==null?"":request.getParameter("durationCategoryId")%>';
-    var priceRange='<%=request.getParameter("priceRange")==null?"":request.getParameter("priceRange")%>';
+    var priceRange='<%=request.getParameter("priceCategoryId")==null?"":request.getParameter("priceCategoryId")%>';
     var departureCategoryId='<%=request.getParameter("departureCategoryId")==null?"":request.getParameter("departureCategoryId")%>';
     var startdate='<%=request.getParameter("startdate")==null?"":request.getParameter("startdate")%>';
     var enddate='<%=request.getParameter("enddate")==null?"":request.getParameter("enddate")%>';

@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <section class="header">
     <section class="head1 clear">
         <div class="left">
-            <a href="#"> </a>
+            <a href="/"> </a>
         </div>
         <div class="right">
             <div class="search">

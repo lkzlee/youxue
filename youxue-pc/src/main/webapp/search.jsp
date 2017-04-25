@@ -253,10 +253,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         login_post('/getCampsList.do',public_obj,'',function(data){
             data=JSON.parse(data);
             success(data,function(){
-//                data.campsList.pageNo=5;
-//                data.campsList.totalPage=10;
-//                data.campsList.totalCount=100;
-//                data.campsList.resultList.campsImages='1,1,2';
                 public_obj['pageNo']=data.campsList.pageNo;
                 public_obj['totalPage']=data.campsList.totalPage;
                 public_obj['totalCount']=data.campsList.totalCount;
@@ -267,11 +263,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 if(len>0){
                     $('.source_count').text(len);
                     for(var i=0;i<len;i++){
-                        li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
-                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'">'+obj[i]['campsTitle']+'</a></h2>')
+                        li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
+                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">'+obj[i]['campsTitle']+'</a></h2>')
                         li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
                         li.push('<div style="height:auto;line-height:22px;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
-                        li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'">点击查看</a></div></li>')
+                        li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">点击查看</a></div></li>')
                     }
                 }else{
                     li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="/">随便逛逛</a></div>');

@@ -13,7 +13,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/search.css?0502">
     <link rel="stylesheet" href="css/calendar_1.0.css"/>
 </head>
 <body>
@@ -266,7 +266,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
                         li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">'+obj[i]['campsTitle']+'</a></h2>')
                         li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
-                        li.push('<div style="height:auto;line-height:22px;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
+                        li.push('<div style="line-height: 22px; height: 110px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
                         li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">点击查看</a></div></li>')
                     }
                 }else{

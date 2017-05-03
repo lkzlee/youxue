@@ -22,7 +22,7 @@ body{
 section{
     padding:10px 20px 0 20px;
 }
-.traces{width: 100%; padding-bottom: 15px; overflow: hidden;}
+.traces{width: 100%; padding-bottom: 15px; overflow: scroll;}
 .traces img{max-width:100%;}
 .startDate label{display: inline-block; padding:1px 3px;margin: 0px 5px 5px 0;border: 1px solid #e5e5e5;border-radius: 3px;color: #999;}
 .startDate label.selected{background-color: #20BDF5;border: 1px solid #20BDF5;color:#fff;}

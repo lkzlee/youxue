@@ -211,7 +211,6 @@ function loadSlide(slideElement,num){
     num=num||3;
     var biZhiDelayLoadImg = slideElement.children('li');
     var biZhiDelayLoadImgLength = biZhiDelayLoadImg.length;
-    console.log(biZhiDelayLoadImgLength)
     // var _focus_num = $(".smallUl > li").length;
     if(biZhiDelayLoadImgLength<=num){
         return false;

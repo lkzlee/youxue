@@ -203,14 +203,15 @@ function CampsDetail(){
                 return arr.join('');
                 // hot_list.append(li.join(''));
             }
-            loadSlide($('.hot_list'),2);
+            loadSlide($('.hot_list'));
         })
     });
 }
 function loadSlide(slideElement,num){
-    num=num||2;
+    num=num||3;
     var biZhiDelayLoadImg = slideElement.children('li');
     var biZhiDelayLoadImgLength = biZhiDelayLoadImg.length;
+    console.log(biZhiDelayLoadImgLength)
     // var _focus_num = $(".smallUl > li").length;
     if(biZhiDelayLoadImgLength<=num){
         return false;

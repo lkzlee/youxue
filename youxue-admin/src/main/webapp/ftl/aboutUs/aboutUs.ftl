@@ -18,7 +18,7 @@
 				<!-- /.col-lg-12 -->
 			<div class="row">
                 <h5 class="text-center" style="color:red">${msg!''}</h5>
-                <div class="col-lg-offset-2 col-lg-8">
+                <#--<div class="col-lg-offset-2 col-lg-8">
                 	<h4 class="text-center">关于我们</h4>
                     <form class="form-horizontal" id="Form" method="POST" action="doModifyAboutUs.do" data-validate="true">
 						<div class="form-group row">
@@ -43,7 +43,7 @@
 									${aboutUs.descs!""}
 								</script>
 								
-                          		<!-- 实例化编辑器 -->
+                          		<!-- 实例化编辑器 &ndash;&gt;
 								<script type="text/javascript">
 									var ue = UE.getEditor('container1');
 								</script>
@@ -55,7 +55,7 @@
                             </div>
                        </div>
                     </form>
-                </div>
+                </div>-->
                 <hr>
                 <div class="col-lg-offset-2 col-lg-8">
                 	<h4 class="text-center">Camplink内容</h4>

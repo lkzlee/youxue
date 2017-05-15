@@ -48,7 +48,7 @@ function render_alertANDuserinfo(data){
     $('#nickname').children('span').text(data.nickName);
     $('#sex').children('span').text(data.gender==0?'男':'女');
     if(data.birthTime){
-        $('#birthday').children('span').text(formatDate(new Date(data.birthTime),0));        
+        $('#birthday').children('span').text(formatDate(data.birthTime,0));        
     }
     $('#loveCity').children('span').text(data.loveCity);
 }

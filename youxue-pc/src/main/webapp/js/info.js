@@ -30,7 +30,7 @@ function info_loding(){
 function load_render(data){
     login_post('/campsDetail.do',data,'',function(data){
         data=JSON.parse(data);
-        // data.campsImages='a,b,c,d';
+        // console.log(data)
         success(data,function(){
             $('.title').text(data.campsTitle);
             $('title').prepend(data.campsTitle);
@@ -51,7 +51,7 @@ function load_render(data){
             if(data.campsDetailList.length>0){
                 var arr=[];
                 for(var i=0,len=data.campsDetailList.length;i<len;i++){
-                    arr.push('<span data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i])+' '+data.campsDetailList[i]['detailName']+'<i></i></span>');
+                    arr.push('<span data-id="'+data.campsDetailList[i]['detailId']+'">'+data.campsDetailList[i]['detailStartTimeStr']+'至'+getDurationSetDate(data.campsDetailList[i]['detailStartTimeStr'],data.campsDetailList[i]['duration'])+' '+data.campsDetailList[i]['detailName']+'<i></i></span>');
                     if(i==0){
                         $('.createTime').html(arr.join(''))
                     }
@@ -110,13 +110,6 @@ function load_render(data){
             tab_pic();
         })
     })
-}
-// 根据持续天数设置时间范围
-function getDurationSetDate(detailList){
-    var now = detailList['detailStartTime']?new Date(detailList['detailStartTime']):new Date();
-    var nowTime = now.getTime() ;
-    var duration = detailList['duration']*24*60*60*1000;
-    return formatDate(nowTime+duration,0);
 }
 //时间范围选择时间
 function date_select(detailList){

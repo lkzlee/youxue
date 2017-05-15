@@ -13,14 +13,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/search.css?0502">
     <link rel="stylesheet" href="css/calendar_1.0.css"/>
 </head>
 <body>
 <section class="header">
     <section class="head1 clear">
         <div class="left">
-            <a href="#"> </a>
+            <a href="/"> </a>
         </div>
         <div class="right">
             <div class="search">
@@ -84,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <li>
             <div class="left">价格档位<i></i></div>
             <div class="right priceRange">
-                <a href="?priceRange=" data-param="priceRange" data-value="">不限<i></i></a>
+                <a href="?priceCategoryId=" data-param="priceCategoryId" data-value="">不限<i></i></a>
             </div>
         </li>
         <li>
@@ -130,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var localeCategoryId='<%=request.getParameter("localeCategoryId")==null?"":request.getParameter("localeCategoryId")%>';
     var subjectCategoryId='<%=request.getParameter("subjectCategoryId")==null?"":request.getParameter("subjectCategoryId")%>';
     var durationCategoryId='<%=request.getParameter("durationCategoryId")==null?"":request.getParameter("durationCategoryId")%>';
-    var priceRange='<%=request.getParameter("priceRange")==null?"":request.getParameter("priceRange")%>';
+    var priceRange='<%=request.getParameter("priceCategoryId")==null?"":request.getParameter("priceCategoryId")%>';
     var departureCategoryId='<%=request.getParameter("departureCategoryId")==null?"":request.getParameter("departureCategoryId")%>';
     var startdate='<%=request.getParameter("startdate")==null?"":request.getParameter("startdate")%>';
     var enddate='<%=request.getParameter("enddate")==null?"":request.getParameter("enddate")%>';
@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         });
         //5加载时间周期
         load_local(5,function(arr){
-            console.log(arr)
+            // console.log(arr)
             $('.timeDuration').append(publics(arr,'durationCategoryId'));
         });
         //6加载时间分类
@@ -253,10 +253,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         login_post('/getCampsList.do',public_obj,'',function(data){
             data=JSON.parse(data);
             success(data,function(){
-//                data.campsList.pageNo=5;
-//                data.campsList.totalPage=10;
-//                data.campsList.totalCount=100;
-//                data.campsList.resultList.campsImages='1,1,2';
                 public_obj['pageNo']=data.campsList.pageNo;
                 public_obj['totalPage']=data.campsList.totalPage;
                 public_obj['totalCount']=data.campsList.totalCount;
@@ -267,11 +263,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 if(len>0){
                     $('.source_count').text(len);
                     for(var i=0;i<len;i++){
-                        li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
-                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'">'+obj[i]['campsTitle']+'</a></h2>')
+                        li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
+                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">'+obj[i]['campsTitle']+'</a></h2>')
                         li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
-                        li.push('<div style="height:auto;line-height:22px;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
-                        li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'">点击查看</a></div></li>')
+                        li.push('<div style="line-height: 22px; height: 110px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
+                        li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">点击查看</a></div></li>')
                     }
                 }else{
                     li.push('<div class="no_result"><span>抱歉没有搜索结果</span><a href="/">随便逛逛</a></div>');

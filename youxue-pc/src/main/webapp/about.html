@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Camplink-关于青古</title>
+    <title>Camplink-关于青谷</title>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
@@ -14,7 +14,7 @@
 <section class="header">
     <section class="head1 clear">
         <div class="left">
-            <a href="#"> </a>
+            <a href="/"> </a>
         </div>
         <div class="right">
             <div class="search">
@@ -51,8 +51,8 @@
 </section>
 <section class="content content_qg width_content clear">
     <section class="left j_list">
-        <p class="active"><a href="#aboutUs">关于我们<i></i></a></div>
-        <p><a href="#qinggu">关于Camplink<i></i></a></p>
+        <!-- <p class="active"><a href="#aboutUs">关于我们<i></i></a></div> -->
+        <p class="active"><a href="#qinggu">关于Camplink<i></i></a></p>
         <p><a href="#creator">合作伙伴<i></i></a></p>
         <p><a href="#mainProduct">常见问题<i></i></a></p>
     </section>
@@ -87,19 +87,19 @@ window.onhashchange=function(){
     getHash();
 }
 function getHash(){
-    $('.j_img').hide();
-    $('.j_content').hide();
+    $('.j_img').attr('src','/img/load.gif');
+    $('.j_content').html("");
     var url=window.location.hash;
     var param=url.split('#')[1];
     $('.j_list a[href="#'+param+'"]').parent().addClass('active').siblings('p').removeClass('active');
     load_aboutInfo(param);
 }
 function load_aboutInfo(type){
-    login_post('/aboutUs.do','type='+(type || 'aboutUs'),'',function(data){
+    login_post('/aboutUs.do','type='+(type || 'qinggu'),'',function(data){
         data=JSON.parse(data);
         if(data.descs){
-            $('.j_img').attr('src',handle_pic(data.imgurl)[0]).show();
-            $('.j_content').html(data.descs).show();
+            $('.j_img').attr('src',handle_pic(data.imgurl)[0]);
+            $('.j_content').html(data.descs);
         }            
     })
 }

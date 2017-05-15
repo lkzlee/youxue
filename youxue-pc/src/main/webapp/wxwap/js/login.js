@@ -65,7 +65,7 @@ function sendCode(This,phone){
     login_post('/mobileCode.do','phone='+phone.val(),'',successFn,errorFn);
     function successFn(json_data){
         var data=JSON.parse(json_data);
-        console.log(data)
+        // console.log(data)
         success(data,function(){
             alertMesageAndHide('验证码已成功发送')
         },function(){

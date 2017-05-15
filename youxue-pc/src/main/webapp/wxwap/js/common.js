@@ -45,7 +45,7 @@ $.extend({
         }
     },
     checkCode:function(input){
-        console.log(codeReg.test(input.val()))
+        // console.log(codeReg.test(input.val()))
         if(codeReg.test(input.val())){
             return true;
         }else{

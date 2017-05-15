@@ -16,7 +16,7 @@
 <section class="header">
     <section class="head1 clear">
         <div class="left">
-            <a href="#"> </a>
+            <a href="/"> </a>
         </div>
         <div class="right">
             <div class="search">
@@ -191,7 +191,7 @@
                 function update_email(value){
                     login_post('/uc/activeEmail.do','email='+value,'',function(data){
                         data=JSON.parse(data);
-                        console.log(data);
+                        // console.log(data);
                         user_success(data,function(){
                             load(data);
                         })

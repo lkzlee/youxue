@@ -18,7 +18,7 @@
 <section class="header">
     <section class="head1 clear">
         <div class="left">
-            <a href="#"> </a>
+            <a href="/"> </a>
         </div>
         <div class="right">
             <div class="search">
@@ -163,7 +163,7 @@ function event_yingdi(){
 function CampsDetail(){
     login_post('/getIndexCampsDetail.do','','',function(data){
         data=JSON.parse(data);
-        console.log(data)
+        // console.log(data)
         success(data,function(){
             var hot_list=$('.hot_list');
             var subject_list=$('.subject_list');
@@ -203,12 +203,12 @@ function CampsDetail(){
                 return arr.join('');
                 // hot_list.append(li.join(''));
             }
-            loadSlide($('.hot_list'),2);
+            loadSlide($('.hot_list'));
         })
     });
 }
 function loadSlide(slideElement,num){
-    num=num||2;
+    num=num||3;
     var biZhiDelayLoadImg = slideElement.children('li');
     var biZhiDelayLoadImgLength = biZhiDelayLoadImg.length;
     // var _focus_num = $(".smallUl > li").length;

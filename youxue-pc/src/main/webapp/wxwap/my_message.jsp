@@ -39,7 +39,7 @@ $(function(){
         if(style=='weidu'){
             login_post('/uc/markmessage.do','messageId='+That.attr('data-id'),'',function(data){
                 data=JSON.parse(data);
-                console.log(data);
+                // console.log(data);
                 user_success(data,function(){
                     That.attr('class','yidu').find('p').css('white-space','normal');
                     That.find('img').attr('src','img/ic_messages_yidu.png')

@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>Camplink-登录</title>
+    <script src="js/json2.js"></script>
     <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/user.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -35,24 +38,24 @@
             <form action="/login.do" method="post" id="frm_logo">
                 <h2>会员登录</h2>
                 <div class="textStyle phoneDiv">
-                    <input type="text" placeholder="请输入手机号码" class="phone_input" name="mobile">
+                    <input type="text" placeholder="请输入手机号码" class="phone_input" name="mobile" tabindex=1>
                     <label></label>
                 </div>
                 <div class="textStyle codeDiv">
-                    <input type="password" placeholder="请输入动态密码" class="pwd_input" name="phoneCode"><input type="button" class="aCode" value="获取动态密码">
+                    <input type="password" placeholder="请输入动态密码" class="pwd_input" name="phoneCode" tabindex=2><input type="button" class="aCode" value="获取动态密码" tabindex=3>
                     <label></label>
                 </div>
                 <div class="textStyle">
-                    <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode"><a href="javascript:void(0)" class="imgCode"><img src="verifyCode.do" alt="" id="imgCode"></a>
+                    <input type="text" placeholder="请输入验证码" class="code_input" name="imgCode" tabindex=4><a href="javascript:void(0)" class="imgCode" tabindex=5><img src="verifyCode.do" alt="" id="imgCode"></a>
                     <label></label>
                 </div>
                 <div class="autoLogin">
-                    <label><input type="checkbox" class="autoLog">自动登录</label>
+                    <label><input type="checkbox" class="autoLog" tabindex=6><span>自动登录</span></label>
                 </div>
                 <div class="loginButton">
-                    <input type="button" value="登录" id="submit_login">
+                    <input type="button" value="登录" id="submit_login" tabindex=7>
                 </div>
-                <div style=" padding-top: 10px; text-align: right; font-size: 14px;"> <a href="/" style=" color: #fff; text-decoration: underline; ">继续浏览</a> </div>
+                <div style="text-align: center; font-size: 16px; line-height: 36px;"> <a href="/" style=" color: #fff; text-decoration: underline; ">继续浏览</a> </div>
             </form>
         </div>
     </div>
@@ -60,10 +63,22 @@
 <section class="footer2">
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#4d4d4d;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
 <script>

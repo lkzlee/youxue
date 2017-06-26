@@ -358,10 +358,7 @@ function login_post(address,data,method,successFn,errorFn,contentType){
         contentType:contentType || 'application/x-www-form-urlencoded; charset=UTF-8',
         success:successFn,
         error:errorFn ||function(XMLHttpRequest, textStatus, errorThrown){
-            alert('login_post系统获取异常');
-            console.log(XMLHttpRequest.status);
-            console.log(XMLHttpRequest.readyState);
-            console.log(textStatus);
+            console.log(arguments);
             return false;
         }
     })

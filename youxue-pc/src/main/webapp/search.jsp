@@ -4,20 +4,22 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
 %> 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>Camplink-搜索结果</title>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/search.css?0502">
     <link rel="stylesheet" href="css/calendar_1.0.css"/>
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -58,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <section class="search_head">
     <div class="width_content">
         <a href="index.jsp">首页</a>
-        <label id="position"><a href="javascript:void(0)"><i>></i>搜索</a></label>
+        <label id="position"><a href="javascript:void(0)"><i>></i></a></label>
     </div>
 </section>
 <section class="search_content width_content">
@@ -108,7 +110,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     </div>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -117,11 +119,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
+<script src="js/json2.js"></script>
 <script src="js/calendar_1.0.js"></script>
 <script>
     var public_obj={};
@@ -135,6 +150,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var startdate='<%=request.getParameter("startdate")==null?"":request.getParameter("startdate")%>';
     var enddate='<%=request.getParameter("enddate")==null?"":request.getParameter("enddate")%>';
     $(function(){
+        if($.browser.msie && parseInt($.browser.version)<9){
+            $('.select_sc').attr('id','radius');
+        }
         load_();
         if(searchContent){
             public_obj['searchContent']=searchContent;
@@ -261,12 +279,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 var len=obj.length;
                 isSelect();
                 if(len>0){
-                    $('.source_count').text(len);
+                    $('.source_count').text(public_obj['totalCount']);
                     for(var i=0;i<len;i++){
                         li.push('<li><div class="left_sc"><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank"><img src="'+handle_pic(obj[i]['campsImages'])[0]+'"></a></div>')
-                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">'+obj[i]['campsTitle']+'</a></h2>')
-                        li.push('<div>'+obj[i]['campsSubjectName']+'</div>')
-                        li.push('<div style="line-height: 22px; height: 110px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
+                        li.push('<div class="center_sc"><h2><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank" title="'+obj[i]['campsTitle']+'">'+obj[i]['campsTitle']+'</a></h2>')
+                        li.push('<div class="tag">'+obj[i]['campsSubjectName']+'</div>')
+                        li.push('<div class="cont">'+(obj[i]['campsDesc']).replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/gi,"").replace(/<\/?[^>]*>/gim,"")+'</div></div>')
                         li.push('<div class="right_sc"><span>¥'+obj[i]['totalPrice']+'</span><a href="/info.jsp?campusId='+obj[i]['campsId']+'" target="_blank">点击查看</a></div></li>')
                     }
                 }else{

@@ -14,6 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="css/swiper.min.css"/>
     <link rel="stylesheet" href="css/cssReset.css"/>
     <link rel="stylesheet" href="css/camp_details.css"/>
+    <link rel="stylesheet" href="css/fsgallery.css" />
 </head>
 <body>
 <div style="position:fixed;top:0;left:0;bottom:0;right:0;background:rgba(0,0,0,0.9);z-index: 999;display: none;" class="camp_details_hidden_Carousel swiper-container">
@@ -41,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <ul class="camp_details_items">
         <li>
-            <p>营地介绍</p>
+            <p class="j_title">营地介绍</p>
             <div>
                 <table style="width:100%;">
                     <caption style="text-align: left;padding-left:3px;">营地</caption>
@@ -53,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
         </li>
         <li>
-            <p>营地课程&活动</p>
+            <p class="j_title">营地课程&活动</p>
             <div>
                 <table style="width:100%;">
                     <caption style="text-align: left;padding-left:3px;">课程内容</caption>
@@ -66,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
         </li>
         <li>
-            <p>营地吃住行&安全</p>
+            <p class="j_title">营地吃住行&安全</p>
             <div class="camp_eat_live_safe">
                 <p class="campsFoodDesc"></p>
                 <p class="campsFoodsPhotos"></p>
@@ -79,11 +80,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <p class="no_arrow_down"><a href="javascript:void(0)" style="display: block;height:100%;" id="j_tripEvent">营地行程</a></p>
         </li>
         <li>
-            <p>费用</p>
+            <p class="j_title">费用</p>
             <div class="feeDesc"></div>
         </li>
         <li>
-            <p>常见问题</p>
+            <p class="j_title">常见问题</p>
             <div class="questions"></div>
         </li>
     </ul>
@@ -104,6 +105,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </section>
 </div>
 <script src="js/jquery-3.1.0.min.js"></script>
+<script src="js/imgBig.js"></script>
 <script src="js/fastclick.js"></script>
 <script src="js/swiper.min.js"></script>
 <script src="js/common.js"></script>
@@ -120,8 +122,8 @@ $(function() {
     load_render();
     FastClick.attach(document.body);
     //下拉显示
-    $(".camp_details_items").on("click","li",function(){
-        $(this).find("div").slideToggle().prev().toggleClass("active_arrow_down");
+    $(".camp_details_items").on("click",".j_title",function(){
+        $(this).siblings("div").slideToggle().prev().toggleClass("active_arrow_down");
     })
     $(".travel_feature>li:first-child").on("click","span",function(){
         $(this).addClass("active").siblings(".active").removeClass("active");
@@ -151,7 +153,10 @@ $(function() {
           addCarFn($(this),true);
         }
     })
+    
 });
+window.onload=function(){
+}
 function addCarFn(element,location){
     data_car['detailId']=$('.startDate .selected').attr('data-id');
     if(!data_car['detailId']){
@@ -234,7 +239,7 @@ function load_render(data){
                 var arr=handle_pic(data.campsFoodsPhotos);
                 var str='';
                 for(var i=0;i<arr.length;i++){
-                    str+='<img src="'+arr[i]+'">';
+                    str+='<a href="'+arr[i]+'"><img src="'+arr[i]+'"></a>';
                 }
                 $('.campsFoodsPhotos').html(str);
             }
@@ -242,12 +247,13 @@ function load_render(data){
                 var arr=handle_pic(data.campsHotelPhotos);
                 var str='';
                 for(var i=0;i<arr.length;i++){
-                    str+='<img src="'+arr[i]+'">';
+                    str+='<a href="'+arr[i]+'"><img src="'+arr[i]+'"></a>';
                 }
                 $('.campsHotelPhotos').html(str);
             }
             date_select(data.campsDetailList)
             load_carousel();
+            $('.camp_details_items img').fsgallery();//点击图片放大
         })
     })
 }

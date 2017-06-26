@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>我的购物车_Camplink</title>
     <link rel="stylesheet" href="css/cssReset.css"/>
-    <link rel="stylesheet" href="css/shopping_cart.css"/>
+    <link rel="stylesheet" href="css/shopping_cart.css?1"/>
     <script src="js/isLogin.js"></script>
 </head>
 <body>
@@ -69,7 +69,7 @@ ul.on('click','.cart_edit_choice',function(){
     sibligP.toggleClass('hidden_active');
     siblingVal.toggleClass('hidden_active');
     if(text=="保存"){
-        var id=$(this).attr('data-id');
+        var id=$(this).attr('data-campusid');
         dataObj[index]['num']=siblingVal.find('.j_number').val();
         ajax_changeNum(id,dataObj[index]['num'],function(){
             // sibligP.find('span').text(dataObj[index]['num']);
@@ -125,13 +125,13 @@ $('#j_btnCheck').on('click',function(){
             var campusId=parent.find('.cart_edit_choice').attr('data-campusId');
             var detailId=parent.find('.cart_edit_choice').attr('data-detailId');
             var src=parent.find('img').attr('src');
-            var title=parent.find('.title').text();
+            var title=encodeURI(parent.find('.title').text());
             var price=Number(parent.find('.j_price').text());
             var num=Number(parent.find('.j_numberSpan').text());
             var xj_price=price*num;
             arr.push([campusId,detailId,src,title,price,num,xj_price].join('$$'));
         });
-        auto_submit('/wxwap/check_order.jsp',{'orderList':arr},'post');
+        auto_submit('check_order.jsp',{'orderList':arr},'post');
     }
     return false;
 })

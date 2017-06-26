@@ -21,7 +21,7 @@ function info_loding(){
         var index=li.index(this);
         var top=anchor.eq(index).offset().top;
         var sTop=top-YDheight-50;//减20是微调-因为内容横向导航条定位后，改变了元素位置
-        $('body').animate({
+        $('body,html').animate({
             scrollTop:sTop
         },500);
         return false;
@@ -32,8 +32,8 @@ function load_render(data){
         data=JSON.parse(data);
         // console.log(data)
         success(data,function(){
-            $('.title').text(data.campsTitle);
-            $('title').prepend(data.campsTitle);
+            $('.title').html('<i></i>'+data.campsTitle);
+            document.title=data.campsTitle+'_Camplink';
             $('.orientedPeople').text(data.orientedPeople);
             $('.deadlineDate').text(formatDate(data.deadlineDate,0));
             $('.feature').text(data.feature);
@@ -128,7 +128,7 @@ function yingdi_pic(){
     var yingdi_a=$('a',yingdi_list);
     var yingdi_len=yingdi_li.length;
     var index=0,pageNo=0,pageCount=5,disk=1,isClick=true;
-    if(yingdi_len>5){
+    if(yingdi_len>pageCount){
         var jt_left=$('#jt_left');
         var jt_right=$('#jt_right');
         jt_left.css('display','block');

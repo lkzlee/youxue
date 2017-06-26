@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 pageEncoding="utf-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>微信支付_Camplink</title>
     <script src="/js/isLogin.js"></script>
     <!--[if lt IE 9]>
@@ -39,7 +41,7 @@ pageEncoding="utf-8"%>
     <p class="p4">camplink.com</p>
     <p class="p5"><i></i>400-123-456</p>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -48,7 +50,7 @@ pageEncoding="utf-8"%>
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
 <script src="/js/jquery-3.1.0.min.js"></script>

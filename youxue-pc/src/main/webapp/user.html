@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>个人中心-基础资料_Camplink</title>
     <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
+    <script src="js/json2.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/trip-calendar.css">
     <link rel="stylesheet" href="css/user.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -60,7 +63,7 @@
                 <li><a href="user_message.html">我的消息</a></li>
             </ul>
         </li>
-        <li><a href="javascript:void(0)" class="a_userList">我的订单<span></span><i></i></a>
+        <li><a href="javascript:void(0)" class="a_userList">我的订单<span></span><i style="color:#fff;"></i></a>
             <ul>
                 <li><a href="user_payment.html">待付款</a></li>
                 <li><a href="user_audit.html">待审核</a></li>
@@ -69,7 +72,7 @@
                 <li><a href="user_cancel.html">已取消</a></li>
             </ul>
         </li>
-        <li><a href="javascript:void(0)" class="a_userList">我的购物车<span></span><i></i></a>
+        <li><a href="javascript:void(0)" class="a_userList">我的购物车<span></span><i style="color:#fff;"></i></a>
             <ul>
                 <li><a href="user_shoppingCar.html">购物车</a></li><li><a href="user_product.html">周边产品</a></li>
             </ul>
@@ -77,10 +80,10 @@
     </ul>
     <div class="right_default">
         <div class="right1">
-            <div class="bghui"></div>
+            <div class="bghui" style="background:none"></div>
             <div class="imgMessage">
                 <div class="img" id="photo_img">
-                    <!-- <img src="" alt="" id="photo_img" style="display:none;"> -->
+                    <img src="" alt="" id="photo_img1" style="display:none;">
                 </div>
                 <a class="message" href="/user_message.html">
                     <i></i>
@@ -89,11 +92,11 @@
             </div>
             <div class="hiDiv">
                 <h2>Hi,<label class="nicknNme_lbl"></label>!</h2>
-                <span>你的积分，<label class="integral_lbl j_integral">0</label></span>
+                <span>你的积分：<label class="integral_lbl j_integral">0</label></span>
             </div>
         </div>
         <div class="right2">
-            <div class="bghui clear">
+            <div class="bghui bghui2 clear">
                 <span>基础信息</span>
                 <a href="#" id="default_edit">编辑</a>
             </div>
@@ -120,7 +123,7 @@
                     <b>性别</b>
                     <span></span>
                     <label for="man"><input id="man" type="radio" name="sex" value="0"><em>男</em></label>
-                    <label for="woman"><input id="woman" type="radio" name="sex" value="1"><em>女</em></label>
+                    <label for="woman" style="margin-left:10px;"><input id="woman" type="radio" name="sex" value="1"><em>女</em></label>
                 </li>
                 <li id="birthday">
                     <b>生日</b>
@@ -137,16 +140,18 @@
             </ul>
         </div>
         <div class="right2">
-            <div class="bghui clear">
+            <div class="bghui bghui2 clear">
                 <span>头像信息</span>
-                <a href="javascript:void(0)" class="j_edit_photo">编辑</a>
+                <a href="javascript:void(0)" class="aeidt j_edit_photo">编辑</a>
             </div>
             <div class="photoDiv">
                 <div class="photo1">
                     <span>头像</span>
                     <form id="frm_pic" method="post" enctype="multipart/form-data" style="display:inline;">
+                        <span id="spanButtonPlaceholder" style="display:none;"></span>
                         <a href="javascript:void(0)" id="btn_upload">上传图片</a>
                         <input type="file" id="uploadFile" name="uploadFile" style="display:none;">
+                        <!-- <input id="btnUpload" type="button" value="上  传" onclick="startUploadFile();" class="btn3_mouseout" style="display:none;"/> -->
                         <p>仅支持jpg,png,gif格式文件，大小在2M以内</p>
                     </form>
                 </div>
@@ -171,12 +176,12 @@
                         </div>
                     </div>
                 </div>
-                <a href="javascirpt:void(0)" class="saveButton j_edit_photo">保存</a>
+                <input type="button" class="saveButton j_save_photo" value="保存">
             </div>
         </div>
     </div>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -185,7 +190,7 @@
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
 <div class="alertMessage" style="display:none;">
@@ -195,13 +200,84 @@
         <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
     </div>
 </div>
-<script src="js/jquery-3.1.0.min.js"></script>
+<div id="divFileProgressContainer" style="display: none;"></div>
+<table id="infoTable" border="0" width="530" style="display: none;"></table>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/jquery.easing.min.js"></script>
-<!-- <script src="js/ajaxfileupload.js"></script> -->
 <script src="js/yui-min.js"></script>
-<script src="js/public.js?2.0"></script>
-<script src="js/user.js"></script>
-<script>
+<script src="js/public.js"></script>
+<script type="text/javascript">
+    var imgUrl='';
+</script>
+<!--[if lte IE 10]> 
+<script type="text/javascript" src="/js/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="/js/swfupload/swfupload.queue.js"></script>
+<script type="text/javascript" src="/js/swfupload/handlers.js"></script>
+<script type="text/javascript">
+    var swfu;
+    window.onload = function () {
+        swfu = new SWFUpload({
+            upload_url: "/img/userphoto/uploadImg.do",
+            file_post_name:"uploadFile",
+            use_query_string:false,
+            // File Upload Settings
+            file_size_limit : "2 MB",   // 文件大小控制
+            file_types : "*.jpg;*.gif;*.png;*.jpeg;*.bmp",
+            file_types_description : "仅支持jpg,png,gif格式文件",
+            file_upload_limit : "1",
+                            
+            file_queue_error_handler : function(){
+                console.log(arguments)
+            },
+            file_dialog_complete_handler:function(){//选择好文件后提交
+                this.startUpload(); 
+            },
+            file_queued_handler : fileQueued,
+            upload_progress_handler : uploadProgress,
+            upload_error_handler : uploadError,
+            upload_success_handler : function(obj, data, response){
+                console.log(obj);
+                console.log(data);
+                console.log(response)
+                data=JSON.parse(data);
+                data=JSON.parse(data);
+                imgUrl=data.url;
+                successFn(data);
+            },
+            upload_complete_handler : uploadComplete,
+            button_placeholder_id : "spanButtonPlaceholder",
+            button_width: 72,
+            button_height: 20,
+            button_text : '<span class="button">上传图片</span>',
+            button_text_style : '.button {} .buttonSmall { font-size: 10pt; }',
+            button_text_top_padding: 0,
+            button_text_left_padding: 18,
+            button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+            button_cursor: SWFUpload.CURSOR.HAND,
+            
+            // Flash Settings
+            flash_url : "/js/swfupload/swfupload.swf",
+
+            // Debug Settings
+            debug: false  //是否显示调试窗口
+        });
+    };
+</script>
+<![endif]-->
+<script src="js/user.js?2"></script>
+<script type="text/javascript">
     YUI({
         modules: {
             'trip-calendar': {
@@ -244,15 +320,24 @@
             render_alertANDuserinfo(data);
         })
         //个人首页，点击编辑，显示文本框，并自动保存提交
-        edit_photo('/img/userphoto/uploadImg.do',sucessFn);
-        function sucessFn(data){
-            if(data.retCode==200){
-                see_photo(data);
-            }
-        }
+       edit_photo('/img/userphoto/uploadImg.do',successFn);
+        
         //首页基础信息编辑
         edit_userInfo();
+        if($.browser.msie && parseInt($.browser.version)<9){
+            $('#userList').addClass('radius');
+            $('.message span').addClass('ie78')
+        }
+        if($.browser.msie && parseInt($.browser.version)<8){
+            $('#userList ul').hide().eq(0).show().siblings('a').addClass('li_aActive');
+        }
     })
+    function successFn(data){
+        if(data.retCode==200){
+            see_photo(data);
+        }
+    } 
 </script>
+
 </body>
 </html>

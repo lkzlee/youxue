@@ -6,19 +6,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 //String campusId = request.getParameter("campusId");//用request得到 
 %> 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
-    <title>_Camplink</title>
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css?1">
+    <link rel="stylesheet" href="css/info.css">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
+    <style type="text/css">
+    #divBG{filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#aa000000,endColorstr=#aa000000);}
+    #frm_logo span{overflow:hidden;}
+    #frm_logo span i{right:-46px!important;top:7px!important;width:19px!important;border-width:19px;border-style:dotted;background:#21a8e2!important;}
+    .con2 .con2_head .li2.tese .before{background:none;}
+    .con2 .con2_head .li2 .before{background:url(/img/index.png);background-position:-165px -59px;}
+    .con2 .con2_head .li2_ash .before{background-position:-191px -59px;background-color: #fff;}
+    .con2 .con2_head .active.li2+.li2 .before{background-color:#29abe2;}
+    .con2 .con2_head .wenti.active .after{background:url(/img/index.png);background-position:-191px -59px;}
+    </style>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/info.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -59,12 +71,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <section class="content width_content">
     <div class="con1 clear">
         <div class="left con1_left">
-            <img class="img_info" src="" alt="">
+            <div class="img_info_div">
+                <img class="img_info" src="" alt="">
+            </div>
             <ul class="img_list">
             </ul>
         </div>
         <div class="left con1_right">
-            <h1 class="title"></h1>
+            <h1 class="title"><i></i></h1>
             <div class="con1_info">
                 <div class="con1_info_d1">
                     <p class="p1">面向对象：<label class="orientedPeople"></label></p>
@@ -81,9 +95,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </div>
                     </div>
                 </div>
-                <p class="con1_info_p3">产品特色：<label class="feature"></label></p>
-                <p class="con1_info_p4">服务保障：<label class="serviceSupport"></label></p>
-                <p class="cont_info_p5">报名人数：<input type="number" value="1" class="signUp_number shopCartCount"></p>
+                <p class="con1_info_p3"><span>产品特色：</span><label class="feature"></label></p>
+                <p class="con1_info_p4"><span>服务保障：</span><label class="serviceSupport"></label></p>
+                <p class="cont_info_p5"><span>报名人数：</span><input type="number" value="1" class="signUp_number shopCartCount"></p>
                 <div class="con1_info_d3">
                     <div class="left">
                         <input type="button" class="leftA1 shoppingCar" value="加入购物车"/>
@@ -98,16 +112,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <div class="con2">
         <ul class="con2_head" id="YDnav">
-            <li class="tese li2 li2_ash active"><a href="javascript:void(0)">特色亮点</a></li>
-            <li class="jieshao li2"><a href="javascript:void(0)">营地介绍</a></li>
-            <li class="chizhu li2 li2_ash"><a href="javascript:void(0)">营地吃住行</a></li>
-            <li class="huodong li2"><a href="javascript:void(0)">营地课程&活动</a></li>
-            <li class="xingcheng li2 li2_ash"><a href="javascript:void(0)">营地行程</a></li>
-            <li class="feiyong li2"><a href="javascript:void(0)">费用详情</a></li>
-            <li class="wenti li2 li2_ash"><a href="javascript:void(0)">常见问题</a></li>
+            <li class="tese li2 li2_ash active"><i class="before"></i><a href="#tese">特色亮点</a></li>
+            <li class="jieshao li2"><i class="before"></i><a href="#jieshao">营地介绍</a></li>
+            <li class="chizhu li2 li2_ash"><i class="before"></i><a href="#chizhu">营地吃住行</a></li>
+            <li class="huodong li2"><i class="before"></i><a href="#huodong_div">营地课程&活动</a></li>
+            <li class="xingcheng li2 li2_ash"><i class="before"></i><a href="#xingcheng">营地行程</a></li>
+            <li class="feiyong li2"><i class="before"></i><a href="#xiangqing">费用详情</a></li>
+            <li class="wenti li2 li2_ash"><i class="before"></i><a href="#wenti">常见问题</a><i class="after"></i></li>
         </ul>
         <div class="con2_cont">
-            <div class="div_con2_cont tese_div">
+            <div class="div_con2_cont tese_div" id="tese">
                 <div class="left">
                     <h3>营地图片</h3>
                 </div>
@@ -122,21 +136,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </a>
                 </div>
             </div>
-            <div class="div_con2_cont jieshao_div">
+            <div class="div_con2_cont jieshao_div" id="jieshao">
                 <div class="left">
                     <h3>营地介绍</h3>
                 </div>
                 <div class="right">
                     <dl>
-                        <dt class="campsName"></dt>
+                        <dt class="title"></dt>
                         <dd>时间：<label class="createTime"></label></dd>
                         <dd>地点：<label class="campsLocale"></label></dd>
                         <dd>周期：<label class="durationTime"></label>天</dd>
-                        <dd><span>简介：</span><span class="span1 campsDesc"></span></dd>
+                        <dd><span>简介：</span><div class="span1 campsDesc"></div></dd>
                     </dl>
                 </div>
             </div>
-            <div class="div_con2_cont chizhu_div">
+            <div class="div_con2_cont chizhu_div" id="chizhu">
                 <div class="left">
                     <h3>营地课程&活动</h3>
                 </div>
@@ -149,7 +163,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </dl>
                 </div>
             </div>
-            <div class="div_con2_cont huodong_div">
+            <div class="div_con2_cont huodong_div" id="huodong_div">
                 <div class="left">
                     <h3>营地吃住行<p>安全</p></h3>
                 </div>
@@ -166,7 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </dl>
                 </div>
             </div>
-            <div class="div_con2_cont xingcheng_div">
+            <div class="div_con2_cont xingcheng_div" id="xingcheng">
                 <div class="left">
                     <h3>营地行程</h3>
                 </div>
@@ -177,14 +191,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <p class="color_blur p1_right">注：以上行程均为参考，具体行程根据航班实际情况有所调整，免费咨询电话：400-123-567</p>
                 </div>
             </div>
-            <div class="div_con2_cont feiyong_div">
+            <div class="div_con2_cont feiyong_div" id="xiangqing">
                 <div class="left">
                     <h3>费用详情</h3>
                 </div>
                 <div class="right feeDesc">
                 </div>
             </div>
-            <div class="div_con2_cont wenti_div">
+            <div class="div_con2_cont wenti_div" id="wenti">
                 <div class="left">
                     <h3>常见问题</h3>
                 </div>
@@ -194,7 +208,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
     </div>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -203,7 +217,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
 <div id="showImg">
@@ -251,8 +265,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 </div>
 
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
+<script src="js/json2.js"></script>
 <script src="js/user.js"></script>
 <script src="js/info.js"></script>
 <script>
@@ -280,6 +307,10 @@ $(function(){
         frm_logo.hide();
         notLog_alert();
     });
+    if($.browser.msie && parseInt($.browser.version) <=9){
+        $('.title').addClass('ie78');
+        $('.con1_info_d2 i').attr('id','ie78');
+    }
     shoppingCar.click(function(ev){
         notLog_alert($(this));
         ev.stopPropagation();
@@ -309,13 +340,17 @@ $(function(){
             alert('请选择营地时间');
             return false;
         }
+        data_car['num']=$('.signUp_number').val();
+        if(!(/^[1-9]+\d*$/.test(data_car['num']))){
+            alert('您输入的报名人数不正确')
+            return false;
+        }
         if(!isLogin){
             frm_logo.show();
             notLogin.fadeIn(300);
             bg_showORhide();
         }else{//登录，那么显示加入购物车消息
             element && element.attr('disabled','disabled').addClass('disabled');
-            data_car['num']=$('.signUp_number').val();
             var message=car_message.find('.message');
             var i=$('i',message);
             var b=$('b',message);

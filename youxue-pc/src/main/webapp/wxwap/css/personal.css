@@ -50,7 +50,7 @@ section>div>ul{
 section>div>ul>li{
     position: relative;
     line-height: 50px;
-    background: url("../img/ic_right.png") no-repeat center right;
+    background: url("img/ic_right.png") no-repeat center right;
 }
 section>div>ul>li b{
     position: absolute;

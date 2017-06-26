@@ -30,7 +30,7 @@ function changeEvent(startTime,callback) {
     // })
 }
 function calendarLoad(){
-    $(document.body).append('<div id="calendar" style="width:264px;display: none;"><div class="container"><div class="arrow"><span class="close">close</span><span class="prev">prev</span><span class="next">next</span></div><div class="content-box"></div></div></div>');
+    $(document.body).append('<div id="calendar" style="width:264px;display: none;"><div class="container"><div class="arrow"><span class="close">close</span><span class="prev">prev</span><span class="next">next</span></div><div class="content-box clear"></div></div></div>');
 }
 //创建日历
 function calendar(element,callback){//isHide用来判断要不要隐藏插件
@@ -98,7 +98,7 @@ function calendar(element,callback){//isHide用来判断要不要隐藏插件
             var tr=$('<tr></tr>');
             for(var i=0;i<m;i++){
                 var td=$('<td class="disabled"></td>');
-                var a=$('<a href="javascript:;"></a>');
+                var a=$('<a href="javascript:void(0);" target="_self"></a>');
                 a.html(++surplusDay);
                 td.append(a);
                 tr.append(td);
@@ -131,7 +131,7 @@ function calendar(element,callback){//isHide用来判断要不要隐藏插件
                     var td=$('<td data-date="'+nYear+'-'+toDou(nMonth)+'-'+toDou(i+1)+'"></td>');
                     selectDate(td);
                 }
-                var a=$('<a href="javascript:;"></a>');
+                var a=$('<a href="javascript:void(0);" target="_self"></a>');
                 if(n==0 && i==toDay-1){
                     a.addClass('today ');
                 }
@@ -152,7 +152,7 @@ function calendar(element,callback){//isHide用来判断要不要隐藏插件
                     tr=$('<tr></tr>');
                 }
                 var td=$('<td class="disabled"></td>');
-                var a=$('<a href="javascript:;"></a>');
+                var a=$('<a href="javascript:void(0);" target="_self"></a>');
                 a.html(i+1);
                 tr.append(td);
                 td.append(a);
@@ -204,7 +204,7 @@ function calendar(element,callback){//isHide用来判断要不要隐藏插件
                     text2=clickObj['datadate0'];
                 }
                 if(element.is('input')){
-                    element.val(text1+'至'+text2);
+                    element.val(text1+'至'+text2).removeClass('placeholder');
                 }
                 if(element.is('a')){
                     element.text(text1+'至'+text2);
@@ -213,6 +213,7 @@ function calendar(element,callback){//isHide用来判断要不要隐藏插件
                 callback && callback(text1,text2);
             }
             ev.stopPropagation();
+            return false;
         })
     }
     function toDou(n){

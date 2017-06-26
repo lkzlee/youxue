@@ -1,20 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
 <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
 <title>个人中心-结算订单_Camplink</title>
 <script src="js/isLogin.js"></script>
 <!--[if lt IE 9]>
 <script src="js/html5shiv.min.js"></script>
+<script src="js/json2.js"></script>
 <![endif]-->
 <script src="js/prefixfree.min.js"></script>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?1">
 <link rel="stylesheet" href="css/trip-calendar.css">
 <link rel="stylesheet" href="css/user.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -76,7 +79,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="width_content prople_info contacts">
+            <div class="width_content prople_info contacts  clear">
                 <div class="head">支付方式</div>
                 <div class="cont_pay">
                     <label>
@@ -135,7 +138,7 @@
         </p>
     </div>
 </div>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -144,10 +147,22 @@
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
 <script src="js/user_pay.js"></script>
 <script>
@@ -182,21 +197,21 @@
                     $('.codeId_radio').prop('checked',bool);
                     range_input(This,bool);
                     // $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
-                    $('.moneyTotal').text(data.payAmount);
+                    $('.moneyTotal').text("¥"+data.payAmount);
                 })
             }else{
                 if(This.val().length<=0){
                     $('.codeId_radio').prop('checked',false);
                     This.removeAttr('style');
                     $('.errorMessage').text('');
-                    $('.moneyTotal').text((moneyTotal-0).toFixed(2));
+                    $('.moneyTotal').text("¥"+(moneyTotal-0).toFixed(2));
                 }
             }
         }
         if(orderList){
             var arr=orderList.split(',');
             moneyTotal=arr[0];
-            $('.moneyTotal').text(moneyTotal)
+            $('.moneyTotal').text("¥"+moneyTotal)
             len=arr.length;
             for(var i=1;i<len;i++){
                 var orderArr=arr[i].split('$$');
@@ -219,8 +234,8 @@
                 }
             }
             renderAccount();//渲染联系人信息(默认值)
+            $('#order_list').html(htmlArr);
         }
-        $('#order_list').html(htmlArr);
         setTimeout(function(){
             $('body').append("<script src='js/distpicker.data.js'><\/script><script src='js/distpicker.js'><\/script>");
         },300)
@@ -266,7 +281,7 @@
                 data=JSON.parse(data);
                 success(data,function(){
                     if(data.payUrl){
-                        window.open(data.payUrl)
+                        auto_submit(data.payUrl,'','get');
                     }
                 })
             },'','application/json; charset=utf-8')
@@ -319,7 +334,7 @@
         var arr=[];
         arr.push('<div class="width_content"><div class="head">订单信息</div></div><div class="width_content cont_order"><div class="div_order clear">');
         arr.push('<span class="span1">营地名称</span><span class="span2">单价（元）</span><span class="span3">数量</span><span class="span4">合计（元）</span></div>');
-        arr.push('<div class="div_cont_order"><a href="/info.jsp?campusId='+obj['value']+'" class="a1_order"><img src="'+obj['img']+'" alt=""><span class="span3">'+obj['name']+'</span></a>');
+        arr.push('<div class="div_cont_order"><a href="/info.jsp?campusId='+obj['campusId']+'" class="a1_order"><img src="'+obj['img']+'" alt=""><span class="span3">'+obj['name']+'</span></a>');
         arr.push('<span class="span4">'+obj['unitPrice']+'</span><span class="span5">1</span><span class="span6">'+obj['unitPrice']+'</span></div></div>');
         return arr.join('')
     }
@@ -364,7 +379,16 @@
         var input=$('input.require');
         var bool=true;
         input.each(function(){
-            if($(this).val().length<2){
+            if($(this).attr('name')=='personAge'){
+                if(/^\d{1,3}$/.test($(this).val())){
+                    bool=true;
+                    return range_input($(this),true);
+
+                }else{
+                    bool=false;
+                    return range_input($(this),false);
+                }
+            }else if($(this).val().length<2){
                 bool=false;
                 return range_input($(this),false);
             }else{

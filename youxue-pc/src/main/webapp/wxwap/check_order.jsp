@@ -55,7 +55,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="js/common.js"></script>
     <script>
         var orderList= '<%=request.getParameter("orderList")==null?"":request.getParameter("orderList")%>';
-        // console.log(orderList);
+        // var orderList= '<%=new String(request.getParameter("orderList").getBytes("iso-8859-1"), "utf-8")%>';
+
+        console.log(orderList);
         // FastClick.attach(document.body);
         $(function() {
             var btn_order=$('#btn_order');
@@ -72,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         'campusId':orderArr[0],
                         'detailId':orderArr[1],
                         'img':orderArr[2],
-                        'name':orderArr[3],
+                        'name':decodeURI(orderArr[3]),
                         'unitPrice':orderArr[4],
                         'numCar':orderArr[5],
                         'money':orderArr[6]
@@ -225,7 +227,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function render_orderInfo(obj){
             var arr=[];
             arr.push('<div class="goods_message padding20"><div class="cf"><p class="fl head_p">订单信息</p></div>');
-            arr.push('<ul><li class="cf"><a href="/wxwap/camp_details.jsp?campusId='+obj['value']+'"><img src="'+obj['img']+'" alt=""/><div><p>'+obj['name']+'</p>');
+            arr.push('<ul><li class="cf"><a href="camp_details.jsp?campusId='+obj['campusId']+'"><img src="'+obj['img']+'" alt=""/><div><p>'+obj['name']+'</p>');
             arr.push('<p class="price">价格 ¥ <span>'+obj['unitPrice']+'</span></p></div></a></li></ul></div><div class="bg_height10"></div>');
             return arr.join('')
         }

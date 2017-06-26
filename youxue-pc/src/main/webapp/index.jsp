@@ -1,21 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>Camplink首页</title>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/calendar_1.0.css"/>
     <base target='_blank'>
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -54,7 +56,7 @@
     </section>
 </section>
 <!--选择我的营地-->
-<section class="select_camp">
+<section class="select_camp phoneWidth">
     <div class="width_content">
         <p class="p1">选择我的营地</p>
         <div class="div_input"><input type="text" id="place" class="posElement1" placeholder="想去哪里" autocomplete="off"></div>
@@ -64,11 +66,11 @@
     </div>
 </section>
 <!--关于Camplink-->
-<section class="about_camp" onclick="window.open('/about.html')">
+<section class="about_camp phoneWidth" onclick="window.open('/about.html')">
     <span>关于Camplink</span>
 </section>
 <!--热门特价-->
-<section class="hot_camp">
+<section class="hot_camp phoneWidth">
     <div class="hot_div">
         <div class="hot_title clear">
             <div class="border_hot"></div>
@@ -84,13 +86,13 @@
     </div>
 </section>
 <!--主题分类-->
-<section class="subjects_camp">
+<section class="subjects_camp phoneWidth">
     <div class="subject_div">
         <div class="hot_title clear">
             <div class="border_hot"></div>
             <div class="div_p_hot">
                 <p class="p1">主题分类</p>
-                <p>subjects</p>
+                <p>SUBJECTRS</p>
             </div>
             <div class="border_hot"></div>
         </div>
@@ -99,7 +101,7 @@
         </ul>
     </div>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -108,11 +110,26 @@
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
-<script src="js/jquery-3.1.0.min.js"></script>
+<ul class='posElement' id='posElement1' style='position:absolute;display:none;'></ul>
+<ul class='posElement' id='posElement2' style='position:absolute;display:none;'></ul>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
+<script src="js/json2.js"></script>
 <script src="js/calendar_1.0.js"></script>
 <script>
 $(function(){
@@ -135,14 +152,12 @@ function event_yingdi(){
     });
     $('#place').focus(function(){
         index_select($(this),con1);
-    })
-    $('#place').blur(function(){
+    }).blur(function(){
         index_blur($(this));
     })
     $('#wantDo').focus(function(){
         index_select($(this),con2);
-    });
-    $('#wantDo').blur(function(){
+    }).blur(function(){
         index_blur($(this));
     });
     $('#search').click(function(){
@@ -196,16 +211,22 @@ function CampsDetail(){
             }
             function str(val){
                 var arr=[];
-                arr.push('<li><a href="/info.jsp?campusId='+val['campsId']+'">');
-                arr.push('<div class="hotImgs"><img src="'+handle_pic(val['campsImages'])[0]+'" alt=""></div><div class="clear">');
+                arr.push('<li><a href="info.jsp?campusId='+val['campsId']+'">');
+                arr.push('<div class="hotImgs"><img src="'+handle_pic(val['campsImages'])[0]+'" onclick=show("info.jsp?campusId='+val['campsId']+'")></div><div class="clear">');
                 arr.push('<span>'+val['campsName']+'</span><i>¥'+val['totalPrice']+'</i></div>');
                 arr.push('<p>'+cutstr(setContent(val['campsDesc']),100)+'</p></a></li>');
                 return arr.join('');
                 // hot_list.append(li.join(''));
             }
             loadSlide($('.hot_list'));
+            if($.browser.msie && parseInt($.browser.version) <=8){//解决ie8\ie7不支持nth-child的bug
+                $('.hot_list li:nth-child(3n+1)').css("margin-left",0)
+            }
         })
     });
+}
+function show(url){
+    window.location.href=url;
 }
 function loadSlide(slideElement,num){
     num=num||3;

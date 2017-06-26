@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>Camplink-关于青谷</title>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/news.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -49,23 +51,27 @@
         </div>
     </section>
 </section>
-<section class="content content_qg width_content clear">
-    <section class="left j_list">
-        <!-- <p class="active"><a href="#aboutUs">关于我们<i></i></a></div> -->
-        <p class="active"><a href="#qinggu">关于Camplink<i></i></a></p>
-        <p><a href="#creator">合作伙伴<i></i></a></p>
-        <p><a href="#mainProduct">常见问题<i></i></a></p>
-    </section>
-    <section class="right">
-        <div class="aboutImg_r"><img src="" alt="" class="j_img"></div>
-        <div class="cont_right">
-            <div class="right_cont_right icon_circ j_content">
-                
+<section class="phoneWidth">
+    <section class="content content_qg width_content clear">
+        <section class="left j_list">
+            <!-- <p class="active"><a href="#aboutUs">关于我们<i></i></a></div> -->
+            <p class="active"><a href="#qinggu" style="letter-spacing:0;">关于Camplink<i></i></a></p>
+            <p><a href="#creator">合作伙伴<i></i></a></p>
+            <p><a href="#mainProduct">常见问题<i></i></a></p>
+        </section>
+        <section class="right">
+            <div class="aboutImg_r"><img src="" alt="" class="j_img"></div>
+            <div class="cont_right">
+                <div class="right_cont_right icon_circ j_content">
+                    <i class='before'></i>
+                    <div class="j_div"></div>
+                    <i class='after'></i>
+                </div>
             </div>
-        </div>
+        </section>
     </section>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -74,33 +80,54 @@
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/public.js"></script>
+<script src="js/json2.js"></script>
 <script type="text/javascript">
 $(function(){
     getHash();
+    if($.browser.msie && parseInt($.browser.version)<9){
+        $('.content .j_list').attr('id','radius');
+        $('.before').addClass('radius');
+        $('.after').addClass('radius');
+    }
 })
-window.onhashchange=function(){
-    getHash();
-}
-function getHash(){
+
+$('.j_list a').click(function(){
+    getHash($(this));
+    return false;
+})
+
+function getHash(That){
+    var type='qinggu';
     $('.j_img').attr('src','/img/load.gif');
-    $('.j_content').html("");
-    var url=window.location.hash;
-    var param=url.split('#')[1];
-    $('.j_list a[href="#'+param+'"]').parent().addClass('active').siblings('p').removeClass('active');
-    load_aboutInfo(param);
-}
-function load_aboutInfo(type){
-    login_post('/aboutUs.do','type='+(type || 'qinggu'),'',function(data){
+    $('.j_div').html("");
+    if(That){
+        type=That.attr('href').split('#')[1];
+        That.parent().addClass('active').siblings('p').removeClass('active');
+    }
+    login_post('/aboutUs.do','type='+type,'',function(data){
         data=JSON.parse(data);
         if(data.descs){
             $('.j_img').attr('src',handle_pic(data.imgurl)[0]);
-            $('.j_content').html(data.descs);
-        }            
+            $('.j_div').html(data.descs);
+        }
+
     })
 }
 </script>

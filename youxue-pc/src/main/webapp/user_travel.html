@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zn">
 <head>
     <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=1180,inital-scale=1">
     <title>个人中心-待出行_Camplink</title>
     <script src="js/isLogin.js"></script>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
+    <script src="js/json2.js"></script>
     <![endif]-->
     <script src="js/prefixfree.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?1">
     <link rel="stylesheet" href="css/trip-calendar.css">
     <link rel="stylesheet" href="css/user.css">
 </head>
 <body>
-<section class="header">
+<section class="header phoneWidth">
     <section class="head1 clear">
         <div class="left">
             <a href="/"> </a>
@@ -60,7 +63,7 @@
                 <li><a href="user_message.html">我的消息</a></li>
             </ul>
         </li>
-        <li class="liActive"><a href="javascript:void(0)" class="a_userList">我的订单<span></span><i></i></a>
+        <li class="liActive"><a href="javascript:void(0)" class="a_userList">我的订单<span></span><i style="color:#fff;"></i></a>
             <ul>
                 <li><a href="user_payment.html">待付款</a></li>
                 <li><a href="user_audit.html">待审核</a></li>
@@ -69,7 +72,7 @@
                 <li><a href="user_cancel.html">已取消</a></li>
             </ul>
         </li>
-        <li><a href="javascript:void(0)" class="a_userList">我的购物车<span></span><i></i></a>
+        <li><a href="javascript:void(0)" class="a_userList">我的购物车<span></span><i style="color:#fff;"></i></a>
             <ul>
                 <li><a href="user_shoppingCar.html">购物车</a></li><li><a href="user_product.html">周边产品</a></li>
             </ul>
@@ -79,7 +82,9 @@
         <div class="right1">
             <div class="bghui"></div>
             <div class="imgMessage">
-                <div class="img" id="photo_img"></div>
+                <div class="img" id="photo_img">
+                    <img src="" alt="" id="photo_img1" style="display:none;">
+                </div>
                 <a class="message" href="/user_message.html">
                     <i></i>
                     <span>0</span>
@@ -91,7 +96,7 @@
             </div>
         </div>
         <div class="div_rigPay">
-            <div class="bghui">
+            <div class="bghui bghui2">
                 <span>待出行</span>
             </div>
             <ul class="ul_payment clear">
@@ -103,7 +108,7 @@
         </div>
     </div>
 </section>
-<section class="footer">
+<section class="footer phoneWidth">
     <div class="div1_foot">
         <span class="span1">公司地址：北京市海淀区中关村南大街铸诚大厦B座</span>
         <span class="span2">加入我们：hr@chingoo.cn</span>
@@ -112,7 +117,7 @@
     </div>
     <div class="div2_foot">
         <p class="p1_foot">营联世界 版权所有</p>
-        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by iGalaxy</p>
+        <p class="p2_foot">copyright 2016-2017，camplink.cn. Powered by <a href="http://www.igalaxy.com.cn/" target="_blank" style="color:#fff;text-decoration:underline;">iGalaxy</a></p>
     </div>
 </section>
 <div class="alertMessage" style="display:none;">
@@ -122,7 +127,19 @@
         <span>你的当前积分：<label class="integral_lbl">0</label>分</span><span>积分规则：每消费100元积1分</span><span>积分越多，优惠越多哦~</span>
     </div>
 </div>
-<script src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript">
+    var userAgent = navigator.userAgent.toLowerCase();
+    var obj = {
+        version: (userAgent.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1],
+        msie: (/msie/.test(userAgent)||/rv:/.test(userAgent)) && !/opera/.test(userAgent)
+    };
+    if(!obj.msie || (obj.msie && parseInt(obj.version)>8)){
+        document.write('<script src="js/jquery-3.1.0.min.js"><\/script>');
+    }
+</script>
+<!--[if lte IE 8]> 
+<script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+<![endif]-->
 <script src="js/jquery.easing.min.js"></script>
 <script src="js/public.js"></script>
 <script src="js/user.js"></script>
@@ -143,6 +160,13 @@ $(function(){
             cancelOrder($(this));
         }
     })
+    if($.browser.msie && parseInt($.browser.version)<9){
+        $('#userList').addClass('radius');
+        $('.message span').addClass('ie78')
+    }
+    if($.browser.msie && parseInt($.browser.version)<8){
+        $('#userList ul').hide().eq(1).show().siblings('a').addClass('li_aActive');
+    }
 
 })
 function cancelOrder(That){
@@ -180,7 +204,7 @@ function render_list(data){
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">订单号：'+orderList[j]['orderId']+'</a></dd>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">出发日期：'+orderList[j]['detailStartTimeStr']+'至'+getDurationSetDate(orderList[j]['detailStartTimeStr'],orderList[j]['durationTime'])+'</a></dd>');
                 arr.push('<dd><a href="/user_paymentInfo.jsp?orderId='+orderList[j]['orderId']+'">预定日期：'+orderList[j]['creatTime']+'</a></dd></dl>');
-                arr.push('<div class="divRight_user"><span>订单金额：¥'+orderList[j]['payPrice']);
+                arr.push('<div id="divRight_user"><span>订单金额：¥'+orderList[j]['payPrice']);
                 arr.push('</span><input type="button" name="" value="取消订单" class="right_margin0 j_BtnCancel" data-value="'+orderList[j]['orderId']+'"></div></div>');
                 // arr.push('<div><span>费用：<b>¥</b></span><input type="button" class="del_order" data-id="'+orderList[j]['orderId']+'" value="删除记录"/>');
                 // arr.push('<input type="button" class="a2_payment pay_order" data-id="'+orderList[j]['logicOrderId']+'" value="立即购买"/></div></div>')

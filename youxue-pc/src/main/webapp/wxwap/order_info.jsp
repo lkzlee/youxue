@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </section>
 <footer class="cf">
     <p>合计：¥ <span class="j_price"></span></p>
-    <button id="btn_order" onclick="history.go(-1)">返回订单</button>
+    <button id="btn_order" onclick="location.href='my_order.jsp'">返回订单</button>
 </footer>
 <script src="js/jquery-3.1.0.min.js"></script>
 <script src="js/fastclick.js"></script>

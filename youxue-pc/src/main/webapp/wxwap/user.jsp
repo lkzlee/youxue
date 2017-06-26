@@ -50,6 +50,9 @@ $(function(){
   })
 })
 $('#photoUrl').on('click',function(){
+  if(typeof FileReader == 'undefined'){
+        return false;
+    }
   $('#xdaTanFileImg').click();
 })
 $('#xdaTanFileImg').on('change',function(){

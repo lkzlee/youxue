@@ -54,20 +54,80 @@ $.extend({
     }
 })
 function uploadImage(obj) {
-  if(validateImage(obj)) {
-      var data = new FormData();
-      data.append('uploadFile', obj.files[0]);
-      file_post('/img/userphoto/uploadImg.do',data,'',function(data){
-          data=JSON.parse(data);
-          data=JSON.parse(data);
-          imgUrl=data.url;
-          saveImage(imgUrl,function(){
-            // $('#photoUrl').attr('src',imgUrl)
-            // $('#photoUrl').css('background-image','url("'+imgUrl+'")')
-            imgCenter($('#photoUrl'),imgUrl)
-          })
-      });
-  }
+    if(!validateImage(obj)) {
+        return false;
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(obj.files[0]);
+    reader.onload = function (e) {
+        //调用图片压缩方法：compress();
+        var fileSize = (obj.files[0].size/1024/1024).toFixed(2);
+        compress(this.result,fileSize,function(dataUrl){
+            var data = new FormData();
+            data.append('uploadFile', dataUrl);
+            file_post('/img/userphoto/uploadImg.do',data,'',function(data){
+              data=JSON.parse(data);
+              data=JSON.parse(data);
+              if(data.retCode==200){
+                  imgUrl=data.url;
+                  saveImage(imgUrl,function(){
+                    // $('#photoUrl').attr('src',imgUrl)
+                    // $('#photoUrl').css('background-image','url("'+imgUrl+'")')
+                    imgCenter($('#photoUrl'),imgUrl)
+                  }) 
+              }else{
+                alertMesageAndHide(data.resultDesc,4)
+              }
+            });
+        })
+    };
+}
+function compress(res,fileSize,callback) { //res代表上传的图片，fileSize大小图片的大小
+    var img = new Image(),
+        maxW = 640; //设置最大宽度
+
+    img.onload = function () {
+        var cvs = document.createElement( 'canvas'),
+            ctx = cvs.getContext( '2d');
+
+        if(img.width > maxW) {
+            img.height *= maxW / img.width;
+            img.width = maxW;
+        }
+
+        cvs.width = img.width;
+        cvs.height = img.height;
+
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+
+        var compressRate = getCompressRate(1,fileSize);
+
+        var dataUrl = cvs.toDataURL( 'image/jpeg', compressRate);
+
+        // document.body.appendChild(cvs);
+        // console.log(dataUrl);
+        callback && callback(dataUrl);
+    }
+
+    img.src = res;
+}
+
+function getCompressRate(allowMaxSize,fileSize){ //计算压缩比率，size单位为MB
+      var compressRate = 1;
+      if(fileSize/allowMaxSize > 4){
+           compressRate = 0.5;
+      } else if(fileSize/allowMaxSize >3){
+           compressRate = 0.6;
+      } else if(fileSize/allowMaxSize >2){
+           compressRate = 0.7;
+      } else if(fileSize > allowMaxSize){
+           compressRate = 0.8;
+      } else{
+           compressRate = 0.9;
+      }
+
+      return compressRate;
 }
 function imgCenter(element,src){
     imgWidthAndHeight(src,function(width,height){
@@ -190,7 +250,7 @@ function auto_submit(address,obj,method){
     if(method.toLowerCase()=='get'){
         window.location.href=address+'?'+obj;
     }else{
-        var frm=$('<form action='+address+' method="post">');
+        var frm=$('<form action='+address+' method="post" accept-charset="UTF-8">');
         for(var key in obj){
             frm.append('<input type="hidden" name="'+key+'" value="'+obj[key]+'">');
         }
@@ -336,19 +396,20 @@ function validateImage(obj) {
     //校验图片格式
     if(/^.*?\.(gif|png|jpg|jpeg|bmp)$/.test(tmpFileValue.toLowerCase())){
         //校验图片大小,这段代码需调整浏览器安全级别(调到底级)和添加可信站点(将服务器站点添加到可信站点中)
-        var maxSize = 1024 * 1024 * 2; //最大2MB
-        if(file.value != ""){
-            var size=obj.files[0].size;
-            if(size<0 || size>maxSize){
-                alert("当前文件大小" + (size/1024/1024).toFixed(2) + "MB, 超出最大限制"+(maxSize/1024/1024)+"MB");
-                return false;
-            }else{
-                return true;
-            }
-        }else{
-            alert("请选择上传的文件!");
-            return false;
-        }
+        // var maxSize = 1024 * 1024 * 2; //最大2MB
+        // if(file.value != ""){
+        //     var size=obj.files[0].size;
+        //     if(size<0 || size>maxSize){
+        //         alert("当前文件大小" + (size/1024/1024).toFixed(2) + "MB, 超出最大限制"+(maxSize/1024/1024)+"MB");
+        //         return false;
+        //     }else{
+        //         return true;
+        //     }
+        // }else{
+        //     alert("请选择上传的文件!");
+        //     return false;
+        // }
+        return true;
     } else {
         alert("只能上传jpg、jpeg、png、bmp或gif格式的图片!");
         return false;

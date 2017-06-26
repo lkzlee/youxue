@@ -23,6 +23,14 @@ function userIndexList(){
         var ulIndex=userUl.eq(index);
         var liList=$('li',ulIndex);
         var liLength=liList.length;
+        if($.browser.msie && parseInt($.browser.version)<8){
+            $('.li_aActive').removeClass('li_aActive')
+            This.addClass('li_aActive');
+            var ul=This.parent().siblings('li').find('ul');
+            ul.slideUp(300);
+            ulIndex.slideDown(300);
+            return;
+        }
         var ulHeight=ulIndex.height()>0?0:(47*liLength);
         if(ulHeight==0){
             This.addClass('li_aActive');
@@ -34,7 +42,6 @@ function userIndexList(){
             easing: 'easeOutBounce',
             duration: 500,
             complete:function(){
-
             }
         });
         return false;
@@ -94,7 +101,25 @@ function logo_user(callback){
             }
         }
     });
+    $(window).unbind('keydown');
+    var i=0;
+    $(window).on('keydown',function(ev){
+        if(ev.keyCode==9){
+            i=i%7;
+            ++i
+            $('[tabindex='+i+']').focus();
+            return false;
+        }
+        if(ev.keyCode==13){
+            subLogin();
+            return false;
+        }
+    })
+
     $('#submit_login').click(function(){
+        subLogin();
+    })
+    function subLogin(){
         if(!veriPhone()){
             return false;
         }
@@ -114,7 +139,7 @@ function logo_user(callback){
             code_message.show().html('请输入正确的验证码');
             return false;
         }
-        var This=$(this);
+        var This=$('#submit_login');
         This.attr('disabled','disabled').addClass('disable');
         var phone_value=phone_input.val();
         var data={
@@ -134,7 +159,7 @@ function logo_user(callback){
                 alert(data.resultDesc);
             }
         }
-    })
+    }
     function veriPhone(){
         var phone_value=phone_input.val();
         var phone_message=phone_input.siblings('label');
@@ -165,8 +190,12 @@ function renderUserInfo(data){
         $('.message').show().children('span').text(data.unReads);
     }
     if(data.photoUrl){
-        // $('#photo_img').attr('src',data.photoUrl).show();
-        imgCenter($('#photo_img'),data.photoUrl)
+        if($.browser.msie && parseInt($.browser.version)<9){
+            $('#photo_img').addClass('imgIE');
+            $('#photo_img1').attr('src',data.photoUrl).show();
+        }else{
+            imgCenter($('#photo_img'),data.photoUrl)
+        }
     }
 }
 //首页基础信息编辑
@@ -193,7 +222,11 @@ function edit_userInfo(){
             nspan.hide();
             ninput.attr("value",nspan.text()).show();
             bspan.hide();
-            birthday.children('.calendar-input-wrap').css('display','inline-block').children("input").attr("value",bspan.text());
+            if($.browser.msie && parseInt($.browser.version)<8){
+                birthday.children('.calendar-input-wrap').css({'display':'inline'}).children("input").attr("value",bspan.text());
+            }else{
+                birthday.children('.calendar-input-wrap').css({'display':'inline-block'}).children("input").attr("value",bspan.text());
+            }
             lspan.hide();
             linput.attr("value",lspan.text()).show();
             sspan.hide();
@@ -241,45 +274,62 @@ function edit_userInfo(){
 }
 //首页头像修改
 function edit_photo(url,successFn,errorFn){
-    var edit_photo=$('.j_edit_photo');
     var photoDiv=$('.photoDiv');
     var uploadFile=$('#uploadFile');
     var btn_upload=$('#btn_upload');
-    var imgUrl='';
-    edit_photo.click(function(){
-        if($(this).html()=="保存"){
-            if(imgUrl){
-                save_photo(imgUrl,function(){
-                    // $('#photo_img').attr('src',imgUrl).show();
-                    imgCenter($('#photo_img'),imgUrl)
-                    $(this).html("编辑");
-                    photoDiv.fadeOut(300);
-                })
-            }
+    $('.j_edit_photo').click(function(){
+        var That=$(this);
+        if(That.text()=="收起"){
+            $('.aeidt').text("编辑");
+            // photoDiv.fadeOut(300);
+            photoDiv.hide();
         }else{
-            $(this).html("保存");
-            photoDiv.fadeIn(300);
-            btn_upload.click(function(){
-                uploadFile.click();
-            })
-            uploadFile.on('change',function(){
-                uploadImage($(this)[0])
-            })
-            function uploadImage(obj) {
-                if(validateImage(obj)) {
-                    var data = new FormData();
-                    data.append('uploadFile', obj.files[0]);
-                    file_post(url,data,'',function(data){
-                        data=JSON.parse(data);
-                        data=JSON.parse(data);
-                        imgUrl=data.url;
-                        successFn(data);
-                    });
-                }
-            }
+            That.text("收起");
+            // photoDiv.fadeIn(300);
+            photoDiv.show();
         }
         return false;
     });
+    if(!Boolean(window.FormData)||($.browser.msie && parseInt($.browser.version)<10)){
+        $('#spanButtonPlaceholder').show();
+        btn_upload.hide();
+        btn_upload.click(function(){
+            swfu.startUpload();
+        })
+    }else{
+        btn_upload.click(function(){
+            uploadFile.click();
+        })
+        uploadFile.on('change',function(){
+            uploadImage($(this)[0])
+        })
+        function uploadImage(obj) {
+            if(validateImage(obj)) {
+                var data = new FormData();
+                data.append('uploadFile', obj.files[0]);
+                file_post(url,data,'',function(data){
+                    data=JSON.parse(data);
+                    data=JSON.parse(data);
+                    imgUrl=data.url;
+                    successFn(data);
+                });
+            }
+        }
+    }
+    $('.j_save_photo').click(function(){
+        if(!imgUrl){
+            alert('请先上传头像')
+            return false;
+        }
+        save_photo(imgUrl,function(){
+            if($.browser.msie && parseInt($.browser.version)<9){
+                $('#photo_img1').attr('src',imgUrl);
+            }else{
+                imgCenter($('#photo_img'),imgUrl)
+            }
+            window.location.reload();
+        })
+    })
     function save_photo(url,callback){
         login_post('/uc/updatePhoto.do','userPhotoUrl='+url,'',function(data){
             data=JSON.parse(data);
@@ -370,8 +420,8 @@ function car(){
     var checkedCount_car=0,len=li_car_check.length;
     //点击li下的input改变li样式
     car_ul.on('click','input',function(){
-        var money=Number($(this).siblings('.money_span_car').html());
-        var numCar=Number($(this).siblings('.num_span_car').html());
+        var money=Number($(this).parent().siblings('.money_span_car').html());
+        var numCar=Number($(this).parent().siblings('.num_span_car').html());
         var isChecked=$(this).prop('checked');
         if(isChecked){
             checkedCount_car++;
@@ -395,13 +445,16 @@ function car(){
         if(window.confirm('您确定要删除吗？')){
             var check=$('#car_ul input:checked');
             if(check.length>0){
-                var data=new FormData();
+                // var data=new FormData();
+                var data=[];
                 check.each(function(){
-                    data.append('campusId',$(this).attr('data-campusId'))
-                    data.append('detailId',$(this).attr('data-detailId'))
+                    data.push({
+                        'campusId':$(this).attr('data-campusId'),
+                        'detailId':$(this).attr('data-detailId')
+                    })
                 })
-                file_post('/deleteCartItem.do',data,'',function(data){
-                    user_success(JSON.parse(JSON.parse(data)),function(){
+                login_post('/deleteCartItem.do',JSON.stringify(data),'',function(data){
+                    user_success(JSON.parse(data),function(){
                         check.each(function(){
                             var childCheck=$(this);
                             del_change($(this),childCheck)
@@ -409,12 +462,13 @@ function car(){
                     })
                 })
             }
+            return false;
         }
     })
     $('.child_del').click(function(){
         if(window.confirm('您确定要删除吗？')){
             var This=$(this);
-            var childCheck=$(this).siblings('input[name="campusId"]');
+            var childCheck=$(this).parent().find('input[name="campusId"]');
             var data={
                 'campusId':childCheck.attr('data-campusId'),
                 'detailId':childCheck.attr('data-detailId')
@@ -433,8 +487,9 @@ function car(){
             var arr=[];
             arr.push(moneyTotal);
             check.each(function(){
-                var title=$(this).siblings('.yingdi_title');
-                arr.push([$(this).attr('data-campusid'),$(this).attr('data-detailid'),title.children('img').attr('src'),title.children('span').text(),Number($(this).siblings('.span4').text()),Number($(this).siblings('.num_span_car').text()),Number($(this).siblings('.money_span_car').text())].join('$$'));
+                var parent=$(this).parent();
+                var title=parent.siblings('.yingdi_title');
+                arr.push([$(this).attr('data-campusid'),$(this).attr('data-detailid'),title.children('img').attr('src'),title.children('span').text(),Number(parent.siblings('.span4').text()),Number(parent.siblings('.num_span_car').text()),Number(parent.siblings('.money_span_car').text())].join('$$'));
             });
             auto_submit('/user_checkout.jsp',{'orderList':arr},'post');
         }
@@ -505,7 +560,7 @@ function validateImage(obj) {
     if(/^.*?\.(gif|png|jpg|jpeg|bmp)$/.test(tmpFileValue.toLowerCase())){
         //校验图片大小,这段代码需调整浏览器安全级别(调到底级)和添加可信站点(将服务器站点添加到可信站点中)
         var maxSize = 1024 * 1024 * 2; //最大2MB
-        if(file.value != ""){
+        if(file.value != "" ){
             var size=obj.files[0].size;
             if(size<0 || size>maxSize){
                 alertMesageAndHide("超出最大限制",4);

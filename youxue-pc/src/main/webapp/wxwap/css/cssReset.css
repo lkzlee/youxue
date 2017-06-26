@@ -34,8 +34,8 @@ a{
 button.disabled{color:#666!important;background: #eee!important;border-color: #eee!important;}
 #alertMessage{box-sizing:content-box;position:fixed;top:50%;left:50%;padding:19px 0 8px;margin-top:-41.9px;margin-left:-55px;width:158px;height:83px;border-radius:22px;background:rgba(0,0,0,0.5);z-index:99999;}
 #alertMessage div{margin:0 auto;width:40px;height:40px;background-repeat:no-repeat;}
-.iconSuccess{background:url(../img/icon_success.png);}
-.iconError{background:url(../img/icon_error.png);}
+.iconSuccess{background:url(img/icon_success.png);}
+.iconError{background:url(img/icon_error.png);}
 #alertMessage p{line-height:43px;text-align:center;color:#fff;font-family: "思源"}
 .noMessage_border{text-align:center;padding:10px 0;}
 .foot_nav{position: fixed; bottom: 0; left: 0;width: 100%; height: 35px; line-height: 35px;background: #000; text-align: center;}

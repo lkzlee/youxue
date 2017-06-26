@@ -374,8 +374,8 @@ function success(data,callback,errback){
     if(data.result==100){
         callback();
     }else{
+        console.log(data);
         errback && errback();
-        alert(data.resultDesc);
         return false;
     }
 }

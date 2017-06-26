@@ -189,15 +189,16 @@
                         bool=true;
                         discount=data.codeAmount;
                         $('.errorMessage').text('');
+                        $('.moneyTotal').text("¥"+data.payAmount);
                     }else{
                         bool=false;
                         discount=0;
                         $('.errorMessage').text(data.resultDesc);
+                        $('.moneyTotal').text("¥"+moneyTotal);
                     }
                     $('.codeId_radio').prop('checked',bool);
                     range_input(This,bool);
                     // $('.moneyTotal').text((moneyTotal-discount).toFixed(2));
-                    $('.moneyTotal').text("¥"+data.payAmount);
                 })
             }else{
                 if(This.val().length<=0){
